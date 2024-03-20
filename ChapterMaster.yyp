@@ -864,6 +864,7 @@
     {"id":{"name":"scr_mission_eta","path":"scripts/scr_mission_eta/scr_mission_eta.yy",},},
     {"id":{"name":"NameGenerator","path":"scripts/NameGenerator/NameGenerator.yy",},},
     {"id":{"name":"scr_random_event","path":"scripts/scr_random_event/scr_random_event.yy",},},
+    {"id":{"name":"spr_faction_icons","path":"sprites/spr_faction_icons/spr_faction_icons.yy",},},
     {"id":{"name":"scr_random_find","path":"scripts/scr_random_find/scr_random_find.yy",},},
     {"id":{"name":"scr_max_marine","path":"scripts/scr_max_marine/scr_max_marine.yy",},},
     {"id":{"name":"scr_random_marine","path":"scripts/scr_random_marine/scr_random_marine.yy",},},
