@@ -18,6 +18,10 @@ related[0] = "";
 related[1] = "";
 related[2] = "";
 related[3] = "";
+topic_article_surface = -1;
+scroll_position = 0; 
+scrollbar_grabbed = false;
+scrollbar_offset = 0;
 var e = -1;
 repeat(101) {
 	e += 1;
