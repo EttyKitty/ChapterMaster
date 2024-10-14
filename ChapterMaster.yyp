@@ -1081,6 +1081,7 @@
     {"id":{"name":"scr_random_event","path":"scripts/scr_random_event/scr_random_event.yy",},},
     {"id":{"name":"obj_planet_map","path":"objects/obj_planet_map/obj_planet_map.yy",},},
     {"id":{"name":"scr_khornate_fleet_functions","path":"scripts/scr_khornate_fleet_functions/scr_khornate_fleet_functions.yy",},},
+    {"id":{"name":"spr_faction_icons","path":"sprites/spr_faction_icons/spr_faction_icons.yy",},},
     {"id":{"name":"scr_random_find","path":"scripts/scr_random_find/scr_random_find.yy",},},
     {"id":{"name":"scr_max_marine","path":"scripts/scr_max_marine/scr_max_marine.yy",},},
     {"id":{"name":"spr_mk3_left_trim","path":"sprites/spr_mk3_left_trim/spr_mk3_left_trim.yy",},},

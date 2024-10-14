@@ -162,3 +162,173 @@ alarm[1]=1;
 }
 
 set_zoom_to_defualt();
+
+function TextSwitchButton() constructor {
+    pos_x = 0;
+    pos_y = 0;
+    str1 = "";
+    str2 = "";
+    alpha = 1;
+    click_alpha = 1;
+    locked = false;
+    hover = function() {
+        var str1_w = string_width(str1);
+        var str2_w = string_width(str2);
+        return (mouse_x >= pos_x+str1_w+5 && mouse_x <= pos_x+str1_w+str2_w+7 && mouse_y >= pos_y-1 && mouse_y <= pos_y + string_height(str2)+1);
+    };
+    clicked = function() {
+        if (hover() && mouse_check_button_pressed(mb_left)) {
+            if (click_alpha > 0.8) click_alpha = 0.8; // Decrease click_alpha when clicked
+            if (locked=true){
+                audio_play_sound(snd_error, 10, false, 1);
+            }
+            else audio_play_sound(snd_click_small, 10, false, 1);
+            return true;
+        } else {
+            if (click_alpha < 1) click_alpha += 0.03; // Increase click_alpha when not clicked
+            return false;
+        }
+    };
+    draw = function() {
+        var str1_w = string_width(str1);
+        var str2_w = string_width(str2);
+        draw_text(pos_x, pos_y, str1);
+        if (hover()) {
+            if (alpha > 0.8) alpha -= 0.02; // Decrease alpha when hovered
+        } else {
+            if (alpha < 1) alpha += 0.03; // Increase alpha when not hovered
+        }
+        draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
+        draw_set_color(c_green);
+        draw_rectangle(pos_x+str1_w+5, pos_y-1, pos_x+str1_w+str2_w+7, pos_y+string_height(str2)+1,1);
+        draw_text(pos_x+str1_w+6, pos_y,str2);
+        draw_set_alpha(1);
+    };
+}
+
+formation = new TextSwitchButton();
+target = new TextSwitchButton();
+
+function SwitchButton() constructor {
+    pos_x = 0;
+    pos_y = 0;
+    str1 = "";
+    alpha = 1;
+    click_alpha = 1;
+    locked = false;
+    hover = function() {
+        var str1_w = string_width(str1);
+        var str1_h = string_height(str1);
+        return (mouse_x >= pos_x-2 && mouse_x <= pos_x+str1_w+1 && mouse_y >= pos_y-4 && mouse_y <= pos_y+str1_h+1);
+    };
+    clicked = function() {
+        if (hover() && mouse_check_button_pressed(mb_left)) {
+            if (click_alpha > 0.8) click_alpha = 0.8; // Decrease click_alpha when clicked
+            if (locked=true){
+                audio_play_sound(snd_error, 10, false, 1);
+            }
+            else audio_play_sound(snd_click_small, 10, false, 1);
+            return true;
+        } else {
+            if (click_alpha < 1) click_alpha += 0.03; // Increase click_alpha when not clicked
+            return false;
+        }
+    };
+    draw = function() {
+        var str1_w = string_width(str1);
+        var str1_h = string_height(str1);
+        if (locked=true){
+            if (alpha > 0.5) alpha -= 0.03;
+        }
+        else{
+            if (hover()) {
+                if (alpha > 0.8) alpha -= 0.02; // Decrease alpha when hovered
+            } else {
+                if (alpha < 1) alpha += 0.03; // Increase alpha when not hovered
+            }
+        }
+        draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
+        draw_set_color(c_green);
+        draw_rectangle(pos_x-2, pos_y-4, pos_x+str1_w+1, pos_y+str1_h+1,1);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_text(pos_x, pos_y,str1);
+        draw_set_alpha(1);
+    };
+}
+
+btn_attack = new SwitchButton();
+btn_back = new SwitchButton();
+
+function ToggleButton() constructor {
+    pos_x = 0;
+    pos_y = 0;
+    str1 = "";
+    width = 0;
+    state_alpha = 1;
+    hover_alpha = 1;
+    active = true;
+    text_halign = fa_left;
+    text_color = c_gray;
+    button_color = c_gray;
+
+    hover = function() {
+        var str1_h = string_height(str1);
+        return (mouse_x >= pos_x-2 && mouse_x <= pos_x+width+1 && mouse_y >= pos_y-4 && mouse_y <= pos_y+str1_h+1);
+    };
+
+    clicked = function() {
+        if (hover() && mouse_check_button_pressed(mb_left) && obj_controller.cooldown <= 0) {
+            active = !active; // Toggle the active state when clicked
+            audio_play_sound(snd_click_small, 10, false, 1);
+            return true;
+        }
+        else{
+            return false;
+        }
+    };
+
+    draw = function() {
+        var str1_h = string_height(str1);
+        var text_padding = width * 0.03;
+        var text_x = pos_x + text_padding;
+        var text_y = pos_y + text_padding;
+        var total_alpha;
+
+        if (text_halign == fa_center) {
+            text_x = pos_x + (width / 2);
+        }
+
+        if (!active){
+            if (state_alpha > 0.5) state_alpha -= 0.05;
+        }
+        else{
+            if (state_alpha < 1) state_alpha += 0.05;
+            if (hover()) {
+                if (hover_alpha > 0.8) hover_alpha -= 0.02; // Decrease state_alpha when hovered
+            } else {
+                if (hover_alpha < 1) hover_alpha += 0.03; // Increase state_alpha when not hovered
+            }
+        }
+
+        total_alpha = state_alpha * hover_alpha;
+        draw_rectangle_color_simple(pos_x, pos_y, pos_x + width, pos_y + str1_h, 1, button_color, total_alpha);
+        draw_set_halign(text_halign);
+        draw_set_valign(fa_top);
+        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
+        draw_set_alpha(1);
+        draw_set_halign(fa_left);
+    };
+}
+
+var captions = ["Tactical", "Veteran", "Assault", "Devastator", "Scout", "Terminator", "Specialist", "Wounded"];
+squad_buttons = [];
+for (var i = 0; i < 8; i++) {
+    var button = new ToggleButton();
+    squad_buttons[i] = button;
+    button.str1 = captions[i];
+    button.text_halign = fa_center;
+    button.text_color = CM_GREEN_COLOR;
+    button.button_color = CM_GREEN_COLOR;
+    button.width = 90;
+}

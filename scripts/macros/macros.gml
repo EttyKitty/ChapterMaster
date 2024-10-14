@@ -6,6 +6,8 @@
 #macro DATE_TIME_2 $"{current_day}-{current_month}-{current_year}|{format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
 #macro DATE_TIME_3 $"{current_day}-{current_month}-{current_year} {format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
 #macro TIME_1 $"{format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
+#macro CM_GREEN_COLOR #34bc75
+#macro CM_RED_COLOR #bf4040
 
 enum luck {
     bad = -1,
