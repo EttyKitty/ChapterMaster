@@ -1,5 +1,5 @@
 /// @description Constructor for loading Chapter data from JSON and providing type completion
-function chapter_data() constructor {
+function ChapterData() constructor {
 	id = CHAPTERS.UNKNOWN;
 	name = "";
 	points = 0;
@@ -272,7 +272,7 @@ function scr_chapter_new(argument0) {
 
 	if(obj_creation.use_chapter_object == 1){
 
-		var chapter_obj = new chapter_data();
+		var chapter_obj = new ChapterData();
 		var successfully_loaded = chapter_obj.load_from_json(chapter_id);
 		if(!successfully_loaded){
 			var issue = $"No json file exists for chapter id {chapter_id} and name {argument0}";
