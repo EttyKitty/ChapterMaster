@@ -3,14 +3,14 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	var pop_before=0,pop_after=0,reduced_bombard_score=0,strength_reduction=0,txt2="",txt3="",txt4="",max_kill,overkill,roll,kill;
 	var score_before=star_system.p_population[planet_number];
 
-	var txt1="The heavens rumble and thunder as your ship";
+	var txt1="Your cruiser and larger ship";
 	if (ships_selected>1) then txt1+="s";
-	txt1+=" unload";
+	txt1+=" position themselves over the target in close orbit, and unleash";
 	if (ships_selected=1) then txt1+="s";
-	txt1+= $" annihilation upon {star_system.name} {scr_roman_numerals()[planet_number-1]}.  Even from space the explosions can be seen, clapping across the planet's surface.";
+	txt1+= $" annihilation upon {star_system.name} {scr_roman_numerals()[planet_number-1]}. Even from the void, explosions can be seen, battering across the planet's surface.";
 
 	if (star_system.p_large[planet_number]=0){
-		kill=bombard_ment_power*15000000;// Population if normal
+		kill=bombard_ment_power*15000000;// Population if normal, we should consider making loses to be more percentage-wise, rather than flat, also in scr_purge_world
 	}else if (star_system.p_large[planet_number]=1){
 		kill=bombard_ment_power*0.15;// Population if large
 	}
@@ -21,6 +21,12 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	pop_after=max(0,pop_before-kill);
 	if (pop_after<=0) and (pop_before>0) then heres_after=0;
 
+	// We should also make the regular bombardment lower heresy, I'm gonna copy some bits of code from scr_purge_world 
+	// heres_before=max(star.p_heresy[planet]+star.p_heresy_secret[planet],star.p_influence[planet][eFACTION.Tau]);
+	// sci1=0;sci2=0;
+	// if (pop_before>0) then sci1=(pop_after/pop_before)*100;
+	// if (sci1>0) then sci2=min((sci1*2),action_score*2);
+	// heres_after=heres_before-sci2;
 
 
 	if (star_system.p_type[planet_number]!="Space Hulk"){
@@ -28,47 +34,54 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    switch(bombard_target_faction){
 	    	case 2:
 	    		txt2="##The Imperial forces are suitably fortified; ";
-	    		break;
+				bombard_protection=2;
+	    		break; // I'm not sure about IG, maybe they should be left at 2, or, maybe they should be at 1, like the PDF
 	    	case 2.5:
 	    		if (star_system.p_owner[planet_number]<=5){
-	    			txt2="##The PDF forces are suitably fortified; ";
+	    			txt2="##The PDF forces are poorly fortified; ";
+					bombard_protection=1;
 	    		} else if (star_system.p_owner[planet_number]>5){
-	    			txt2="##The renegade forces are moderately fortified;" ;
+	    			txt2="##The renegade forces are poorly fortified; ";
+					bombard_protection=1;
 	    		}
-	    		break;
+	    		break; // I think PDF and renegades down there should be kind of poorly prepared for this
 	    	case 3:
-	    		txt2="##The Mechanicus forces are suitably fortified; ";
-	    		bombard_protection=0;
-	    		break;
+	    		txt2="##The Mechanicus forces are well fortified; ";
+	    		bombard_protection=3;
+	    		break; // If we get to Admech, I think they should be pretty capable with the hi-tech goodies they have
 	    	case 5:
 	    		txt2="##The Ecclesiarchy forces are concentrated within their Cathedral; ";
-	    		break;
+				bombard_protection=1;
+	    		break; // Maybe we should make it 0? Though, Cathedral does have a roof at least
 	    	case 6:
 	    		txt2="##The Eldar forces are challenging to pin down; ";
-	    		bombard_protection=3;
+	    		bombard_protection=4; // Hi-tech faction
 	    		break;
 	    	case 7:
-	    		txt2="##The Ork forces are well dug in; ";
-	    		bombard_protection=2;
+	    		txt2="##The Ork forces are poorly dug in; ";
+	    		bombard_protection=1; // I think they shouldn't be so resistant to it, though, Ideally we might want to make them more capable, if warboss is present.
 	    		break;
 	    	case 8:
-	    		txt2="##The Tau forces are suitably fortified; ";
+	    		txt2="##The Tau forces are well fortified; ";
+				bombard_protection=3; // Hi-tech, but not as high as Eldar or Necrons
 	    		break;
 	    	case 9:
 	    		txt2="##The Tyranid Swarm is a large target; ";
-	    		break;
+				bombard_protection=0;
+	    		break; // I suppose we should have this at 0
 	    	case 10:
 	    		if (star_system.p_type[planet_number]="Daemon"){
-	    			bombard_protection=3;
+	    			bombard_protection=3; // Kind of irrelevant if the bombardment will be nulled later either way
 	    			txt2="##Reality warps and twists within the planet; ";
 	    		} else {
-					txt2="##The Chaos forces are well dug in; ";
+					txt2="##The Chaos forces are suitably fortified; ";
 					bombard_protection=2;
 	    		}
 	    		bombard_protection=2;
 	    		break;
 	    	case 13:
-	    		txt2="##The Necrons are well dug in; ";
+	    		txt2="##The Necrons are very well dug in; ";
+				bombard_protection=4; // They are a hi-tech faction, so bombing them should be difficult
 	    		break;	    			    			    			    			    			    				    		    			    		
 	    }
     
@@ -78,10 +91,11 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    var i=reduced_bombard_score;
 	    roll=0;
     	
-	    if (bombard_protection==0){i=i*4;}
-	    else if (bombard_protection==1){i=i*0.9;}
-	    else if (bombard_protection==2){i=i*0.75;}
-	    else if (bombard_protection==3){i=i*0.5;}
+	    if (bombard_protection==0){i=i*4;} // No protection, Nids out in the open use this
+	    else if (bombard_protection==1){i=i*0.9;} // Poor protection, PDF/Renegades, Sisters and Orks use it,
+	    else if (bombard_protection==2){i=i*0.75;} // Competent protection - IG and standard chaos forces
+	    else if (bombard_protection==3){i=i*0.5;} // Hi-tech, Admech and Tau, And Daemons kind of
+	    else if (bombard_protection==4){i=i*0.34;} // Figured I add a level 4 to this, Ultra hi-tech, Necrons and Eldar
     
 	    for(var r=0;r<100;r++){
 	    	if (i < 1) then break;
@@ -105,7 +119,11 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 		}else if (strength_reduction==0){
 			txt2+=" no losses from the bombardment.";
 		}
-
+ // Okay, I can see this needs tweaks, just, how can I make it that it checks for 3 conditions, instead of just 2?
+	// Would this work:
+	// if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
+		//	txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
+	// ?
 		if (rel>0 && rel<=20){
 			txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
 		}else if (rel>20 && rel<=40){ 
@@ -113,9 +131,9 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    }else if (rel>40 && rel<=60){ 
 	    	txt2+=" heavy losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
 	    }else if (rel>60 && (target_strength-strength_reduction)>0){ 
-	    	txt2+=" extreme losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
+	    	txt2+=" devastating losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
 	    }else if ((target_strength-strength_reduction)<=0){ 
-	    	txt2+=" devastating losses from the bombardment.  They have been wiped clean from the planet.";
+	    	txt2+=" extreme losses from the bombardment. They have been wiped clean from the planet.";
 	    }
     
 	    // 135; ?
@@ -125,11 +143,11 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 		}
     
 	    if (strength_reduction>0){
-
+ // Faction 2.5 being renegades, interesting
 	        if (bombard_target_faction=2.5) and (star_system.p_owner[planet_number]=8){
 	            var wib="",wob=0;
             
-	            txt2="##The renegade forces are moderately fortified; ";
+	            txt2="##The renegade forces are poorly fortified; ";
             
 	            wob=bombard_ment_power*5000000+choose(floor(random(100000)),floor(random(100000))*-1);
             
@@ -140,8 +158,8 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	            if (rel>0) and (rel<=20) then txt2+=" they suffer minor losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
 	            if (rel>20) and (rel<=40) then txt2+=" they suffer moderate losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
 	            if (rel>40) and (rel<=60) then txt2+=" they suffer heavy losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
-	            if (rel>60) and (star_system.p_pdf[planet_number]>0) then txt2+=" they suffer extreme losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
-	            if (wob>0) and (star_system.p_pdf[planet_number]=0) then txt2+=" they suffer devastating losses from the bombardment.  They have been wiped clean from the planet.";
+	            if (rel>60) and (star_system.p_pdf[planet_number]>0) then txt2+=" they suffer devastating losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
+	            if (wob>0) and (star_system.p_pdf[planet_number]=0) then txt2+=" they suffer extreme losses from the bombardment.  They have been wiped clean from the planet.";
 	        }
         
         	switch(bombard_target_faction){
@@ -171,13 +189,13 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
     
 	    if (kill>0) then kill=min(star_system.p_population[planet_number],kill);
     
-	    txt3="";
+	    txt3=""; // Life is the Emperor's currency. Spend it well
 	    if (pop_before>0) and (star_system.p_type[planet_number]!="Daemon"){
 	        if (star_system.p_large[planet_number]==0){
 	        	pop_after=round(max(0,pop_after-kill));
-	        	txt3="##It had a civilian population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" die over the duration of the bombardment.";
+	        	txt3="##It had Imperium subject population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" were annihilated over the duration of the bombardment.";
 	    	}else if (star_system.p_large[planet_number]=1){
-	    		txt3="##It had a civilian population of "+string(pop_before)+" billion and "+string(kill)+" billion die over the duration of the bombardment.";
+	    		txt3="##It had Imperium subject population of "+string(pop_before)+" billion and "+string(kill)+" billion were annihilated over the duration of the bombardment.";
 	    	}
 	    }
     
@@ -235,7 +253,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    var bombard_protection=1;
 	    txt1="Torpedoes and Bombardment Cannons rain hell upon the space hulk; ";
     
-	    reduced_bombard_score=bombard_ment_power/1.25;// fraction of bombardment score
+	    reduced_bombard_score=bombard_ment_power/1.25;// fraction of bombardment score, You know, maybe we should make SHs more vulnerable to bombardment? They are out in space, and can be targeted with other weapons
 	    strength_reduction=0;txt3="";
     
 	    var rel;rel=0;
@@ -247,7 +265,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    if (rel>20) and (rel<=40) then txt2="it suffers moderate damage from the bombardment, its integrity reduced by "+string(100-rel)+"%";
 	    if (rel>40) and (rel<=60) then txt2="it suffers heavy damage from the bombardment, its integrity reduced by "+string(100-rel)+"%";
 	    if (rel>60) and ((star_system.p_fortified[planet_number]-reduced_bombard_score)>0) then txt2="it suffers extensive damage from the bombardment, its integrity reduced by "+string(100-rel)+"%";
-	    if ((star_system.p_fortified[planet_number]-reduced_bombard_score)<=0) then txt2="it groans and crumbles apart before the onslaught.  It is no more.";
+	    if ((star_system.p_fortified[planet_number]-reduced_bombard_score)<=0) then txt2="it crumbles apart from the onslaught. It is no more.";
     
 	    // DO EET
 	    if (reduced_bombard_score>0) then star_system.p_fortified[planet_number]-=reduced_bombard_score;
