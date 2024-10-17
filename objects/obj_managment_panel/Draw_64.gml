@@ -1,7 +1,11 @@
 slate_panel.inside_method = function(){
     draw_set_color(#50a076);
-    var cus,draw_func;
-    cus=false;
+    var cus = false;
+    var draw_func;
+    var sprx = 0;
+    var spry = 0;
+    var sprw = 0;
+    var sprh = 0;
 
     switch(header){
         case 3:
@@ -34,16 +38,13 @@ slate_panel.inside_method = function(){
             icon_sprite=spr_icon_chapters;
             icc-=19;
         }
-        if (string_pos("custom",obj_ini.icon_name)>0) then cus=true;
-        if (cus=false) and (icc<=20) then scr_image("creation",icc,x+(panel_width/2)-50,y-10,141*0.7,141*0.7);
-        if (cus=false) and (icc>20) then draw_sprite_ext(icon_sprite,icc,x+(panel_width/2)-50,y-10,0.7,0.7,0,c_white,1);
-        if (cus=true){
-            var cusl=string_replace(obj_ini.icon_name,"custom","");
-            cusl=real(cusl);
-            if (obj_cuicons.spr_custom[cusl]>0) and (sprite_exists(obj_cuicons.spr_custom_icon[cusl])){
-                draw_sprite_ext(obj_cuicons.spr_custom_icon[cusl],0,x+(panel_width/2)-50,y-10,0.7,0.7,0,c_white,1);
-            }
-        }
+
+        sprx = x+(panel_width/2)-50;
+        spry = y-10;
+        sprw = 141*0.7;
+        sprh = 141*0.7;
+
+        draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
         draw_set_font(fnt_cul_14);
         draw_text(x+(panel_width/2),y+89,string_hash_to_newline(title));
         if (line[1]!=""){
@@ -67,18 +68,18 @@ slate_panel.inside_method = function(){
         } else if (title=="LIBRARIUM"){
             draw_sprite_ext(spr_lib_area_pad, 0, x+(panel_width/2)-((0.3*180)/2),y-30,0.3,0.3,0,c_white,1)
         }else {      
-            var icon_sprite,icc;icon_sprite=spr_icon;icc=obj_ini.icon;
-            if (icc>20){icon_sprite=spr_icon_chapters;icc-=19;}
-            
-            if (string_pos("custom",obj_ini.icon_name)>0) then cus=true;
-            if (cus=false) and (icc<=20) then scr_image("creation",icc,x+(panel_width/2)-16,y-16,141*0.23,141*0.23);
-            if (cus=false) and (icc>20) then draw_sprite_ext(icon_sprite,icc,x+(panel_width/2)-16,y-16,0.23,0.23,0,c_white,1);
-            if (cus=true){
-                var cusl;cusl=string_replace(obj_ini.icon_name,"custom","");cusl=real(cusl);
-                if (obj_cuicons.spr_custom[cusl]>0) and (sprite_exists(obj_cuicons.spr_custom_icon[cusl])){
-                    draw_sprite_ext(obj_cuicons.spr_custom_icon[cusl],0,x+(panel_width/2)-16,y-16,0.23,0.23,0,c_white,1);
-                }
+            var icon_sprite, icc;
+            icon_sprite = spr_icon;
+            icc = obj_ini.icon;
+            if (icc > global.normal_icons_count) {
+                icon_sprite = spr_icon_chapters;
+                icc -= global.normal_icons_count - 1;
             }
+            sprx = x + (wid / 2) - 16;
+            spry = y - 16;
+            sprw = 141 * 0.23;
+            sprh = 141 * 0.23;
+            draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
         }
         // draw_sprite_ext(icon_sprite,icc,x+(panel_width/2)-16,y-16,0.23,0.23,0,c_white,1);
         draw_set_font(fnt_cul_14);

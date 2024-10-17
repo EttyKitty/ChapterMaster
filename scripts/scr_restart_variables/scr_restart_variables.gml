@@ -4,13 +4,13 @@ function scr_restart_variables(saved_game) {
     
 	    // show_message(instance_number(obj_restart_vars));
     
-	    obj_restart_vars.restart_name=obj_creation.chapter;
+	    obj_restart_vars.restart_name=obj_creation.chapter_name;
 	    obj_restart_vars.restart_founding=global.founding;
     
 	    obj_restart_vars.restart_secret=global.founding_secret;
 	    obj_restart_vars.restart_title[0]="";
 
-		for(var i=1; i<=11; i++){obj_restart_vars.restart_title[i]=obj_ini.company_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_restart_vars.restart_title[i]=obj_ini.company_title[i];}
     
 	    obj_restart_vars.restart_icon=icon;
 	    obj_restart_vars.restart_icon_name=icon_name;
@@ -247,7 +247,7 @@ function scr_restart_variables(saved_game) {
 	    obj_controller.restart_secret=obj_restart_vars.restart_secret;
 	    obj_controller.restart_title[0]="";
 
-		for(var i=1; i<=11; i++){obj_controller.restart_title[i]=obj_restart_vars.restart_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_controller.restart_title[i]=obj_restart_vars.restart_title[i];}
     
 	    obj_controller.restart_icon=obj_restart_vars.restart_icon;
 	    obj_controller.restart_icon_name=obj_restart_vars.restart_icon_name;
@@ -479,7 +479,7 @@ function scr_restart_variables(saved_game) {
 	    obj_restart_vars.restart_secret=obj_controller.restart_secret;
 	    obj_restart_vars.restart_title[0]=obj_controller.restart_title[0];
 
-		for(var i=1; i<=11; i++){obj_restart_vars.restart_title[i]=obj_controller.restart_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_restart_vars.restart_title[i]=obj_controller.restart_title[i];}
     
 	    obj_restart_vars.restart_icon=obj_controller.restart_icon;
 	    obj_restart_vars.restart_icon_name=obj_controller.restart_icon_name;

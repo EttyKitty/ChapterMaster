@@ -1,5 +1,6 @@
 // // Global singletons
 // global.NameGenerator = new NameGenerator();
+show_debug_message("Creating obj_ini");
 
 // // normal stuff
 use_custom_icon=0;
