@@ -416,6 +416,22 @@ global.trait_list = {
 		constitution : [2,2],
 		flavour_text:"Understands the ins and outs of defences both in building them and in taking them appart",
 		effect:"Bonus when commanding defences and extra boosts when leading a garrison",
+	},
+	"lobotomized" : {
+		wisdom : -50,
+		intelligence : -50,
+		charisma : -5,
+		constitution : 1, // Slight buff to health, as clear mind helps to stay healthy in some cases
+		technology : 1, // Also helps with some boring tasks, I think?
+		display_name : "Lobotomized",
+		flavour_text : "received treatment or damage, which resulted in portion of brain missing, akin to servitors",
+	},
+	"psychotic" : { // IT IS THE BANEBLAAADE!!! - Captain Diomedes, DoW 2 Retribution
+		wisdom : 10,
+		intelligence : -5,
+		constitution : -1, // Being bonkers can sometimes be damaging to one's health, I think..?
+		display_name : "Psychotic",
+		flavour_text : "whether due to experience or some other cause, acquired access to hidden knowledge...",
 	}
 }
 global.base_stats = { //tempory stats subject to change by anyone that wishes to try their luck
