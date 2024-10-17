@@ -9,7 +9,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
 	// That should be sufficient to add stuff in a highly modifiable fashion
 
-	var non_marine_roles = ["Skitarii", "Techpriest", "Ranger", "Crusader", "Sister of Battle", "Sister Hospitaler", "Ork Sniper", "Flash Git"];
+	var non_marine_roles = ["Skitarii", "Techpriest", "Crusader", "Sister of Battle", "Sister Hospitaler", "Ranger", "Ork Sniper", "Flash Git"];
 	var i = 0,
 		e = 0,
 		good = 0,
@@ -33,10 +33,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 		obj_ini.god[target_company][good] = 0;
 
 		if (other_gear = true) {
+	// Factions 1-5 are part of Imperial family
+		// Faction 1 - Space Marine
+		// Faction 2 - Homo Sapiens Imperialis
+		// Faction 3 - Adeptus Mechanicus
 			switch (man_role) {
 			case "Skitarii":
 				obj_ini.wep1[target_company][good] = "Hellgun";
-				obj_ini.wep2[target_company][good] = "";
+				obj_ini.wep2[target_company][good] = ""; // Consider giving the poor fellow a "Combat Knife" or other melee weapon
 				obj_ini.armour[target_company][good] = "Skitarii Armour";
 				obj_ini.experience[target_company][good] = 10;
 				obj_ini.race[target_company][good] = 3;
@@ -52,49 +56,52 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.race[target_company][good] = 3;
 				unit = new TTRPG_stats("mechanicus", target_company, good, "tech_priest");
 				break
-			case "Ranger":
-				obj_ini.wep1[target_company][good] = "Ranger Long Rifle";
-				obj_ini.wep2[target_company][good] = "Shuriken Pistol";
-				obj_ini.armour[target_company][good] = "";
-				obj_ini.experience[target_company][good] = 80;
-				obj_ini.race[target_company][good] = 6
-				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger");
-				break;
+		// Faction 4 - Inquisition
 			case "Crusader":
 				obj_ini.wep1[target_company][good] = "Power Sword";
-				obj_ini.armuor[target_company][good] = "Power Armour";
+				obj_ini.armuor[target_company][good] = "Power Armour"; // Might want to create "Light Power Armour" that is suited for squishy humans
 				obj_ini.gear[target_company][good] = "Storm Shield";
 				obj_ini.experience[target_company][good] = 10;
 				obj_ini.race[target_company][good] = 4;
 				unit = new TTRPG_stats("inquisition", target_company, good, "inquisition_crusader");
 				break;
+		// Faction 5 - Sisters of Battle
 			case "Sister of Battle":
-				obj_ini.wep1[target_company][good] = "Bolter";
+				obj_ini.wep1[target_company][good] = "Bolter"; // Might want to create a "Light Bolter" variant for this one
 				obj_ini.wep2[target_company][good] = "Sarissa";
-				obj_ini.armour[target_company][good] = "Power Armour";
+				obj_ini.armour[target_company][good] = "Power Armour"; // Same here, Sororitas are glorified guard
 				obj_ini.experience[target_company][good] = 60;
 				obj_ini.race[target_company][good] = 5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_of_battle");
 				break;
 			case "Sister Hospitaler":
-				obj_ini.wep1[target_company][good] = "Bolter";
+				obj_ini.wep1[target_company][good] = "Bolter"; // Same here
 				obj_ini.wep2[target_company][good] = "Sarissa";
-				obj_ini.armour[target_company][good] = "Power Armour";
+				obj_ini.armour[target_company][good] = "Power Armour"; // Same here
 				obj_ini.experience[target_company][good] = 100;
 				obj_ini.gear[target_company][good] = "Sororitas Medkit";
 				obj_ini.race[target_company][good] = 5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_hospitaler");
 				break;
+	// End of Imperials
+		// Faction 6 - Eldar
+			case "Ranger":
+				obj_ini.wep1[target_company][good] = "Ranger Long Rifle";
+				obj_ini.wep2[target_company][good] = "Shuriken Pistol";
+				obj_ini.armour[target_company][good] = ""; // I should add "Eldar Armour" to the fellow too
+				obj_ini.experience[target_company][good] = 80;
+				obj_ini.race[target_company][good] = 6
+				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger");
+				break;
+		// Faction 7 - Orks
 			case "Ork Sniper":
 				obj_ini.wep1[target_company][good] = "Sniper Rifle";
 				obj_ini.wep2[target_company][good] = "Choppa";
-				obj_ini.armour[target_company][good] = "";
+				obj_ini.armour[target_company][good] = ""; // Consider giving "Ork Armour" to the fellow
 				obj_ini.experience[target_company][good] = 20;
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "ork_Sniper");
-
 				break;
-
 			case "Flash Git":
 				obj_ini.wep1[target_company][good] = "Snazzgun";
 				obj_ini.wep2[target_company][good] = "Choppa";
@@ -103,6 +110,12 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "flash_git");
 				break;
+		// Faction 8 - T'au 
+		// Faction 9 - Tyranids
+		// Faction 10 - Heretics, regular traitors, ex-imperials
+		// Faction 11 - Chaos Space Marines
+		// Faction 12 - Daemons
+		// Faction 13 - Necrons
 			}
 		}
 
