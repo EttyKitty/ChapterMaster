@@ -75,7 +75,7 @@ function scr_chapter_random(argument0) {
 	    purity=choose(2,3,4,5,6,7,8);if (strength<5) then purity+=2;
 	    stability=choose(2,3,4,5,6,7,8);if (purity<5) then stability+=2;
 	    cooperation=choose(2,3,4,5,6,7,8);if (stability<5) then cooperation+=2;
-	    founding=10;found_secret=floor(random(20))+1;
+	    founding=10;found_secret=floor(random(10))+1;
     
 	    custom=1;points=100;maxpoints=100;
 	    battle_cry="For the Emperor";

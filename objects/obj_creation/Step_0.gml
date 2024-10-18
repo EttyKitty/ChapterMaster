@@ -24,15 +24,15 @@ if (slide==1){
     if (keyboard_string=="137"){
         highlight=18;
         cooldown=8000;
-        chapter="Doom Benefactors";
-        scr_chapter_new(chapter);
+        chapter_name="Doom Benefactors";
+        scr_chapter_new(chapter_name);
         keyboard_string="";
-        if (chapter!="nopw_nopw"){
+        if (chapter_name!="nopw_nopw"){
             icon=25;
             custom=0;
             change_slide=1;
             goto_slide=2;
-            chapter_string=chapter;
+            chapter_string=chapter_name;
         }
         scr_creation(2);
         scr_creation(3.5);
@@ -72,7 +72,7 @@ if (change_slide>0){change_slide+=1;}
 if (change_slide>=100) then change_slide=-1;
 if (change_slide>=100) then change_slide=-1;
 // Sets up a new chapter with default options
-if (change_slide==35) or (change_slide==36) or (chapter=="Doom Benefactors") or (chapter_string=="Doom Benefactors"){
+if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors") or (chapter_string=="Doom Benefactors"){
     if (goto_slide==1){
         mouse_left=0;
         mouse_right=0;
@@ -89,7 +89,7 @@ if (change_slide==35) or (change_slide==36) or (chapter=="Doom Benefactors") or 
         target_gear=0;
         tab=0;
         
-        chapter="Unnamed";
+        chapter_name="Unnamed";
         chapter_string="Unnamed";
         icon=1;
         icon_name="da";
@@ -185,22 +185,22 @@ if (cooldown>0) and (cooldown<=5000) then cooldown-=1;
 // Checks if the name already exists
 if (custom==2){
     name_bad=0;
-    if (chapter=="") then name_bad=1;
-    if (chapter=="Dark Angels") then name_bad=1;
-    if (chapter=="White Scars") then name_bad=1;
-    if (chapter=="Space Wolves") then name_bad=1;
-    if (chapter=="Imperial Fists") then name_bad=1;
-    if (chapter=="Blood Angels") then name_bad=1;
-    if (chapter=="Iron Hands") then name_bad=1;
-    if (chapter=="Ultramarines") then name_bad=1;
-    if (chapter=="Salamanders") then name_bad=1;
-    if (chapter=="Raven Guard") then name_bad=1;
-    if (chapter=="Blood Ravens") then name_bad=1;
-    if (chapter=="Doom Benefactors") then name_bad=1;
-	if (chapter=="Crimson Fists") then name_bad=1;
-	if (chapter=="Minotaurs") then name_bad=1;
-	if (chapter=="Black Templars") then name_bad=1;
-	if (chapter=="Soul Drinkers") then name_bad=1;
+    if (chapter_name=="") then name_bad=1;
+    if (chapter_name=="Dark Angels") then name_bad=1;
+    if (chapter_name=="White Scars") then name_bad=1;
+    if (chapter_name=="Space Wolves") then name_bad=1;
+    if (chapter_name=="Imperial Fists") then name_bad=1;
+    if (chapter_name=="Blood Angels") then name_bad=1;
+    if (chapter_name=="Iron Hands") then name_bad=1;
+    if (chapter_name=="Ultramarines") then name_bad=1;
+    if (chapter_name=="Salamanders") then name_bad=1;
+    if (chapter_name=="Raven Guard") then name_bad=1;
+    if (chapter_name=="Blood Ravens") then name_bad=1;
+    if (chapter_name=="Doom Benefactors") then name_bad=1;
+	if (chapter_name=="Crimson Fists") then name_bad=1;
+	if (chapter_name=="Minotaurs") then name_bad=1;
+	if (chapter_name=="Black Templars") then name_bad=1;
+	if (chapter_name=="Soul Drinkers") then name_bad=1;
 }
 var good=0;
 if (color_to_main!=""){
