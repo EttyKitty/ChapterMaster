@@ -225,16 +225,6 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
             
             if (obj_controller.managing>0){
                 reset_manage_arrays();
-                repeat(501){w+=1;
-                    
-                    sh_ide[w]=0;
-                    sh_name[w]="";
-                    sh_class[w]="";
-                    sh_loc[w]="";
-                    sh_hp[w]="";
-                    sh_cargo[w]=0;
-                    sh_cargo_max[w]="";
-                }
                 alll=0;
                 update_general_manage_view();
             }

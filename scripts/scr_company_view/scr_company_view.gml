@@ -1,36 +1,39 @@
-function reset_manage_arrays(){
-	with (obj_controller){
-		display_unit=[];
-	    man=[];
-		ide=[];
-		man_sel=[];
-		ma_lid=[];
-		ma_wid=[];
-	    ma_race=[];
-		ma_loc=[];
-		ma_name=[];
-		ma_role=[];
-		ma_gear=[];
-		ma_mobi=[];
-		ma_wep1=[];
-	    ma_wep2=[];
-		ma_armour=[];
-		ma_health=[];
-		ma_chaos=[];
-		ma_exp=[];
-		ma_promote=[];
-		ma_god=[];
-		ma_view = [];
-        for (var i=0;i<=500;i++){
-            sh_ide[i]=0;
-            sh_name[i]="";
-            sh_class[i]="";
-            sh_loc[i]="";
-            sh_hp[i]="";
-            sh_cargo[i]=0;
-            sh_cargo_max[i]="";        	
-        }	
-	}
+function reset_ship_manage_arrays() {
+    with (obj_controller) {
+        array_resize(sh_ide, 0);
+        array_resize(sh_uid, 0);
+        array_resize(sh_name, 0);
+        array_resize(sh_class, 0);
+        array_resize(sh_loc, 0);
+        array_resize(sh_hp, 0);
+        array_resize(sh_cargo, 0);
+        array_resize(sh_cargo_max, 0);
+    }
+}
+
+function reset_manage_arrays() {
+    with (obj_controller) {
+        array_resize(display_unit, 0);
+        array_resize(man, 0);
+        array_resize(ide, 0);
+        array_resize(man_sel, 0);
+        array_resize(ma_lid, 0);
+        array_resize(ma_wid, 0);
+        array_resize(ma_race, 0);
+        array_resize(ma_role, 0);
+        array_resize(ma_gear, 0);
+        array_resize(ma_mobi, 0);
+        array_resize(ma_wep1, 0);
+        array_resize(ma_wep2, 0);
+        array_resize(ma_armour, 0);
+        array_resize(ma_health, 0);
+        array_resize(ma_chaos, 0);
+        array_resize(ma_exp, 0);
+        array_resize(ma_promote, 0);
+        array_resize(ma_god, 0);
+        array_resize(ma_view, 0);
+    }
+    reset_ship_manage_arrays();
 }
 
 function find_company_open_slot(target_company){
@@ -118,7 +121,9 @@ function add_vehicle_to_manage_arrays(unit){
 
 
 function scr_company_view(company) {
-	if (company < 0) then exit;
+	if (company < 0 || company > 10){
+        show_error($"scr_company_view passed bad company:\n{company}", true)
+    };
 	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc, last_man, last_vehicle;
 	v=0;
 	mans=0;
@@ -139,41 +144,37 @@ function scr_company_view(company) {
 	sel_uni[1]="Command";
 
 	// This sets up the mans, but not the vehicles
-	// Company_lenght is 501, so we check with 500
 	var company_length = array_length(obj_ini.TTRPG[company]);
 	for (var v = 0; v < company_length; v++){
-		if (v==501) then break;
 		bad=0;
 
-	    if (company>=0) and (company<=10){
-			unit = obj_ini.TTRPG[company][v];
-	        if (unit.name()!=""){
-				unit_loc = unit.marine_location();
-	            // if (obj_ini.god[company,v]>=10) then bad=1;
-				if (unit_loc[0] == location_types.ship){
-				   	if (obj_ini.ship_location[unit_loc[1]]="Lost") then bad=1;
-				}	            
-	            if (bad==1){
-					continue;
-				}else{
-	                mans+=1;
-	                add_man_to_manage_arrays(unit)
-				    var go=0,op=0;
-					 if (!unit.IsSpecialist()){
-				        for (var j=0; j<20;j++) {
-							if (sel_uni[j] == "") && (op == 0){
-								op = j;
-								break;
-							}
-							if (sel_uni[j] == unit.role()) then go = 1;
+		unit = obj_ini.TTRPG[company][v];
+	    if (unit.name()!=""){
+			unit_loc = unit.marine_location();
+	        // if (obj_ini.god[company,v]>=10) then bad=1;
+			if (unit_loc[0] == location_types.ship){
+				if (obj_ini.ship_location[unit_loc[1]]="Lost") then bad=1;
+			}	            
+	        if (bad==1){
+				continue;
+			}else{
+	            mans+=1;
+	            add_man_to_manage_arrays(unit)
+				var go=0,op=0;
+					if (!unit.IsSpecialist()){
+				    for (var j=0; j<20;j++) {
+						if (sel_uni[j] == "") && (op == 0){
+							op = j;
+							break;
 						}
-				        if (go==0) then sel_uni[op]=unit.role();
-				    }
+						if (sel_uni[j] == unit.role()) then go = 1;
+					}
+				    if (go==0) then sel_uni[op]=unit.role();
+				}
 
-	            }
-	        } 
-	        if (obj_ini.name[company][v+1]=="")and (last_man==0) and (obj_ini.ship_location[unit.ship_location]!="Lost"){last_man=v;break;}
-	    }
+	        }
+	    } 
+	    if (obj_ini.name[company][v+1]=="")and (last_man==0) and (obj_ini.ship_location[unit.ship_location]!="Lost"){last_man=v;break;}
 	}
 
 	v=last_man;

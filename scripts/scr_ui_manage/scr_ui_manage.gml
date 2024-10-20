@@ -1228,7 +1228,7 @@ function scr_ui_manage() {
 	                                unit.load_marine(sh_ide[sel], load_from_star);
 	                                ma_loc[q]=sh_name[sel];
 	                                ma_lid[q]=sh_ide[sel];
-	                                ma_wid[q]=0;                       
+	                                ma_wid[q]=0;
 	                            }
 	                            // Load vehicle to ship
 	                            else if (is_array(display_unit[q]) ) and (ma_loc[q]==selecting_location) and (sh_loc[sel]==selecting_location){
@@ -1260,7 +1260,7 @@ function scr_ui_manage() {
 	                    cooldown=8;
 	                    for(var k=0; k<array_length(display_unit); k++){
 	                    	man_sel[k]=0;
-	                    }        			
+	                    }
 	        		}
 		        	if (managing == -1){
   						update_garrison_manage();
