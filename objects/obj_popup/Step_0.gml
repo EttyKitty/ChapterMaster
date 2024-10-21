@@ -621,16 +621,6 @@ if (image="ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
         with(obj_controller){
             var i;i=-1;man_size=0;selecting_location="";selecting_types="";selecting_ship=0;sel_uid=0;
             reset_manage_arrays();
-            repeat(501){i+=1;
-                sh_ide[i]=0;
-                sh_uid[i]=0;
-                sh_name[i]="";
-                sh_class[i]="";
-                sh_loc[i]="";
-                sh_hp[i]="";
-                sh_cargo[i]=0;
-                sh_cargo_max[i]="";
-            }
             alll=0;
             update_general_manage_view();
         }

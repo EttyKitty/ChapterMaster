@@ -1,36 +1,41 @@
-function reset_manage_arrays(){
-	with (obj_controller){
-		display_unit=[];
-	    man=[];
-		ide=[];
-		man_sel=[];
-		ma_lid=[];
-		ma_wid=[];
-	    ma_race=[];
-		ma_loc=[];
-		ma_name=[];
-		ma_role=[];
-		ma_gear=[];
-		ma_mobi=[];
-		ma_wep1=[];
-	    ma_wep2=[];
-		ma_armour=[];
-		ma_health=[];
-		ma_chaos=[];
-		ma_exp=[];
-		ma_promote=[];
-		ma_god=[];
-		ma_view = [];
-        for (var i=0;i<=500;i++){
-            sh_ide[i]=0;
-            sh_name[i]="";
-            sh_class[i]="";
-            sh_loc[i]="";
-            sh_hp[i]="";
-            sh_cargo[i]=0;
-            sh_cargo_max[i]="";        	
-        }	
-	}
+function reset_ship_manage_arrays() {
+    with (obj_controller) {
+        array_resize(sh_ide, 0);
+        array_resize(sh_uid, 0);
+        array_resize(sh_name, 0);
+        array_resize(sh_class, 0);
+        array_resize(sh_loc, 0);
+        array_resize(sh_hp, 0);
+        array_resize(sh_cargo, 0);
+        array_resize(sh_cargo_max, 0);
+    }
+}
+
+function reset_manage_arrays() {
+    with (obj_controller) {
+        display_unit=[];
+        man=[];
+        ide=[];
+        man_sel=[];
+        ma_lid=[];
+        ma_wid=[];
+        ma_race=[];
+        ma_loc=[];
+        ma_name=[];
+        ma_role=[];
+        ma_gear=[];
+        ma_mobi=[];
+        ma_wep1=[];
+        ma_wep2=[];
+        ma_armour=[];
+        ma_health=[];
+        ma_chaos=[];
+        ma_exp=[];
+        ma_promote=[];
+        ma_god=[];
+        ma_view = [];
+    }
+    reset_ship_manage_arrays();
 }
 
 function find_company_open_slot(target_company){
@@ -118,102 +123,102 @@ function add_vehicle_to_manage_arrays(unit){
 
 
 function scr_company_view(company) {
-	if (company < 0) then exit;
-	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc, last_man, last_vehicle;
-	v=0;
-	mans=0;
-	bad=0;
-	squads=0;
-	squad_type="";
-	squad_loc=0;
-	squad_members=0;
-	last_man=0;
-	last_vehicle=0;
-	// v: check number
-	// mans: number of mans that a hit has gotten
-	// Calculates the temporary variables to be displayed as marines in the individual company screens
-	reset_manage_arrays();
-	sel_uni = array_create(20, "");
-	sel_veh = array_create(20, "");
-	
-	sel_uni[1]="Command";
+    if (company < 0 || company > 10){
+        var error_message = $"scr_company_view passed bad company:\n{company}";
+        show_error(error_message, true);
+    };
 
-	// This sets up the mans, but not the vehicles
-	// Company_lenght is 501, so we check with 500
-	var company_length = array_length(obj_ini.TTRPG[company]);
-	for (var v = 0; v < company_length; v++){
-		if (v==501) then break;
-		bad=0;
+    var mans, squads, squad_type, squad_loc, squad_members, unit, unit_loc;
+    mans = 0;
+    squads = 0;
+    squad_type = "";
+    squad_loc = 0;
+    squad_members = 0;
+    reset_manage_arrays();
+    sel_uni = array_create(20, "");
+    sel_veh = array_create(20, "");
 
-	    if (company>=0) and (company<=10){
-			unit = obj_ini.TTRPG[company][v];
-	        if (unit.name()!=""){
-				unit_loc = unit.marine_location();
-	            // if (obj_ini.god[company,v]>=10) then bad=1;
-				if (unit_loc[0] == location_types.ship){
-				   	if (obj_ini.ship_location[unit_loc[1]]="Lost") then bad=1;
-				}	            
-	            if (bad==1){
-					continue;
-				}else{
-	                mans+=1;
-	                add_man_to_manage_arrays(unit)
-				    var go=0,op=0;
-					 if (!unit.IsSpecialist()){
-				        for (var j=0; j<20;j++) {
-							if (sel_uni[j] == "") && (op == 0){
-								op = j;
-								break;
-							}
-							if (sel_uni[j] == unit.role()) then go = 1;
-						}
-				        if (go==0) then sel_uni[op]=unit.role();
-				    }
+    sel_uni[1] = "Command";
 
-	            }
-	        } 
-	        if (obj_ini.name[company][v+1]=="")and (last_man==0) and (obj_ini.ship_location[unit.ship_location]!="Lost"){last_man=v;break;}
-	    }
-	}
+    // Processing marines
+    var company_length = array_length(obj_ini.TTRPG[company]);
 
-	v=last_man;
-	last_vehicle=0;
-	for (var i=0;i<array_length(obj_ini.veh_race[company]);i++){
-	// if (!instance_exists(obj_popup)) then repeat(100){// 100
-		bad=0;
+    for (var v = 0; v < company_length; v++) {
+        unit = obj_ini.TTRPG[company][v];
 
-	    // if (obj_ini.veh_race[company][i]=company) and (obj_ini.veh_role[company][i]!=""){
-	    if (obj_ini.veh_race[company][i]!=0){
-	        if (obj_ini.veh_lid[company][i]>0){
-	            if (obj_ini.ship_location[obj_ini.veh_lid[company][i]]=="Lost") then bad=1;
-	        }
+        if (unit.name() != "") {
+            unit_loc = unit.marine_location();
 
-	        if (bad==0){
-				v++;
-	            var step=false;
-	            if (step==false){
-	            	last_vehicle+=1;
-	                add_vehicle_to_manage_arrays([company, i]);
-	                // Select All Vehicle Setup
-	                var go=0,op=0;
-                    for (var p=0;p<20;p++){
-                        if (sel_veh[p]=="") and (op==0) then op=p;
-                        if (sel_veh[p]==obj_ini.veh_role[company][i]) then go=1;
+            // Check if unit is on a lost ship
+            if (
+                unit_loc[0] == location_types.ship &&
+                obj_ini.ship_location[unit_loc[1]] == "Lost"
+            ) {
+                continue;
+            }
+
+            mans += 1;
+            add_man_to_manage_arrays(unit);
+            var go = 0, op = 0;
+            if (!unit.IsSpecialist()) {
+                for (var j = 0; j < 20; j++) {
+                    if (sel_uni[j] == "" && op == 0) {
+                        op = j;
+                        break;
                     }
-                    if (go==0) then sel_veh[op]=obj_ini.veh_role[company][i];
-	            }
-	        }
-	    }
-	}
+                    if (sel_uni[j] == unit.role()) {
+                        go = 1;
+                    }
+                }
+                if (go == 0) {
+                    sel_uni[op] = unit.role();
+                }
+            }
+        }
+    }
 
-	man_current=0;
-	man_max=array_length(display_unit)+2;
-	man_see=38-4;
-	other_manage_data();
+    // Processing vehicles
+    var veh_race_length = array_length(obj_ini.veh_race[company]);
+
+    for (var i = 0; i < veh_race_length; i++) {
+        // Check if vehicle race is valid
+        if (obj_ini.veh_race[company][i] == 0) {
+            continue;
+        }
+
+        // Check if unit is on a lost ship
+        if (
+            obj_ini.veh_lid[company][i] > 0 &&
+            obj_ini.ship_location[obj_ini.veh_lid[company][i]] == "Lost"
+        ) {
+            continue
+        }
+
+        add_vehicle_to_manage_arrays([company, i]);
+
+        // Select All Vehicle Setup
+        var go = 0, op = 0;
+        for (var p = 0; p < 20; p++){
+            if (sel_veh[p] == "" && op == 0){
+                op = p;
+            }
+            if (sel_veh[p] == obj_ini.veh_role[company][i]){
+                go = 1;
+            }
+        }
+        if (go == 0){
+            sel_veh[op] = obj_ini.veh_role[company][i];
+        }
+    }
+
+    man_current = 0;
+    man_max = array_length(display_unit) + 2;
+    man_see = 38 - 4;
+    other_manage_data();
 }
 
 function other_manage_data(){
-	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc,;
+	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc;
 	v=0;
 	mans=0;
 	bad=0;
@@ -221,7 +226,6 @@ function other_manage_data(){
 	squad_type="";
 	squad_loc=0;
 	squad_members=0;
-	var unit;
 	for (var v = 0; v < array_length(display_unit); v++){
 		if (!is_struct(display_unit[v])) then continue;
 		unit = display_unit[v];
@@ -242,7 +246,7 @@ function other_manage_data(){
 	        if (unit.squad == "none"){
 
 
-	        	if (is_specialist(squad_type,"heads")) then  n=1;
+	            if (is_specialist(squad_type,"heads")) then n=1;
 	            if (squad_type==obj_ini.role[100][6]) and (squad_type!=ma_role[v]) and (squad_type!="Venerable "+string(ma_role[v])) then n=2;
 	            if (squad_type==obj_ini.role[100][6]) and (ma_role[v]=obj_ini.role[100][6]) then n=0;
 	            if (squad_type==obj_ini.role[100][6]) and (ma_role[v]="Venerable "+string(obj_ini.role[100][6])) then n=0;
