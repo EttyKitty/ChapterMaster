@@ -18,7 +18,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
     var hostile_weapon;
     var hostile_range;
     var hostile_splash;
-    var hostile_shots;
 	var aggregate_damage = att[weapon_index_position];
 	var armour_pierce = apa[weapon_index_position];
 	if (obj_ncombat.wall_destroyed = 1) then exit;
@@ -75,7 +74,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				shots_fired *= attack_count_mod;
 			}
 			if (hit_number > 0) and(melee_or_ranged != "wall") and(instance_exists(target_object)) {
-				hostile_shots = hit_number;
 				if (wep_owner[weapon_index_position] == "assorted"){ target_object.hostile_shooters = 999;}
 				else if (wep_owner[weapon_index_position] != "assorted"){ target_object.hostile_shooters = 1;}
 				hostile_damage = 0;
@@ -84,7 +82,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				hostile_range = range[weapon_index_position];
 				hostile_splash = attack_count_mod;
 				
-				scr_clean(target_object, hostile_type, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+				scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
 			}
 		} else if (damage_type = "att") and(aggregate_damage > 0) and(stop = 0) and(shots_fired > 0) {
 			var damage_per_weapon, hit_number;
@@ -108,7 +106,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 			}
 
 			if (hit_number > 0) and(melee_or_ranged != "wall") and(instance_exists(target_object)) {
-				hostile_shots = hit_number;
 				if (wep_owner[weapon_index_position] = "assorted") then target_object.hostile_shooters = 999;
 				if (wep_owner[weapon_index_position] != "assorted") then target_object.hostile_shooters = 1;
 				hostile_damage = damage_per_weapon / hit_number;
@@ -118,7 +115,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				hostile_splash = attack_count_mod;
 				if (hostile_splash > 1) then hostile_damage += attack_count_mod * 3;
 
-				scr_clean(target_object, hostile_type, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+				scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
 			}
 		} else if ((damage_type = "arp") or(damage_type = "dread")) and(armour_pierce > 0) and(stop = 0) and(shots_fired > 0) {
 			var damage_per_weapon, hit_number;
@@ -143,7 +140,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 			if (damage_per_weapon = 0) then damage_per_weapon = shots_fired * doom;
 
 			if (hit_number > 0) and(melee_or_ranged != "wall") and(instance_exists(target_object)) {
-				hostile_shots = hit_number;
 				if (wep_owner[weapon_index_position] = "assorted") {
 					target_object.hostile_shooters = 999;
 				} else {
@@ -156,7 +152,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				hostile_splash = attack_count_mod;
 				if (hostile_splash = 1) then hostile_damage += attack_count_mod * 3;
 
-				scr_clean(target_object, hostile_type, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+				scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
 			}
 
 			if (hit_number > 0) and(melee_or_ranged = "wall") and(instance_exists(target_object)) {
@@ -166,13 +162,12 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				if (dam2 < 0) then dam2 = 0;
 				totes_dam = round(dam2) * hit_number;
 				target_object.hp[1] -= dam2;
-				hostile_shots = hit_number;
 				hostile_weapon = wep[weapon_index_position];
 				hostile_range = range[weapon_index_position];
 				hostile_damage = dam2;
 
 				if (target_object.hp[1] <= 0) then dest = 1;
-				scr_flavor2(dest, "wall", hostile_range, hostile_weapon, hostile_shots, hostile_splash);
+				scr_flavor2(dest, "wall", hostile_range, hostile_weapon, hit_number, hostile_splash);
 			}
 
 		}
