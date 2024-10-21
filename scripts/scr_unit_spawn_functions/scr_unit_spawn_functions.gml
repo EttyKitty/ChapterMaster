@@ -309,13 +309,13 @@ function scr_marine_game_spawn_constructions(){
 			if (irandom(1)==0){
 				add_trait("natural_leader");
 			}
-			if (array_contains(obj_ini.adv, "Melee Enthusiasts")){
+			if scr_has_adv("Assault Doctrine"){
 				weapon_skill += irandom(5);
 				if (irandom(1)==0){
 					add_trait("melee_enthusiast");
 				}
 			}
-			if (array_contains(obj_ini.adv, "Slow and Purposeful")){
+			if scr_has_adv("Devastator Doctrine"){
 				constitution += irandom(5);
 				if (irandom(1)==0){
 					add_trait("slow_and_purposeful");
@@ -393,7 +393,7 @@ function scr_marine_game_spawn_constructions(){
 			if (religion != "cult_mechanicus") {
 				religion_sub_cult = "none";
 			}
-			if (array_contains(obj_ini.adv, "Crafters")) {
+			if scr_has_adv ("Crafters") {
 				if (irandom(2) == 0) {
 					add_trait("crafter");
 				}

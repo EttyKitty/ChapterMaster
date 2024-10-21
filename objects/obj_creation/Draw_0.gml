@@ -708,7 +708,8 @@ if (slide=2){
                 if (adv_name="Psyker Abundance" && array_contains(dis, "Psyker Intolerant")){disable=1;draw_set_alpha(0.5);} 
                 if (adv_name="Reverent Guardians"&& array_contains(dis, "Suspicious")){disable=1;draw_set_alpha(0.5);} 
                 if (adv_name="Tech-Brothers" && array_contains(dis, "Tech-Heresy")){disable=1;draw_set_alpha(0.5);}
-                
+                if (adv_name="Assault Doctrine" && array_contains(adv, "Devastator Doctrine")){disable=1;draw_set_alpha(0.5);}
+                if (adv_name="Devastator Doctrine" && array_contains(adv, "Assault Doctrine")){disable=1;draw_set_alpha(0.5);}
                 var gap = (((i-1)%14) * column.h);
                 draw_text(column.x1,column.y1+gap,string_hash_to_newline(adv_name));
                 

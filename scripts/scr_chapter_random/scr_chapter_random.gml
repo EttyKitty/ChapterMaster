@@ -98,9 +98,9 @@ function scr_chapter_random(argument0) {
     
 	    if (found_secret=1){adv[1]="Enemy: Fallen";dis[1]="Never Forgive";}
 	    if (found_secret=2) then adv[1]="Lightning Warriors";
-	    if (found_secret=3){adv[1]="Melee Enthusiasts";dis[1]="Suspicious";}
+	    if (found_secret=3){adv[1]="Assault Doctrine";dis[1]="Suspicious";}
 	    if (found_secret=4){adv[1]="Bolter Drilling";betchers=1;membrane=1;mutations_selected+=2;mutations+=2;mutat=2;}
-	    if (found_secret=5){adv[1]="Melee Enthusiasts";dis[1]="Black Rage";disadvantage1=1;}
+	    if (found_secret=5){adv[1]="Assault Doctrine";dis[1]="Black Rage";disadvantage1=1;}
 	    if (found_secret=6){adv[1]="Tech-Brothers";dis[1]="Psyker Intolerant";}
 	    // if (found_secret=7) then founding="Ultramarines";
 	    if (found_secret=8){adv[1]="Crafters";dis[1]="Tolerant";secretions=1;mutations+=1;mutations_selected+=1;mutat+=1;}

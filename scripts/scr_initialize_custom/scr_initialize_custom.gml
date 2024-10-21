@@ -834,9 +834,13 @@ function scr_initialize_custom() {
 		techs += 6;
 		tenth -= 6;
 	}
-	if scr_has_adv("Melee Enthusiasts") {
+	if scr_has_adv("Assault Doctrine") {
 		assault += 10;
 		devastator -= 10;
+	}
+	if scr_has_adv("Devastator Doctrine") {
+		assault -= 10;
+		devastator += 10;
 	}
 	if scr_has_adv("Siege Masters") {
 		siege = 1;
@@ -1872,7 +1876,7 @@ function scr_initialize_custom() {
 			}],
 		]
 	};
-	if (global.chapter_name == "Salamanders") or (array_contains(obj_creation.adv, "Crafters")) { //salamanders squads
+	if (global.chapter_name == "Salamanders") or scr_has_adv ("Crafters") { //salamanders squads
 		variable_struct_set(st, "assault_squad", [
 			[roles.assault, {
 				"max": 9,
@@ -1926,7 +1930,7 @@ function scr_initialize_custom() {
 			}]
 		])
 	}
-	if (global.chapter_name == "White Scars") or (array_contains(obj_creation.adv, "Lightning Warriors")) {
+	if (global.chapter_name == "White Scars") or scr_has_adv ("Lightning Warriors") {
 		variable_struct_set(st, "bikers", [
 			[roles.tactical, {
 				"max": 9,
@@ -2022,7 +2026,7 @@ function scr_initialize_custom() {
 			}]
 		])
 	}
-	if (global.chapter_name == "Imperial Fists") or (array_contains(obj_creation.adv, "Boarders")) {
+	if (global.chapter_name == "Imperial Fists") or scr_has_adv ("Boarders") {
 		variable_struct_set(st, "breachers", [
 				[roles.assault, {
 					"max": 9,
@@ -2516,7 +2520,7 @@ function scr_initialize_custom() {
 	mobi[company, 1] = mobi[100, 2];
 	chapter_master.alter_equipment(chapter_master_equip, false, false, "master_crafted")
 	//TODO not sure why the strin method is ever used? will investigate and replace later
-	if (string_count("Paragon", strin) > 0) then chapter_master.add_trait("paragon")
+	if scr_has_adv("Paragon") then chapter_master.add_trait("paragon")
 	chapter_master.marine_assembling();
 
 	//TODO All heads of specialties data should be in chapter data
@@ -2906,7 +2910,7 @@ function scr_initialize_custom() {
 		spawn_unit = TTRPG[company][k]
 		spawn_unit.marine_assembling();
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if scr_has_adv("Crafter") then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 5] != "") then mobi[company][k] = mobi[101, 5];
 		if (armour[company][k] = "Terminator Armour") or(armour[company][k] = "Tartaros") {
@@ -2927,7 +2931,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = "Storm Bolter";
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 14]
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 14] != "") then mobi[company][k] = mobi[101, 14];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2946,7 +2950,7 @@ function scr_initialize_custom() {
 		wep2[company][k] = "";
 		armour[company][k] = "Terminator Armour";
 		gear[company][k] = gear[101, 15];
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if scr_has_adv("Crafter") then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 		if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2965,7 +2969,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = wep2[101, 15];
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 15];
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2986,7 +2990,7 @@ function scr_initialize_custom() {
 			wep1[company][k] = wep1[101, 17];
 			wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
 			armour[company][k] = "Terminator Armour";
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -3033,7 +3037,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = "Storm Bolter";
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 16];
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "Artificer Armour";
 			if (mobi[101, 16] != "") then mobi[company][k] = mobi[101, 16];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -3051,7 +3055,7 @@ function scr_initialize_custom() {
 		wep1[company][k] = "Company Standard";
 		wep2[company][k] = "Storm Bolter";
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 5] != "") then mobi[company][k] = mobi[101, 5];
 		if (armour[company][k] = "Terminator Armour") or(armour[company][k] = "Tartaros") {
@@ -3071,7 +3075,7 @@ function scr_initialize_custom() {
 		wep2[company][k] = "Storm Bolter";
 		gear[company][k] = gear[101, 7];
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if scr_has_adv ("Crafter") then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (global.chapter_name == "Dark Angels"){
 			wep1[company][k] = "Heavy Thunder Hammer";
@@ -3148,7 +3152,7 @@ function scr_initialize_custom() {
 	}
 	var predrelic = 2;
 	if (global.chapter_name = "Iron Hands") then predrelic = 3;
-	if (obj_creation.custom == 1) and (array_contains(obj_creation.adv, "Tech-Brothers")) then predrelic +=2;
+	if (obj_creation.custom == 1) and scr_has_adv ("Tech-Brothers") then predrelic +=2;
 	repeat(predrelic) {
 		v += 1;
 		man_size += 10;
@@ -3283,8 +3287,8 @@ function scr_initialize_custom() {
 
 			// if (company=2){dready=1;
 			dready = 1;
-			if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready =+ 1;
-			if (scr_has_adv("Venerable Ancients")) then dready += 1;
+			if scr_has_disadv("Sieged") or (obj_creation.custom = 0) then dready =+ 1;
+			if scr_has_adv("Venerable Ancients") then dready += 1;
 			rhinoy = 8;
 			whirly = whirlwind;
 			speedy = 2;
@@ -3302,7 +3306,7 @@ function scr_initialize_custom() {
 				company_unit3 = "devastator";
 				dready = 1;
 				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
+				if scr_has_disadv("Sieged") or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
 				whirly = whirlwind;
 				speedy = 2;
@@ -3316,11 +3320,11 @@ function scr_initialize_custom() {
 				company_unit3 = "devastator";
 				dready = 1;
 				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1; 
+				if scr_has_disadv("Sieged") or (obj_creation.custom = 0) then dready += 1; 
 				rhinoy = 8;
 				whirly = whirlwind;
 				speedy = 2;
-				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
+				if scr_has_adv ("Lightning Warriors") then speedy += 2; rhinoy -= 2;
 				if (third = 0) then stahp = 1;
 			}
 
@@ -3330,11 +3334,11 @@ function scr_initialize_custom() {
 				company_unit3 = "devastator";
 				dready = 1;
 				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
+				if scr_has_disadv("Sieged") or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
 				whirly = whirlwind;
 				speedy = 2;
-				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
+				if scr_has_adv ("Lightning Warriors") then speedy += 2; rhinoy -= 2;
 				if (fourth = 0) then stahp = 1;
 			}
 
@@ -3344,11 +3348,11 @@ function scr_initialize_custom() {
 				company_unit3 = "devastator";
 				dready = 1;
 				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
+				if scr_has_disadv("Sieged") or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
 				whirly = whirlwind;
 				speedy = 2;
-				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
+				if scr_has_adv ("Lightning Warriors") then speedy += 2; rhinoy -= 2;
 				if (fifth = 0) then stahp = 1;
 			}
 
@@ -3874,7 +3878,7 @@ function scr_initialize_custom() {
 				predy = 5;
 				if (global.chapter_name = "Iron Hands") then predy = 2;
 
-				if (obj_creation.custom == 1) and (array_contains(obj_creation.adv, "Tech-Brothers")) then predy -=2;
+				if (obj_creation.custom == 1) and scr_has_adv("Tech-Brothers") then predy -=2;
 
 				repeat(predy) {
 					v += 1;
@@ -4022,11 +4026,11 @@ function scr_initialize_custom() {
 		scr_add_item("Power Weapon", 12);
 		scr_add_item("Rosarius", 4);
 	}
-	if (string_count("Sieged", strin2) = 0) {
+	if scr_has_disadv("Sieged") {
 		scr_add_item("Dreadnought", 6);
 		scr_add_item("Close Combat Weapon", 6);
 	}
-	if (array_contains(obj_creation.adv, "Venerable Ancients")) {
+	if scr_has_adv("Venerable Ancients") {
 		scr_add_item("Dreadnought", 4);
 		scr_add_item("Close Combat Weapon", 4);
 	}
@@ -4036,13 +4040,13 @@ function scr_initialize_custom() {
 	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)>0) then equipment_number[1]=20;
 	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)=0) then equipment_number[2]=20;
 
-	if (string_count("Crafter", strin) > 0) and(string_count("Enthusi", strin) > 0) {
+	if scr_has_adv ("Crafter") and ("Assault Doctrine") {
 		eqi += 1;
 		equipment[eqi] = "MK3 Iron Armour";
 		equipment_number[eqi] = round(random_range(2, 12));
 		equipment_type[eqi] = "armour";
 	}
-	if (string_count("Crafter", strin) > 0) and(string_count("Enthusi", strin) = 0) {
+	if scr_has_adv ("Crafter") and ("Assault Doctrine") {
 		eqi += 1;
 		equipment[eqi] = "MK4 Maximus";
 		equipment_number[eqi] = round(random_range(3, 18));

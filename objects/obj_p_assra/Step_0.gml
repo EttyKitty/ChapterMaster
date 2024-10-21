@@ -94,7 +94,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_two())) then difficulty+=3;
 
                 if (array_contains(obj_ini.adv, "Boarders")) then  difficulty+=7;
-                if (array_contains(obj_ini.adv, "Melee Enthusiasts")) then  difficulty+=3;
+                if (array_contains(obj_ini.adv, "Assault Doctrine")) then  difficulty+=3;
                 if (array_contains(obj_ini.adv, "Lightning Warriors")) then  difficulty+=3;
 
                 // Penalties

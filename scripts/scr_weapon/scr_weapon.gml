@@ -9,7 +9,7 @@ global.weapons = {
 		},
 		"ranged_hands": 2,
 		"range": 25,
-		"tags": ["las", "rifle", "precision"],
+		"tags": ["xeno", "rifle", "precision"]
 	},
 	"Choppa": {
 		"abbreviation": "Chop",
@@ -21,7 +21,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"range": 1,
 		"spli": 3,
-		"tags": ["axe"]
+		"tags": ["blade","melee","xeno"]
 	},
 	"Snazzgun": {
 		"abbreviation": "Snazz",
@@ -35,7 +35,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 3,
 		"arp": 0,
-		"tags": ["rifle"]
+		"tags": ["rifle","xeno"]
 	},
 	"Shuriken Pistol": {
 		"abbreviation": "ShurikP",
@@ -50,7 +50,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 3,
 		"arp": 0,
-		"tags": ["pistol"]
+		"tags": ["pistol", "xeno"]
 	},
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
@@ -136,7 +136,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 0,
 		"arp": 0,
-		"tags": ["pistol", "ancient", "las"],
+		"tags": ["pistol","ancient"],
 	},
 	"Laspistol": {
 		"attack": {
@@ -152,7 +152,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 0,
 		"arp": 0,
-		"tags": ["pistol", "las"],
+		"tags": ["pistol","energy"],
 	},
 	"Combat Knife": {
 		"abbreviation": "CbKnf",
@@ -168,7 +168,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 1,
 		"arp": 0,
-		"tags": ["knife"],
+		"tags": ["blade"],
 	},
 	"Sarissa": {
 		"abbreviation": "Saris",
@@ -184,7 +184,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 0,
-		"tags": ["sword"],
+		"tags": ["blade"],
 	},
 	"Chainsword": {
 		"abbreviation": "ChSwrd",
@@ -200,7 +200,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 4,
 		"arp": 0,
-		"tags": ["chain", "sword"],
+		"tags": ["chain", "melee"],
 	},
 	"Chainaxe": {
 		"abbreviation": "ChAxe",
@@ -221,7 +221,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 6,
 		"arp": 0,
-		"tags": ["chain", "axe", "dual"],
+		"tags": ["chain", "melee", "dual"],
 	},
 	"Company Standard": {
 		"abbreviation": "CmpStnd",
@@ -262,7 +262,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["chain", "sword"],
+		"tags": ["chain", "melee"],
 	},
 	"Power Sword": {
 		"abbreviation": "PwrSwrd",
@@ -284,7 +284,7 @@ global.weapons = {
 		"spli": 4,
 		"arp": 1,
 		"special_properties": ["Parry"],
-		"tags": ["power", "sword"],
+		"tags": ["power", "melee"],
 	},
 	"Power Spear": {
 		"abbreviation": "PwrSpear",
@@ -306,7 +306,7 @@ global.weapons = {
 		"spli": 6,
 		"arp": 1,
 		"special_properties": ["Parry"],
-		"tags": ["power", "spear"],
+		"tags": ["power", "melee"],
 	},
 	"Chainfist": {
 		"abbreviation": "ChFst",
@@ -321,7 +321,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["power", "chain", "fist", "dual", "siege"],
+		"tags": ["power", "chain", "melee", "fist", "dual", "siege"]
 	},
 	"Lascutter": {
 		"abbreviation": "Lasct",
@@ -334,7 +334,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"range": 1,
 		"arp": 1,
-		"tags": ["laser", "siege"],
+		"tags": ["melee","siege"],
 	},
 	"Eldar Power Sword": {
 		"abbreviation": "EldPwrSwrd",
@@ -356,7 +356,7 @@ global.weapons = {
 		"spli": 3,
 		"arp": 1,
 		"special_properties": ["Parry"],
-		"tags": ["power", "sword", "elder", "xenos"],
+		"tags": ["xeno","power","melee","eldar"],
 	},
 	"Power Weapon": {
 		"abbreviation": "PwrWpn",
@@ -398,7 +398,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["power", "axe", "dual"],
+		"tags": ["power", "melee", "dual"],
 	},
 	"Executioner Power Axe": {
 		"abbreviation": "ExPwrAxe",
@@ -419,7 +419,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["power", "axe"],
+		"tags": ["power", "melee"],
 	},
 	"Power Fist": {
 		"abbreviation": "PwrFst",
@@ -440,7 +440,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["power", "dual", "fist"],
+		"tags": ["power", "melee","dual", "fist"],
 	},
 	"Power Fists": {
 		"abbreviation": "PwrFsts",
@@ -456,7 +456,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 4,
 		"arp": 1,
-		"tags": ["power", "fist", "pair"],
+		"tags": ["power","melee", "fist", "pair"],
 	},
 	"Servo-arm(M)": {
 		"abbreviation": "MchArm",
@@ -472,7 +472,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["siege"],
+		"tags": ["siege","melee"],
 	},
 	"Boltstorm Gauntlet": {
 		"abbreviation": "BlstGnt",
@@ -489,7 +489,7 @@ global.weapons = {
 		"spli": 2,
 		"arp": 1,
 		"second_profiles": ["Integrated Bolter"],
-		"tags": ["power", "fist"],
+		"tags": ["power","melee", "fist"],
 	},
 	"Lightning Claw": {
 		"abbreviation": "LghtClw",
@@ -505,7 +505,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["power", "dual", "fist"],
+		"tags": ["power","melee", "dual", "fist"],
 	},
 	"Dreadnought Lightning Claw": {
 		"abbreviation": "LghtClw",
@@ -526,7 +526,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 15,
 		"arp": 1,
-		"tags": ["power", "vehicle", "dual", "dreadnought", "fist"],
+		"tags": ["power", "melee", "vehicle", "dual", "dreadnought", "fist"],
 	},
 	"Thunder Hammer": {
 		"abbreviation": "ThndHmr",
@@ -547,7 +547,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["power", "hammer", "siege"],
+		"tags": ["power", "melee", "siege"],
 		"req_exp": 100,
 	},
 	"Heavy Thunder Hammer": {
@@ -569,7 +569,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 15,
 		"arp": 1,
-		"tags": ["heavy_melee", "power", "hammer", "siege"],
+		"tags": ["heavy_melee", "power",  "melee", "siege"],
 		"req_exp": 100,
 	},
 	"Power Mace": {
@@ -591,7 +591,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["power", "mace", "siege"],
+		"tags": ["power", "melee", "siege"],
 		"req_exp": 100,
 	},
 	"Mace of Absolution": {
@@ -614,7 +614,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["power", "mace", "siege", "pious"],
+		"tags": ["power", "melee", "siege", "pious"],
 		"req_exp": 100,
 	},
 	"Tome": {
@@ -657,7 +657,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 4,
 		"arp": 1,
-		"tags": ["power", "mace", "pious"],
+		"tags": ["power", "melee", "pious"],
 	},
 	"Relic Blade": {
 		"abbreviation": "RlcBld",
@@ -679,7 +679,7 @@ global.weapons = {
 		"spli": 8,
 		"arp": 1,
 		"special_properties": ["Parry"],
-		"tags": ["power", "sword"],
+		"tags": ["power", "melee"],
 	},
 	"Bolt Pistol": {
 		"abbreviation": "BltPstl",
@@ -791,7 +791,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 5,
 		"arp": -1,
-		"tags": ["dreadnought", "flame"]
+		"tags": ["dreadnought","heavy_ranged", "flame"]
 	},
 	"Dreadnought Power Claw": {
 		"abbreviation": "PwrClw",
@@ -805,7 +805,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["power", "vehicle", "dual", "dreadnought", "fist"]
+		"tags": ["power", "melee","vehicle", "dual", "dreadnought", "fist"]
 	},
 	"Close Combat Weapon": {
 		"abbreviation": "CCW",
@@ -819,7 +819,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["vehicle", "dreadnought", "flame", "fist"]
+		"tags": ["vehicle","melee", "dreadnought", "fist"]
 	},
 	"Inferno Cannon": {
 		"abbreviation": "InfCann",
@@ -835,7 +835,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 20,
 		"arp": -1,
-		"tags": ["vehicle", "flame", "dreadnought"]
+		"tags": ["vehicle","heavy_ranged", "flame", "dreadnought"]
 	},
 	"Meltagun": {
 		"abbreviation": "Mltgn",
@@ -883,7 +883,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["plasma", "pistol"]
+		"tags": ["plasma","energy", "pistol"]
 	},
 	"Plasma Cutter": { // Basically a dual-linked plasma pistol
 		"abbreviation": "PlsmCt",
@@ -899,7 +899,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["plasma", "pistol"]
+		"tags": ["plasma","energy","pistol"]
 	},
 	"Infernus Pistol": {
 		"abbreviation": "InfPstl",
@@ -915,7 +915,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "pistol"]
+		"tags": ["melta", "pistol"]
 	},
 	"Plasma Gun": {
 		"abbreviation": "PlsmGn",
@@ -931,7 +931,7 @@ global.weapons = {
 		"range": 12,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["plasma"]
+		"tags": ["plasma","energy"]
 	},
 	"Plasma Cannon": {
 		"abbreviation": "PlsmCan",
@@ -947,7 +947,7 @@ global.weapons = {
 		"range": 14,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["plasma", "heavy_weapon", "dreadnought"]
+		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
 	"Sniper Rifle": {
 		"abbreviation": "SnprRfl",
@@ -1027,7 +1027,7 @@ global.weapons = {
 		"range": 24,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["heavy_ranged", "las"]
+		"tags": ["heavy_ranged", "energy"]
 	},
 	"Conversion Beam Projector": {
 		"abbreviation": "CnvBmPrj",
@@ -1091,7 +1091,7 @@ global.weapons = {
 		"range": 24,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["las", "heavy_ranged", "vehicle", "dreadnought"]
+		"tags": ["energy", "heavy_ranged", "vehicle", "dreadnought"]
 	},
 	"Heavy Bolter": {
 		"abbreviation": "HvyBltr",
@@ -1123,7 +1123,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 25,
 		"arp": 1,
-		"tags": ["vehicle", "indirect"]
+		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
 		"abbreviation": "HKMssl",
@@ -1160,7 +1160,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["las", "vehicle", "heavy_ranged", "dreadnought"]
+		"tags": ["energy", "vehicle", "heavy_ranged", "dreadnought"]
 	},
 	"Twin Linked Assault Cannon Mount": {
 		"attack": {
@@ -1176,7 +1176,7 @@ global.weapons = {
 		"range": 12,
 		"spli": 30,
 		"arp": 1,
-		"tags": ["vehicle", "pintle", "dreadnought"]
+		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
 		"attack": {
@@ -1192,7 +1192,7 @@ global.weapons = {
 		"range": 15,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["vehicle", "pintle"]
+		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
 		"attack": {
@@ -1208,7 +1208,7 @@ global.weapons = {
 		"range": 16,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["bolt", "vehicle", "sponson"]
+		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Lascannon Sponsons": {
 		"attack": {
@@ -1224,7 +1224,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["las", "vehicle", "sponson", "twin_linked"]
+		"tags": ["energy","heavy_ranged", "vehicle", "sponson", "twin_linked"]
 	},
 	"Lascannon Sponsons": {
 		"attack": {
@@ -1240,7 +1240,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["las", "vehicle", "sponson"]
+		"tags": ["energy","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Hurricane Bolter Sponsons": {
 		"attack": {
@@ -1256,7 +1256,7 @@ global.weapons = {
 		"range": 10,
 		"spli": 60,
 		"arp": 0,
-		"tags": ["bolt", "vehicle", "sponson"]
+		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Flamestorm Cannon Sponsons": {
 		"attack": {
@@ -1272,7 +1272,7 @@ global.weapons = {
 		"range": 2,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "vehicle", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Heavy Flamer Sponsons": {
 		"attack": {
@@ -1288,7 +1288,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 8,
 		"arp": -1,
-		"tags": ["flame", "vehicle", "dreadnought", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "dreadnought", "sponson"]
 	},
 	"Twin Linked Bolters": {
 		"attack": {
@@ -1320,7 +1320,7 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "Sponson", "melta"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"]
 	},
 	"Twin Linked Volkite Culverin Sponsons": {
 		"abbreviation": "TwnVlkCulvs",
@@ -1336,7 +1336,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 9,
 		"arp": 0,
-		"tags": ["vehicle", "Sponson", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Heavy Bolter Sponsons": {
 		"abbreviation": "HvyBltrs",
@@ -1369,7 +1369,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 4,
 		"arp": -1,
-		"tags": ["flame", "vehicle", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Volkite Culverin Sponsons": {
 		"abbreviation": "VlkClvs",
@@ -1385,7 +1385,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["vehicle", "Sponson", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Autocannon Turret": {
 		"abbreviation": "Autocnn",
@@ -1401,7 +1401,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 15,
 		"arp": 0,
-		"tags": ["vehicle", "turrent"]
+		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Storm Bolter": {
 		"abbreviation": "StrmBltr",
@@ -1531,7 +1531,7 @@ global.weapons = {
 		"arp": 1,
 		"special_description": "Spell damage +25%",
 		"special_properties": ["Parry"],
-		"tags": ["force", "sword"],
+		"tags": ["force", "melee"],
 	},
 	"Force Axe": {
 		"abbreviation": "FrcAxe",
@@ -1553,7 +1553,7 @@ global.weapons = {
 		"spli": 5,
 		"arp": 1,
 		"special_description": "Able to be dual-wielded, Spell damage +25%",
-		"tags": ["force", "axe", "dual"],
+		"tags": ["force", "melee", "dual"],
 	},
 	"Twin Linked Lascannon Turret": {
 		"attack": {
@@ -1567,7 +1567,7 @@ global.weapons = {
 		"range": 24,
 		"ammo": 5,
 		"spli": 2,
-		"tags": ["las", "twin_linked", "vehicle", "turret"]
+		"tags": ["energy","heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Twin Linked Assault Cannon Turret": {
 		"abbreviation": "TwnAssCnn",
@@ -1599,7 +1599,7 @@ global.weapons = {
 		"range": 2,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "vehicle", "turret"]
+		"tags": ["flame","heavy_ranged", "vehicle", "turret"]
 	},
 	"Magna-Melta Turret": {
 		"abbreviation": "MgnMlt",
@@ -1615,7 +1615,7 @@ global.weapons = {
 		"range": 5.1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "turret", "melta"]
+		"tags": ["vehicle","heavy_ranged", "turret", "melta"]
 	},
 	"Plasma Destroyer Turret": {
 		"abbreviation": "PlsmDestr",
@@ -1631,7 +1631,7 @@ global.weapons = {
 		"range": 14,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["plasma", "vehicle", "turret"]
+		"tags": ["plasma","energy","heavy_ranged", "vehicle", "turret"]
 	},
 	"Heavy Conversion Beam Projector": {
 		"abbreviation": "HvyCnvBmr",
@@ -1647,7 +1647,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["vehicle", "dreadnought", "turret", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "dreadnought", "turret", "ancient"]
 	},
 	"Neutron Blaster Turret": {
 		"abbreviation": "NtrnBlstr",
@@ -1663,7 +1663,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "turret"]
+		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Volkite Saker Turret": {
 		"abbreviation": "VlkSkr",
@@ -1679,7 +1679,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 30,
 		"arp": 0,
-		"tags": ["vehicle", "turret", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "turret", "volkite", "ancient"]
 	},
 }
 global.gear = {

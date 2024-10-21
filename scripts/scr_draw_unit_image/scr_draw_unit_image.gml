@@ -342,7 +342,7 @@ function scr_draw_unit_image(_background=false){
             servo_harness = 0,
             halo = 0,
             reverent_guardians = 0,
-            slow_trait = 0,
+            dev_trait = 0,
             tech_brothers_trait = -5,
             body_part;
 
@@ -397,7 +397,7 @@ function scr_draw_unit_image(_background=false){
         // Sets up the description for the equipement of current marine            
 
         if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role=="Chapter Master"){
-            if (array_contains(obj_ini.adv, "Reverent Guardians")){
+            if scr_has_adv("Reverent Guardians"){
                 reverent_guardians=1
             }
         }
@@ -664,11 +664,11 @@ function scr_draw_unit_image(_background=false){
         
             if (unit_armour!=""){
                 var yep=0;
-                if (array_contains(obj_ini.adv,"Slow and Purposeful")){
-                    slow_trait=1
+                if scr_has_adv("Devastator Doctrine"){
+                    dev_trait=1
                 }
                 if (unit_specialization == UnitSpecialization.Techmarine){
-                    if (array_contains(obj_ini.adv,"Tech-Brothers")){
+                    if scr_has_adv("Tech-Brothers") {
                         tech_brothers_trait=0
                     }
 				}
@@ -677,7 +677,7 @@ function scr_draw_unit_image(_background=false){
 			
 			
             if (armour_type == ArmourType.Scout){
-				if (slow_trait>0) then slow_trait=10;
+				if (dev_trait>0) then dev_trait=10;
 				armour_sprite=spr_scout_colors2;
                 if (squad!="none"){
                     if (obj_ini.squads[squad].type=="scout_sniper_squad" || weapon_one()=="Sniper Rifle" || weapon_two()=="Sniper Rifle"){
@@ -686,32 +686,32 @@ function scr_draw_unit_image(_background=false){
                 }
 				if (psy_hood=-50) then psy_hood=0;
 			}else if (unit_armour=="MK3 Iron Armour"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
 				armour_sprite=spr_mk3_colors;
 				if (psy_hood=-50) then psy_hood=5;
 			}else if (unit_armour=="MK4 Maximus"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
 				armour_sprite=spr_mk4_colors;
 				if (psy_hood=-50) then psy_hood=6;
 			}else if (unit_armour=="MK5 Heresy"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
 				armour_sprite=spr_mk5_colors;
 				if (psy_hood=-50) then psy_hood=6;
 			}else if (unit_armour=="MK6 Corvus"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=2;
 				armour_sprite=spr_beakie_colors;
 				if (psy_hood=-50) then psy_hood=3;
 			}else if (unit_armour=="MK7 Aquila" || unit_armour=="Power Armour"){
 				if (tech_brothers_trait>-5) then tech_brothers_trait=0;
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				armour_sprite=spr_mk7_colors;
 				if (psy_hood=-50) then psy_hood=1;
 			}else if (unit_armour=="MK8 Errant"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=0;
 				armour_sprite=spr_mk8_colors;
 				if (psy_hood=-50) then psy_hood=4;
@@ -727,7 +727,7 @@ function scr_draw_unit_image(_background=false){
 				if (psy_hood=-50) then psy_hood=9;
 				if (skull_mask==1) then skull_mask=2;
 			}else if (unit_armour=="Artificer Armour"){
-				if (slow_trait>0) then slow_trait=13;
+				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=1;
 				armour_sprite=spr_artificer_colors;
 				if (psy_hood=-50) then psy_hood=2;
@@ -735,13 +735,13 @@ function scr_draw_unit_image(_background=false){
         
             if (armour_sprite=spr_weapon_blank) and (unit_armour!=""){
                 if (string_count("Power Armour",unit_armour)>0){
-					if (slow_trait>0) then slow_trait=13;
+					if (dev_trait>0) then dev_trait=13;
 					if (tech_brothers_trait>-5) then tech_brothers_trait=0;
 					armour_sprite=spr_mk7_colors;
 					if (psy_hood=-50) then psy_hood=1;
 				}
                 if (string_count("Artifi",unit_armour)>0){
-					if (slow_trait>0) then slow_trait=13;
+					if (dev_trait>0) then dev_trait=13;
 					if (tech_brothers_trait>-5) then tech_brothers_trait=1;
 					armour_sprite=spr_artificer_colors;
 					if (psy_hood=-50) then psy_hood=2;
@@ -1037,7 +1037,7 @@ function scr_draw_unit_image(_background=false){
                 }
 
                 // Draw decals, features and other stuff
-                if (slow_trait>=10) and (blandify=0) then draw_sprite(armour_sprite,slow_trait,x_surface_offset,y_surface_offset);// Slow and Purposeful battle damage
+                if (dev_trait>=10) and (blandify=0) then draw_sprite(armour_sprite,dev_trait,x_surface_offset,y_surface_offset);// Slow and Purposeful battle damage
                 // if (tech_brothers_trait>=0) and (blandify=0) then draw_sprite(spr_gear_techb,tech_brothers_trait,x_surface_offset,y_surface_offset);// Tech-Brothers bling
                 //sgt helms
                 if (specific_helm!=false){
@@ -1165,7 +1165,7 @@ function scr_draw_unit_image(_background=false){
                     var psy_hood_offset_x = 0;
                     var psy_hood_offset_y = 0;
                     robes_hood_bypass = true;
-                    if (array_contains(obj_ini.adv,"Daemon Binders") && blandify==0 && psy_hood<7){
+                    if (scr_has_adv("Daemon Binders") && blandify==0 && psy_hood<7){
 						robes_bypass = true;
                         if (pauldron_trim=1){
 							draw_sprite(spr_gear_hood2,0,x_surface_offset-2,y_surface_offset-11);
@@ -1357,11 +1357,11 @@ function scr_draw_unit_image(_background=false){
                 var helm_ii,o,yep;
                 helm_ii=0;
 				yep=0;
-                if (array_contains(obj_ini.adv,"Tech-Brothers")){
+                if scr_has_adv("Tech-Brothers"){
                     helm_ii=2;
-                }else if (array_contains(obj_ini.adv,"Never Forgive") || obj_ini.progenitor==1){
+                }else if (scr_has_adv("Never Forgive") || obj_ini.progenitor==1){
                     helm_ii=3;
-                } else if (array_contains(obj_ini.adv,"Reverent Guardians")) {
+                } else if scr_has_adv("Reverent Guardians") {
                     helm_ii=4;
                 }
                 draw_sprite(spr_honor_helm,helm_ii,x_surface_offset-2,y_surface_offset-11);     
