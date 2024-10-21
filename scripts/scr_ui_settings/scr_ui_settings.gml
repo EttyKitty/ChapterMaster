@@ -372,11 +372,31 @@ function scr_ui_settings() {
 		draw_set_color(c_gray);
 		draw_set_font(fnt_40k_30b);
 	    draw_text_transformed(xx+800,yy+66,string(global.chapter_name)+" Chapter Settings",1,1,0);
-	    draw_text_transformed(xx+800,yy+100,"(Codex Compliant)",0.6,0.6,0);
-	    draw_set_font(fnt_40k_14);draw_set_halign(fa_left);
+	    draw_text_transformed(xx+800,yy+110,"(Codex Compliant)",0.6,0.6,0);
+	    draw_set_font(fnt_40k_14);
+		draw_set_halign(fa_left);
     
 	    yy-=64;
     
+
+		cx = xx + 31;
+		cy = yy + 203;
+		che = progenitor_visuals;
+		draw_sprite(spr_creation_check, che + 2, cx, cy);
+
+		var _option_name = "Progenitor Livery";
+		draw_text(cx + 35, cy, _option_name);
+
+		if (scr_hit(cx, cy, cx + string_width(_option_name) + 35, cy + sprite_get_height(spr_creation_check))) {
+			tool1 = _option_name;
+			tool2 = "Turned off by default. \nWhen turned on, various unit visuals may change depending on your progenitor chapter.";
+			if ((mouse_left=1) and (cooldown<=0)) {
+				progenitor_visuals = !progenitor_visuals;
+				cooldown=8000;
+			}
+		}
+
+		
 	    draw_text(xx+66,yy+238,"Allow Astartes Transfer");
 	    che=command_set[1];
 		cx=xx+31;
@@ -386,7 +406,7 @@ function scr_ui_settings() {
 	    if (scr_hit(cx+31,cy,cx+260,cy+20)=true){
 			tool1="Allow Astartes Transfer";
 			tool2="Turned off by default. Allows you to transfer Astartes in the same way as vehicles.";
-			}
+		}
 	    if (scr_hit(cx,cy,cx+32,cy+32)=true) and (mouse_left=1) and (cooldown<=0){
 			var onceh;
 			onceh=0;cooldown=8000;
@@ -423,26 +443,26 @@ function scr_ui_settings() {
 			}
 		}
     
-	    draw_text(xx+66,yy+308,"Modest Livelry");
-	    che=blandify;
+	    draw_text(xx+66,yy+308,"Modest Livery");
+	    che=modest_livery;
 		cx=xx+31;
 		cy=yy+304;
 		
 	    draw_sprite(spr_creation_check,che+2,cx,cy);
 	    if (scr_hit(cx+31,cy,cx+300,cy+20)=true){
-			tool1="Modest Livelry";
+			tool1="Modest Livery";
 			tool2="Turned off by default.  Prevents Advantages and Disadvantages from changing the appearances of your marines, effectively disabling any special ornamentation or possible battle wear.";
 		}
 	    if (scr_hit(cx,cy,cx+32,cy+32)=true) and (mouse_left=1) and (cooldown<=0){
 			var onceh=0;
 			cooldown=8000;
-			if (onceh=0) and (blandify=0){
+			if (onceh=0) and (modest_livery=0){
 				onceh=1;
-				blandify=1;
+				modest_livery=1;
 			}
-			if (onceh=0) and (blandify=1){
+			if (onceh=0) and (modest_livery=1){
 				onceh=1;
-				blandify=0;
+				modest_livery=0;
 			}
 		}
     

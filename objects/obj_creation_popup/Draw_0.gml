@@ -53,9 +53,9 @@ if (col_shift){
                         if (obj_creation.mouse_left = 1) and(obj_creation.cooldown <= 0) {
                             if (type = 1) then obj_creation.main_color = current_color;
                             if (type = 2) then obj_creation.secondary_color = current_color;
-                            if (type = 3) then obj_creation.pauldron2_color = current_color;
-                            if (type = 4) then obj_creation.pauldron_color = current_color;
-                            if (type = 5) then obj_creation.trim_color = current_color;
+                            if (type = 3) then obj_creation.left_pauldron = current_color;
+                            if (type = 4) then obj_creation.right_pauldron = current_color;
+                            if (type = 5) then obj_creation.main_trim = current_color;
                             if (type = 6) then obj_creation.lens_color = current_color;
                             if (type = 7) then obj_creation.weapon_color = current_color;
                             if (is_string(type)){

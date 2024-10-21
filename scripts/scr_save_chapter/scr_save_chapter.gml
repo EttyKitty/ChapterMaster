@@ -30,9 +30,9 @@ function savechapter(){
 	
 	ini_write_string("Controller","main_color",col[main_color]);
     ini_write_string("Controller","secondary_color",col[secondary_color]);
-    ini_write_string("Controller","trim_color",col[trim_color]);
-    ini_write_string("Controller","pauldron2_color",col[pauldron2_color]);
-    ini_write_string("Controller","pauldron_color",col[pauldron_color])
+    ini_write_string("Controller","main_trim",col[main_trim]);
+    ini_write_string("Controller","left_pauldron",col[left_pauldron]);
+    ini_write_string("Controller","right_pauldron",col[right_pauldron])
     ini_write_string("Controller","lens_color",col[lens_color]);
     ini_write_string("Controller","weapon_color",col[weapon_color]);
     ini_write_real("Controller","col_special",col_special);
@@ -104,7 +104,7 @@ function savechapter(){
 	load_to_ships=[2,0,0];
 	founding21 = founding;
 	chapter21=chapter;
-	chapter_id[21] = chapter21; 					
+	all_chapters[CHAPTERS.CUSTOM_1].name = chapter21; 					
 
 	icon21=icon;
 	icon_name21=icon_name;
@@ -132,9 +132,9 @@ function savechapter(){
 
 	   
 		 color_to_secondary21=    col[secondary_color]
-		 color_to_trim21=col[trim_color];
-	     color_to_pauldron21=col[pauldron_color];
-		 color_to_pauldron2_21=col[pauldron2_color];
+		 color_to_trim21=col[main_trim];
+	     color_to_pauldron21=col[right_pauldron];
+		 color_to_pauldron2_21=col[left_pauldron];
 		 color_to_lens21=col[lens_color];
 	     color_to_weapon21=col[weapon_color];
 		 col_special21=col_special;

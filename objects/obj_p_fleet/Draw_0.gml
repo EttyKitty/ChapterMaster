@@ -101,7 +101,7 @@ if (within=1) or (selected>0){
 
     draw_circle(x+(coords[0]*scale),y+(coords[1]*scale),12*scale,0);
 } else {
-    draw_set_color(#3385ff);
+    draw_set_color(global.star_name_colors[eFACTION.Player]);
     draw_set_alpha(0.5);
     draw_circle(x+(coords[0]*scale),y+(coords[1]*scale),12*scale,0);
     draw_set_alpha(1);

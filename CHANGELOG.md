@@ -126,6 +126,9 @@ All notable changes to this project will be documented in this file.
 - Artifact screen text overlap, broken strings are fixed.
 - Some of the tooltip issues.
 
+- new cheat "ruinspopulate" to put an ancient ruins on every planet
+
+
 ### Under The Hood:
 - `scr_has_adv` and `scr_has_disadv` functions.
 - New error handling method - `try_and_report_loop`, described [>here<](https://discord.com/channels/714022226810372107/1121959429546455050/1293597133093470269).

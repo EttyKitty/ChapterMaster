@@ -250,6 +250,7 @@ function scr_save(save_part,save_id) {
 	    }
 
 	    // obj_ini
+	    ini_encode_and_json("Ini", "full_liveries", obj_ini.full_liveries);
 	    ini_write_string("Ini","home_name",obj_ini.home_name);
 	    ini_write_string("Ini","home_type",obj_ini.home_type);
 	    ini_write_string("Ini","recruiting_name",obj_ini.recruiting_name);
@@ -263,7 +264,7 @@ function scr_save(save_part,save_id) {
 	    ini_write_string("Ini","strin1",obj_ini.strin);
 	    ini_write_string("Ini","strin2",obj_ini.strin2);
 	    ini_write_string("Ini","psy_powers",obj_ini.psy_powers);
-
+	    ini_encode_and_json("Ini", "FullLivery",obj_ini.full_livery)
 	    ini_write_real("Ini","companies",obj_ini.companies);
 	    var i;i=-1;repeat(21){i+=1;ini_write_string("Ini","comp_title"+string(i),obj_ini.company_title[i]);}
 	    var i;i=-1;repeat(121){i+=1;ini_write_real("Ini","slave_num_"+string(i),obj_ini.slave_batch_num[i]);ini_write_real("Ini","slave_eta_"+string(i),obj_ini.slave_batch_eta[i]);}
@@ -272,9 +273,9 @@ function scr_save(save_part,save_id) {
 
 	    ini_write_string("Controller","main_color",obj_controller.col[obj_controller.main_color]);
 	    ini_write_string("Controller","secondary_color",obj_controller.col[obj_controller.secondary_color]);
-	    ini_write_string("Controller","trim_color",obj_controller.col[obj_controller.trim_color]);
-	    ini_write_string("Controller","pauldron2_color",obj_controller.col[obj_controller.pauldron2_color]);
-	    ini_write_string("Controller","pauldron_color",obj_controller.col[obj_controller.pauldron_color]);
+	    ini_write_string("Controller","main_trim",obj_controller.col[obj_controller.main_trim]);
+	    ini_write_string("Controller","left_pauldron",obj_controller.col[obj_controller.left_pauldron]);
+	    ini_write_string("Controller","right_pauldron",obj_controller.col[obj_controller.right_pauldron]);
 	    ini_write_string("Controller","lens_color",obj_controller.col[obj_controller.lens_color]);
 	    ini_write_string("Controller","weapon_color",obj_controller.col[obj_controller.weapon_color]);
 	    ini_write_real("Controller","col_special",obj_controller.col_special);

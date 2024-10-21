@@ -23,6 +23,30 @@ function array_sum(choice_array,start_value=0, offset=0,length=0){
 	return array_reduce(choice_array,arraysum,start_value,offset,length)
 }
 
+function array_join(){
+	var new_array = [];
+	var add_array;
+    for (var i = 0; i < argument_count; i ++)
+    {
+        add_array = argument[i];
+        for (var r=0;r<array_length(add_array);r++){
+        	array_push(new_array, add_array[r]);
+        }
+    }
+    return 	new_array;
+}
+
+function array_find_value(search_array, value){
+	var loc = -1;
+	for (var i=0;i<array_length(search_array);i++){
+		if (search_array[i] == value){
+			loc = i;
+			break;
+		}
+	}
+	return loc;
+}
+
 function array_set_value(choice_array, value){
 	for (i=0;i<array_length(choice_array);i++){
 		choice_array[@ i] = value;

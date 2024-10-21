@@ -347,8 +347,8 @@ function star_ui_name_node(){
 				} else {
 					scr_shader_initialize();
 					var main_color = make_colour_from_array(obj_controller.body_colour_replace);
-					var pauldron_color = make_colour_from_array(obj_controller.pauldron_colour_replace);
-					context.set_vertical_gradient(main_color, pauldron_color);
+					var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
+					context.set_vertical_gradient(main_color, right_pauldron);
 				}
 			})
 		.finalize()
@@ -362,8 +362,8 @@ function star_ui_name_node(){
 				context.set_valign(fa_middle)
 				context.owner.resize(new_w, 32)
 				if (owner == eFACTION.Player){
-					var trim_color = make_colour_from_array(obj_controller.trim_colour_replace);
-					context.set_color_solid(trim_color)
+					var main_trim = make_colour_from_array(obj_controller.trim_colour_replace);
+					context.set_color_solid(main_trim)
 				}
 			})
 		.finalize()

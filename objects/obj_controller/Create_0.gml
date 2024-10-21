@@ -542,7 +542,8 @@ command_set[8]=1;
 command_set[9]=1;
 command_set[20]=1;
 command_set[24]=1;
-blandify=0;
+modest_livery=0;
+progenitor_visuals=0;
 
 // ** Default menu items **
 selecting_planet=0;
@@ -1265,9 +1266,9 @@ recruiting_type="";
 // ** Sets up chapter colors **
 main_color=0;
 secondary_color=0;
-trim_color=0;
-pauldron2_color=0;
-pauldron_color=0;
+main_trim=0;
+left_pauldron=0;
+right_pauldron=0;
 lens_color=0;
 weapon_color=0;
 col_special=0;
@@ -1328,9 +1329,9 @@ if (instance_exists(obj_ini)){
         mutation="";
         main_color=obj_ini.main_color;
         secondary_color=obj_ini.secondary_color;
-        trim_color=obj_ini.trim_color;
-        pauldron2_color=obj_ini.pauldron2_color;
-        pauldron_color=obj_ini.pauldron_color;
+        main_trim=obj_ini.main_trim;
+        left_pauldron=obj_ini.left_pauldron;
+        right_pauldron=obj_ini.right_pauldron;
         lens_color=obj_ini.lens_color;
         weapon_color=obj_ini.weapon_color;
         col_special=obj_ini.col_special;

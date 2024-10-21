@@ -159,6 +159,10 @@ function scr_load(save_part, save_id) {
 	    }
 
 	    // obj_ini
+	    //TODO allow methods to be passed as teh defualt to return_json_from_ini to optomise load speed
+	    var livery_picker = new colour_item(0,0);
+		livery_picker.scr_unit_draw_data();
+	    obj_ini.full_liveries = return_json_from_ini("Ini", "full_liveries",array_create(21,DeepCloneStruct(livery_picker.map_colour)));
 	    obj_ini.home_name=ini_read_string("Ini","home_name","Error");
 	    obj_ini.home_type=ini_read_string("Ini","home_type","Error");
 	    obj_ini.recruiting_name=ini_read_string("Ini","recruiting_name","Error");
@@ -175,8 +179,8 @@ function scr_load(save_part, save_id) {
 	    obj_ini.psy_powers=ini_read_string("Ini","psy_powers","default");
 
 	    obj_ini.companies=ini_read_real("Ini","companies",10);
-	    var i;i=-1;repeat(21){i+=1;obj_ini.company_title[i]=ini_read_string("Ini","comp_title"+string(i),"");}
-	    var i;i=-1;repeat(121){i+=1;obj_ini.slave_batch_num[i]=ini_read_real("Ini","slave_num_"+string(i),0);obj_ini.slave_batch_eta[i]=ini_read_real("Ini","slave_eta_"+string(i),0);}
+	    var i=-1;repeat(21){i+=1;obj_ini.company_title[i]=ini_read_string("Ini","comp_title"+string(i),"");}
+	    var i=-1;repeat(121){i+=1;obj_ini.slave_batch_num[i]=ini_read_real("Ini","slave_num_"+string(i),0);obj_ini.slave_batch_eta[i]=ini_read_real("Ini","slave_eta_"+string(i),0);}
 
 	    obj_ini.complex_livery_data=ini_read_string("Ini","complex_livery","");
 	    if (obj_ini.complex_livery_data!=""){
@@ -185,6 +189,9 @@ function scr_load(save_part, save_id) {
 	    	//TODO centralise and initialisation method for this other reference place is obj_creation create
 			obj_ini.complex_livery_data = complex_livery_default();	    	
 	    }
+	    var colour_temp = new colour_item(0,0);
+
+	    obj_ini.full_livery = return_json_from_ini("Ini", "FullLivery",colour_temp.scr_unit_draw_data());
 	    //
 	    obj_ini.preomnor=ini_read_real("Ini","preomnor",0);
 	    obj_ini.voice=ini_read_real("Ini","voice",0);

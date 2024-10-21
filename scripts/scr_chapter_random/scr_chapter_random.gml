@@ -28,8 +28,8 @@ function scr_chapter_random(argument0) {
 	homeworld_rule=1;aspirant_trial=eTrials.BLOODDUEL;
 	discipline="default";battle_cry="For the Emperor";
 
-	main_color=1;secondary_color=1;trim_color=1;
-	pauldron2_color=1;pauldron_color=1;// Left/Right pauldron
+	main_color=1;secondary_color=1;main_trim=1;
+	left_pauldron=1;right_pauldron=1;// Left/Right pauldron
 	lens_color=1;weapon_color=1;col_special=choose(0,0,0,0,0,1,2,3);
 
 	color_to_main="";
@@ -75,7 +75,7 @@ function scr_chapter_random(argument0) {
 	    purity=choose(2,3,4,5,6,7,8);if (strength<5) then purity+=2;
 	    stability=choose(2,3,4,5,6,7,8);if (purity<5) then stability+=2;
 	    cooperation=choose(2,3,4,5,6,7,8);if (stability<5) then cooperation+=2;
-	    founding=10;found_secret=floor(random(20))+1;
+	    founding=10;found_secret=floor(random(10))+1;
     
 	    custom=1;points=100;maxpoints=100;
 	    battle_cry="For the Emperor";

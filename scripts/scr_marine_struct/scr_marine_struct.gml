@@ -995,7 +995,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	};
 	body = {
-		"left_leg":{}, 
+		"left_leg":{
+			leg_variants: irandom(100),
+		}, 
 		"right_leg":{}, 
 		"torso":{
 			cloth:{
@@ -1003,14 +1005,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			},
 			armour_choice:irandom(1),
 			variation:irandom(10),
-			backpack_variation:irandom(10),
+			backpack_variation:irandom(100),
+			thorax_variation : irandom(100),
+			chest_variation : irandom(100),
 		}, 
-		"left_arm":{},
-		"right_arm":{}, 
+		"left_arm":{
+			trim_variation : irandom(100),
+		},
+		"right_arm":{
+			trim_variation : irandom(100),
+		}, 
 		"left_eye":{}, 
 		"right_eye":{},
 		"throat":{}, 
-		"jaw":{},
+		"jaw":{
+			mouth_variants: irandom(100),
+		},
 		"head":{variation:irandom(10)}
 	}; //body parts list can be extended as much as people want
 
@@ -1020,7 +1030,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				body[$ body_slot][$ body_item_key] = new_body_data;
 			}
 		} else {
-			return "invalid body area"
+			return "invalid body area";
 		}
 	}
 
@@ -2560,7 +2570,7 @@ function PenAndPaperSim() constructor{
 		return total_mod;
 	}
 
-	static standard_test = function(unit, stat, difficulty_mod=0, tags = []){
+	static standard_test = function(unit, stat, difficulty_mod=0){
 		var passed =false;
 		var margin=0;
 		difficulty_mod+=evaluate_tags(unit, tags);

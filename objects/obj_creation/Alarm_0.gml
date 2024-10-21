@@ -26,9 +26,9 @@ shader_reset();
 
 	pauldron_colour_find=[255/255,255/255,0/255];
 	pauldron_colour_replace=[
-		col_r[pauldron_color]/255,
-		col_g[pauldron_color]/255,
-		col_b[pauldron_color]/255,
+		col_r[right_pauldron]/255,
+		col_g[right_pauldron]/255,
+		col_b[right_pauldron]/255,
 
 	];
 
@@ -46,18 +46,18 @@ shader_reset();
 	colour_to_set5 = shader_get_uniform(sReplaceColor, "f_Replace5");
 	trim_colour_find=[255/255,0/255,255/255];
 	trim_colour_replace=[
-		col_r[trim_color]/255,
-		col_g[trim_color]/255,
-		col_b[trim_color]/255,
+		col_r[main_trim]/255,
+		col_g[main_trim]/255,
+		col_b[main_trim]/255,
 	];
 
 	colour_to_find6 = shader_get_uniform(sReplaceColor, "f_Colour6");
 	colour_to_set6 = shader_get_uniform(sReplaceColor, "f_Replace6");
 	pauldron2_colour_find=[250/255,250/255,250/255];
 	pauldron2_colour_replace=[
-		col_r[pauldron2_color]/255,
-		col_g[pauldron2_color]/255,
-		col_b[pauldron2_color]/255,
+		col_r[left_pauldron]/255,
+		col_g[left_pauldron]/255,
+		col_b[left_pauldron]/255,
 
 	];
 
