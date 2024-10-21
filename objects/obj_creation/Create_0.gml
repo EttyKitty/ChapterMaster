@@ -1,6 +1,11 @@
+/**
+ * * obj_creation is used as part of the main menu new game and chapter creation logic
+ * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
+ */
 
 keyboard_string="";
 
+#region Global Settings: volume, fullscreen etc
 ini_open("saves.ini");
 master_volume=ini_read_real("Settings","master_volume",1);
 effect_volume=ini_read_real("Settings","effect_volume",1);
@@ -10,10 +15,15 @@ settings_heresy=ini_read_real("Settings","settings_heresy",0);
 settings_fullscreen=ini_read_real("Settings","fullscreen",1);
 settings_window_data=ini_read_string("Settings","window_data","fullscreen");
 ini_close();
+#endregion
 
 window_data=string(window_get_x())+"|"+string(window_get_y())+"|"+string(window_get_width())+"|"+string(window_get_height())+"|";
 window_old=window_data;if (window_get_fullscreen()=1){window_old="fullscreen";window_data="fullscreen";}
 restarted=0;custom_icon=0;
+
+/// Stores the chapter icon in one spot so we dont have to keep checking whether we're using a custom image or not every time we wanna display it somewhere
+global.chapter_icon_sprite = spr_icon_chapters;
+global.chapter_icon_frame = 0;
 
 
 audio_stop_all();
@@ -26,6 +36,9 @@ global.load=0;
 
 skip=false;
 premades=true;
+
+/// Opt in/out of loading from json vs hardcoded for specific chapters, this way i dont have to do all in one go to test
+use_chapter_object = 0;
 
 complex_livery=false;
 complex_selection = "sgt";
@@ -68,7 +81,8 @@ target_gear=0;
 tab=0;
 role_names_all="";
 
-chapter="Unnamed";
+// 
+chapter_name="Unnamed";
 chapter_string="Unnamed";
 chapter_year=0;
 icon=1;icon_name="da";custom=0;
@@ -78,13 +92,7 @@ points=0;maxpoints=100;
 fleet_type=1;
 strength=5;cooperation=5;
 purity=5;stability=5;
-for(var i=0; i<16; i++){
-    adv[i]="";
-    adv_num[i]=0;
-    dis[i]="";
-    dis_num[i]=0;
-}
-var i;i=-1;repeat(10){i+=1;}
+var i;i=-1;repeat(10){i+=1;adv[i]="";adv_num[i]=0;dis[i]="";dis_num[i]=0;} ///todo something with this  garbage
 homeworld="Temperate";homeworld_name=global.name_generator.generate_star_name();
 recruiting="Death";recruiting_name=global.name_generator.generate_star_name();
 flagship_name=global.name_generator.generate_imperial_ship_name();
@@ -127,8 +135,6 @@ recruiter=global.name_generator.generate_space_marine_name();		//10th
 
 
 
-
-
 equal_specialists=0;
 load_to_ships=[2,0,0];
 
@@ -152,70 +158,151 @@ chapter_master_melee=1;
 chapter_master_ranged=1;
 chapter_master_specialty=2;
 
+enum CHAPTERS {
+    UNKNOWN = 0,
+    DARK_ANGELS = 1,
+    WHITE_SCARS,
+    SPACE_WOLVES,
+    IMPERIAL_FISTS,
+    BLOOD_ANGELS,
+    IRON_HANDS,
+    ULTRAMARINES,
+    SALAMANDERS,
+    RAVEN_GUARD,
+
+    BLACK_TEMPLARS = 10,
+    MINOTAURS,
+    BLOOD_RAVENS,
+    CRIMSON_FISTS,
+    LAMENTERS,
+    CARCHARODONS,
+    SOUL_DRINKERS,
+
+    ANGRY_MARINES = 17,
+    EMPERORS_NIGHTMARE,
+    STAR_KRAKENS,
+    CONSERVATORS,
+
+    CUSTOM_1 = 21,
+    CUSTOM_2 = 22,
+    CUSTOM_3 = 23,
+    CUSTOM_4 = 24,
+    CUSTOM_5 = 25,
+}
+enum CHAPTER_ORIGIN {
+    NONE,
+    FOUNDING,
+    SUCCESSOR,
+    NON_CANON,
+    CUSTOM
+}
+
+/**
+ * @description chapter constructor. This is just for the main menu bit, the full data comes in scr_chapter_new
+ * @param {Enum.CHAPTERS} _id e.g. CHAPTERS.DARK_ANGELS
+ * @param {Enum.CHAPTER_ORIGIN} _origin e.g. CHAPTER_ORIGIN.FOUNDING 
+ * @param {Enum.CHAPTERS} _progenitor This chapter's founding chapter, if one exits. Use 0 if none.
+ * @param {String} _name e.g. "Dark Angels" 
+ * @param {String} _tooltip e.g. "Some extremely lore friendly backstory"
+ */
+function ChapterDataLite(_id, _origin,_progenitor, _name , _tooltip) constructor {
+    id = _id;
+    origin = _origin;
+    name = _name;
+    progenitor = _progenitor;
+    tooltip = _tooltip;
+    disabled = false;
+    json = false;
+    icon = _id;
+    splash = _id;
+}
+
+// For new additions, as long as the order in the array is the same as the enum order,
+//you will be able to index the array by using syntax like so: `var dark_angels = all_chapters[CHAPTERS.DARK_ANGELS]`
+all_chapters = [
+    new ChapterDataLite(CHAPTERS.UNKNOWN, CHAPTER_ORIGIN.NONE, 0, "Unknown", "Error: The tooltip is missing"),
+    new ChapterDataLite(CHAPTERS.DARK_ANGELS, CHAPTER_ORIGIN.FOUNDING, 0, "Dark Angels", 
+    "The Dark Angels claim complete allegiance and service to the Emperor of Mankind, though their actions and secret goals seem to run counter to this- above all other things they strive to atone for an ancient crime of betrayal."),
+    new ChapterDataLite(CHAPTERS.WHITE_SCARS, CHAPTER_ORIGIN.FOUNDING, 0, "White Scars", "Known and feared for their highly mobile way of war, the White Scars are the masters of lightning strikes and hit-and-run tactics.  They are particularly adept in the use of Attack Bikes and field large numbers of them."),
+    new ChapterDataLite(CHAPTERS.SPACE_WOLVES, CHAPTER_ORIGIN.FOUNDING, 0, "Space Wolves", "Brave sky warriors hailing from the icy deathworld of Fenris, the Space Wolves are a non-Codex compliant chapter, and deadly in close combat.  They fight on their own terms and damn any who wish otherwise." ),
+    new ChapterDataLite(CHAPTERS.IMPERIAL_FISTS, CHAPTER_ORIGIN.FOUNDING, 0, "Imperial Fists", "Siege-masters of utmost excellence, the Imperial Fists stoicism has lead them to great victories and horrifying defeats. To them, the idea of a tactical retreat is utterly inconsiderable. They hold ground on Inwit vigilantly, refusing to back down from any fight."),
+    new ChapterDataLite(CHAPTERS.BLOOD_ANGELS, CHAPTER_ORIGIN.FOUNDING, 0,"Blood Angels", "One of the most noble and renowned chapters, their combat record belies a dark flaw in their gene-seed caused by the death of their primarch. Their primarch had wings and a propensity for close combat, and this shows in their extensive use of jump packs and close quarters weapons."),
+    new ChapterDataLite(CHAPTERS.IRON_HANDS, CHAPTER_ORIGIN.FOUNDING, 0,"Iron Hands","The flesh is weak, and the weak shall perish. Such is the creed of these mercilessly efficient cyborg warriors. A chapter with strong ties to the Mechanicum, they crush the foes of the Emperor and Machine God alike with a plethora of exotic technology and ancient weaponry."),
+    new ChapterDataLite(CHAPTERS.ULTRAMARINES, CHAPTER_ORIGIN.FOUNDING, 0,"Ultramarines","An honourable and venerated chapter, the Ultramarines are considered to be amongst the best of the best. Their Primarch was the author of the great tome of the “Codex Astartes”, and they are considered exemplars of what a perfect Space Marine Chapter should be like."),
+    new ChapterDataLite(CHAPTERS.SALAMANDERS, CHAPTER_ORIGIN.FOUNDING, 0,"Salamanders", "Followers of the Promethean Cult, the jet-black skinned Salamanders are forgemasters of legend. They are armed with the best wargear available and prefer flame based weaponry. Their only drawback is their low numbers and slow recruiting."),
+    new ChapterDataLite(CHAPTERS.RAVEN_GUARD, CHAPTER_ORIGIN.FOUNDING, 0,"Raven Guard","Clinging to the shadows and riding the edge of lightning the Raven Guard strike out at the hated enemy with stealth and speed. Using lightning strikes, hit and run tactics, and guerrilla warfare, they are known for being there one second and gone the next."),
+    new ChapterDataLite(CHAPTERS.BLACK_TEMPLARS, CHAPTER_ORIGIN.SUCCESSOR, CHAPTERS.IMPERIAL_FISTS, "Black Templars","Not adhering to the Codex Astartes, Black Templars are a Chapter on an Eternal Crusade with unique organization and high numbers. Masters of assault, they charge at the enemy with zeal unmatched. They hate psykers, and as such, have no Librarians."),
+    new ChapterDataLite(CHAPTERS.MINOTAURS, CHAPTER_ORIGIN.SUCCESSOR, CHAPTERS.IMPERIAL_FISTS, "Minotaurs","Bronze-clad Astartes of unknown Founding, the Minotaurs prefer to channel their righteous fury in a massive storm of fire, with tanks and artillery. They could be considered the Inquisition’s attack dog, since they often attack fellow chapters suspected of heresy."),
+    new ChapterDataLite(CHAPTERS.BLOOD_RAVENS, CHAPTER_ORIGIN.SUCCESSOR,0, "Blood Ravens","Of unknown origins and Founding, the origins of the Blood Ravens are shrouded in mystery and are believed to be tied to a dark truth. This elusive Chapter is drawn to the pursuit of knowledge and ancient lore and produces an unusually high number of Librarians."),
+    new ChapterDataLite(CHAPTERS.CRIMSON_FISTS, CHAPTER_ORIGIN.SUCCESSOR, CHAPTERS.IMPERIAL_FISTS ,"Crimson Fists","An Imperial Fists descendant, the Crimson Fists are more level-minded than their Progenitor and brother chapters.  They suffer the same lacking zygotes as their ancestors, and more resemble the Ultramarines in their balanced approach to combat. After surviving a devastating Ork WAAAGH! the chapter clings dearly to its future."),
+    new ChapterDataLite(CHAPTERS.LAMENTERS, CHAPTER_ORIGIN.SUCCESSOR, CHAPTERS.BLOOD_ANGELS,"Lamenters","The Lamenter's accursed and haunted legacy seems to taint much of what they have achieved; their victories often become bitter ashes in their hands.  Nearly extinct, they fight their last days on behalf of the common folk in a crusade of endless penitence."),
+    new ChapterDataLite(CHAPTERS.CARCHARODONS, CHAPTER_ORIGIN.SUCCESSOR, CHAPTERS.RAVEN_GUARD, "Carcharodons","Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines."),
+    new ChapterDataLite(CHAPTERS.SOUL_DRINKERS, CHAPTER_ORIGIN.SUCCESSOR,CHAPTERS.IMPERIAL_FISTS, "Soul Drinkers","Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing."),
+    new ChapterDataLite(CHAPTERS.ANGRY_MARINES, CHAPTER_ORIGIN.NON_CANON,0, "Angry Marines","Frothing with pathological rage since the day their Primarch emerged from his pod with naught but a dented copy of battletoads.  Every last Angry Marine is a homicidal, suicidal berserker with a voice that projects, and are always angry, all the time.  A /tg/ classic."),
+    new ChapterDataLite(CHAPTERS.EMPERORS_NIGHTMARE, CHAPTER_ORIGIN.NON_CANON,0, "Emperor’s Nightmare","The Emperor's Nightmare bear the curse of a bizarre mutation within their gene-seed. The Catalepsean Node is in a state of decay and thus do not sleep for months at a time until falling asleep suddenly. They prefer shock and awe tactics with stealth."),
+    new ChapterDataLite(CHAPTERS.STAR_KRAKENS, CHAPTER_ORIGIN.NON_CANON,0, "Star Krakens","In darkness, they dwell in The Deep. The Star Krakens stand divided in individual companies but united in the form of the Ten-Flag Council. They utilize boarding tactics and are the sole guardians of the ancient sensor array called “The Lighthouse”."),
+    new ChapterDataLite(CHAPTERS.CONSERVATORS, CHAPTER_ORIGIN.NON_CANON,0, "Conservators","Hailing from the Asharn Marches and having established their homeworld on the planet Dekara, these proud sons of Dorn suffer from an extreme lack of supplies, Ork raids, and more. Though under strength and lacking equipment, they managed to forge an interstellar kingdom loyal to both Emperor and Imperium."),
+    new ChapterDataLite(CHAPTERS.CUSTOM_1, CHAPTER_ORIGIN.CUSTOM,0,"Custom","Your Chapter", "")
+    // new ChapterDataLite(CHAPTERS.CUSTOM_2, CHAPTER_ORIGIN.CUSTOM,0,"Custom","Your Chapter",),
+    // new ChapterDataLite(CHAPTERS.CUSTOM_3, CHAPTER_ORIGIN.CUSTOM,0,"Custom","Your Chapter",),
+    // new ChapterDataLite(CHAPTERS.CUSTOM_4, CHAPTER_ORIGIN.CUSTOM,0,"Custom","Your Chapter",),
+    // new ChapterDataLite(CHAPTERS.CUSTOM_5, CHAPTER_ORIGIN.CUSTOM,0,"Custom","Your Chapter",),
+]
+// for now the extra custom chapters are messing with the UI too much
+
+var missing_splash = 100;
+var custom_splash = 98;
+all_chapters[CHAPTERS.EMPERORS_NIGHTMARE].splash = missing_splash;
+all_chapters[CHAPTERS.CARCHARODONS].splash = missing_splash;
+all_chapters[CHAPTERS.CONSERVATORS].splash = missing_splash;
+all_chapters[CHAPTERS.CUSTOM_1].splash = custom_splash;
 
 
-var i;i=-1;
-repeat(60){i+=1;chapter_id[i]="";chapter_tooltip[i]="Error: The tooltip is missing.";company_title[i]="";}
-chapter_id[1]="Dark Angels";
-chapter_tooltip[1]="The Dark Angels claim complete allegiance and service to the Emperor of Mankind, though their actions and secret goals seem to run counter to this- above all other things they strive to atone for an ancient crime of betrayal.";
+global.normal_icons_count = 0;
+// Load from files to overwrite hardcoded ones
+for(var c = 0; c < 30; c++){
+    var json_chapter = new ChapterData();
+    var success = json_chapter.load_from_json(c); 
+    if(success){
+        all_chapters[c] = new ChapterDataLite(
+            json_chapter.id,
+            json_chapter.origin,
+            json_chapter.founding,
+            json_chapter.name,
+            json_chapter.flavor,
+        );
+        all_chapters[c].json = true;
+        all_chapters[c].icon = json_chapter.icon;
+        all_chapters[c].splash = json_chapter.splash;
+    }
 
-chapter_id[2]="White Scars";
-chapter_tooltip[2]="Known and feared for their highly mobile way of war, the White Scars are the masters of lightning strikes and hit-and-run tactics.  They are particularly adept in the use of Attack Bikes and field large numbers of them.";
+    var icon = file_exists($"{working_directory}\\images\\creation\\chapters\\icons\\{c}.png");
+    if(icon) {global.normal_icons_count += 1;}
+}
 
-chapter_id[3]="Space Wolves";
-chapter_tooltip[3]="Brave sky warriors hailing from the icy deathworld of Fenris, the Space Wolves are a non-Codex compliant chapter, and deadly in close combat.  They fight on their own terms and damn any who wish otherwise.";
+global.chapters_count = array_length(all_chapters);
 
-chapter_id[4]="Imperial Fists";
-chapter_tooltip[4]="Siege-masters of utmost excellence, the Imperial Fists stoicism has lead them to great victories and horrifying defeats. To them, the idea of a tactical retreat is utterly inconsiderable. They hold ground on Inwit vigilantly, refusing to back down from any fight.";
+// test_chap = all_chapters[CHAPTERS.BLOOD_ANGELS];
+// show_debug_message(test_chap);
+// test_chap2 = all_chapters[CHAPTERS.BLACK_TEMPLARS];
+// show_debug_message(test_chap2);
 
-chapter_id[5]="Blood Angels";
-chapter_tooltip[5]="One of the most noble and renowned chapters, their combat record belies a dark flaw in their gene-seed caused by the death of their primarch. Their primarch had wings and a propensity for close combat, and this shows in their extensive use of jump packs and close quarters weapons.";
-
-chapter_id[6]="Iron Hands";
-chapter_tooltip[6]="The flesh is weak, and the weak shall perish. Such is the creed of these mercilessly efficient cyborg warriors. A chapter with strong ties to the Mechanicum, they crush the foes of the Emperor and Machine God alike with a plethora of exotic technology and ancient weaponry.";
-
-chapter_id[7]="Ultramarines";
-chapter_tooltip[7]="An honourable and venerated chapter, the Ultramarines are considered to be amongst the best of the best. Their Primarch was the author of the great tome of the “Codex Astartes”, and they are considered exemplars of what a perfect Space Marine Chapter should be like.";
-
-chapter_id[8]="Salamanders";
-chapter_tooltip[8]="Followers of the Promethean Cult, the jet-black skinned Salamanders are forgemasters of legend. They are armed with the best wargear available and prefer flame based weaponry. Their only drawback is their low numbers and slow recruiting.";
-
-chapter_id[9]="Raven Guard";
-chapter_tooltip[9]="Clinging to the shadows and riding the edge of lightning the Raven Guard strike out at the hated enemy with stealth and speed. Using lightning strikes, hit and run tactics, and guerrilla warfare, they are known for being there one second and gone the next.";
-
-chapter_id[10]="Black Templars";
-chapter_tooltip[10]="Not adhering to the Codex Astartes, Black Templars are a Chapter on an Eternal Crusade with unique organization and high numbers. Masters of assault, they charge at the enemy with zeal unmatched. They hate psykers, and as such, have no Librarians.";
-
-chapter_id[11]="Minotaurs";
-chapter_tooltip[11]="Bronze-clad Astartes of unknown Founding, the Minotaurs prefer to channel their righteous fury in a massive storm of fire, with tanks and artillery. They could be considered the Inquisition’s attack dog, since they often attack fellow chapters suspected of heresy.";
-
-chapter_id[12]="Blood Ravens";
-chapter_tooltip[12]="Of unknown origins and Founding, the origins of the Blood Ravens are shrouded in mystery and are believed to be tied to a dark truth. This elusive Chapter is drawn to the pursuit of knowledge and ancient lore and produces an unusually high number of Librarians.";
-
-chapter_id[13]="Crimson Fists";
-chapter_tooltip[13]="An Imperial Fists descendant, the Crimson Fists are more level-minded than their Progenitor and brother chapters.  They suffer the same lacking zygotes as their ancestors, and more resemble the Ultramarines in their balanced approach to combat. After surviving a devastating Ork WAAAGH! the chapter clings dearly to its future."
-
-chapter_id[14]="Lamenters";
-chapter_tooltip[14]="The Lamenter's accursed and haunted legacy seems to taint much of what they have achieved; their victories often become bitter ashes in their hands.  Nearly extinct, they fight their last days on behalf of the common folk in a crusade of endless penitence.";
-
-chapter_id[15]="Carcharodons";
-chapter_tooltip[15]="Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines.";
-
-chapter_id[16]="Soul Drinkers";
-chapter_tooltip[16]="Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing."
+/** 
+ * * Not all Chapters are implemented yet, disable the ones that arent, remove a line if the chapter gets made
+ */
+all_chapters[CHAPTERS.UNKNOWN].disabled = true; //this should always be disabled, it exists for array indexing purposes for now
+// all_chapters[CHAPTERS.CARCHARODONS].disabled = true;
+all_chapters[CHAPTERS.ANGRY_MARINES].disabled = true;
+all_chapters[CHAPTERS.EMPERORS_NIGHTMARE].disabled = true;
+all_chapters[CHAPTERS.STAR_KRAKENS].disabled = true;
+all_chapters[CHAPTERS.CONSERVATORS].disabled = true;
+// all_chapters[CHAPTERS.CUSTOM_2].disabled = true;
+// all_chapters[CHAPTERS.CUSTOM_3].disabled = true;
+// all_chapters[CHAPTERS.CUSTOM_4].disabled = true;
+// all_chapters[CHAPTERS.CUSTOM_5].disabled = true;
 
 
-chapter_id[17]="Angry Marines";
-//chapter_tooltip[17]="Frothing with pathological rage since the day their Primarch emerged from his pod with naught but a dented copy of battletoads.  Every last Angry Marine is a homicidal, suicidal berserker with a voice that projects, and are always angry, all the time.  A /tg/ classic.";
-
-chapter_id[18]="Emperor's Nightmare";
-//chapter_tooltip[18]="The Emperor's Nightmare bear the curse of a bizarre mutation within their gene-seed. The Catalepsean Node is in a state of decay and thus do not sleep for months at a time until falling asleep suddenly. They prefer shock and awe tactics with stealth.";
-
-chapter_id[19]="Star Krakens";
-//chapter_tooltip[19]="In darkness, they dwell in The Deep. The Star Krakens stand divided in individual companies but united in the form of the Ten-Flag Council. They utilize boarding tactics and are the sole guardians of the ancient sensor array called “The Lighthouse”.";
-
-chapter_id[20]="Conservators";
-//chapter_tooltip[20]="Hailing from the Asharn Marches and having established their homeworld on the planet Dekara, these proud sons of Dorn suffer from an extreme lack of supplies, Ork raids, and more. Though under strength and lacking equipment, they managed to forge an interstellar kingdom loyal to both Emperor and Imperium.";
+// TODO refactor into a script which converts these static arrays to dynamic struct arrays
 
 chapter_id[21]= "Custom";
 chapter_tooltip[21]="Your Chapter";
@@ -240,8 +327,8 @@ else if (file_exists("chaptersave#1.ini")=false){
 
 if((file_exists("chaptersave#1.ini")=true) and (chapter_made=1)){
 	ini_open("chaptersave#1.ini")
-		chapter_id[21]= ini_read_string("Save","chapter_id","Custom");
-		chapter21 = ini_read_string("Save","chapter_name",chapter);
+		all_chapters[CHAPTERS.CUSTOM_1].name= ini_read_string("Save","chapter_id","Custom");
+		chapter21 = ini_read_string("Save","chapter_name",chapter_name);
 		icon21= ini_read_real("Save","icon#",icon);
 	   	icon_name21= ini_read_string("Save","icon_name","custom");
 	   	strength21 = ini_read_real("Save","strength",strength);
@@ -336,494 +423,340 @@ ini_close();
 
 
 else if (file_exists("chaptersave#1.ini")=false){
- adv21 = [1,2,3,4,5,6,7,8]
- dis21 =[1,2,3,4,5,6,7,8]
- disposition21 = [1,2,3,4,5,6,7]
- founding21=4;
- 
- icon21=4;
-icon_name21="if";
- fleet_type21=1;
-strength21=2;
- purity21=5;
- stability21=5;
- cooperation21=2;
- homeworld21=1
- homeworld_name21="World"
- recruiting_world21=homeworld_name21
-recruiting_name21=homeworld_name21
-homeworld_exists21=1;
-recruiting_exists21=1;
-homeworld_rule21=2;
- aspirant_trial21=2;
-role_21= []
-race_21=[]
-wep1_21=[]
-wep2_21=[]
-armour_21=[]
-gear_21=[]
-mobi_21=[];
+    adv21 = [1,2,3,4,5,6,7,8]
+    dis21 =[1,2,3,4,5,6,7,8]
+    disposition21 = [1,2,3,4,5,6,7]
+    founding21=4;
 
-// Pauldron2: Left, Pauldron: Right
-color_to_main21="Red"
-color_to_secondary21="";
-color_to_trim21="Red";
-color_to_pauldron21="Red"; 
-		 color_to_pauldron2_21="Red";
-		 color_to_lens21="Red";
-	     color_to_weapon21="Red";
-		 col_special21="Red";
-		 trim21=1;
-	     hapothecary21="Doc";
-	     hchaplain21="Warg";
-	     clibrarian21="Witch";
-	     fmaster21="Smith";
-	     admiral21="Sailor";
-		 recruiter21="Sarge";
-	     battle_cry_21="WAAAGH";
-		 monastery_name21="Okay";
-		 master_name21="SHH";
-	     equal_specialists21=1;
-    
-	     load_to_ships=[2,0,0];
-	    // load_to_ships=0;
-    
-	     successors21=4;
-	     mutations21=2;
-		 mutations_selected21=2;
-	     preomnor21=0;
-		 voice21=0;
-		 doomed21=0;
-		 lyman21=0;
-		 omophagea21=0;
-		 ossmodula21=0;
-		 membrane21=1;
-	     zygote21=0;
-		 betchers21=1;
-		 catalepsean21=0;
-		 secretions21=0;
-		 occulobe21=0;
-		 mucranoid21=0;
-	    disposition21[1]=20;// Prog
-	    disposition21[2]=20;
-		disposition21[3]=20;
-		disposition21[4]=20;
-		disposition21[5]=20;
-	    disposition21[6]=20;// Astartes
-	    disposition21[7]=20;// Reserved
-	     chapter_master_name21="Git smacka";
-		 chapter_master_melee21=1;
-	     chapter_master_ranged21=1;
-		 chapter_master_specialty21=1;
-    
-	    adv21[1]="Ambushers";
-	    adv21[2]="Boarders";
-	    adv21[3]="Crafters";
-	    adv21[4]="Enemy; Orks";
-		
-		 dis21[1]="Suspicious";
-	    dis21[2]="Tolerant";
-	     dis21[3]="Blood Debt";
-	     dis21[4]="Sieged";
-		i=100
+    icon21=4;
+    icon_name21="if";
+    fleet_type21=1;
+    strength21=2;
+    purity21=5;
+    stability21=5;
+    cooperation21=2;
+    homeworld21=1
+    homeworld_name21="World"
+    recruiting_world21=homeworld_name21
+    recruiting_name21=homeworld_name21
+    homeworld_exists21=1;
+    recruiting_exists21=1;
+    homeworld_rule21=2;
+    aspirant_trial21=2;
+    role_21= []
+    race_21=[]
+    wep1_21=[]
+    wep2_21=[]
+    armour_21=[]
+    gear_21=[]
+    mobi_21=[];
+
+    // Pauldron2: Left, Pauldron: Right
+    color_to_main21="Red"
+    color_to_secondary21="";
+    color_to_trim21="Red";
+    color_to_pauldron21="Red"; 
+    color_to_pauldron2_21="Red";
+    color_to_lens21="Red";
+    color_to_weapon21="Red";
+    col_special21="Red";
+    trim21=1;
+    hapothecary21="Doc";
+    hchaplain21="Warg";
+    clibrarian21="Witch";
+    fmaster21="Smith";
+    admiral21="Sailor";
+    recruiter21="Sarge";
+    battle_cry_21="WAAAGH";
+    monastery_name21="Okay";
+    master_name21="SHH";
+    equal_specialists21=1;
+
+    load_to_ships=[2,0,0];
+    // load_to_ships=0;
+
+    successors21=4;
+    mutations21=2;
+    mutations_selected21=2;
+    preomnor21=0;
+    voice21=0;
+    doomed21=0;
+    lyman21=0;
+    omophagea21=0;
+    ossmodula21=0;
+    membrane21=1;
+    zygote21=0;
+    betchers21=1;
+    catalepsean21=0;
+    secretions21=0;
+    occulobe21=0;
+    mucranoid21=0;
+    disposition21[1]=20;// Prog
+    disposition21[2]=20;
+    disposition21[3]=20;
+    disposition21[4]=20;
+    disposition21[5]=20;
+    disposition21[6]=20;// Astartes
+    disposition21[7]=20;// Reserved
+    chapter_master_name21="Git smacka";
+    chapter_master_melee21=1;
+    chapter_master_ranged21=1;
+    chapter_master_specialty21=1;
+
+    adv21[1]="Ambushers";
+    adv21[2]="Boarders";
+    adv21[3]="Crafters";
+    adv21[4]="Enemy; Orks";
+
+    dis21[1]="Suspicious";
+    dis21[2]="Tolerant";
+    dis21[3]="Blood Debt";
+    dis21[4]="Sieged";
+    i=100
 	repeat(3){i+=1;// First is for the correct slot, second is for default
-	race_21[i,2]=1;
-    role_21[i,2]="Honour Guard";
-    wep1_21[i,2]="Power Sword";
-    wep2_21[i,2]="Bolter";
-    armour_21[i,2]="Artificer Armour";
-	gear_21[i,2]=""
-	mobi_21[i,2]="";
-	
-    race_21[i,3]=1;
-    role_21[i,3]="Veteran";
-    wep1_21[i,3]="Chainsword";
-    wep2_21[i,3]="Bolter";
-    armour_21[i,3]="Power Armour";
-	gear_21[i,3]=""
-	mobi_21[i,3]="";
-	
-    race_21[i,4]=1;
-    role_21[i,4]="Terminator";
-    wep1_21[i,4]="Power Fist";
-    wep2_21[i,4]="Storm Bolter";
-    armour_21[i,4]="Terminator Armour";
-	gear_21[i,4]=""
-	mobi_21[i,4]="";
-	
-    race_21[i,5]=1;
-    role_21[i,5]="Captain";
-    wep1_21[i,5]="Power Sword";
-    wep2_21[i,5]="Bolt Pistol";
-    armour_21[i,5]="Power Armour";
-	gear_21[i,5]="Iron Halo";
-	mobi_21[i,15]="";
-	
-	
-    race_21[i,6]=1;
-    role_21[i,6]="Dreadnought";
-    wep1_21[i,6]="Close Combat Weapon";
-    wep2_21[i,6]="Lascannon";
-    armour_21[i,6]="Dreadnought";
-	gear_21[i,6]=""
-	mobi_21[i,6]="";
-	
-    race_21[i,7]=1;
-    role_21[i,7]="Champion";
-    wep1_21[i,7]="Power Sword";
-    wep2_21[i,7]="Bolt Pistol";
-    armour_21[i,7]="Power Armour";
-	gear_21[i,7]="Combat Shield"
-	mobi_21[i,7]="";
+        race_21[i,2]=1;
+        role_21[i,2]="Honour Guard";
+        wep1_21[i,2]="Power Sword";
+        wep2_21[i,2]="Bolter";
+        armour_21[i,2]="Artificer Armour";
+        gear_21[i,2]=""
+        mobi_21[i,2]="";
+        
+        race_21[i,3]=1;
+        role_21[i,3]="Veteran";
+        wep1_21[i,3]="Chainsword";
+        wep2_21[i,3]="Bolter";
+        armour_21[i,3]="Power Armour";
+        gear_21[i,3]=""
+        mobi_21[i,3]="";
+        
+        race_21[i,4]=1;
+        role_21[i,4]="Terminator";
+        wep1_21[i,4]="Power Fist";
+        wep2_21[i,4]="Storm Bolter";
+        armour_21[i,4]="Terminator Armour";
+        gear_21[i,4]=""
+        mobi_21[i,4]="";
+        
+        race_21[i,5]=1;
+        role_21[i,5]="Captain";
+        wep1_21[i,5]="Power Sword";
+        wep2_21[i,5]="Bolt Pistol";
+        armour_21[i,5]="Power Armour";
+        gear_21[i,5]="Iron Halo";
+        mobi_21[i,15]="";
+        
+        
+        race_21[i,6]=1;
+        role_21[i,6]="Dreadnought";
+        wep1_21[i,6]="Close Combat Weapon";
+        wep2_21[i,6]="Lascannon";
+        armour_21[i,6]="Dreadnought";
+        gear_21[i,6]=""
+        mobi_21[i,6]="";
+        
+        race_21[i,7]=1;
+        role_21[i,7]="Champion";
+        wep1_21[i,7]="Power Sword";
+        wep2_21[i,7]="Bolt Pistol";
+        armour_21[i,7]="Power Armour";
+        gear_21[i,7]="Combat Shield"
+        mobi_21[i,7]="";
 
-    race_21[i,8]=1;
-    role_21[i,8]="Tactical Marine";
-    wep1_21[i,8]="Bolter";
-    wep2_21[i,8]="Combat Knife";
-    armour_21[i,8]="Power Armour";
-	gear_21[i,8]=""
-	mobi_21[i,8]="";
+        race_21[i,8]=1;
+        role_21[i,8]="Tactical Marine";
+        wep1_21[i,8]="Bolter";
+        wep2_21[i,8]="Combat Knife";
+        armour_21[i,8]="Power Armour";
+        gear_21[i,8]=""
+        mobi_21[i,8]="";
 
-    race_21[i,9]=1;
-    role_21[i,9]="Devastator Marine";
-    wep1_21[i,9]="";
-    wep2_21[i,9]="Combat Knife";
-    armour_21[i,9]="Power Armour";
-	gear_21[i,9]=""
-    mobi_21[i,9]="";
+        race_21[i,9]=1;
+        role_21[i,9]="Devastator Marine";
+        wep1_21[i,9]="";
+        wep2_21[i,9]="Combat Knife";
+        armour_21[i,9]="Power Armour";
+        gear_21[i,9]=""
+        mobi_21[i,9]="";
 
-    race_21[i,10]=1;
-    role_21[i,10]="Assault Marine";
-    wep1_21[i,10]="Chainsword";
-    wep2_21[i,10]="Bolt Pistol";
-    armour_21[i,10]="Power Armour";
-	gear_21[i,10]=""
-    mobi_21[i,10]="Jump Pack";
+        race_21[i,10]=1;
+        role_21[i,10]="Assault Marine";
+        wep1_21[i,10]="Chainsword";
+        wep2_21[i,10]="Bolt Pistol";
+        armour_21[i,10]="Power Armour";
+        gear_21[i,10]=""
+        mobi_21[i,10]="Jump Pack";
 
-    race_21[i,11]=1;
-    role_21[i,11]="Ancient";
-    wep1_21[i,11]="Company Standard";
-    wep2_21[i,11]="Power Sword";
-    armour_21[i,11]="Power Armour";
-	gear_21[i,11]=""
-	mobi_21[i,11]="";
+        race_21[i,11]=1;
+        role_21[i,11]="Ancient";
+        wep1_21[i,11]="Company Standard";
+        wep2_21[i,11]="Power Sword";
+        armour_21[i,11]="Power Armour";
+        gear_21[i,11]=""
+        mobi_21[i,11]="";
 
-    race_21[i,12]=1;
-    role_21[i,12]="Scout";
-    wep1_21[i,12]="Sniper Rifle";
-    wep2_21[i,12]="Combat Knife";
-    armour_21[i,12]="Scout Armour";
-	gear_21[i,12]=""
-	mobi_21[i,12]="";
+        race_21[i,12]=1;
+        role_21[i,12]="Scout";
+        wep1_21[i,12]="Sniper Rifle";
+        wep2_21[i,12]="Combat Knife";
+        armour_21[i,12]="Scout Armour";
+        gear_21[i,12]=""
+        mobi_21[i,12]="";
 
-    race_21[i,14]=1;
-    role_21[i,14]="Chaplain";
-    wep1_21[i,14]="Crozius Arcanum";
-    wep2_21[i,14]="Bolt Pistol";
-    armour_21[i,14]="Power Armour";
-    gear_21[i,14]="Rosarius";
+        race_21[i,14]=1;
+        role_21[i,14]="Chaplain";
+        wep1_21[i,14]="Crozius Arcanum";
+        wep2_21[i,14]="Bolt Pistol";
+        armour_21[i,14]="Power Armour";
+        gear_21[i,14]="Rosarius";
 
-    race_21[i,15]=1;
-    role_21[i,15]="Apothecary";
-    wep1_21[i,15]="Chainsword";
-    wep2_21[i,15]="Bolt Pistol";
-    armour_21[i,15]="Power Armour";
-    gear_21[i,15]="Narthecium";
+        race_21[i,15]=1;
+        role_21[i,15]="Apothecary";
+        wep1_21[i,15]="Chainsword";
+        wep2_21[i,15]="Bolt Pistol";
+        armour_21[i,15]="Power Armour";
+        gear_21[i,15]="Narthecium";
 
-    race_21[i,16]=1;
-    role_21[i,16]="Techmarine";
-    wep1_21[i,16]="Power Axe";
-    wep2_21[i,16]="Storm Bolter";
-    armour_21[i,16]="Artificer Armour";
-    mobi_21[i,16]="Servo-arm";
-    gear_21[i,16]="";
+        race_21[i,16]=1;
+        role_21[i,16]="Techmarine";
+        wep1_21[i,16]="Power Axe";
+        wep2_21[i,16]="Storm Bolter";
+        armour_21[i,16]="Artificer Armour";
+        mobi_21[i,16]="Servo-arm";
+        gear_21[i,16]="";
 
-    race_21[i,17]=1;
-    role_21[i,17]="Librarian";
-    wep1_21[i,17]="Force Staff";
-    wep2_21[i,17]="Storm Bolter";
-    armour_21[i,17]="Power Armour";
-    gear_21[i,17]="Psychic Hood";
+        race_21[i,17]=1;
+        role_21[i,17]="Librarian";
+        wep1_21[i,17]="Force Staff";
+        wep2_21[i,17]="Storm Bolter";
+        armour_21[i,17]="Power Armour";
+        gear_21[i,17]="Psychic Hood";
 
-	race_21[i,18]=1;
-    role_21[i,18]="Sergeant";
-    wep1_21[i,18]="Chainsword";
-    wep2_21[i,18]="Combiflamer";
-    armour_21[i,18]="Power Armour";
-    mobi_21[i,18]="";
-    gear_21[i,18]="";
+        race_21[i,18]=1;
+        role_21[i,18]="Sergeant";
+        wep1_21[i,18]="Chainsword";
+        wep2_21[i,18]="Combiflamer";
+        armour_21[i,18]="Power Armour";
+        mobi_21[i,18]="";
+        gear_21[i,18]="";
 
-    race_21[i,19]=1;
-    role_21[i,19]="Veteran Sergeant";
-    wep1_21[i,19]="Chainsword";
-    wep2_21[i,19]="Combiflamer";
-    armour_21[i,19]="Power Armour";
-    mobi_21[i,19]="";
-    gear_21[i,19]="";
+        race_21[i,19]=1;
+        role_21[i,19]="Veteran Sergeant";
+        wep1_21[i,19]="Chainsword";
+        wep2_21[i,19]="Combiflamer";
+        armour_21[i,19]="Power Armour";
+        mobi_21[i,19]="";
+        gear_21[i,19]="";
 	}
 	stage = 6;
 }
 
 
+function Advantage(_id, _name, _description, _points_cost) constructor {
+    id = _id;
+    name = _name;
+    description = _description;
+    points = _points_cost;
+    disabled = false;
+}
 
-i=-1;
-repeat(61){i+=1;advantage[i]="";advantage_tooltip[i]="";disadvantage[i]="";dis_tooltip[i]="";}
+all_advantages = [
+    new Advantage(0, "", "", 0),
+    new Advantage(1, "Ambushers", "Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.", 20),
+    new Advantage(2, "Boarders", "Boarding other ships is the specialty of your chapter.  Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.", 20),
+    new Advantage(3, "Bolter Drilling", "Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.", 20),
+    new Advantage(4, "Brothers, All", "Your chapter places great emphasis on comradely and loyalty.  You start with a well-equipped Honour Guard.", 20),
+    new Advantage(5, "Crafters", "Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.", 20),
+    new Advantage(6, "Daemon Binders", "Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.", 20),
+    new Advantage(7, "Enemy: Eldar", "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.", 20),
+    new Advantage(8, "Enemy: Fallen", "Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.", 20),
+    new Advantage(9, "Enemy: Necrons", "Necrons are particularly hated by your chapter.  When fighting Necrons damage is increased.", 20),
+    new Advantage(10, "Enemy: Orks", "Orks are particularly hated by your chapter.  When fighting Orks damage is increased.", 20),
+    new Advantage(11, "Enemy: Tau", "Tau are particularly hated by your chapter.  When fighting Tau damage is increased.", 20),
+    new Advantage(12, "Enemy: Tyranids", "Tyranids are particularly hated by your chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.", 20),
+    new Advantage(13, "Kings of Space", "Veterans of naval combat, your chapter fleet has bonuses to offense, defence, an additional battle barge, and may always be controlled regardless of whether or not the Chapter Master is present.", 20),
+    new Advantage(14, "Lightning Warriors", "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.", 20),
+    new Advantage(15, "Paragon", "You are a pale shadow of the primarchs.  Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.", 20),
+    new Advantage(16, "Psyker Abundance", "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.", 20),
+    new Advantage(17, "Reverent Guardians", "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.", 20),
+    new Advantage(18, "Tech-Brothers", "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.", 20),
+    new Advantage(19, "Scavengers", "Your Astartes have a knack for finding what has been lost.  Items and wargear are periodically found and added to the Armamentarium.", 20),
+    new Advantage(20, "Siege Masters", "Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications.", 20),
+    new Advantage(21, "Slow and Purposeful", "Careful and steady is your chapters doctrine; all infantry have slightly less attack but boosted defences.", 20),
+    new Advantage(22, "Melee Enthusiasts", "Rip and tear! Each Company has an additional Assault Squad.  Your marines and dreadnoughts also have boosted attack with melee weapons.", 20),
+    new Advantage(23, "Venerable Ancients", "Even in death they still serve. Your chapter places a staunch reverence for its forebears and has a number of additional venerable dreadnoughts in service.", 20),
+    new Advantage(24, "Medicae Primacy", "Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.", 20),
+];
 
-i=1;
-advantage[i]="Ambushers";
-advantage_tooltip[i]="Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.";i+=1;
 //advantage[i]="Battle Cousins";
 //advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-advantage[i]="Boarders";
-advantage_tooltip[i]="Boarding other ships is the specialty of your chapter.  Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.";i+=1;
-advantage[i]="Bolter Drilling";
-advantage_tooltip[i]="Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.";i+=1;
-advantage[i]="Brothers, All";
-advantage_tooltip[i]="Your chapter places great emphasis on comradely and loyalty.  You start with a well-equipped Honour Guard.";i+=1;
 //advantage[i]="Comrades in Arms";
 //advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-advantage[i]="Crafters";
-advantage_tooltip[i]="Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.";i+=1;
-advantage[i]="Daemon Binders";
-advantage_tooltip[i]="Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.";i+=1;
-advantage[i]="Enemy: Eldar";
-advantage_tooltip[i]="Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.";i+=1;
-advantage[i]="Enemy: Fallen";
-advantage_tooltip[i]="Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.";i+=1;
-advantage[i]="Enemy: Necrons";
-advantage_tooltip[i]="Necrons are particularly hated by your chapter.  When fighting Necrons damage is increased.";i+=1;
-advantage[i]="Enemy: Orks";
-advantage_tooltip[i]="Orks are particularly hated by your chapter.  When fighting Orks damage is increased.";i+=1;
-advantage[i]="Enemy: Tau";
-advantage_tooltip[i]="Tau are particularly hated by your chapter.  When fighting Tau damage is increased.";i+=1;
-advantage[i]="Enemy: Tyranids";
-advantage_tooltip[i]="Tyranids are particularly hated by your chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.";i+=1;
-advantage[i]="Kings of Space";
-advantage_tooltip[i]="Veterans of naval combat, your chapter fleet has bonuses to offense, defence, an additional battle barge, and may always be controlled regardless of whether or not the Chapter Master is present.";i+=1;
-advantage[i]="Lightning Warriors";
-advantage_tooltip[i]="Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads";i+=1;
-advantage[i]="Paragon";
-advantage_tooltip[i]="You are a pale shadow of the primarchs.  Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.";i+=1;
-advantage[i]="Psyker Abundance";
-advantage_tooltip[i]="The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.";i+=1;
-advantage[i]="Reverent Guardians";
-advantage_tooltip[i]="Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.";i+=1;
-advantage[i]="Tech-Brothers";
-advantage_tooltip[i]="Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.";i+=1;
-advantage[i]="Scavengers";
-advantage_tooltip[i]="Your Astartes have a knack for finding what has been lost.  Items and wargear are periodically found and added to the Armamentarium.";i+=1;
-advantage[i]="Siege Masters";
-advantage_tooltip[i]="Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications.";i+=1;
-advantage[i]="Slow and Purposeful";
-advantage_tooltip[i]="Careful and steady is your chapters doctrine; all infantry have slightly less attack but boosted defences.";i+=1;
-advantage[i]="Melee Enthusiasts";
-advantage_tooltip[i]="Rip and tear! Each Company has an additional Assault Squad.  Your marines and dreadnoughts also have boosted attack with melee weapons.";i+=1;
-advantage[i]="Venerable Ancients";
-advantage_tooltip[i]="Even in death they still serve. Your chapter places a staunch reverence for its forebears and has a number of additional venerable dreadnoughts in service ";i+=1;
-advantage[i]="Medicae Primacy";
-advantage_tooltip[i]="Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.";i+=1;
 
-i+=1;
-advantage[i]="Cancel";advantage_tooltip[i]="";
-
-i=1;
-disadvantage[i]="Black Rage";
-dis_tooltip[i]="Your marines are susceptible to Black Rage, having a chance each battle to become Death Company.  These units are locked as Assault Marines and are fairly suicidal.";i+=1;
-disadvantage[i]="Blood Debt";
-dis_tooltip[i]="Prevents your Chapter from recruiting new Astartes until enough of your marines, or enemies, have been killed.  Incompatible with Penitent chapter types.";i+=1;
+function Disadvantage(_id, _name, _description, _points_cost) : Advantage (_id, _name, _description, _points_cost) constructor {}
+all_disadvantages = [
+    new Disadvantage(0, "", "", 0),
+    new Disadvantage(1, "Black Rage", "Your marines are susceptible to Black Rage, having a chance each battle to become Death Company.  These units are locked as Assault Marines and are fairly suicidal.", 20),
+    new Disadvantage(2, "Blood Debt", "Prevents your Chapter from recruiting new Astartes until enough of your marines, or enemies, have been killed.  Incompatible with Penitent chapter types.", 20),
+    new Disadvantage(3, "Fresh Blood", "Due to being newly created your chapter has little special wargear or psykers.", 20),
+    new Disadvantage(4, "Never Forgive", "In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.", 20),
+    new Disadvantage(5, "Psyker Intolerant", "Witches are hated by your chapter.  You cannot create Librarians but gain a little bonus attack against psykers.", 20),
+    new Disadvantage(6, "Shitty Luck", "This is actually really helpful and beneficial for your chapter.  Trust me.", 20),
+    new Disadvantage(7, "Sieged", "A recent siege has reduced the number of your marines greatly.  You retain a normal amount of equipment but some is damaged.", 20),
+    new Disadvantage(8, "Splintered", "Your marines are unorganized and splintered.  You require greater time to respond to threats en masse.", 20),
+    new Disadvantage(9, "Suspicious", "Some of your chapter's past actions or current practices make the inquisition suspicious.  Their disposition is lowered.", 20),
+    new Disadvantage(10, "Tech-Heresy", "Your chapter does things that makes the Mechanicus upset.  Mechanicus disposition is lowered and you have less Tech Marines.", 20),
+    new Disadvantage(11, "Tolerant", "Your chapter is more lenient with xenos.  All xeno disposition is slightly increased and all Imperial disposition is lowered.", 20),
+    new Disadvantage(12, "Warp Touched", "Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.", 20),
+];
 // disadvantage[i]="Embargo";dis_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;// Greatly increases the cost of common wargear and disallows advanced items.
 // disadvantage[i]="First In, Last Out";dis_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-disadvantage[i]="Fresh Blood";
-dis_tooltip[i]="Due to being newly created your chapter has little special wargear or psykers.";i+=1;
-disadvantage[i]="Never Forgive";
-dis_tooltip[i]="In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.";i+=1;
-disadvantage[i]="Psyker Intolerant";
-dis_tooltip[i]="Witches are hated by your chapter.  You cannot create Librarians but gain a little bonus attack against psykers.";i+=1;
 // disadvantage[i]="Rival Brotherhood";dis_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-disadvantage[i]="Shitty Luck";
-dis_tooltip[i]="This is actually really helpful and beneficial for your chapter.  Trust me.";i+=1;
-disadvantage[i]="Sieged";
-dis_tooltip[i]="A recent siege has reduced the number of your marines greatly.  You retain a normal amount of equipment but some is damaged.";i+=1;
-disadvantage[i]="Splintered";
-dis_tooltip[i]="Your marines are unorganized and splintered.  You require greater time to respond to threats en masse.";i+=1;
-disadvantage[i]="Suspicious";
-dis_tooltip[i]="Some of your chapter's past actions or current practices make the inquisition suspicious.  Their disposition is lowered.";i+=1;
-disadvantage[i]="Tech-Heresy";
-dis_tooltip[i]="Your chapter does things that makes the Mechanicus upset.  Mechanicus disposition is lowered and you have less Tech Marines.";i+=1;
-disadvantage[i]="Tolerant";
-dis_tooltip[i]="Your chapter is more lenient with xenos.  All xeno disposition is slightly increased and all Imperial disposition is lowered.";i+=1;
-disadvantage[i]="Warp Touched";
-dis_tooltip[i]="Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.";i+=1;
-i+=1;
-disadvantage[i]="Cancel";dis_tooltip[i]="";
 
 // Default Marine Loadouts
-var ye,i;
-ye=99;i=-1;repeat(51){i+=1;
-    race[ye,i]=1;loc[ye,i]="";
-    role[ye,i]="";
-    wep1[ye,i]="";
-    wep2[ye,i]="";
-    armour[ye,i]="";
-    gear[ye,i]="";
-    mobi[ye,i]="";experience[ye,i]=0;
-}
-ye=100;i=-1;repeat(51){i+=1;
-    race[ye,i]=1;loc[ye,i]="";
-    role[ye,i]="";
-    wep1[ye,i]="";
-    wep2[ye,i]="";
-    armour[ye,i]="";
-    gear[ye,i]="";
-    mobi[ye,i]="";experience[ye,i]=0;
-}
-ye=101;i=-1;repeat(51){i+=1;
-    race[ye,i]=1;loc[ye,i]="";
-    role[ye,i]="";
-    wep1[ye,i]="";
-    wep2[ye,i]="";
-    armour[ye,i]="";
-    gear[ye,i]="";
-    mobi[ye,i]="";experience[ye,i]=0;
-}
-ye=102;i=-1;repeat(51){i+=1;
-    race[ye,i]=1;loc[ye,i]="";
-    role[ye,i]="";
-    wep1[ye,i]="";
-    wep2[ye,i]="";
-    armour[ye,i]="";
-    gear[ye,i]="";
-    mobi[ye,i]="";experience[ye,i]=0;
-}
-ye=103;i=-1;repeat(51){i+=1;
-    race[ye,i]=1;loc[ye,i]="";
-    role[ye,i]="";
-    wep1[ye,i]="";
-    wep2[ye,i]="";
-    armour[ye,i]="";
-    gear[ye,i]="";
-    mobi[ye,i]="";experience[ye,i]=0;
+for(var slot = 99; slot <= 103; slot++){
+    for(var i = 0; i <= 50; i++){
+        race[slot,i]=1;
+        loc[slot,i]="";
+        role[slot,i]="";
+        wep1[slot,i]="";
+        wep2[slot,i]="";
+        armour[slot,i]="";
+        gear[slot,i]="";
+        mobi[slot,i]="";
+        experience[y,i]=0;
+    }
 }
 
+defaults_slot = 100;
 
-
-i=99;
-repeat(3){i+=1;// First is for the correct slot, second is for default
-    race[i,2]=1;
-    role[i,2]="Honour Guard";
-    wep1[i,2]="Power Sword";
-    wep2[i,2]="Bolter";
-    armour[i,2]="Artificer Armour";
-
-    race[i,3]=1;
-    role[i,3]="Veteran";
-    wep1[i,3]="Chainsword";
-    wep2[i,3]="Bolter";
-    armour[i,3]="Power Armour";
-
-    race[i,4]=1;
-    role[i,4]="Terminator";
-    wep1[i,4]="Power Fist";
-    wep2[i,4]="Storm Bolter";
-    armour[i,4]="Terminator Armour";
-
-    race[i,5]=1;
-    role[i,5]="Captain";
-    wep1[i,5]="Power Sword";
-    wep2[i,5]="Bolt Pistol";
-    armour[i,5]="Power Armour";
-    gear[i,5]="Iron Halo";
-
-    race[i,6]=1;
-    role[i,6]="Dreadnought";
-    wep1[i,6]="Close Combat Weapon";
-    wep2[i,6]="Lascannon";
-    armour[i,6]="Dreadnought";
-
-    race[i,7]=1;
-    role[i,7]="Champion";
-    wep1[i,7]="Power Sword";
-    wep2[i,7]="Bolt Pistol";
-    armour[i,7]="Power Armour";
-    gear[i,7]="Combat Shield";
-
-    race[i,8]=1;
-    role[i,8]="Tactical Marine";
-    wep1[i,8]="Bolter";
-    wep2[i,8]="Combat Knife";
-    armour[i,8]="Power Armour";
-
-    race[i,9]=1;
-    role[i,9]="Devastator Marine";
-    wep1[i,9]="";
-    wep2[i,9]="Combat Knife";
-    armour[i,9]="Power Armour";
-    mobi[i,9]="";
-
-    race[i,10]=1;
-    role[i,10]="Assault Marine";
-    wep1[i,10]="Chainsword";
-    wep2[i,10]="Bolt Pistol";
-    armour[i,10]="Power Armour";
-    mobi[i,10]="Jump Pack";
-
-    race[i,11]=1;
-    role[i,11]="Ancient";
-    wep1[i,11]="Company Standard";
-    wep2[i,11]="Power Sword";
-    armour[i,11]="Power Armour";
-
-    race[i,12]=1;
-    role[i,12]="Scout";
-    wep1[i,12]="Sniper Rifle";
-    wep2[i,12]="Combat Knife";
-    armour[i,12]="Scout Armour";
-
-    race[i,14]=1;
-    role[i,14]="Chaplain";
-    wep1[i,14]="Crozius Arcanum";
-    wep2[i,14]="Bolt Pistol";
-    armour[i,14]="Power Armour";
-    gear[i,14]="Rosarius";
-
-    race[i,15]=1;
-    role[i,15]="Apothecary";
-    wep1[i,15]="Chainsword";
-    wep2[i,15]="Bolt Pistol";
-    armour[i,15]="Power Armour";
-    gear[i,15]="Narthecium";
-
-    race[i,16]=1;
-    role[i,16]="Techmarine";
-    wep1[i,16]="Power Axe";
-    wep2[i,16]="Storm Bolter";
-    armour[i,16]="Artificer Armour";
-    mobi[i,16]="Servo-arm";
-    gear[i,16]="";
-
-    race[i,17]=1;
-    role[i,17]="Librarian";
-    wep1[i,17]="Force Staff";
-    wep2[i,17]="Storm Bolter";
-    armour[i,17]="Power Armour";
-    gear[i,17]="Psychic Hood";
-
-	race[i,18]=1;
-    role[i,18]="Sergeant";
-    wep1[i,18]="Chainsword";
-    wep2[i,18]="Combiflamer";
-    armour[i,18]="Power Armour";
-    mobi[i,18]="";
-    gear[i,18]="";
-
-    race[i,19]=1;
-    role[i,19]="Veteran Sergeant";
-    wep1[i,19]="Chainsword";
-    wep2[i,19]="Combiflamer";
-    armour[i,19]="Power Armour";
-    mobi[i,19]="";
-    gear[i,19]="";
+function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear){
+    role[defaults_slot, _role_id] = _role_name;
+    wep1[defaults_slot, _role_id] = _wep1;
+    wep2[defaults_slot, _role_id] = _wep2;
+    armour[defaults_slot, _role_id] = _armour;
+    mobi[defaults_slot, _role_id] = _mobi;
+    gear[defaults_slot, _role_id] = _gear;
+    race[defaults_slot, _role_id] = 1;
 }
+load_default_gear(Role.HONOUR_GUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
+load_default_gear(Role.VETERAN, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+load_default_gear(Role.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+load_default_gear(Role.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+load_default_gear(Role.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
+load_default_gear(Role.CHAMPION, "Champion", "Power Sword", "Power Armour", "Power Armour", "", "Combat Shield");
+load_default_gear(Role.TACTICAL, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
+load_default_gear(Role.DEVASTATOR, "Devastator", "", "Combat Knife", "Power Armour", "", "");
+load_default_gear(Role.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
+load_default_gear(Role.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(Role.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+load_default_gear(Role.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
+load_default_gear(Role.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+load_default_gear(Role.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
+load_default_gear(Role.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
+load_default_gear(Role.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(Role.VETERAN_SERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+
 
 
 
@@ -858,7 +791,7 @@ if (skip=true){
     icon_name="ih";
     icon=6;founding=6;
     
-    chapter="Sons of Duke";
+    chapter_name="Sons of Duke";
     custom=2;
     battle_cry="The flesh is weak!  The flesh is weak!  The flesh is weak!  The flesh is weak!  The flesh is weak";
     
@@ -878,11 +811,15 @@ if (skip=true){
 }
 
 /* */
-
+col = [];
+col_r = [];
+col_g = [];
+col_b = [];
 
 scr_colors_initialize();
 
-
+/// todo turn this into an array of structs with dynamic access
+/// todo change references to colours by number to use the Colours enum
 
 	colour_to_find1 = shader_get_uniform(sReplaceColor, "f_Colour1");
 	colour_to_set1 = shader_get_uniform(sReplaceColor, "f_Replace1");

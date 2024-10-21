@@ -1,16 +1,17 @@
 // Restarts variables, ensuring loaded saves are properly initialized
+/// @mixin 
 function scr_restart_variables(saved_game) {
 	if (saved_game==1) then with(obj_ini){
     
 	    // show_message(instance_number(obj_restart_vars));
     
-	    obj_restart_vars.restart_name=obj_creation.chapter;
+	    obj_restart_vars.restart_name=obj_creation.chapter_name;
 	    obj_restart_vars.restart_founding=global.founding;
     
 	    obj_restart_vars.restart_secret=global.founding_secret;
 	    obj_restart_vars.restart_title[0]="";
 
-		for(var i=1; i<=11; i++){obj_restart_vars.restart_title[i]=obj_ini.company_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_restart_vars.restart_title[i]=obj_ini.company_title[i];}
     
 	    obj_restart_vars.restart_icon=icon;
 	    obj_restart_vars.restart_icon_name=icon_name;
@@ -247,7 +248,7 @@ function scr_restart_variables(saved_game) {
 	    obj_controller.restart_secret=obj_restart_vars.restart_secret;
 	    obj_controller.restart_title[0]="";
 
-		for(var i=1; i<=11; i++){obj_controller.restart_title[i]=obj_restart_vars.restart_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_controller.restart_title[i]=obj_restart_vars.restart_title[i];}
     
 	    obj_controller.restart_icon=obj_restart_vars.restart_icon;
 	    obj_controller.restart_icon_name=obj_restart_vars.restart_icon_name;
@@ -479,7 +480,7 @@ function scr_restart_variables(saved_game) {
 	    obj_restart_vars.restart_secret=obj_controller.restart_secret;
 	    obj_restart_vars.restart_title[0]=obj_controller.restart_title[0];
 
-		for(var i=1; i<=11; i++){obj_restart_vars.restart_title[i]=obj_controller.restart_title[i];}
+		for(var i=1; i<array_length(obj_restart_vars.restart_title); i++){obj_restart_vars.restart_title[i]=obj_controller.restart_title[i];}
     
 	    obj_restart_vars.restart_icon=obj_controller.restart_icon;
 	    obj_restart_vars.restart_icon_name=obj_controller.restart_icon_name;
@@ -805,7 +806,7 @@ function scr_restart_variables(saved_game) {
 		for(var i=1; i<=4; i++){
 	        if (adv[i]!="") and (adv_num[i]=0){
 				for (var n=1; n<=40; n++){
-	                if (advantage[n]=adv[i]) then adv_num[i]=n;
+	                if (obj_creation.all_advantages[n].name=adv[i]) then adv_num[i]=n;
 	            }
 	        }
 	    }
@@ -813,7 +814,7 @@ function scr_restart_variables(saved_game) {
 		for(var i=1; i<=4; i++){
 	        if (dis[i]!="") and (dis_num[i]=0){
 	            for (var n=1; n<=40; n++){
-	                if (disadvantage[n]=dis[i]) then dis_num[i]=n;
+	                if (obj_creation.all_disadvantages[n].name[n]=dis[i]) then dis_num[i]=n;
 	            }
 	        }
 	    }

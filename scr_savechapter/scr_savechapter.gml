@@ -103,7 +103,7 @@ function savechapter(){
 load_to_ships=[2,0,0];
 founding21 = founding;
 chapter21=chapter;
-chapter_id[21] = chapter21; 					
+all_chapters[CHAPTERS.CUSTOM_1].name = chapter21; 					
 
  icon21=icon;
  icon_name21=icon_name;
