@@ -13,25 +13,27 @@ function reset_ship_manage_arrays() {
 
 function reset_manage_arrays() {
     with (obj_controller) {
-        array_resize(display_unit, 0);
-        array_resize(man, 0);
-        array_resize(ide, 0);
-        array_resize(man_sel, 0);
-        array_resize(ma_lid, 0);
-        array_resize(ma_wid, 0);
-        array_resize(ma_race, 0);
-        array_resize(ma_role, 0);
-        array_resize(ma_gear, 0);
-        array_resize(ma_mobi, 0);
-        array_resize(ma_wep1, 0);
-        array_resize(ma_wep2, 0);
-        array_resize(ma_armour, 0);
-        array_resize(ma_health, 0);
-        array_resize(ma_chaos, 0);
-        array_resize(ma_exp, 0);
-        array_resize(ma_promote, 0);
-        array_resize(ma_god, 0);
-        array_resize(ma_view, 0);
+        display_unit=[];
+        man=[];
+        ide=[];
+        man_sel=[];
+        ma_lid=[];
+        ma_wid=[];
+        ma_race=[];
+        ma_loc=[];
+        ma_name=[];
+        ma_role=[];
+        ma_gear=[];
+        ma_mobi=[];
+        ma_wep1=[];
+        ma_wep2=[];
+        ma_armour=[];
+        ma_health=[];
+        ma_chaos=[];
+        ma_exp=[];
+        ma_promote=[];
+        ma_god=[];
+        ma_view = [];
     }
     reset_ship_manage_arrays();
 }

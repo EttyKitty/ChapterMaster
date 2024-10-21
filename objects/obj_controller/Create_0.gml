@@ -719,6 +719,7 @@ sh_uid = []
 sh_name = []
 sh_class = []
 sh_loc = []
+sh_hp = []
 sh_cargo = []
 sh_cargo_max = []
 alll=0;
