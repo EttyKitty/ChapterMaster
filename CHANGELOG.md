@@ -25,16 +25,44 @@ All notable changes to this project will be documented in this file.
 
 ### Changed:
 - Battle debug (d) now only works with debug mode enabled.
+- Tartaros sprite is replaced with a clean, tweaked version (by Abomination).
+- Various, minor error popup changes.
 
 ### Fixed:
-- Spelling error in `scr_navy_planet_action` "orbiting" causing crash.
+- Crashes:
+	- Spelling error in `scr_navy_planet_action` "orbiting" causing crash.
+	- Possible fix of some weird stuff and some crashes in battles, caused by `obj_ini.hp`, pointing to `TTRPG_stats_scr_marine_struct`.
+	- Crashes pointing to `scr_company_order_scr_company_order`.
+	- Diplomacy dialogue crashes, particularly with Chaos Emissary.
+	- Fixed a typo in Spyrer mission, may fix a related crash.
+	- [Possible fix to crashes related to vehicle movement/transfer (#18)](https://github.com/EttyKitty/ChapterMaster/pull/18).
+	- [Possible fix to various battle crashes, pointing to `scr_clean` (#20)](https://github.com/EttyKitty/ChapterMaster/pull/20).
 - Probably a lot of missclicks, when one screen opens and you immediately click on something, should be fixed.
-- Possible fix of some weird stuff and some crashes in battles, cased by `obj_ini.hp`.
+- Vehicle loss and recovery flavour text now should be repaired.
+- Fixed formula for vehicle recovery score from Techmarines, as it was a bit overblown by stats.
+- Adjustments to Artifact preview screen. Fixed button font, bigger description box.
+- STC fleet speed bonus reducing speed instead.
 
 ### Under The Hood:
-- `obj_ini.hp[][]` is replaced with `unit.hp()`.
-- `point_and_click()` now sets `obj_controller` cooldown and checks for it to work.
-- `obj_managment_panel` is now drawn in GUI layer, mouse event merged into draw.
+- **All constructors from now on use PascalCase, to prevent variable name overlaps with the YYC compiler.**
+- [Various adjustments to the log and report system (#12)](https://github.com/EttyKitty/ChapterMaster/pull/12).
+- Diplomacy dialogue refactored and reworked.
+- `obj_ini.hp[][]` is replaced with `unit.hp()` in the majority (all?) places.
+- Refactored a lot of lines in the `obj_popup` step event, to use `$` instead of `string()`, to improve readability.
+- [`point_and_click()` efficiency improvements (#17)](https://github.com/EttyKitty/ChapterMaster/pull/17).
+- Refactored `scr_company_order`.
+- [New, unused Psychotic and Lobotomized traits (#14)](https://github.com/EttyKitty/ChapterMaster/pull/14).
+- UI:
+	- `point_and_click()` now sets `obj_controller` cooldown and checks for it to be allowed to execute.
+	- `obj_popup` cooldown on creation is reduced to 8k to fix the UI lock caused by the above change, may have unintended consequences.
+	- `obj_managment_panel` is now drawn in GUI layer, mouse event merged into draw.
+	- Minor refactors to Artifact preview screen. Use `draw_unit_button()`.
+- Combat code:
+	- Many repeats and bad array practices are removed from the combat related code.
+	- Various minor efficiency improvements and refactors. 
+	- Recovery (vehicle and marine) code variable naming changes.
+	- A lot of major refactors, rewrites and overhauls of `scr_clean`.
+- New function: `draw_rectangle_outline()` to draw rectangles with an outline backed in.
 
 ## [0.9.3.3-YYC]
 
