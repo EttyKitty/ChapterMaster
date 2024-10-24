@@ -9,7 +9,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
 	// That should be sufficient to add stuff in a highly modifiable fashion
 
-	var non_marine_roles = ["Skitarii", "Techpriest", "Crusader", "Sister of Battle", "Sister Hospitaler", "Ranger", "Ork Sniper", "Flash Git"];
+	var non_marine_roles = ["Skitarii", "Techpriest", "Crusader", "Sister of Battle", "Sister Hospitaler", "Ranger", "Ork Sniper", "Flash Git"]; // if adding new hirelings, don't forget to update this list
 	var i = 0,
 		e = 0,
 		good = 0,
@@ -35,12 +35,63 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 		if (other_gear = true) {
 	// Factions 1-5 are part of Imperial family
 		// Faction 1 - Space Marine
+			/* TODO - add the right faction stuff, and move the "switch (man_role) {" before uncommenting
+			case "Chapter Servitor":
+				obj_ini.wep1[target_company][good] = "Combat Knife"; TODO - consider creating a melee mechadendrite instead?
+				obj_ini.wep2[target_company][good] = "";
+				obj_ini.armour[target_company][good] = "Scout Armour";
+				obj_ini.mobi[target_company][good] = "Servo-arm";
+				obj_ini.race[target_company][good] = 1;
+				unit = new TTRPG_stats("astartes", target_company, good, "scout");
+				break;
+			*/
+			/* TODO - add "neophyte" in scr_marine_struct
+			case "Neophyte":
+				obj_ini.wep1[target_company][good] = "Bolt Pistol";
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Scout Armour";
+				obj_ini.race[target_company][good] = 1;
+				unit = new TTRPG_stats("astartes", target_company, good, "scout");
+				break;
+			*/
+			/* TODO - add "serf" and the related stuff
+			case "Serf":
+				obj_ini.wep1[target_company][good] = "Bolt Pistol";
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Scout Armour";
+				obj_ini.race[target_company][good] = 1;
+				unit = new TTRPG_stats("astartes", target_company, good, "scout");
+				break;
+			*/
+		// Bit funny that CSMs are not 1.5...
 		// Faction 2 - Homo Sapiens Imperialis
+			/* TODO - add regular human stats, in scr_marine_struct
+			case "Mercenary":
+				obj_ini.wep1[target_company][good] = "Hellgun"; TODO - consider weapon options
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Scout Armour"; TODO - add imperial armour
+				obj_ini.experience[target_company][good] = 10;
+				obj_ini.race[target_company][good] = 2;
+				unit = new TTRPG_stats("astartes", target_company, good, "scout"); TODO - add regular human stat lines
+				break;
+			*/
+			// Might want to add Kasrkin and Ogryn hireling types
+		// Faction 2.5 - Renegades
+			/*
+			case "Auxiliary Soldier":
+				obj_ini.wep1[target_company][good] = "Hellgun"; TODO - consider weapon options
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Scout Armour"; TODO - add imperial armour
+				obj_ini.experience[target_company][good] = 10;
+				obj_ini.race[target_company][good] = 2.5;
+				unit = new TTRPG_stats("renegades", target_company, good, "human"); TODO - add proper stat lines
+				break;
+			*/
 		// Faction 3 - Adeptus Mechanicus
 			switch (man_role) {
 			case "Skitarii":
 				obj_ini.wep1[target_company][good] = "Hellgun";
-				obj_ini.wep2[target_company][good] = ""; // Consider giving the poor fellow a "Combat Knife" or other melee weapon
+				obj_ini.wep2[target_company][good] = "Combat Knife"; // I should consider implementing a "Light Combat Knife", which is human-sized
 				obj_ini.armour[target_company][good] = "Skitarii Armour";
 				obj_ini.experience[target_company][good] = 10;
 				obj_ini.race[target_company][good] = 3;
@@ -56,15 +107,29 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.race[target_company][good] = 3;
 				unit = new TTRPG_stats("mechanicus", target_company, good, "tech_priest");
 				break
+		// Faction 3.5 - Dark mechanicum?
 		// Faction 4 - Inquisition
 			case "Crusader":
 				obj_ini.wep1[target_company][good] = "Power Sword";
-				obj_ini.armuor[target_company][good] = "Power Armour"; // Might want to create "Light Power Armour" that is suited for squishy humans
-				obj_ini.gear[target_company][good] = "Storm Shield";
+				obj_ini.wep2[target_company][good] = "";
+				obj_ini.armour[target_company][good] = "Power Armour"; // Might want to create "Light Power Armour" that is suited for squishy humans
+				obj_ini.gear[target_company][good] = "Combat Shield";
 				obj_ini.experience[target_company][good] = 10;
 				obj_ini.race[target_company][good] = 4;
 				unit = new TTRPG_stats("inquisition", target_company, good, "inquisition_crusader");
 				break;
+			/* TODO - add capability for hirelings to have psychic powers and related stats
+			case "Sanctioned Psyker":
+				obj_ini.wep1[target_company][good] = "Force Staff"; TODO - consider adding regular human version
+				obj_ini.wep2[target_company][good] = "Laspistol";
+				obj_ini.armuor[target_company][good] = "Power Armour"; TODO - consider adding imperial armour
+				obj_ini.gear[target_company][good] = "Psychic Hood"; TODO - consider adding regular human version
+				obj_ini.experience[target_company][good] = 50;
+				obj_ini.race[target_company][good] = 4;
+				unit = new TTRPG_stats("inquisition", target_company, good, "sanctioned_psyker"); TODO - add proper stat lines
+				break;
+			*/
+		// Faction 4.5 - Radical inquisitors, perhaps?
 		// Faction 5 - Sisters of Battle
 			case "Sister of Battle":
 				obj_ini.wep1[target_company][good] = "Bolter"; // Might want to create a "Light Bolter" variant for this one
@@ -83,6 +148,18 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.race[target_company][good] = 5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_hospitaler");
 				break;
+			/* TODO - if we get to recruiting allied or other leaders, lot of stuff needs to be implemented
+			case "Prioress":
+				obj_ini.wep1[target_company][good] = "Bolter"; TODO - give a cool weapon
+				obj_ini.wep2[target_company][good] = "Sarissa"; TODO - same
+				obj_ini.armour[target_company][good] = "Power Armour"; TODO - Give cool armour
+				obj_ini.experience[target_company][good] = 200;
+				obj_ini.gear[target_company][good] = "Sororitas Medkit"; TODO - give cool gear
+				obj_ini.race[target_company][good] = 5;
+				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "prioress");
+				break;
+			*/
+		// Faction 5.5 - Fallen sisters?
 	// End of Imperials
 		// Faction 6 - Eldar
 			case "Ranger":
@@ -91,13 +168,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.armour[target_company][good] = ""; // I should add "Eldar Armour" to the fellow too
 				obj_ini.experience[target_company][good] = 80;
 				obj_ini.race[target_company][good] = 6
-				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger");
+				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger"); // TODO - add aeldari religion in relevant gml files
 				break;
+		// Faction 6.5 - Dark Eldar?
 		// Faction 7 - Orks
 			case "Ork Sniper":
 				obj_ini.wep1[target_company][good] = "Sniper Rifle";
 				obj_ini.wep2[target_company][good] = "Choppa";
-				obj_ini.armour[target_company][good] = ""; // Consider giving "Ork Armour" to the fellow
+				obj_ini.armour[target_company][good] = "Ork Armour";
 				obj_ini.experience[target_company][good] = 20;
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "ork_Sniper");
@@ -110,11 +188,50 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "flash_git");
 				break;
-		// Faction 8 - T'au 
+			/* TODO - up for consideration of recruiting faction leaders
+			case "Warboss":
+				break;
+			*/
+		// Faction 8 - T'au
+			/* TODO - add T'au into the scr_marine_struct
+			case "Fire Warrior":
+				obj_ini.wep1[target_company][good] = "Plasma Rifle"; TODO - create plasma rifle in scr_weapon
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Fire Warrior Armour"; TODO - add it to scr_weapon
+				obj_ini.race[target_company][good] = 8;
+				unit = new TTRPG_stats("tau", target_company, good, "fire_warrior");
+				break;
+			*/
 		// Faction 9 - Tyranids
 		// Faction 10 - Heretics, regular traitors, ex-imperials
+			/* TODO - add chaos-aligned human stat lines in scr_add_man
+			case "Chaos Cultist":
+				obj_ini.wep1[target_company][good] = "Autogun"; TODO - add "Autogun" to scr_weapon
+				obj_ini.wep2[target_company][good] = "Combat Knife";
+				obj_ini.armour[target_company][good] = "Scout Armour"; TODO - add regular human armour to scr_weapon
+				obj_ini.race[target_company][good] = 10;
+				unit = new TTRPG_stats("heretics", target_company, good, "chaos_cultist"); TODO - check if faction names are correct
+				break;
+			*/
 		// Faction 11 - Chaos Space Marines
+			/* TODO - add CSM stat lines in scr_add_man
+			case "Chaos Champion":
+				obj_ini.wep1[target_company][good] = "Power Sword"; 
+				obj_ini.wep2[target_company][good] = "Plasma Pistol";
+				obj_ini.armour[target_company][good] = "Power Armour";
+				obj_ini.race[target_company][good] = 11;
+				unit = new TTRPG_stats("csm", target_company, good, "chaos_champion"); TODO - check if faction names are correct
+				break;
+			*/
 		// Faction 12 - Daemons
+			/* TODO - add daemon stat lines to the scr_add_man, randomization galore, I'm sure
+			case "Chaos Spawn":
+				obj_ini.wep1[target_company][good] = "Possessed Claws"; TODO - add to scr_weapon
+				obj_ini.armour[target_company][good] = "Chaos Armour"; TODO - consider about the proper name and add to scr_weapon
+				obj_ini.race[target_company][good] = 12;
+				unit = new TTRPG_stats("daemons", target_company, good, "chaos_spawn"); TODO - check if faction names are correct
+				break;
+			*/
 		// Faction 13 - Necrons
 			}
 		}
