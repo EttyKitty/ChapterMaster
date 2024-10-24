@@ -56,7 +56,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.text="My lord, your battle brothers have located several precious minerals and supplies within the ancient ruins.  Everything was taken and returned to the ship, granting "+string(reqi)+" Requisition.";
 	}
 	else if (loot="artifact"){
-	    var last_artifact = scr_add_artifact("random","random",4,loc,sihd+500);
+        var last_artifact = scr_add_artifact("random", "random", 4, planet, sihd + 500);
     
 	    scr_event_log("","Artifact recovered from Ancient Ruins.");
 	    var pop=instance_create(0,0,obj_popup);
