@@ -129,7 +129,8 @@ if (post_equipment_lost[1]!=""){
 if (total_battle_exp_gain>0){
     newline=" ";
     scr_newtext();
-    newline = $"Marines gained a total of {total_battle_exp_gain} experience";
+
+    newline = $"Marines gained on average {average_battle_exp_gain} experience.";
     scr_newtext();
 }
 if (ground_mission){
