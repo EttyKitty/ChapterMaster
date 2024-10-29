@@ -39,10 +39,18 @@ if (obj_controller.fest_type="Great Feast"){
     }
     
     
-    if (obj_controller.fest_feature2=1){
-        var boozer_type;boozer_type=1;
-        if (global.chapter_name="Space Wolves") or (obj_ini.progenitor=3) then boozer_type=2;
-        if (global.chapter_name="Blood Angels") or (obj_ini.progenitor=5) then boozer_type=3;
+    if (obj_controller.fest_feature2 == 1){
+        var boozer_type = 1;
+        if (
+            (global.chapter_name="Space Wolves") || (obj_ini.progenitor == PROGENITOR.SPACE_WOLVES)
+        ) {
+            boozer_type = 2;
+        }
+        if (
+            (global.chapter_name="Blood Angels") || (obj_ini.progenitor == PROGENITOR.BLOOD_ANGELS)
+        ) {
+            boozer_type = 3;
+        }
         
         if (boozer_type=1) then intro+="  Also provided is well-aged, finely distilled Amasec.";
         if (boozer_type=2) and (global.chapter_name!="Space Wolves") then intro+="  Also provided is Fenrir-imported Mjod, favored by the sons of Russ.";

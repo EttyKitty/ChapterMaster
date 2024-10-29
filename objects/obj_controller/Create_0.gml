@@ -937,7 +937,12 @@ trade_mnum[4]=0;
 // ** Sets up starting requisition **
 requisition=500;
 if (instance_exists(obj_ini)){
-    if (obj_ini.progenitor==0) /*and (obj_creation.custom=0)*/ and (global.chapter_name!="Doom Benefactors") then requisition=2000;
+    if (
+        (obj_ini.progenitor == PROGENITOR.DARK_ANGELS) &&
+        (global.chapter_name != "Doom Benefactors")
+    ) {
+        requisition=2000;
+    }
 }
 if (is_test_map==true) then requisition=50000;
 // ** Sets income **
@@ -1279,7 +1284,7 @@ trim=0;
 // ** Sets up names, progenitor, successors and mutations ** 
 adept_name="";
 recruiter_name="";
-progenitor="";
+progenitor=PROGENITOR.NONE;
 successor_chapters=0;
 mutation="";
 

@@ -209,12 +209,12 @@ function scr_purge_world(star, planet, action_type, action_score) {
 		if(scr_has_disadv("Shitty Luck")) then chance+=20;
 
 	    // Size
-	    if (action_score>5) and (action_score<=10) then siz_penalty=5;
-	    if (action_score>10) and (action_score<=20) then siz_penalty=20;
-	    if (action_score>20) and (action_score<=50) then siz_penalty=30;
-	    if (action_score>50) and (action_score<=100) then siz_penalty=50;
-	    if (action_score>100) and (action_score<=200) then siz_penalty=75;
-	    if (action_score>200) then siz_penalty=125;
+	    if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
+	    if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
+	    if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
+	    if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
+	    if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
+	    if (action_score > 200) { siz_penalty = 125; }
 
 	    // Ambushers go!
 	    if (ambush=true) then chance=round(chance/2);
@@ -224,8 +224,8 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    txt+="Once the time is right their target is ambushed "+choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
     
 		if(scr_has_disadv("Never Forgive")) then spec1=1;
-	    if (global.chapter_name="Space Wolves") or (obj_ini.progenitor=3) then spec1=3;
-	    if (global.chapter_name="Iron Hands") or (obj_ini.progenitor=6) then spec1=6;
+	    if (global.chapter_name="Space Wolves" || obj_ini.progenitor == PROGENITOR.SPACE_WOLVES) { spec1=3; }
+	    if (global.chapter_name="Iron Hands" || obj_ini.progenitor == PROGENITOR.IRON_HANDS) { spec1=6; }
 	    if (obj_ini.omophagea=1) then spec1=choose(spec1,20);
     
 	    if (spec1=1) then txt+="They are brought to the already-prepared facilities for Fallen, tortured to make "+string(choose("him","him","her"))+" appear a heretic, and then incinerated.  ";
