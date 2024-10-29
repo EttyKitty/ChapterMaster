@@ -136,6 +136,29 @@ if (!directory_exists("ErrorLogs")) {
     directory_create("ErrorLogs");
 }
 
+var _build_date = "unknown build";
+var _version = "unknown version;"
+var _version_file_path = working_directory + "\\main\\version.json";
+if (file_exists(_version_file_path)){
+    var _file = file_text_open_read(_version_file_path);
+    var _json_string = "";
+    while (!file_text_eof(_file)) {
+        _json_string += file_text_read_string(_file);
+        file_text_readln(_file);
+    }
+    file_text_close(_file);
+    var _parsed_json = json_parse(_json_string);
+    show_debug_message(_parsed_json);
+    _build_date = _parsed_json[$ "build_date"];
+    _build_date = string_replace(_build_date, "B", "");
+    _build_date = string_replace(_build_date, "BE", "");
+    _version = _parsed_json[$ "version"];
+    _version = string_replace(_version, "V", "");
+    _version = string_replace(_version, "VE", "");
+}
+
+global.build_date = _build_date;
+global.game_version = _version;
 
 /* */
 action_set_alarm(1, 3);

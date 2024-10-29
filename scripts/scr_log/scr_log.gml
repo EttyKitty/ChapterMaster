@@ -32,7 +32,7 @@ function try_and_report_loop(dev_marker="generic crash",func, turn_end=true, arg
         }
 
         var _line_break = LINE_BREAK_92;
-        var _full_message = $"{_line_break}\nGame Version: {GM_version}\n\n{_exception.longMessage}\n\nIn:\n{_exception.script}\n\nStacktrace:\n{_formatted_stacktrace}\n{_line_break}";
+        var _full_message = $"{_line_break}\nGame Version: {global.game_version}\n\n{_exception.longMessage}\n\nIn:\n{_exception.script}\n\nStacktrace:\n{_formatted_stacktrace}\n{_line_break}";
 
         log_into_file(_full_message);
         clipboard_set_text(string(_full_message));
