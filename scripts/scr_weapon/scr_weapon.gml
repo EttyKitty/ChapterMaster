@@ -1467,6 +1467,22 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["bolt"]
 	},
+	"Hand Flamer": {
+		"abbreviation": "HndFlmr",
+		"attack": {
+			"standard": 125,
+			"master_crafted": 190,
+			"artifact": 210
+		},
+		"description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 2,
+		"range": 1.1,
+		"spli": 2,
+		"arp": -1,
+		"tags": ["pistol", "flame"]
+	},
 	"Flamer": {
 		"abbreviation": "Flmr",
 		"attack": {
@@ -1481,10 +1497,10 @@ global.weapons = {
 		},
 		"description": "Blackened at the tip, this weapon unleashes a torrent of burning promethium - all the better to cleanse sin and impurity with.",
 		"melee_hands": 1,
-		"ranged_hands": 1,
+		"ranged_hands": 2,
 		"ammo": 4,
 		"range": 2.1,
-		"spli": 3,
+		"spli": 4,
 		"arp": -1,
 		"tags": ["flame"]
 	},

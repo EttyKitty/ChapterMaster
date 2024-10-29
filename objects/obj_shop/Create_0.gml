@@ -380,6 +380,12 @@ if (shop = "equipment") {
         item_cost[i] = 0;
     }
     i += 1;
+    item[i] = "Hand Flamer";
+    forge_cost[i] = 75;
+    if (research.flame[0]<1) then forge_cost[i] = 0;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 12;
+    i += 1;
     item[i] = "Flamer";
     forge_cost[i] = 150;
     if (research.flame[0]<1) then forge_cost[i] = 0;
