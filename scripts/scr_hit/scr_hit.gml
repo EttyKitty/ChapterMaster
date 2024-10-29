@@ -27,7 +27,7 @@ function point_and_click(rect) {
 	}
 
 	if (controller_exist && obj_controller.cooldown > 0) {
-		show_debug_message("point_and_click: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
+		// show_debug_message("point_and_click: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
 		return false;
 	}
 

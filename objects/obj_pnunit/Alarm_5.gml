@@ -7,7 +7,7 @@ if (obj_ncombat.defeat=0){
         if (is_struct(unit)){
             if (marine_dead[i]=0) and (obj_ncombat.player_max<obj_ncombat.enemy_max) and (ally[i]==false){
                 new_exp=0;
-                cur_exp=unit.experience();
+                cur_exp=unit.experience;
                 if (cur_exp>=40) then new_exp+=choose(0,0,1);
                 if (cur_exp>=20) and (cur_exp<40) then new_exp+=choose(0,1);
                 if (cur_exp<20) then new_exp+=1;

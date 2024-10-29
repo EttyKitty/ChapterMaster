@@ -72,12 +72,12 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 			for (i = 0; i < array_length(squad.members);i++){
 				if (i==0){
 					exp_unit = fetch_unit(squad.members[0]);
-					highest_exp = exp_unit.experience();
+					highest_exp = exp_unit.experience;
 					continue;
 				}
 				unit = fetch_unit(squad.members[i]);
-				if (unit.experience() > highest_exp){
-					highest_exp = unit.experience();
+				if (unit.experience > highest_exp){
+					highest_exp = unit.experience;
 					exp_unit = unit;
 				};
 			}
@@ -330,8 +330,8 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				i--;
 				continue;
 			}			
-			if (unit.experience() > highest_exp){
-				highest_exp = unit.experience();
+			if (unit.experience > highest_exp){
+				highest_exp = unit.experience;
 				exp_unit = unit;
 			};
 		}
@@ -538,7 +538,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 						}
 					}
 				}else if (hierarchy[leader_hier_pos]==unit.role()){
-					if (obj_ini.TTRPG[leader[0]][leader[1]].experience()<unit.experience()){
+					if (obj_ini.TTRPG[leader[0]][leader[1]].experience<unit.experience){
 						leader=[unit.company, unit.marine_number];
 					}
 				}else{

@@ -28,7 +28,6 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 		obj_ini.wep1[target_company][good] = "";
 		obj_ini.wep2[target_company][good] = "";
 		obj_ini.armour[target_company][good] = "";
-		obj_ini.experience[target_company][good] = spawn_exp;
 		obj_ini.spe[target_company][good] = "";
 		obj_ini.god[target_company][good] = 0;
 
@@ -42,7 +41,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Hellgun";
 				obj_ini.wep2[target_company][good] = ""; // Consider giving the poor fellow a "Combat Knife" or other melee weapon
 				obj_ini.armour[target_company][good] = "Skitarii Armour";
-				obj_ini.experience[target_company][good] = 10;
+				spawn_exp = 10;
 				obj_ini.race[target_company][good] = 3;
 				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii");
 				break;
@@ -52,7 +51,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.armour[target_company][good] = "Dragon Scales";
 				obj_ini.gear[target_company][good] = "";
 				obj_ini.mobi[target_company][good] = "Servo-arm";
-				obj_ini.experience[target_company][good] = 100;
+				spawn_exp = 100;
 				obj_ini.race[target_company][good] = 3;
 				unit = new TTRPG_stats("mechanicus", target_company, good, "tech_priest");
 				break
@@ -61,7 +60,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Power Sword";
 				obj_ini.armuor[target_company][good] = "Power Armour"; // Might want to create "Light Power Armour" that is suited for squishy humans
 				obj_ini.gear[target_company][good] = "Storm Shield";
-				obj_ini.experience[target_company][good] = 10;
+				spawn_exp = 10;
 				obj_ini.race[target_company][good] = 4;
 				unit = new TTRPG_stats("inquisition", target_company, good, "inquisition_crusader");
 				break;
@@ -70,7 +69,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Bolter"; // Might want to create a "Light Bolter" variant for this one
 				obj_ini.wep2[target_company][good] = "Sarissa";
 				obj_ini.armour[target_company][good] = "Power Armour"; // Same here, Sororitas are glorified guard
-				obj_ini.experience[target_company][good] = 60;
+				spawn_exp = 60;
 				obj_ini.race[target_company][good] = 5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_of_battle");
 				break;
@@ -78,7 +77,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Bolter"; // Same here
 				obj_ini.wep2[target_company][good] = "Sarissa";
 				obj_ini.armour[target_company][good] = "Power Armour"; // Same here
-				obj_ini.experience[target_company][good] = 100;
+				spawn_exp = 100;
 				obj_ini.gear[target_company][good] = "Sororitas Medkit";
 				obj_ini.race[target_company][good] = 5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_hospitaler");
@@ -89,7 +88,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Ranger Long Rifle";
 				obj_ini.wep2[target_company][good] = "Shuriken Pistol";
 				obj_ini.armour[target_company][good] = ""; // I should add "Eldar Armour" to the fellow too
-				obj_ini.experience[target_company][good] = 80;
+				spawn_exp = 80;
 				obj_ini.race[target_company][good] = 6
 				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger");
 				break;
@@ -98,7 +97,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Sniper Rifle";
 				obj_ini.wep2[target_company][good] = "Choppa";
 				obj_ini.armour[target_company][good] = ""; // Consider giving "Ork Armour" to the fellow
-				obj_ini.experience[target_company][good] = 20;
+				spawn_exp = 20;
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "ork_Sniper");
 				break;
@@ -106,7 +105,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				obj_ini.wep1[target_company][good] = "Snazzgun";
 				obj_ini.wep2[target_company][good] = "Choppa";
 				obj_ini.armour[target_company][good] = "Ork Armour";
-				obj_ini.experience[target_company][good] = 40;
+				spawn_exp = 40;
 				obj_ini.race[target_company][good] = 7;
 				unit = new TTRPG_stats("ork", target_company, good, "flash_git");
 				break;
@@ -249,7 +248,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 			marines += 1;
 		}
 		obj_ini.TTRPG[target_company][good] = unit;
-
+		unit.add_exp(spawn_exp);
 		unit.allocate_unit_to_fresh_spawn(home_spot);
 		with(obj_ini) {
 			scr_company_order(target_company);

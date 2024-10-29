@@ -233,30 +233,27 @@ function scr_load(save_part, save_id) {
 		obj_ini.equipment_number=return_json_from_ini("Ini",$"equipment_number", array_create(200,""))
 		obj_ini.equipment_condition=return_json_from_ini("Ini",$"equipment_condition",array_create(200,""))
 		obj_ini.equipment_quality = return_json_from_ini("Ini", $"equipment_quality", array_create(200,""))
-	    var g=-1;
-	    repeat(150){g+=1;
 
-			for (g=0; g<array_length(obj_ini.artifact); g++){
-	        	obj_ini.artifact[g]=ini_read_string("Ini","artifact"+string(g),"");
-	            obj_ini.artifact_tags[g]=ini_read_string("Ini","artifact_tags"+string(g),"");
-		        if (obj_ini.artifact_tags[g] != ""){
-		        	obj_ini.artifact_tags[g] = json_parse(base64_decode(obj_ini.artifact_tags[g]));
-		        } else {
-		        	obj_ini.artifact_tags[g] = [];
-		        }
-	            obj_ini.artifact_identified[g]=ini_read_real("Ini","artifact_ident"+string(g),0);
-	            obj_ini.artifact_condition[g]=ini_read_real("Ini","artifact_condition"+string(g),0);
-	            obj_ini.artifact_loc[g]=ini_read_string("Ini","artifact_loc"+string(g),"");
-	            obj_ini.artifact_sid[g]=ini_read_real("Ini","artifact_sid"+string(g),0);
-	            obj_ini.artifact_equipped[g]=ini_read_real("Ini","artifact_equipped"+string(g),0);
-	            obj_ini.artifact_quality[g]=ini_read_string("Ini","artifact_quality"+string(g),"artifact");
-	            obj_ini.artifact_struct[g] = new ArtifactStruct(g);
-	            var temp_data = ini_read_string("Ini","artifact_struct"+string(g),"");
-	            if (temp_data!=""){
-    	            obj_ini.artifact_struct[g].load_json_data(json_parse(base64_decode(temp_data)));
-    	        }
-	        }
-	    }
+		for (var g=0; g<array_length(obj_ini.artifact); g++){
+			obj_ini.artifact[g]=ini_read_string("Ini","artifact"+string(g),"");
+			obj_ini.artifact_tags[g]=ini_read_string("Ini","artifact_tags"+string(g),"");
+			if (obj_ini.artifact_tags[g] != ""){
+				obj_ini.artifact_tags[g] = json_parse(base64_decode(obj_ini.artifact_tags[g]));
+			} else {
+				obj_ini.artifact_tags[g] = [];
+			}
+			obj_ini.artifact_identified[g]=ini_read_real("Ini","artifact_ident"+string(g),0);
+			obj_ini.artifact_condition[g]=ini_read_real("Ini","artifact_condition"+string(g),0);
+			obj_ini.artifact_loc[g]=ini_read_string("Ini","artifact_loc"+string(g),"");
+			obj_ini.artifact_sid[g]=ini_read_real("Ini","artifact_sid"+string(g),0);
+			obj_ini.artifact_equipped[g]=ini_read_real("Ini","artifact_equipped"+string(g),0);
+			obj_ini.artifact_quality[g]=ini_read_string("Ini","artifact_quality"+string(g),"artifact");
+			obj_ini.artifact_struct[g] = new ArtifactStruct(g);
+			var temp_data = ini_read_string("Ini","artifact_struct"+string(g),"");
+			if (temp_data!=""){
+				obj_ini.artifact_struct[g].load_json_data(json_parse(base64_decode(temp_data)));
+			}
+		}
 	    //
 	    obj_ini.ship_location[0]="";
 
@@ -394,7 +391,6 @@ function scr_load(save_part, save_id) {
                     obj_ini.gear[coh,mah]=ini_read_string("Mar","ge"+string(coh)+"."+string(mah),"");
                     obj_ini.mobi[coh,mah]=ini_read_string("Mar","mb"+string(coh)+"."+string(mah),"");
 
-                    obj_ini.experience[coh,mah]=ini_read_real("Mar","exp"+string(coh)+"."+string(mah),0);
                     obj_ini.age[coh,mah]=ini_read_real("Mar","ag"+string(coh)+"."+string(mah),0);
                     obj_ini.spe[coh,mah]=ini_read_string("Mar","spe"+string(coh)+"."+string(mah),"");
                     obj_ini.god[coh,mah]=ini_read_real("Mar","god"+string(coh)+"."+string(mah),0);

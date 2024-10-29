@@ -307,7 +307,7 @@ function scr_ui_manage() {
         	var armour = selected_unit.armour();
 	        if (armour!=""){
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("armour", true));
-	        	tooltip_text += cn.temp[103];
+                tooltip_text = cn.temp[103];
 	        	x1 = x_left;
 	        	y1 = yy+216;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
@@ -503,7 +503,7 @@ function scr_ui_manage() {
 							}
 						}
         		var_text = string_hash_to_newline(string("Damage Resistance: {0}",cn.temp[118]))
-	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#XP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience()/10)));
+	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#XP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
 	        	x1 = x_left;
 	        	y1 = yy+378;
 	        	x2 = x1+string_width(var_text);

@@ -277,6 +277,7 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 function group_selection(group, selection_data){
 	var unit, s, unit_location;
 	obj_controller.selection_data = selection_data;
+	set_zoom_to_defualt();
 	with (obj_controller){
             menu=1;
             onceh=1;

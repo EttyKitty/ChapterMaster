@@ -8,39 +8,60 @@ function set_fleet_target(targ_x, targ_y, final_target){
 	action_eta=floor(point_distance(x,y,targ_x,targ_y)/128)+1;
 }
 
-function scr_valid_fleet_target(){
-	if (target==noone) then return false;
-	if (is_string(target)){
-		target=noone;
-		return false;
-	}
-	var valid = instance_exists(target);
-	if (valid){
-		valid = (target.object_index == obj_p_fleet || target.object_index == obj_en_fleet);
-	}
-	if (!valid) then target=0;
-	return valid;
+function scr_valid_fleet_target(target) {
+    if (target == noone) {
+        return false;
+    }
+    if (is_string(target)) {
+        target = noone;
+        return false;
+    }
+    var valid = instance_exists(target);
+    if (valid) {
+        valid = (target.object_index == obj_p_fleet || target.object_index == obj_en_fleet);
+    }
+    return valid;
 }
 
-function fleets_next_location(fleet="none"){
-	var targ_location ="none";
-	scr_valid_fleet_target();
-	if (fleet=="none"){
-		if (action!=""){
-	        var goal_x=action_x;
-	        var goal_y=action_y;
-	        targ_location=instance_nearest(goal_x,goal_y,obj_star);
-		} else {
-			targ_location=instance_nearest(x,y,obj_star);
-		}		
-	} else if (instance_exists(fleet)){
-		with (fleet){
-			targ_location = fleets_next_location();
-		}
-	}
-	return targ_location;
+function fleets_next_location(fleet = "none", visited = []) {
+    var targ_location = "none";
+
+    if (fleet == "none") {
+        fleet = self;
+    }
+
+    if (instance_exists(fleet)) {
+        // Add the current fleet's ID to the visited list to avoid rechecking it
+        array_push(visited, fleet.id);
+
+        // Check if the fleet has a 'target' variable
+        if (variable_instance_exists(fleet, "target")) {
+            // If the target is valid and not already in the visited list, proceed recursively
+            var fleet_target_valid = scr_valid_fleet_target(fleet.target);
+            if (!fleet_target_valid) {
+                fleet.target = 0;
+            }
+            if (fleet_target_valid && !array_contains(visited, fleet.target.id)) {
+                // Recursive call with the target and the updated visited list
+                targ_location = fleets_next_location(fleet.target, visited);
+            } else if (fleet.action != "") {
+                // If no valid target, use the fleet's action coordinates
+                targ_location = instance_nearest(fleet.action_x, fleet.action_y, obj_star);
+            } else {
+                // Default to nearest star to fleet's current position
+                targ_location = instance_nearest(fleet.x, fleet.y, obj_star);
+            }
+        }
+    }
+    // If targ_location was not set to anything else, default to the nearest star
+    if (targ_location == "none") {
+        targ_location = instance_nearest(fleet.x, fleet.y, obj_star);
+    }
+    return targ_location;
 }
-function chase_fleet_target_set(){
+
+
+function chase_fleet_target_set(target){
 	var targ_location = fleets_next_location(target);
 	if (targ_location!="none"){
 		action_x=targ_location.x;

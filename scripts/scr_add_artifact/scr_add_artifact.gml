@@ -398,5 +398,8 @@ function delete_artifact(index){
 	        artifact_struct[index]=new ArtifactStruct(index);
 		}
 		obj_controller.artifacts-=1;
+		with (obj_controller) {
+            set_chapter_arti_data();
+        }
 	}
 }

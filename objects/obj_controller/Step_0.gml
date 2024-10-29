@@ -316,7 +316,7 @@ if (menu==1 && (managing>0 || managing<0)){
             }                                      
             //if (string_count("&",temp[106])>0) then temp[106]=clean_tags(temp[106]);
             // Experience
-            temp[113]=string(floor(unit.experience()));
+            temp[113]=string(floor(unit.experience));
             // Bonuses
             temp[119]="";
             if (string_length(unit.specials())>0){

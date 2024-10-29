@@ -87,7 +87,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
             if (unit.hp()>0){
                 
                 // Bonuses
-                difficulty+=unit.experience()/20;
+                difficulty+=unit.experience/20;
                 difficulty+=(1-(target.hp/target.maxhp))*33;
                 //TODO define tag for bording weapons
                 if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_one())) then difficulty+=3;
@@ -317,7 +317,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 co=origin.board_co[o];
                 i=origin.board_id[o];               
                 unit = obj_ini.TTRPG[co][i];
-                unit_exp=unit.experience()                
+                unit_exp=unit.experience                
                 exp_roll=irandom(150+unit_exp)+1;
                 if (exp_roll>=unit_exp){
                     if (unit_exp<50){new_exp=experience

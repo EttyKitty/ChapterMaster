@@ -1,6 +1,6 @@
 function scr_company_load(ship_loc) {
     // load all ships at a particular location.
-
+    with (obj_controller){
     reset_ship_manage_arrays();
 
     var ships = array_length(obj_ini.ship);
@@ -20,5 +20,6 @@ function scr_company_load(ship_loc) {
     ship_current = 0;
     ship_max = array_length(sh_ide);
     ship_see = 30;
+    }
 
 }

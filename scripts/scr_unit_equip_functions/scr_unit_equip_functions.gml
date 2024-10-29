@@ -56,7 +56,7 @@ function scr_update_unit_armour(new_armour, from_armoury=true, to_armoury=true, 
 	  	if (from_armoury && new_armour!="" && !arti && is_struct(_new_armour_data)){
 	  		if (scr_item_count(new_armour,quality)>0){
 				var exp_require = _new_armour_data.req_exp;
-	  			if (exp_require>experience()){
+	  			if (exp_require>experience){
 	  				return "exp_low";
 	  			} 	  			
 		   		quality=scr_add_item(new_armour,-1,quality);
@@ -209,7 +209,7 @@ function scr_update_unit_gear(new_gear,from_armoury=true, to_armoury=true, quali
   	if (from_armoury) and (new_gear!="") and (!arti){
   		if (scr_item_count(new_gear,quality)>0){
 			var exp_require = gear_weapon_data("gear", new_gear, "req_exp", false, quality);
-  			if (exp_require>experience()){
+  			if (exp_require>experience){
   				return "exp_low";
   			}
 	   		quality=scr_add_item(new_gear,-1, quality);
@@ -273,7 +273,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
   	if (from_armoury && new_mobility_item!="" && !arti){
   		if (scr_item_count(new_mobility_item, quality)>0){
 			var exp_require = gear_weapon_data("weapon", new_mobility_item, "req_exp", false, quality);
-  			if (exp_require>experience()){
+  			if (exp_require>experience){
   				return "exp_low";
   			} 	  				  			
 	   		quality=scr_add_item(new_mobility_item,-1, quality);

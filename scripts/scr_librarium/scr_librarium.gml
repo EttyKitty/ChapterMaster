@@ -88,8 +88,16 @@ function scr_librarium(){
         draw_set_halign(fa_center);
         identifiable = 0;
         if (artifacts > 0) {
-            var current_artifact = menu_artifact + 1;
-            draw_text(xx + 622, yy + 440, string_hash_to_newline("[Artifact " + string(current_artifact) + " of " + string(artifacts) + "]"));
+            var usey =0;
+            for (var i = 0, ilen = array_length(obj_ini.artifact); i < ilen; i++) {
+                if (obj_ini.artifact[i]!="") {
+                    usey++;
+                }
+                if (i == menu_artifact) {
+                    break;
+                }
+            }
+            draw_text(xx + 622, yy + 440, $"[Artifact {usey} of {artifacts}]");
 
             if scr_hit(xx + 326 + 16, yy + 426, xx + 887 + 16, yy + 818) {
                 var arrow_hovered = false;
@@ -107,14 +115,26 @@ function scr_librarium(){
 
                 if (scroll_engaged) {
                     artifact_namer.allow_input=false;
-                    identifiable=0;
+                    identifiable=false;
                     artifact_equip = new ShutterButton();
                     artifact_gift = new ShutterButton();
                     artifact_destroy = new ShutterButton();
-                    if (menu_artifact > 0){     	
+                    var done = false;
+                    while (menu_artifact > 0) {
                         menu_artifact--;
-                    } else if (menu_artifact == 0){
-                        menu_artifact = artifacts - 1;
+                        if (obj_ini.artifact[menu_artifact] != "") {
+                            done = true;
+                            break;
+                        }
+                    }
+                    if (!done and menu_artifact <= 0) {
+                        // we didn't find a lower artifact to goto, so we find the highest
+                        for (var i = array_length(obj_ini.artifact) - 1; i >= 0; i--) {
+                            if (obj_ini.artifact[i] != "") {
+                                menu_artifact = i;
+                                break;
+                            }
+                        }
                     }
                 }
                 if (arrow_hovered) {
@@ -139,11 +159,24 @@ function scr_librarium(){
                     identifiable=0;
                     artifact_equip = new ShutterButton();
                     artifact_gift = new ShutterButton();
-                    artifact_destroy = new ShutterButton();           	
-                    if (menu_artifact < artifacts - 1){
-                        menu_artifact++;;
-                    } else if (menu_artifact == artifacts - 1){
-                        menu_artifact = 0;
+                    artifact_destroy = new ShutterButton();
+                    var max_index = array_length(obj_ini.artifact) - 1;
+                    var done = false;
+                    while (menu_artifact < max_index) {
+                        menu_artifact++;
+                        if (obj_ini.artifact[menu_artifact] != "") {
+                            done = true;
+                            break;
+                        }
+                    }
+                    if (!done and menu_artifact >= max_index) {
+                        // we didn't find a higher artifact to goto, so we find the lowest
+                        for (var i = 0, ilen = array_length(obj_ini.artifact); i < ilen; i++) {
+                            if (obj_ini.artifact[i] != "") {
+                                menu_artifact = i;
+                                break;
+                            }
+                        }
                     }
                 }
                 if (arrow_hovered) {
@@ -238,7 +271,6 @@ function scr_librarium(){
                         }                   
                     }
                     if (artifact_destroy.draw_shutter(xx + 765, yy + 770, "DESTROY", 0.3, true)){
-                        var fun=irandom(100)+1;
                         // Below here cleans up the artifacts
 
                         if (menu_artifact==fest_display) then fest_display=0;
@@ -246,21 +278,21 @@ function scr_librarium(){
                         cur_arti.destroy_arti();
 
                         //TODO centralise into function
-                        for (var e = 0; e < array_length(obj_controller.recent_keyword); e++){
-                            if (obj_ini.artifact_tags[menu_artifact]==obj_controller.recent_keyword[e]){
-                                with (obj_controller){
+                        for (var e = 0, elen = array_length(obj_controller.recent_keyword); e < elen; e++) {
+                            if (obj_ini.artifact_tags[menu_artifact] == obj_controller.recent_keyword[e]) {
+                                with (obj_controller) {
                                     array_delete(recent_keyword, e, 1);
                                     array_delete(recent_type, e, 1);
                                     array_delete(recent_turn, e, 1);
                                     array_delete(recent_number, e, 1);
                                 }
-                                scr_recent("artifact_destroyed",obj_controller.recent_keyword,2);
-                                scr_recent("","",0);
+                                scr_recent("artifact_destroyed", obj_controller.recent_keyword,2);
+                                scr_recent("", "", 0);
                                 break;
                             }
                         }
-                        delete_artifact(menu_artifact);                           
-                        set_chapter_arti_data();      
+                        delete_artifact(menu_artifact);
+                        set_chapter_arti_data();
                     }
                     var base_type = cur_arti.determine_base_type();
                     if (arti_data && base_type!="device"){

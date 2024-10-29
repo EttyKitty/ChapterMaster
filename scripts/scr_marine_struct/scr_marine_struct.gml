@@ -697,19 +697,17 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			aspirant_trial : obj_ini.recruit_trial			
 		};
 	}
-	static experience =  function(){
-		return obj_ini.experience[company][marine_number];
-	}//get exp
+	experience = 0;
 	turn_stat_gains = {};
 
 	static update_exp = function(new_val){
-		obj_ini.experience[company][marine_number] = new_val
+		experience = new_val
 	}//change exp
 
 	static add_exp = function(add_val){
 		var instace_stat_point_gains = {};
 		stat_point_exp_marker += add_val;
-		obj_ini.experience[company][marine_number] += add_val;
+		experience += add_val;
 		if (base_group == "astartes"){
 			while (stat_point_exp_marker>=15){
 				var stat_gains = choose("weapon_skill", "ballistic_skill", "wisdom");
@@ -829,7 +827,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		var new_health;
 		if (apoth){
 			if (base_group == "astartes"){
-				if (gene_seed_mutations[$ "ossmodula"]==1){
+				if (gene_seed_mutations[$ "ossmodula"]){
 					health_portion=6;
 				}else{
 					health_portion=4;
@@ -840,7 +838,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		} else {
 			if (base_group == "astartes"){
 				health_portion = 8;
-				if (gene_seed_mutations[$ "ossmodula"]==1){
+				if (gene_seed_mutations[$ "ossmodula"]){
 					health_portion = 10;
 				}
 			}
@@ -849,9 +847,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		if (new_health>m_health) then new_health=m_health;
 		update_health(new_health);	
 	}
-	 static update_health = function(new_health){
-	    unit_health = new_health;
-	 };
+	static update_health = function(new_health){
+		unit_health = min(new_health, max_health());
+	};
 
 	 static hp_portion = function(){
 	 	return (hp()/max_health());
@@ -1616,7 +1614,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		qual_string = quality;
 		if (scr_item_count(new_weapon, quality)>0){
 			var exp_require = gear_weapon_data("weapon", new_weapon, "req_exp", false, quality);
-				if (exp_require>experience()){
+				if (exp_require>experience){
 					viable = false;
 					qual_string = "exp_low";
 				}  			
@@ -1675,7 +1673,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			damage_res+=get_mobility_data("damage_resistance_mod");
 			damage_res+=get_weapon_one_data("damage_resistance_mod");
 			damage_res+=get_weapon_two_data("damage_resistance_mod");			
-			damage_res = min(75, damage_res+floor(((constitution*0.005) + (experience()/1000))*100));
+			damage_res = min(75, damage_res+floor(((constitution*0.005) + (experience/1000))*100));
 			return damage_res;
 		};
 
@@ -1736,9 +1734,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		static ranged_attack = function(weapon_slot=0){
 			encumbered_ranged=false;			
 			//base modifyer based on unit skill set
-			ranged_att = 100*(((ballistic_skill/50) + (dexterity/400)+ (experience()/500)));
+			ranged_att = 100*(((ballistic_skill/50) + (dexterity/400)+ (experience/500)));
 			var final_range_attack=0;
-			var explanation_string = $"Stat Mod: x{ranged_att/100}#  BS: x{ballistic_skill/50}#  DEX: x{dexterity/400}#  EXP: x{experience()/500}#";
+			var explanation_string = $"Stat Mod: x{ranged_att/100}#  BS: x{ballistic_skill/50}#  DEX: x{dexterity/400}#  EXP: x{experience/500}#";
 			//determine capavbility to weild bulky weapons
 			var carry_data =ranged_hands_limit();
 
@@ -1905,11 +1903,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}		
 		static melee_attack = function(weapon_slot=0){
 			encumbered_melee=false;
-			melee_att = 100*(((weapon_skill/100) * (strength/20)) + (experience()/1000)+0.1);
+			melee_att = 100*(((weapon_skill/100) * (strength/20)) + (experience/1000)+0.1);
 			var explanation_string = string_concat("#Stats: ", format_number_with_sign(round(((melee_att/100)-1)*100)), "%#");
 			explanation_string += "  Base: +10%#";
 			explanation_string += string_concat("  WSxSTR: ", format_number_with_sign(round((((weapon_skill/100)*(strength/20))-1)*100)), "%#");
-			explanation_string += string_concat("  EXP: ", format_number_with_sign(round((experience()/1000)*100)), "%#");
+			explanation_string += string_concat("  EXP: ", format_number_with_sign(round((experience/1000)*100)), "%#");
 
 			melee_carrying = melee_hands_limit();
 			var _wep1 = get_weapon_one_data();
@@ -1968,9 +1966,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
 			if IsSpecialist("libs") or has_trait("warp_touched"){
 				if (primary_weapon.has_tag("force") ||_wep2.has_tag("force")){
-					var force_modifier = (((weapon_skill/100) * (psionic/10) * (intelligence/10)) + (experience()/1000)+0.1);
+					var force_modifier = (((weapon_skill/100) * (psionic/10) * (intelligence/10)) + (experience/1000)+0.1);
 					primary_weapon.attack *= force_modifier;
-					basic_wep_string += $"Active Force Weapon: x{force_modifier}#  Base: 0.10#  WSxPSIxINT: x{(weapon_skill/100)*(psionic/10)*(intelligence/10)}#  EXP: x{experience()/1000}#";
+					basic_wep_string += $"Active Force Weapon: x{force_modifier}#  Base: 0.10#  WSxPSIxINT: x{(weapon_skill/100)*(psionic/10)*(intelligence/10)}#  EXP: x{experience/1000}#";
 				}		
 			};
 			explanation_string = basic_wep_string + explanation_string
@@ -2358,7 +2356,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	static assign_reactionary_traits = function() {
 		var _age = age();
-		var _exp = experience();
+		var _exp = experience;
 		var _total_score = _age + _exp;
 	
 		if (_total_score > 280){

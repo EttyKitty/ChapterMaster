@@ -68,7 +68,7 @@ function add_man_to_manage_arrays(unit){
         array_push(ma_health,unit.hp());
         array_push(ma_mobi,unit.mobility_item());
         array_push(ma_chaos,unit.corruption);
-        array_push(ma_exp,unit.experience());
+        array_push(ma_exp,unit.experience);
         array_push(ma_promote,0);
         array_push(display_unit,unit);
         array_push(ma_god,0);
@@ -325,13 +325,13 @@ function other_manage_data(){
 			else if (unit.company >= 6) then target_company = 5;
 			else if (unit.company >= 2) then target_company = 1;
 	    	var promotion_limit = company_promotion_limits[target_company]
-			if (unit.experience()>=promotion_limit && promotion_limit>0){
+			if (unit.experience>=promotion_limit && promotion_limit>0){
 	    		ma_promote[v]=1;
 	    	}
 	    	if (ma_health[v]<=10) then ma_promote[v]=10;	                	
 	    } else if  (ma_role[v]=obj_ini.role[100][5]){
 	    	var promotion_limit = company_promotion_limits[unit.company - 1]
-	    	if (unit.experience()>=promotion_limit+25 && promotion_limit>0){
+	    	if (unit.experience>=promotion_limit+25 && promotion_limit>0){
 
 	    	}
 	    }

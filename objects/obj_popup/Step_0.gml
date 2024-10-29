@@ -1379,7 +1379,7 @@ if (image=="new_forge_master"){
             if (techs[charisma_pick].charisma < techs[i].charisma){
                 charisma_pick=i;
             }
-            if (techs[experience_pick].experience() < techs[i].experience()){
+            if (techs[experience_pick].experience < techs[i].experience){
                 experience_pick=i;
             }
             if (techs[talent_pick].technology < techs[i].technology){
@@ -1416,9 +1416,9 @@ if (image=="new_forge_master"){
                             skill_lack++;
                             cur_tech.loyalty-=cur_tech.technology-pick.technology;
                         }
-                         if (pick.experience()<cur_tech.experience()){
+                         if (pick.experience<cur_tech.experience){
                             exp_lack++;
-                            cur_tech.loyalty-=floor((cur_tech.experience()-pick.experience())/200);
+                            cur_tech.loyalty-=floor((cur_tech.experience-pick.experience)/200);
                         }
                         if (charisma_test[0]==2){
                             dislike++;

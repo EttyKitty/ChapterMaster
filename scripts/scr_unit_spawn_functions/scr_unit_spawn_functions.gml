@@ -215,7 +215,7 @@ function scr_marine_spawn_age(){
 }
 function scr_marine_spawn_armour(){
 	var _age = age();
-	var _exp = experience();
+	var _exp = experience;
 	var _total_score = _age + _exp;
 
 	var armour_weighted_lists = {
@@ -450,13 +450,13 @@ function scr_marine_game_spawn_constructions(){
 		add_trait("tyrannic_vet");
 		bionic_count+=irandom(2);
 	};		
-	if (irandom(399-experience()) == 0){
+	if (irandom(399-experience) == 0){
 		add_trait("still_standing");
 	};
-	if (irandom(399-experience()) == 0){
+	if (irandom(399-experience) == 0){
 		add_trait("beast_slayer");
 	};		
-	if (irandom(499-experience())==0){
+	if (irandom(499-experience)==0){
 		add_trait("lone_survivor");
 	}
 	for(var i=0;i<bionic_count;i++){

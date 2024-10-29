@@ -24,7 +24,6 @@ function scr_wipe_unit(company, unit_slot){
 	obj_ini.armour[company][unit_slot]="";
 	obj_ini.gear[company][unit_slot]="";
 	obj_ini.god[company][unit_slot]=0;
-	obj_ini.experience[company][unit_slot]=0;
 	obj_ini.age[company][unit_slot]=0;
 	obj_ini.mobi[company][unit_slot]="";
 	obj_ini.bio[company][unit_slot]="";

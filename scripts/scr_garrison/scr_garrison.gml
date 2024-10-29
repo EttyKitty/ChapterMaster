@@ -111,7 +111,7 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 					}
 				}				
 			}else if (hierarchy[leader_hier_pos]==unit.role()){
-				if (garrison_leader.experience()<unit.experience()){
+				if (garrison_leader.experience<unit.experience){
 					garrison_leader=unit;
 				}
 			}else{

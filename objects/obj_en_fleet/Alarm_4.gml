@@ -39,8 +39,10 @@ if (action==""){
     fleet=id;
     sys=instance_nearest(action_x,action_y,obj_star);
     sys_dist=point_distance(action_x,action_y,sys.x,sys.y);
-    if (scr_valid_fleet_target()){
+    if (scr_valid_fleet_target(target)){
         target_dist=point_distance(x,y,target.action_x,target.action_y);
+    } else {
+        target=0;
     }
     
     act_dist=point_distance(x,y,sys.x,sys.y);
@@ -62,7 +64,7 @@ if (action==""){
         var eta=0;
         
         if (trade_goods!="") and (owner != eFACTION.Tyranids) and (owner != eFACTION.Chaos) and (string_count("Inqis",trade_goods)=0) and (string_count("merge",trade_goods)=0)and (string_count("_her",trade_goods)=0) and (trade_goods!="cancel_inspection") and (trade_goods!="return"){
-            if (scr_valid_fleet_target()){
+            if (scr_valid_fleet_target(target)){
                 if (target.action!=""){
                     if (target_dist>sys_dist){
                         action_x=target.action_x;
@@ -70,8 +72,10 @@ if (action==""){
                         sys=instance_nearest(action_x,action_y,obj_star);
                     }
                 }
+            } else {
+                target = 0;
             }
-        }        
+        }
         
         eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
         if (connected=0) then eta=eta*2;

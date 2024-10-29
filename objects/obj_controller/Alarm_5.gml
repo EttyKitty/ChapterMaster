@@ -391,7 +391,9 @@ if (training_psyker>0){
             unit.update_powers();
             psyker_aspirant=1;
             
-            if (string_count("Abund",obj_ini.strin)>0) then obj_ini.experience[0][g1]+=floor(random(5))+3;
+            if (scr_has_adv("Psyker Abundance")){
+                unit.add_exp(irandom_range(5, 8));
+            }
 
             unit.update_gear("");
             unit.update_mobility_item("");

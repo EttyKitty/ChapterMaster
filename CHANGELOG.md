@@ -21,7 +21,20 @@ All notable changes to this project will be documented in this file.
     - everything that a normal player doesn't need to know.
 ----------------------------------
 
+## [0.9.4.1]
+
+### Fixed:
+- garrisons crashing and returning the game to map
+- crash during enemy end turn with chaos fleets
+
 ## [0.9.4.0]
+
+### IMPORTANT:
+- Due to a fix to save/loading of equipment stockpiles, that involved the usage of new save/loading methods, when you load a save from another version, stockpiles of your equipment will not be loaded with a 98% chance.
+- I'm unaware if it's possible to fix this by save editing and assume that it's not.
+- As such, either equip all of your important stuff on your marines on an older version, save and then load it on the new version (equipped gear should be untouched).
+- Or just use `additem "Item Name" quantity" to cheat all lost items in, remember to write all of them down on an older version beforehand.
+- You've been warned. :)
 
 ### Changed:
 - Artifacts and Librarium:
@@ -30,10 +43,11 @@ All notable changes to this project will be documented in this file.
 	- Added support for mouse wheel scrolling of the artifact list, just hover over the general artifact box and scroll.
 	- Added tooltips to scroll arrows that remind you about the mouse wheel.
 	- The limit for artifacts now is 200. Getting new artifacts above this limit, will simply poof them.
-- Battle debug (d) now only works with debug mode enabled.
+- Battle debug (d) now only works with debug mode enabled (no more 1k+ messages purgatory on a missinput).
 - Tartaros sprite is replaced with a clean, tweaked version (by Abomination).
 - Various, minor error popup changes.
 - Reducing population via bombardment to 0 will now destroy genestealer cults and set Tyranid influence to 0.
+- All normal Dreadnoughts will now spawn with Twin Linked Lascannons, as normal ones were unsupported on them by default.
 
 ### Fixed:
 - Crashes:
@@ -46,6 +60,8 @@ All notable changes to this project will be documented in this file.
 	- [Possible fix to various battle crashes, pointing to `scr_clean` (#20)](https://github.com/EttyKitty/ChapterMaster/pull/20).
 	- Crash from destroying inquisitor ship.
 	- Crash from non-star instance with end location when calculating travel ETA (`calculate_fleet_eta`).
+	- `gml_Object_obj_p_fleet_Alarm_1` crash on turn end.
+	- [Crash after ruins battle, related to an artifact reward](https://github.com/EttyKitty/ChapterMaster/pull/25).
 - Probably a lot of missclicks, when one screen opens and you immediately click on something, should be fixed.
 - Vehicle loss and recovery flavour text now should be repaired.
 - Fixed formula for vehicle recovery score from Techmarines, as it was a bit overblown by stats.
@@ -57,6 +73,10 @@ All notable changes to this project will be documented in this file.
 - Fixed artifact list ping-pong that didn't work properly when going backwards.
 - Artifact list being limited to 30, even if the player has more.
 - Psyker Intolerant stuff breaking if the disadvantage is in the 5+ slot.
+- Melee (unarmed) flavour text is fixed.
+- Loading a save wiping armamentarium equipment stockpiles (was this the case before?).
+- Floating "Manage" button in the troop viewer.
+- Reset zoom level on group selection (to assign to a forge, for example) window opening.
 
 ### Under The Hood:
 - **All constructors from now on use PascalCase, to prevent variable name overlaps with the YYC compiler.**
@@ -67,10 +87,37 @@ All notable changes to this project will be documented in this file.
 	- Minor refactors to Artifact preview screen. Use `draw_unit_button()`.
 	- Added cooldown check to `scr_click_left()`, to be able to use it nested in scr_hit, when point_and_click is unneeded.
 - Combat code:
+	- Generally a gvadzillion of combat related code overhauls and refactors.
 	- Many repeats and bad array practices are removed from the combat related code.
 	- Various minor efficiency improvements and refactors. 
 	- Recovery (vehicle and marine) code variable naming changes.
 	- A lot of major refactors, rewrites and overhauls of `scr_clean`.
+	- Refactor of alarm 7 `obj_n_combat`.
+	- `obj_enunit` alarm_0 refactor.
+- [Refactored a lot of load-to-ship stuff(#22)](https://github.com/EttyKitty/ChapterMaster/pull/22).
+	- Use dynamic array resizing with `array_resize` and `array_push`.
+	- Remove manual array initialization and reset loops.
+	- Replace `script_execute` calls with direct function invocations.
+	- Add boundary checks in `scr_company_view` for valid company indices.
+	- Update comments to clarify ship management array usage.
+- [Ensure correct fleet target handling and recursion (#26)](https://github.com/EttyKitty/ChapterMaster/pull/26).
+	- Refactored `scr_valid_fleet_target`. 
+		- Now takes a `target` parameter for consistent validation.
+	- Improved `fleets_next_location`:
+		- Added recursion with a visited check to prevent infinite loops.
+		- Simplified following the logic for recursion.
+	- Standardized calls to `scr_valid_fleet_target`.
+		- Ensured consistency across the codebase.
+	- These changes fix potential issues with fleet chasing loops and enhance code readability.
+- New functions:
+	- `draw_rectangle_outline()` to draw rectangles with an outline backed in.
+	- `choose_weighted_range()` to generate a random number, from one of the ranges, with custom weights per each range.
+	- `array_random_index()` to pick a random valid index within an array.
+	- `target_block_is_valid()`.
+	- `get_rightmost()` and `get_leftmost()`.
+	- `block_has_armour()`.
+	- `get_block_distance()`.
+	- `move_unit_block()`.
 - [Various adjustments to the log and report system (#12)](https://github.com/EttyKitty/ChapterMaster/pull/12).
 - Diplomacy dialogue refactored and reworked.
 - `obj_ini.hp[][]` is replaced with `unit.hp()` in the majority (all?) places.
@@ -79,10 +126,10 @@ All notable changes to this project will be documented in this file.
 - Refactored `scr_company_order`.
 - [New, unused Psychotic and Lobotomized traits (#14)](https://github.com/EttyKitty/ChapterMaster/pull/14).
 - Minor refactor of `scr_destroy planet`.
-- Minor refactor of alarm 7 `obj_n_combat`.
-- New function: `draw_rectangle_outline()` to draw rectangles with an outline backed in.
-- New function: `choose_weighted_range()` to generate a random number, from one of the ranges, with custom weights per each range.
-- Deprecate `int_strings[]` in `scr_load`.
+- Deprecate some `int_strings[]` in `scr_load`.
+- `array_random()` is renamed into `array_random_element()`.
+- Save/loading of equipment stockpiles now uses json methods. This will break equipment stockpiles on old saves.
+
 
 ## [0.9.3.3-YYC]
 

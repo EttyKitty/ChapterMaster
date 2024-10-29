@@ -172,7 +172,7 @@ function scr_player_combat_weapon_stacks() {
                     var cast_dice=irandom(99)+1;
                     if (array_contains(obj_ini.dis,"Warp Touched")) then cast_dice-=5;
 
-                    cast_dice-=(unit.psionic+(unit.experience()/60))
+                    cast_dice-=(unit.psionic+(unit.experience/60))
 
                     if (cast_dice<=50) then marine_casting[g]=1;
 
@@ -313,7 +313,7 @@ function scr_add_unit_to_roster(unit, is_ally=false){
     array_push(marine_mobi, unit.mobility_item());
     array_push(marine_hp, unit.hp());
     array_push(marine_mobi, unit.mobility_item());
-    array_push(marine_exp, unit.experience());
+    array_push(marine_exp, unit.experience);
     array_push(marine_powers, unit.specials());
     array_push(marine_ranged, unit.ranged_attack());
     array_push(marine_powers, unit.specials());

@@ -92,7 +92,7 @@ if (type=99){
         var artifact_struct = obj_ini.artifact_struct[arti_index];
         var cur_tags = obj_ini.artifact_tags[arti_index];
 
-        obj_controller.artifacts-=1;
+        // obj_controller.artifacts-=1; // this is done by delete_artifact() that is run later;
 
         obj_controller.cooldown=10;
         if (obj_controller.menu_artifact>obj_controller.artifacts) then obj_controller.menu_artifact=obj_controller.artifacts;
@@ -909,7 +909,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
                     var g=-1,exp_check=0;
                     for (var g=0;g<array_length(obj_controller.display_unit);g++){
                         if (obj_controller.man_sel[g]=1 && is_struct(obj_controller.display_unit[g])){  
-                            if (obj_controller.display_unit[g].experience()<weapon_one_data.req_exp){
+                            if (obj_controller.display_unit[g].experience<weapon_one_data.req_exp){
                                 exp_check=1;
                                 n_good1=0;
                                 warning=$"A unit must have {weapon_one_data.req_exp}+ EXP to use a {weapon_one_data.name}.";
@@ -948,7 +948,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
                     var g,exp_check;g=-1;exp_check=0;
                     for (var g=0;g<array_length(obj_controller.display_unit);g++){
                         if (obj_controller.man_sel[g]=1 && is_struct(obj_controller.display_unit[g])){  
-                            if (obj_controller.display_unit[g].experience()<weapon_two_data.req_exp){
+                            if (obj_controller.display_unit[g].experience<weapon_two_data.req_exp){
                                 exp_check=1;
                                 n_good1=0;
                                 warning=$"A unit must have {weapon_two_data.req_exp}+ EXP to use a {weapon_two_data.name}.";
@@ -991,7 +991,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
                         var g,exp_check;g=-1;exp_check=0;
                         for (var g=0;g<array_length(obj_controller.display_unit);g++){
                             if (obj_controller.man_sel[g]=1 && is_struct(obj_controller.display_unit[g])){  
-                                if (obj_controller.display_unit[g].experience()<armour_data.req_exp){
+                                if (obj_controller.display_unit[g].experience<armour_data.req_exp){
                                     exp_check=1;
                                     n_good1=0;
                                     warning=$"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";

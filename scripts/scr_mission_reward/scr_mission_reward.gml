@@ -31,11 +31,12 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	                    cleanup[com]=1;
 	                }
 	                if (roll2>50){
-	                    argument1.p_player[argument2]+=scr_unit_size(obj_ini.armour[com][i],obj_ini.role[com][i],true);
+	                	var unit = obj_ini.TTRPG[com][i];
+	                    argument1.p_player[argument2]+=unit.get_unit_size();
 	                    obj_ini.loc[com][i]=argument1.name;
-	                    obj_ini.TTRPG[com][i].planet_location=argument2;
+	                    unit.planet_location=argument2;
 	                    techs_alive+=1;
-	                    repeat(3){obj_ini.experience[com][i]+=choose(1,2,3,4,5,6);}
+	                    unit.add_experience(irandom_range(3,18));
 	                    if (roll2<80) then found_requisition+=floor(random_range(5,40))+1;
 	                }
 	                if (roll2>=80) and (roll2<88) then found_requisition+=100;

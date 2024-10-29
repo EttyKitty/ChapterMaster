@@ -8,10 +8,6 @@ if (audio_is_playing(snd_blood)=true) then scr_music("royal",2000);
 scr_dialogue("lol");
 */
 
-/*var g;g=0;
-repeat(100){g+=1;
-    show_message(string(obj_ini.role[0,g])+": "+string(obj_ini.experience[0,g]));
-}*/
 
 
 // alarm[7]=1;

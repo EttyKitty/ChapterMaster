@@ -26,7 +26,7 @@ function calculate_research_points(turn_end=false){
                 if (struct_exists(gen_data,"crafter")) then crafters++;
                 if (struct_exists(gen_data,"at_forge")){
                     at_forge++;
-                    master_craft_chance += (techs[i].experience()/50)
+                    master_craft_chance += (techs[i].experience/50)
                 }
                 forge_points += forge_point_gen[0];
                 if (techs[i].has_trait("tech_heretic")){

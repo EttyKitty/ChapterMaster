@@ -1057,7 +1057,6 @@ for(var slot = 99; slot <= 103; slot++){
         armour[slot,i]="";
         gear[slot,i]="";
         mobi[slot,i]="";
-        experience[y,i]=0;
     }
 }
 

@@ -1212,7 +1212,6 @@ function scr_initialize_custom() {
 		armour[100, i] = "";
 		gear[100, i] = "";
 		mobi[100, i] = "";
-		experience[100, i] = 0;
 		age[100, i] = ((millenium * 1000) + year) - 10;
 		god[100, i] = 0;
 	}
@@ -1230,7 +1229,6 @@ function scr_initialize_custom() {
 		armour[0, i] = "";
 		gear[0, i] = "";
 		mobi[0, i] = "";
-		experience[0, i] = 0;
 		age[0, i] = ((millenium * 1000) + year) - 10;
 		god[0, i] = 0;
 		TTRPG[0, i] = new TTRPG_stats("chapter", 0, i, "blank");
@@ -2542,17 +2540,17 @@ function scr_initialize_custom() {
 	// all of this can now be handled in teh struct and no longer neades complex methods
 	switch (obj_creation.chapter_master_specialty) {
 		case 1:
-			experience[company, 1] = 550;
+			chapter_master.add_exp(550);
 			spe[company, 1] += "$";
 			break;
 		case 2:
-			experience[company, 1] = 650;
+			chapter_master.add_exp(650);
 			spe[company, 1] += "@";
 			chapter_master.add_trait("champion");
 			break;
 		case 3:
 			//TODO phychic powers need a redo but after weapon refactor
-			experience[company, 1] = 550;
+			chapter_master.add_exp(550);
 			gear[company, 1] = "Psychic Hood";
 			var
 			let = "";
@@ -2706,7 +2704,6 @@ function scr_initialize_custom() {
 		wep2[company, 5] = "";
 		armour[company, 5] = "";
 		gear[company, 5] = "";
-		experience[company, 5] = 0;
 		man_size -= 1;
 		commands -= 1;
 		TTRPG[company, 5] = new TTRPG_stats("chapter", company, 1, "blank");
@@ -2744,7 +2741,9 @@ function scr_initialize_custom() {
 		wep1[company][k] = wep1[defaults_slot, 17];
 		wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
 		gear[company][k] = gear[defaults_slot, 17];
-		if (psyky = 1) then experience[company][k] += 10;
+		if (psyky = 1){
+			spawn_unit.add_exp(10);
+		}
 		var
 		let = "", letmax = 0;
 		if (obj_creation.discipline = "default") {
@@ -2779,6 +2778,7 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		TTRPG[company][k] = new TTRPG_stats("chapter", company, k);
+		spawn_unit = TTRPG[company][k];
 		race[company][k] = 1;
 		loc[company][k] = home_name;
 		role[company][k] = "Codiciery";
@@ -2786,7 +2786,9 @@ function scr_initialize_custom() {
 		wep1[company][k] = wep1[defaults_slot, 17];
 		wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
 		gear[company][k] = gear[defaults_slot, 17];
-		if (psyky = 1) then experience[company][k] += 10;
+		if (psyky = 1){
+			spawn_unit.add_exp(10);
+		}
 		var
 		let, letmax;
 		let = "";
@@ -2825,6 +2827,7 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		TTRPG[company][k] = new TTRPG_stats("chapter", company, k);
+		var spawn_unit = TTRPG[company][k];
 		race[company][k] = 1;
 		loc[company][k] = home_name;
 		role[company][k] = "Lexicanum";
@@ -2832,7 +2835,9 @@ function scr_initialize_custom() {
 		wep1[company][k] = wep1[defaults_slot, 17];
 		wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
 		gear[company][k] = gear[defaults_slot, 17];
-		if (psyky = 1) then experience[company][k] += 10;
+		if (psyky = 1){
+			spawn_unit.add_exp(10);
+		}
 		var
 		let = "", letmax = 0;
 		if (obj_creation.discipline = "default") {
@@ -2949,7 +2954,6 @@ function scr_initialize_custom() {
 		wep2[company, i] = "";
 		armour[company, i] = "";
 		chaos[company, i] = 0;
-		experience[company, i] = 0;
 		gear[company, i] = "";
 		mobi[company, i] = "";
 		age[company, i] = ((millenium * 1000) + year) - 10;
@@ -3068,7 +3072,9 @@ function scr_initialize_custom() {
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[defaults_slot, 15] != "") then mobi[company][k] = mobi[defaults_slot, 15];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
-			if (psyky = 1) then experience[company][k] += 10;
+			if (psyky){
+				spawn_unit.add_exp(10);
+			}
 			var let = "";
 			var letmax = 0;
 			if (obj_creation.discipline = "default") {
@@ -3328,7 +3334,6 @@ function scr_initialize_custom() {
 			gear[company, i] = "";
 			mobi[company, i] = "";
 			chaos[company, i] = 0;
-			experience[company, i] = 0;
 			age[company, i] = ((millenium * 1000) + year) - 21 - irandom(6);
 			god[company, i] = 0;
 			TTRPG[company, i] = new TTRPG_stats("chapter", company, i, "blank");
@@ -3662,7 +3667,9 @@ function scr_initialize_custom() {
 				gear[company][k] = gear[defaults_slot, 17];
 				wep1[company][k] = wep1[defaults_slot, 17];
 				wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
-				if (psyky = 1) then experience[company][k] += 10;
+				if (psyky = 1){
+					spawn_unit.add_exp(10);
+				}
 				var let = "";
 				var letmax = 0;
 				if (obj_creation.discipline = "default") {

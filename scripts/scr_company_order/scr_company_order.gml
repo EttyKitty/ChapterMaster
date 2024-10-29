@@ -27,7 +27,6 @@ function temp_marine_variables(co, unit_num){
 		array_push(temp_wep2,wep2[co][unit_num]);
 		array_push(temp_armour,armour[co][unit_num]);
 		array_push(temp_gear,gear[co][unit_num]);
-		array_push(temp_experience,experience[co][unit_num]);
 		array_push(temp_age,age[co][unit_num]);
 		array_push(temp_mobi,mobi[co][unit_num]);
 		array_push(temp_spe,spe[co][unit_num]);
@@ -289,7 +288,6 @@ function scr_company_order(company) {
 	        armour[co][i]=temp_armour[i];
 	        gear[co][i]=temp_gear[i];
 	        mobi[co][i]=temp_mobi[i];
-	        experience[co][i]=temp_experience[i];
 	        age[co][i]=temp_age[i];
 	        spe[co][i]=temp_spe[i];
 	        god[co][i]=temp_god[i];
