@@ -150,7 +150,7 @@ if (file_exists(_version_file_path)){
     var _parsed_json = json_parse(_json_string);
     show_debug_message(_parsed_json);
     _build_date = _parsed_json[$ "build_date"];
-    _build_date = string_replace(_build_date, "B", "");
+    _build_date = string_replace(_build_date, "BS", "");
     _build_date = string_replace(_build_date, "BE", "");
     _version = _parsed_json[$ "version"];
     _version = string_replace(_version, "V", "");
