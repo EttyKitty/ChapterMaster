@@ -827,7 +827,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		var new_health;
 		if (apoth){
 			if (base_group == "astartes"){
-				if (gene_seed_mutations[$ "ossmodula"]==1){
+				if (gene_seed_mutations[$ "ossmodula"]){
 					health_portion=6;
 				}else{
 					health_portion=4;
@@ -838,7 +838,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		} else {
 			if (base_group == "astartes"){
 				health_portion = 8;
-				if (gene_seed_mutations[$ "ossmodula"]==1){
+				if (gene_seed_mutations[$ "ossmodula"]){
 					health_portion = 10;
 				}
 			}
@@ -847,9 +847,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		if (new_health>m_health) then new_health=m_health;
 		update_health(new_health);	
 	}
-	 static update_health = function(new_health){
-	    unit_health = new_health;
-	 };
+	static update_health = function(new_health){
+		unit_health = min(new_health, max_health());
+	};
 
 	 static hp_portion = function(){
 	 	return (hp()/max_health());
