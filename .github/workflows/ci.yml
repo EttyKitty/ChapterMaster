@@ -22,7 +22,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
-          openDelimiter: "B"
+          openDelimiter: "BS"
           closeDelimiter: "BE"
           body: "{{date:YYYY-MM-DD-HHmm}}"
       # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
