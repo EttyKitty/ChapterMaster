@@ -27,6 +27,16 @@ jobs:
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.ACCESS_KEY }} # 📝 To generate your Access Key, check out the Access Key section of the GameMaker Manual's Building via Command Line page: https://manual.gamemaker.io/monthly/en/#t=Settings%2FBuilding_via_Command_Line.htm
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
+      - id: get_date_time
+        name: Get current date and time
+        run: echo "date_time::$(date +'%d-%m-%Y-%H%M')" >> $GITHUB_OUTPUT
+      - name: Build Bump
+        uses: jaywcjlove/github-action-modify-file-content@main
+        with:
+          path: datafiles/main/version.json
+          openDelimiter: "B"
+          closeDelimiter: "BE"
+          body: "${{ steps.get_date_time.outputs.date_time }}"
       - id: igor_build
         name: igor-build
         uses: bscotch/igor-build@v1.0.3
@@ -35,9 +45,6 @@ jobs:
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
           yyc: false
       # This step uploads the build to the artifacts, so you can download it from the GitHub Actions page or use it in another workflow
-      - id: get_date_time
-        name: Get current date and time
-        run: echo "date_time::$(date +'%d-%m-%Y-%H%M')" >> $GITHUB_OUTPUT
       - id: upload_artifact
         name: upload-artifact
         uses: actions/upload-artifact@v4
