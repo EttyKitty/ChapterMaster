@@ -66,7 +66,7 @@ function get_complex_set(set = "mk7"){
         set_pieces.armour = spr_mk3_complex;
         set_pieces.backpack = spr_mk3_complex_backpack;
         set_pieces.left_arm = spr_mk3_left_arm;
-        set_pieces.right_arm = spr_mk3_right_arm;      
+        set_pieces.right_arm = spr_mk3_right_arm;     
     }else if (set == "mk8"){
         set_pieces.armour = spr_mk8_complex;
         set_pieces.backpack = spr_mk8_complex_backpack;
@@ -78,7 +78,10 @@ function get_complex_set(set = "mk7"){
     }else if (set == "indomitus"){
         set_pieces.armour = spr_indomitus_complex;
         set_pieces.left_arm = spr_indomitus_left_arm;
-        set_pieces.right_arm = spr_indomitus_right_arm;                  
+        set_pieces.right_arm = spr_indomitus_right_arm;
+        set_pieces.backpack = spr_indomitus_backpack_variants;
+        set_pieces.chest_variants = spr_indomitus_chest_variants;
+        set_pieces.leg_variants = spr_indomitus_leg_variants;                 
     }else if (set == "tartaros"){
         set_pieces.armour = spr_tartaros_complex;
         set_pieces.left_arm = spr_tartaros_left_arm;

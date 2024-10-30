@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "spr_mk4_complex",
   "bbox_bottom": 220,
-  "bbox_left": 10,
-  "bbox_right": 153,
+  "bbox_left": 11,
+  "bbox_right": 152,
   "bbox_top": 11,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"59d1b85c-05d2-438e-bbb3-242820d05a92",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"40cfe8bd-f11d-4d74-a157-47d58c39d7e8",},
   ],
   "gridX": 0,
   "gridY": 0,
   "height": 232,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"3dcdee29-bca5-4812-a752-898d112f4f3e","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e7b69ad2-206a-4f32-ade6-1a7c0f38210f","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"59d1b85c-05d2-438e-bbb3-242820d05a92","path":"sprites/spr_mk4_complex/spr_mk4_complex.yy",},},},"Disabled":false,"id":"c994d00e-a68a-4324-b7d4-04cc93313dae","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"40cfe8bd-f11d-4d74-a157-47d58c39d7e8","path":"sprites/spr_mk4_complex/spr_mk4_complex.yy",},},},"Disabled":false,"id":"1ea2a7fc-3120-42db-b605-8fb780ff8b5d","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

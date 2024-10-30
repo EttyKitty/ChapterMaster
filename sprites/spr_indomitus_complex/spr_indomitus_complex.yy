@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_indomitus_complex",
-  "bbox_bottom": 259,
+  "bbox_bottom": 185,
   "bbox_left": 10,
   "bbox_right": 172,
   "bbox_top": 32,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8c68a8ec-ce03-4985-a6bf-39e250288073",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"7173924c-400c-4ee3-8b3d-0123aa659415",},
   ],
   "gridX": 0,
   "gridY": 0,
   "height": 271,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"abb9f6ce-0977-4b90-bc6f-80316085c174","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"03d917a8-bff1-45d7-818b-f057c5540e44","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8c68a8ec-ce03-4985-a6bf-39e250288073","path":"sprites/spr_indomitus_complex/spr_indomitus_complex.yy",},},},"Disabled":false,"id":"7806a868-58e8-4386-9b7c-90d9824a3a0e","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7173924c-400c-4ee3-8b3d-0123aa659415","path":"sprites/spr_indomitus_complex/spr_indomitus_complex.yy",},},},"Disabled":false,"id":"6e1fa933-e2c0-4763-b072-75adc49be13b","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
