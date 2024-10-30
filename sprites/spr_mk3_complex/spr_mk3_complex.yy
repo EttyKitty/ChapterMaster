@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "spr_mk3_complex",
   "bbox_bottom": 220,
-  "bbox_left": 10,
-  "bbox_right": 153,
+  "bbox_left": 11,
+  "bbox_right": 152,
   "bbox_top": 13,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"142d3706-eb7a-4640-88f0-9beb3f50d1a1",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"358913f3-25cd-4411-aa3a-01c656c1166c",},
   ],
   "gridX": 0,
   "gridY": 0,
   "height": 232,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"54dc983f-c340-4321-beb8-6553a468b1e9","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"9f0d4e11-dbb4-4a1d-a21b-c96ba3d82387","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"142d3706-eb7a-4640-88f0-9beb3f50d1a1","path":"sprites/spr_mk3_complex/spr_mk3_complex.yy",},},},"Disabled":false,"id":"8053a643-8760-4f00-80b5-42b9983e6e91","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"358913f3-25cd-4411-aa3a-01c656c1166c","path":"sprites/spr_mk3_complex/spr_mk3_complex.yy",},},},"Disabled":false,"id":"ec45e7d5-2e29-4440-965b-2b5e148ec8a4","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

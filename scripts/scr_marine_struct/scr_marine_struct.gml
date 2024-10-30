@@ -1021,7 +1021,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		"jaw":{
 			mouth_variants: irandom(100),
 		},
-		"head":{variation:irandom(10)}
+		"head":{variation:irandom(100)}
 	}; //body parts list can be extended as much as people want
 
 	static alter_body = function(body_slot, body_item_key, new_body_data, overwrite=true){//overwrite means it will replace any existing data

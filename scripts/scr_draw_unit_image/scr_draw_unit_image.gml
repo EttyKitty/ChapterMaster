@@ -70,6 +70,7 @@ function get_complex_set(set = "mk7"){
         set_pieces.backpack = spr_mk3_complex_backpack;
         set_pieces.left_arm = spr_mk3_left_arm;
         set_pieces.right_arm = spr_mk3_right_arm;     
+        set_pieces.head = spr_mk3_head_variants;     
     }else if (set == "mk8"){
         set_pieces.armour = spr_mk8_complex;
         set_pieces.backpack = spr_mk8_complex_backpack;
@@ -1138,6 +1139,10 @@ function scr_draw_unit_image(_background=false){
                                 var choice = get_body_data("trim_variation","right_arm")%sprite_get_number(complex_set.right_trim);
                                 draw_sprite(complex_set.right_trim,choice,x_surface_offset,y_surface_offset);
                             }
+                            if (struct_exists(complex_set, "head")){
+                                var choice = get_body_data("variation","head")%sprite_get_number(complex_set.head);
+                                draw_sprite(complex_set.head,choice,x_surface_offset,y_surface_offset);
+                            }                            
                             if (struct_exists(set_pieces, "right_pauldron")){
                                 draw_sprite(complex_set.right_pauldron,company,x_surface_offset,y_surface_offset);
                             }
