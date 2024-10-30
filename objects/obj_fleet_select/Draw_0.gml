@@ -84,30 +84,8 @@ if (owner  == eFACTION.Player) and (player_fleet.action==""){
         
         
         if (sys_dist<32) and (sys.id!=mine.id){
-            var has_capitals = false;
-            var has_frigates = false;
-            var has_escorts = false;
-            with (player_fleet){
-                for (i=0; i<array_length(capital);i++){
-                    if(capital[i]!="" && capital_sel[i]){
-                        has_capitals=true
-                        break;
-                    }
-                } 
-                for (i=0; i<array_length(frigate);i++){
-                    if(frigate[i]!="" && frigate_sel[i]){
-                        has_frigates=true
-                        break;
-                    }
-                } 
-                for (i=0; i<array_length(escort);i++){
-                    if(escort[i]!="" && escort_sel[i]){
-                        has_escorts=true
-                        break;
-                    }
-                }                                 
-            }               
-            var selection_travel_speed = calculate_action_speed(has_capitals,has_frigates,has_escorts);
+             
+            var selection_travel_speed = calculate_action_speed(player_fleet,true);
             player_fleet.action_spd = selection_travel_speed;
             if (is_array(star_travel)){
                 star_travel = new FastestRouteAlgorithm(mine.x,mine.y,sys.x,sys.y, player_fleet);
@@ -134,11 +112,15 @@ if (owner  == eFACTION.Player) and (player_fleet.action==""){
             eta = "ETA "+string(eta) + "#Press SHIFT to ignore way points";
             var speed_string = "";
             var viable=true;
-            if (!has_capitals){
+            var types = [0,0,0];
+            with (player_fleet){
+                types = selected_ship_types();
+            }
+            if (!types[0]){
                 speed_string = "#Speed bonus *1.25 frigates and smaller";
-                if (!has_frigates){
+                if (!types[1]){
                     speed_string = "#Speed bonus *1.75 Escort fleet"
-                    if (!has_escorts){
+                    if (!types[2]){
                         speed_string = "#No Ships Selected"
                         viable=false;
                     }                     

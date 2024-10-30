@@ -616,7 +616,7 @@ function scr_draw_recruit_advisor(){
     draw_text(xx + 728, yy + 454, "[-] [+]");
 
     // ** Neophyte Training types **
-    var yyy = 0,
+    var yyy = 0;
     var trial_data = scr_trial_data();
     var cur_trial = trial_data[recruit_trial];
 

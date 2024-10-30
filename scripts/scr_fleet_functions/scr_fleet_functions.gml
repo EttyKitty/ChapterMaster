@@ -225,19 +225,41 @@ function calculate_fleet_eta(xx,yy,xxx,yyy, fleet_speed,star1=true, star2=true,w
 }
 
 
-
-
-function calculate_action_speed(capitals=true, frigates=true, escorts=true){
-	var fleet_speed=128;
-	if (capitals>0){
-	    fleet_speed=100;
-	} else if (frigates>0){
-	    fleet_speed=128;
-	}else if (escorts>0){
-	    fleet_speed=174;
+function calculate_action_speed(fleet="none", selected=false){
+	if (fleet=="none"){
+		var capitals=0,frigates=0,escorts=0,i;
+		var _is_player_fleet = object_index==obj_p_fleet;
+		if (_is_player_fleet){
+			if (!selected){
+				player_fleet_ship_count();
+				capitals=capital_number;
+				frigates=frigate_number;
+				escorts=escort_number;
+			} else{
+				//TODO extract to a fleet selected function
+				var types = selected_ship_types();
+				capitals=types[0];
+				frigates=types[1];
+				escorts=types[2];				
+			}
+		}
+		var fleet_speed=128;
+		if (capitals>0){
+		    fleet_speed=100;
+		} else if (frigates>0){
+		    fleet_speed=128;
+		}else if (escorts>0){
+		    fleet_speed=174;
+		}
+		if (_is_player_fleet){
+			if (obj_controller.stc_ships>=6) and (fleet_speed>=100) then fleet_speed*=1.2;
+		}
+		return fleet_speed;
+	} else {
+		with (fleet){
+			return calculate_action_speed(,selected);
+		}
 	}
-	if (obj_controller.stc_ships>=6) and (fleet_speed>=100) then fleet_speed*=1.2;
-	return fleet_speed;
 }
 
 function scr_efleet_arrive_at_trade_loc(){

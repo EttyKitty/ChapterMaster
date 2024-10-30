@@ -7,7 +7,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	if (ships_selected>1) then txt1+="s";
 	txt1+=" unload";
 	if (ships_selected=1) then txt1+="s";
-	txt1+= $" annihilation upon {star_system.name} {scr_roman_numerals()[planet_number-1]}.  Even from space the explosions can be seen, clapping across the planet's surface.";
+	txt1+= $" annihilation upon {planet_numeral_name(planet_number, star_system)}.  Even from space the explosions can be seen, clapping across the planet's surface.";
 
 	if (star_system.p_large[planet_number]=0){
 		kill=bombard_ment_power*15000000;// Population if normal

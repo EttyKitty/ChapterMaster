@@ -26,6 +26,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed:
 - garrisons crashing and returning the game to map
 - crash during enemy end turn with chaos fleets
+- fix crash from trying to spawn chaos warlord with poor methods
+- fix crash from bombarding due to old planet name methods
 
 ## [0.9.4.0]
 

@@ -77,6 +77,8 @@ function scr_get_planet_with_type(star, type){
 		}
 	return -1;
 }
+
+
 function planets_without_type(type,star="none"){
 	var return_planets = [];
 	if (star=="none"){
@@ -111,10 +113,13 @@ function scr_star_has_planet_with_owner(star, owner){
 	return scr_get_planet_with_owner(star,owner) != -1;
 }
 
-function scr_get_stars() {
+function scr_get_stars(shuffled=false) {
 	var stars = [];
 	with(obj_star){
 		array_push(stars,id);
+	}
+	if (shuffled){
+		stars = array_shuffle(stars);
 	}
 	return stars;
 }
@@ -350,7 +355,7 @@ function PlanetData(planet, system) constructor{
     ]
     static xenos_and_heretics = function(){
     	var xh_force = 0;
-    	for (var i=5;i<array_length(planet_forces)i++){
+    	for (var i=5;i<array_length(planet_forces); i++){
     		xh_force += planet_forces[i];
     	} 
     	return xh_force;

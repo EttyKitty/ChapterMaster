@@ -62,8 +62,8 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 
 	if (base_type="Armour") and (base_type_detail=""){
 	    if (rand2<=70){
-	    	base_type_detail=global.power_armour[irandom(array_length(global.power_armour)-1)]
-	    };
+	    	base_type_detail=global.power_armour[irandom(array_length(global.power_armour)-1)];
+	    }
 	    else if (rand2<=80){base_type_detail=choose("Terminator Armour","Tartaros","Cataphractii Pattern Terminator",);}
 	    else if (rand2<=90){base_type_detail="Dreadnought Armour";}
 	    else if (rand2<=100){base_type_detail="Artificer Armour";}
