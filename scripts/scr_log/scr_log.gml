@@ -42,7 +42,7 @@ function try_and_report_loop(dev_marker="generic crash",func, turn_end=true, arg
         _full_message += $"{_line_break}";
 
         log_into_file(_full_message);
-        clipboard_set_text(_report_title + "```" + _full_message + "```");
+        clipboard_set_text(_report_title + "```\n" + _full_message + "\n```");
     
         show_debug_message(_full_message);
 
@@ -69,7 +69,7 @@ exception_unhandled_handler(function(_exception) {
     _full_message += $"{_line_break}";
 
     log_into_file(_full_message);
-    clipboard_set_text(_report_title + "```" +_full_message + "```");
+    clipboard_set_text(_report_title + "```\n" +_full_message + "\n```");
     show_message(_player_message);
     
     show_debug_message(_full_message);
