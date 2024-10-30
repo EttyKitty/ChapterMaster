@@ -3,7 +3,7 @@ function macros() {
 #macro MAX_STC_PER_SUBCATEGORY 6
 #macro DEFAULT_TOOLTIP_VIEW_OFFSET 32
 #macro DEFAULT_LINE_GAP -1
-#macro LINE_BREAK_92 "############################################################################################"
+#macro LB_92 "############################################################################################"
 
 	enum luck {
 		bad = -1,
