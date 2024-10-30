@@ -734,48 +734,41 @@ if (obj_controller.stc_ships>=6){
         if (obj_ini.ship_hp[v]>obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]=obj_ini.ship_maxhp[v];
     }
 }
-if (turn==5) and (faction_gender[eFACTION.Chaos]==1) {// show_message("Turn 100");
-    var xx4=0,yy4=0,plant=0,planet=0,testi=0,fleeta=0;
 
-    with(obj_en_fleet){
-        if (owner != eFACTION.Imperium) then y-=20000;
-    } //this is stupid, just filter and test with a reduce function
-	//this won't always work due to randomness
-    for(var i=0; i<50; i++){
-		//pick a random star...
-        if (planet==0){
-            xx4=floor(random(room_width))+1;
-            yy4=floor(random(room_height))+1;
-            plant=instance_nearest(xx4,yy4,obj_star);
-        }
-        if (planet==0) and (plant.owner==eFACTION.Imperium) and (plant.planets>1){
-            planet=plant
-			
-            if (planet.present_fleet[eFACTION.Imperium]>0){
-                fleeta=instance_nearest(planet.x,planet.y,obj_en_fleet);
-                if (point_distance(fleeta.x,fleeta.y,planet.x,planet.y)>40)
-					planet=0;
+try_and_report_loop("Secret Chaos Warlord spawn", function(){
+    if (turn==5) and (faction_gender[eFACTION.Chaos]==1) {// show_message("Turn 100");
+
+        var _star_found = false;
+        var _choice_star = noone;
+        var _stars = scr_get_stars(true);
+        for (var i=0;i<array_length(_stars);i++){
+            if (is_dead_star(_stars[i])) then continue;
+            with (_stars[i]){
+                if (owner==eFACTION.Imperium && planets){
+                    if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+                        _star_found=true;
+                        _choice_star = self.id;
+                        break;
+                    }
+                } 
             }
-            if (planet.present_fleet[eFACTION.Imperium]==0) then planet=0;
+            if (_star_found){
+                break;
+            }
+        }
+        if (_star_found){
+            var _planet = array_random_element(planets_without_type("Dead",_choice_star));
+            _choice_star.warlord[_planet]=1;
+            array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(P_features.Warlord10));
+
+            var _heresy_inc = _choice_star.p_type[_planet]=="Hive" ? 25 : 10;
+
+            _choice_star.p_heresy[_planet] += _heresy_inc;
+
+            if (_choice_star.p_heresy[_planet]<50) then _choice_star.p_heresy_secret[_planet]=10;        
         }
     }
-    if (planet!=0){
-        if (planet.p_type[1]=="Dead") then testi=2;
-        if (planet.p_type[1]!="Dead") then testi=1;
-        
-        planet.warlord[testi]=1;
-
-        array_push(planet.p_feature[testi], new NewPlanetFeature(P_features.Warlord10));
-
-        if (planet.p_type[testi]=="Hive") then planet.p_heresy[testi]+=25;
-        if (planet.p_type[testi]!="Hive") then planet.p_heresy[testi]+=10;
-        if (planet.p_heresy[testi]<50) then planet.p_heresy_secret[testi]=10;
-
-        // show_message("Placed the chaos warlord on "+string(planet.name)+" "+scr_roman(testi));// 139
-        // obj_controller.x=planet.x;obj_controller.y=planet.y;
-    }
-    with(obj_en_fleet){if (owner!= eFACTION.Imperium) then y+=20000;}
-}
+});
 // * Blood debt end *
 if (blood_debt==1) and (penitent==1){
     penitent_turn+=1;
