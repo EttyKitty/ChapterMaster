@@ -938,7 +938,7 @@ trade_mnum[4]=0;
 requisition=500;
 if (instance_exists(obj_ini)){
     if (
-        (obj_ini.progenitor == PROGENITOR.DARK_ANGELS) &&
+        (obj_ini.progenitor == PROGENITOR.NONE) &&
         (global.chapter_name != "Doom Benefactors")
     ) {
         requisition=2000;

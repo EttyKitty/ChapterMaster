@@ -8,7 +8,7 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
 	*/
 
 	if (do_action=1){
-	    if (obj_ini.progenitor == PROGENITOR.DARK_ANGELS) {
+	    if (obj_ini.progenitor == PROGENITOR.NONE) {
 	        if (obj_controller.fest_feasts<2) then obj_controller.fest_feasts=2;
 	    }
 	    if ((global.chapter_name="Space Wolves") || (obj_ini.progenitor == PROGENITOR.SPACE_WOLVES)) {
