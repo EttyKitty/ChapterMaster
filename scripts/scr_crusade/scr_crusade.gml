@@ -92,7 +92,6 @@ function scr_crusade() {
                 	if (unit.IsSpecialist("apoth")) and (obj_ini.gear[co][i]="Narthecium") then apoth++;
                 	unit.add_exp(irandom(death_data[3][0])+death_data[3][1]);
                 
-                    if (unit.IsSpecialist("libs")) then unit.update_powers();
                     if (irandom(99)==1 && irandom(20)<unit.luck){
                     	var heroic_deed=choose("still_standing","lone_survivor","beast_slayer");
                     	unit.add_trait(heroic_deed);

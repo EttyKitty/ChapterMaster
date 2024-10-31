@@ -5,7 +5,7 @@ var part5="",part6="",part7="",part8="",part10="";
 battle_over=1;
 
 alarm[8]=999999;
- var line_break = "------------------------------------------------------------------------------";
+var line_break = "------------------------------------------------------------------------------";
 // show_message("Final Deaths: "+string(final_deaths));
 
 
@@ -127,11 +127,25 @@ if (post_equipment_lost[1]!=""){
     scr_newtext();
 }
 if (total_battle_exp_gain>0){
-    newline=" ";
-    scr_newtext();
     newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";
     scr_newtext();
+
+    var _upgraded_librarians_count = array_length(upgraded_librarians);
+    if (_upgraded_librarians_count > 0) {
+        for (var i = 0; i < _upgraded_librarians_count; i++) {
+            if (i > 0) {
+                newline += ", ";
+            }
+            newline += $"{upgraded_librarians[i].name()}";
+        }
+        newline += " learned new psychic powers after gaining enough experience."
+        scr_newtext();
+    }
+
+    newline=" ";
+    scr_newtext();
 }
+
 if (ground_mission){
 	obj_ground_mission.post_equipment_lost = post_equipment_lost
 	obj_ground_mission.post_equipments_lost = post_equipments_lost
@@ -413,9 +427,11 @@ if (defeat=0) and (reduce_power=true){
             part10+=$" were reduced to {new_power} after this battle. Previous power: {
                 enemy_power}. Reduction: {power_reduction}.";
         }
-        newline=part10;scr_newtext();
+        newline=part10;
+        scr_newtext();
         part10 = $"Received {requisition_reward} requisition points as a reward for slaying enemies of the Imperium.";
-        newline=part10;scr_newtext();
+        newline=part10;
+        scr_newtext();
     
         if (new_power<=0) and (enemy_power>0) then battle_object.p_raided[battle_id]=1;
     }

@@ -37,10 +37,13 @@ if (obj_ncombat.defeat == 0) {
         for (var i = 0; i < _eligible_units_count; i++) {
             var _unit = _eligible_units[i][0];
             var _exp_mod = _eligible_units[i][1];
+            var _exp_update_data = _unit.add_exp(round(_individual_exp*_exp_mod));
 
-            _unit.add_exp(round(_individual_exp*_exp_mod));
-            // TODO: Need some kind of report here
-            if (_unit.IsSpecialist("libs")) then _unit.update_powers();
+            var _powers_learned = _exp_update_data[1];
+            if (_powers_learned > 0) {
+                array_push(obj_ncombat.upgraded_librarians, _unit);
+            }
+
         }
     }
 

@@ -33,6 +33,7 @@ alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
 average_battle_exp_gain=0;
+upgraded_librarians=[];
 
 view_x=obj_controller.x;view_y=obj_controller.y;
 obj_controller.x=0;obj_controller.y=0;
