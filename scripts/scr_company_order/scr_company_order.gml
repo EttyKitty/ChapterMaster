@@ -86,7 +86,7 @@ function scr_company_order(company) {
 					create_squad(new_squad_type, company, false);
 				}
 				var sorted_units = 0;
-				for (i=0;i<role_number;i++){
+				for (var i=0;i<role_number;i++){
 					unit = TTRPG[company,squadless[$ role][i]];
 					if (unit.squad != "none"){
 						array_delete(squadless[$ role], i ,1);

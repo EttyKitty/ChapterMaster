@@ -110,7 +110,7 @@ function scr_draw_unit_stat_data(manage=false){
 	// draw_set_color(c_black);
 	// draw_rectangle(stat_block.x1,stat_block.y1, stat_block.x1 + (4*array_length(stat_display_list)), stat_block.y1+48+4, 1)
 	var viewing_stat,icon_colour;
-	for (i=0; i<array_length(stat_display_list);i++){
+	for (var i=0; i<array_length(stat_display_list);i++){
 		if (point_in_rectangle(mouse_x, mouse_y, attribute_box.x1,attribute_box.y1,attribute_box.x2,attribute_box.y2)){
 			viewing_stat=true;
 		}else{
@@ -256,7 +256,7 @@ function scr_draw_unit_stat_data(manage=false){
 
 		var x1 = data_block.x2-16;
 		if array_length(traits) != 0 {
-			for (i=0; i<array_length(traits); i++) {
+			for (var i=0; i<array_length(traits); i++) {
 				var trait_name = global.trait_list[$ traits[i]].display_name;
 				var trait_description = string(global.trait_list[$ traits[i]].flavour_text, unit_name);
 				var trait_effect = "";
@@ -277,12 +277,12 @@ function scr_draw_unit_stat_data(manage=false){
 			draw_set_halign(fa_left);
 		}
 
-		for (i=0;i<array_length(stat_tool_tips);i++){
+		for (var i=0;i<array_length(stat_tool_tips);i++){
 			if (point_in_rectangle(mouse_x, mouse_y, stat_tool_tips[i][0], stat_tool_tips[i][1], stat_tool_tips[i][2], stat_tool_tips[i][3])){
 				tooltip_draw(stat_tool_tips[i][4], 300, [stat_tool_tips[i][0], stat_tool_tips[i][3]],,,stat_tool_tips[i][5]);
 			}
 		}
-		for (i=0;i<array_length(trait_tool_tips);i++){
+		for (var i=0;i<array_length(trait_tool_tips);i++){
 			if (point_in_rectangle(mouse_x, mouse_y, trait_tool_tips[i][2], trait_tool_tips[i][1], trait_tool_tips[i][0], trait_tool_tips[i][3])){
 				tooltip_draw(trait_tool_tips[i][4], 300);
 			}

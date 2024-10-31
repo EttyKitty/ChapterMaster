@@ -20,10 +20,10 @@ function scr_enemy_ai_e() {
     var damage = array_create(20,0);
 
 
-    var i = 0;
-    repeat(13) {
-        i += 1;
-        if (present_fleet[i]) then have_fleets += 1;
+    for (var i = 1; i <= 13; i += 1) {
+        if (present_fleet[i]) {
+            have_fleets += 1;
+        }
     }
 
     if (present_fleet[1] > 0) { // Battle1 is reserved for player battles
@@ -743,7 +743,7 @@ function scr_enemy_ai_e() {
         }
     }
 
-    for (i=1;i<=planets;i++){
+    for (var i=1;i<=planets;i++){
         var existing_problem = has_any_problem_planet(i);
         if (!existing_problem){
             if (!irandom(50) && p_owner[i]==eFACTION.Imperium){

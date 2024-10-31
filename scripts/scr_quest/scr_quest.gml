@@ -28,15 +28,14 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
 
 
 	else if (quest_satus>0){// 1 = Fail, 2 = Accomplish, 3 = Clear
-	    var que,i;
-	    que=0;i=0;
+	    var que = 0;
     
-	    repeat(10){
-	    	if (que=0){
-	    		i+=1;
-	    		if (obj_controller.quest[i]=quest_name) then que=i;
-	    	}
-	    }
+        for (var i = 1; i <= 10; i += 1) {
+            if (que == 0 && obj_controller.quest[i] == quest_name) {
+                que = i;
+                break;
+            }
+        }
     
 	    if (quest_name="fund_elder") and (quest_satus=1){
 	        // obj_controller.disposition[6]-=2;// Player going 'maybe' and then waiting out the quest duration

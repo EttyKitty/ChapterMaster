@@ -28,7 +28,7 @@ function scr_save(save_part,save_id) {
 
 	    var num=instance_number(obj_star);
 	    instance_array=0;
-	    for (i=0; i<num; i+=1){
+	    for (var i=0; i<num; i+=1){
 	        instance_array[i] = instance_find(obj_star,i);
 	        // save crap here
 	        ini_write_string("Star","sr"+string(i)+"name",instance_array[i].name);
@@ -139,7 +139,7 @@ function scr_save(save_part,save_id) {
 	    // Temporary artifact objects
 	    ini_write_real("Controller","temp_arti",instance_number(obj_temp_arti));
 	    num=instance_number(obj_temp_arti);instance_array=0;
-	    for (i=0; i<num; i+=1){
+	    for (var i=0; i<num; i+=1){
 	        instance_array[i] = instance_find(obj_temp_arti,i);
 	        ini_write_real("Star","ar"+string(i)+"x",instance_array[i].x);
 	        ini_write_real("Star","ar"+string(i)+"y",instance_array[i].y);
@@ -149,7 +149,7 @@ function scr_save(save_part,save_id) {
 	    num=0;tot=0;num=instance_number(obj_p_fleet);
 	    instance_array[tot]=0;
 
-	    for (i=0; i<num; i+=1){
+	    for (var i=0; i<num; i+=1){
 	        instance_array[i] = instance_find(obj_p_fleet,i);
 
 	        ini_write_real("Fleet","pf"+string(i)+"image",instance_array[i].image_index);
@@ -199,7 +199,7 @@ function scr_save(save_part,save_id) {
 	    num=0;tot=0;num=instance_number(obj_en_fleet);
 	    instance_array[tot]=0;
 
-	    for (i=0; i<num; i+=1){
+	    for (var i=0; i<num; i+=1){
 	        instance_array[i] = instance_find(obj_en_fleet,i);
 	        ini_write_real("Fleet",$"ef{i}owner",instance_array[i].owner);
 	        ini_write_real("Fleet",$"ef{i}x",instance_array[i].x);
@@ -338,7 +338,7 @@ function scr_save(save_part,save_id) {
 		ini_encode_and_json("Ini",$"equipment_condition",obj_ini.equipment_condition);
 		ini_encode_and_json("Ini",$"equipment_quality",obj_ini.equipment_quality);
 
-	    for (g=0;g<array_length(obj_ini.artifact);g++){
+	    for (var g=0;g<array_length(obj_ini.artifact);g++){
             ini_write_string("Ini","artifact"+string(g),obj_ini.artifact[g]);
             ini_write_string("Ini","artifact_tags"+string(g),base64_encode(json_stringify(obj_ini.artifact_tags[g])));
             ini_write_real("Ini","artifact_ident"+string(g),obj_ini.artifact_identified[g]);

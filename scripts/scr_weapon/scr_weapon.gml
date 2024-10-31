@@ -2676,7 +2676,7 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
     gear_areas =  ["gear","armour","mobility"];
     if (search_area=="any"){
         data_found=false;
-        for (i=0;i<3;i++){
+        for (var i=0;i<3;i++){
            if (struct_exists(global.gear[$ gear_areas[i]],item)){
                 equip_area=global.gear;
                 item_data_set=global.gear[$ gear_areas[i]][$item];

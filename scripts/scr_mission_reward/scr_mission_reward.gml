@@ -192,7 +192,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	        scr_popup("Mechanicus Mission Completed","The Adeptus Mechanicus have finished experimenting on your marines.  All of your astartes have survived, though they refuse to speak of the experience.  200 Requisition has been provided by the Mechanicus as a reward.","mechanicus","");
 	        obj_controller.disposition[3]+=1;
 	        obj_controller.requisition+=200;
-	        var found=0,com=-1,i=0,unit;
+	        var found=0,i=0,unit;
 	        for (var com=0;com<=10;com++){
 	            if (found<10){
 	                for (i=0;i<=array_length(obj_ini.TTRPG[com]);i++){

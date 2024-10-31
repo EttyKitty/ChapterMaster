@@ -253,7 +253,7 @@ function scr_player_combat_weapon_stacks() {
             var j=0,good=0,open=0, weapon, vehicle_weapon_set;
             if (veh_dead[g]!=1){
                 vehicle_weapon_set = [veh_wep1[g],veh_wep2[g],veh_wep3[g]]
-                for (wep_slot=0;wep_slot<3;wep_slot++){
+                for (var wep_slot=0;wep_slot<3;wep_slot++){
                     var weapon_check = vehicle_weapon_set[wep_slot];
                     if (weapon_check!=""){
                         weapon=gear_weapon_data("weapon",weapon_check,"all", false, "standard");
@@ -284,7 +284,7 @@ function scr_player_combat_weapon_stacks() {
 
 
     if (men==1) and (veh==0)and (obj_ncombat.player_forces=1) {
-        var i=0,h=0;
+        var h=0;
         for (var i=0;i<array_length(unit_struct);i++) {
             if (h=0) {
                 unit = unit_struct[i];

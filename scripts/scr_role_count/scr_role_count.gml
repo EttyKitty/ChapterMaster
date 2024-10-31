@@ -2,10 +2,9 @@ function scr_role_count(target_role, search_location="", return_type="count") {
 
 	// Take a guess
 
-	var com, i, count, coom, units=[], unit,match;
+	var com, count, coom, units=[], unit,match;
 
 	count=0;
-	i=0;
 	com=0;
 	coom=-999;
 
@@ -29,7 +28,7 @@ function scr_role_count(target_role, search_location="", return_type="count") {
 
 	if (coom>=0){
 	    com=coom;
-	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue; 	
 	        if (unit.role()==target_role) && (obj_ini.god[com][i]<10){
@@ -44,8 +43,7 @@ function scr_role_count(target_role, search_location="", return_type="count") {
 
 
 	if (coom<0) then repeat(11){
-	    i=0;
-	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
 			match=false;
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue;

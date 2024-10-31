@@ -2205,7 +2205,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	    }*/
     	if (homestar!="none"){
-	        for (i=1;i<=homestar.planets;i++){
+	        for (var i=1;i<=homestar.planets;i++){
 	        	if (homestar.p_owner[i]==eFACTION.Player||
 	        		(obj_controller.faction_status[eFACTION.Imperium]!="War" && 
 	        		array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))){

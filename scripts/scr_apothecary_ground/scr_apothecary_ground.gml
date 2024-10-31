@@ -114,37 +114,36 @@ function apothecary_simple(turn_end=true){
 
 	var locations = struct_get_names(unit_spread);
 	with (obj_star){
-		for (i=0;i<array_length(locations);i++){
+		for (var i=0;i<array_length(locations);i++){
 			if (locations[i] == name){
 				array_push(unit_spread[$ locations[i]], self)
 			}
 		}
 	}
 	var cur_units, cur_apoths, cur_techs, total_heal_points, total_tech_points, veh_health, points_spent, cur_system, features;
-	var p, i, a;
 	var total_bionics = scr_item_count("Bionics");
 	var tech_points_used = 0;
-	for (i=0;i<array_length(locations);i++){
+	for (var i=0;i<array_length(locations);i++){
 		cur_system="";
 		if (array_length(unit_spread[$locations[i]]) == 6){
 			cur_system = unit_spread[$locations[i]][5];
 		}		
-		for (p=0;p<5;p++){
+		for (var p=0;p<5;p++){
 			total_heal_points=0;
 			total_tech_points=0;
 			if (array_length(unit_spread[$locations[i]][p]) == 0) then continue;
 			cur_units = unit_spread[$locations[i]][p];
 			cur_apoths = apoth_spread[$locations[i]][p];
 			cur_techs = tech_spread[$locations[i]][p];
-			for (a=0;a<array_length(cur_apoths);a++){
+			for (var a=0;a<array_length(cur_apoths);a++){
 				unit = cur_apoths[a];
 				total_heal_points+=((unit.technology/2)+(unit.wisdom/2)+unit.intelligence)/8;
 			}
-			for (a=0;a<array_length(cur_techs);a++){
+			for (var a=0;a<array_length(cur_techs);a++){
 				unit = cur_techs[a];
 				total_tech_points += unit.forge_point_generation()[0];
 			}
-			for (a=0;a<array_length(cur_units);a++){
+			for (var a=0;a<array_length(cur_units);a++){
 				points_spent = 0;
 				unit = cur_units[a];
 				if (is_array(unit) && total_tech_points>0){

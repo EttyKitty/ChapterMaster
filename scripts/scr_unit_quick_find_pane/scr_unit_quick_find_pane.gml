@@ -48,7 +48,7 @@ function UnitQuickFindPanel() constructor{
 		for (var i = 0;i<=200; i++){
 			obj_ini.ship_carrying[i]=0
 		};
-		var u, unit, unit_location, group;
+		var unit, unit_location, group;
 	    garrison_log = {};
 	    for (var co=0;co<11;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
@@ -839,7 +839,7 @@ function planet_selection_action(){
 					        
 					        // STC Grab
 					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STC_Fragment) == 1) and (recon=0){
-					            var frag,tch,mch;frag=0;tch=0;mch=0;
+					            var tch,mch;frag=0;tch=0;mch=0;
 					            for (var frag=0;frag<array_length(obj_controller.display_unit);frag++){
 					                if (obj_controller.man[frag]!="") and (obj_controller.man_sel[frag]==1){
 					                    if (obj_controller.ma_role[frag]=obj_ini.role[100][16]) or ((obj_controller.ma_role[frag]="Forge Master")){

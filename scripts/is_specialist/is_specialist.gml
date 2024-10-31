@@ -200,7 +200,7 @@ function collect_role_group(group="standard", location="", opposite=false, searc
 				if (wanted_companies != com) then continue;
 			}
 		}
-	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
 	    	add=false;
 			unit=fetch_unit([com,i]);
 			if (unit.name()=="") then continue;
@@ -252,7 +252,7 @@ function stat_valuator(search_params, unit){
 function collect_by_religeon(religion, sub_cult="", location=""){
 	var units = [], unit, count=0, add=false;
 	for (var com=0;com<=10;com++){
-	    for (i=1;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=1;i<array_length(obj_ini.TTRPG[com]);i++){
 	    	add=false;
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue; 	

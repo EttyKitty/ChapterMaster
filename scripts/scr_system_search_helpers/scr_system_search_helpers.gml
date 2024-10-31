@@ -211,7 +211,7 @@ function find_population_doners(doner_to=0){
     var pop_doner_options = [];
 	with(obj_star){
 		if (obj_star.id == doner_to) then continue;
-	   for (r=1;r<=planets;r++){
+	   for (var r=1;r<=planets;r++){
 	        if ((p_owner[r]=eFACTION.Imperium) and (p_type[r]=="Hive") and (p_population[r]>0) and (p_large[r])){
                 array_push(pop_doner_options, [id, r]);
             };
@@ -252,7 +252,7 @@ function nearest_from_array(xx,yy,list){
 function is_dead_star(star="none"){
 	var dead_star=true;
 	if (star=="none"){
-		for (i=1;i<=planets;i++){
+		for (var i=1;i<=planets;i++){
 			if (p_type[i] !="dead"){
 				dead_star=false;
 				break;

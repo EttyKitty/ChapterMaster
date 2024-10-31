@@ -29,7 +29,7 @@ function basic_diplomacy_screen(){
                     draw_set_color(0);
                 
                     var sw=1;
-                    for (i=1;i<5;i++){
+                    for (var i=1;i<5;i++){
                     	if (string_width(string_hash_to_newline(diplo_option[slot]))*sw>530) then sw-=0.05;
                     }
                     if (string_width(string_hash_to_newline(diplo_option[slot]))*sw<=530) and (sw=1) then draw_text_transformed(xx+620,yy+696,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);

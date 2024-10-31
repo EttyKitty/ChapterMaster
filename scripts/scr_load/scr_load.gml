@@ -21,7 +21,7 @@ function load_marine_struct(company, marine){
 
 function scr_load(save_part, save_id) {
 	var unit;
-	var rang=0,i=0,g=0,stars=0,pfleets=0,efleets=0;
+	var rang=0,stars=0,pfleets=0,efleets=0;
 
 
 
@@ -259,7 +259,7 @@ function scr_load(save_part, save_id) {
 
 
 	    if (global.restart=0){
-	        var g;g=-1;repeat(200){g+=1;
+	        var g = -1;repeat(200){g+=1;
 	            obj_ini.ship[g]=ini_read_string("Ships","shi"+string(g),"");
 	            obj_ini.ship_uid[g]=ini_read_real("Ships","shi_uid"+string(g),0);
 	            obj_ini.ship_class[g]=ini_read_string("Ships","shi_class"+string(g),"");
@@ -319,7 +319,6 @@ function scr_load(save_part, save_id) {
 	    good=0;coh=100;mah=-1;
 
 	    if (global.restart=0){
-	        var coh,mah,good;
 	        good=0;coh=10;mah=205;
 	        repeat(2255){
 	            if (good=0){
@@ -351,7 +350,6 @@ function scr_load(save_part, save_id) {
 	            }
 	        }
 
-	        var coh,mah,good;
 	        good=0;coh=100;mah=-1;
 	        repeat(31){mah+=1;
 	            obj_ini.race[coh,mah]=ini_read_real("Mar","co"+string(coh)+"."+string(mah),0);

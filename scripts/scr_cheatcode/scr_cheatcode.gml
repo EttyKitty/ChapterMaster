@@ -117,7 +117,7 @@ function scr_cheatcode(argument0) {
 					break;
 				case "govmission":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							var existing_problem = false; //has_any_problem_planet(i);
 							if (!existing_problem) {
 								if (p_owner[i] == eFACTION.Imperium) {
@@ -130,14 +130,14 @@ function scr_cheatcode(argument0) {
 					break;
 				case "artifactpopulate":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Artifact));
 						}
 					}
 					break;
 				case "ruinspopulate":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
 						}
 					}

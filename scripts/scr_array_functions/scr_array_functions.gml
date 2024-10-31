@@ -48,13 +48,13 @@ function array_find_value(search_array, value){
 }
 
 function array_set_value(choice_array, value){
-	for (i=0;i<array_length(choice_array);i++){
+	for (var i=0;i<array_length(choice_array);i++){
 		choice_array[@ i] = value;
 	}
 }
 
 function array_replace_value(choice_array, value, r_value){
-	for (i=0;i<array_length(choice_array);i++){
+	for (var i=0;i<array_length(choice_array);i++){
 		if (choice_array[i] == value ){
 			choice_array[@ i] = r_value;
 		}

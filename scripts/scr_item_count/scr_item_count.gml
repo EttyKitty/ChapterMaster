@@ -2,8 +2,8 @@ function scr_item_count(item_type, quality="any") {
 
 	// This script checks the equipment variables for the named item and returns the combined quantity
 
-	var i=0,von=0;
-	for (i=0;i<array_length(obj_ini.equipment);i++){
+	var von=0;
+	for (var i=0;i<array_length(obj_ini.equipment);i++){
 	   if (obj_ini.equipment[i]==item_type){
 	   		/*in theory we should be able to break here but there seems
 	   		to be the implication that an equipment item can be in the 

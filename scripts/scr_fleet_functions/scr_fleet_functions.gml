@@ -177,10 +177,9 @@ function set_fleet_movement(fastest_route = true){
 function load_unit_to_fleet(fleet, unit){
 	var loaded = false;
 	var all_ships = fleet_full_ship_array(fleet);
-	var i, ship_ident;
 
-	for (i=0;i<array_length(all_ships);i++){
-		ship_ident = all_ships[i];
+	for (var i=0;i<array_length(all_ships);i++){
+		var ship_ident = all_ships[i];
 		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
 		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
 		  	unit.planet_location=0;

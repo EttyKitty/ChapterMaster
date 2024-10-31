@@ -123,13 +123,13 @@ selection_window.inside_method = function(){
 	        if (posi<=escorts+frigates+capitals){
 	            name=ship_type[current_ship];
 	            if (string_width(name)*scale>179){
-	            	for (i=0;i<9;i++){
+	            	for (var i=0;i<9;i++){
 	            		if (string_width(name)*scale>179) then scale-=0.05;
 	            	}
 	            }
 	            if (scr_hit(xx+10,yy+y3,xx+width-10,yy+y3+18)){
 	                if (string_width(name)*scale>135){
-	                	for (i=0;i<9;i++){
+	                	for (var i=0;i<9;i++){
 	                		if (string_width(name)*scale>135) then scale-=0.05;
 	                	}
 	                }

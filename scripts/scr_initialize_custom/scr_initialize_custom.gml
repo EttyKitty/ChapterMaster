@@ -758,27 +758,24 @@ function scr_initialize_custom() {
 	debugl(ship_summary_str);
 	show_debug_message(ship_summary_str);
 
-	var i = -1;
-	v = 0;
-
 	if (battle_barges>=1){
-	 	for (v=1;v<=battle_barges;v++){
+	 	for (var v=1;v<=battle_barges;v++){
 	 		var new_ship = new_player_ship("Battle Barge", "home")
 		    if (flagship_name!="") and (v=1) then ship[new_ship]=flagship_name;
 		    if (flagship_name="") or (v>1) then ship[new_ship]=global.name_generator.generate_imperial_ship_name();
 		}
 	}
 
-	for(i=0;i<strike_cruisers;i++){
+	for(var i=0;i<strike_cruisers;i++){
 		new_player_ship("Strike Cruiser");
 	}
 
 
-	for(i=0;i<gladius;i++){
+	for(var i=0;i<gladius;i++){
 		new_player_ship("Gladius");
 	}
 
-	for(i=0;i<hunters;i++){
+	for(var i=0;i<hunters;i++){
 		new_player_ship("Hunter");
 	}
 
@@ -847,9 +844,8 @@ function scr_initialize_custom() {
 	var siege = 0,
 		temp1 = 0,
 		intolerant = 0;
-	var k, i, v;
+	var k, v;
 	k = 0;
-	i = 0;
 	v = 0;
 
 	/* Default Specialists */
@@ -1017,17 +1013,15 @@ function scr_initialize_custom() {
 		if (obj_creation.strength <= 2) then seventh = 0;
 		if (obj_creation.strength <= 1) then sixth = 0;
 
-		var bonus_marines = 0,
-			o = 0;
+		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
 	}
 
 	if (obj_creation.custom != 0) {
-		var bonus_marines = 0,
-			o = 0;
+		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
 		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 5) * 5;
-		i = 0
+		var i = 0;
 		while (bonus_marines >= 5) {
 			switch (i % 10) {
 				case 0:
@@ -1269,7 +1263,7 @@ function scr_initialize_custom() {
 
 	company = 0;
 	// Initialize default marines for loadouts
-	for (i = 0; i <= 100; i++) {
+	for (var i = 0; i <= 100; i++) {
 		race[100, i] = 1;
 		loc[100, i] = "";
 		name[100, i] = "";
@@ -1285,7 +1279,7 @@ function scr_initialize_custom() {
 	}
 	initialized = 500;
 	// Initialize special marines
-	for (i = 0; i <= 500; i++) {
+	for (var i = 0; i <= 500; i++) {
 		race[0, i] = 1;
 		loc[0, i] = "";
 		name[0, i] = "";
@@ -1301,21 +1295,20 @@ function scr_initialize_custom() {
 		god[0, i] = 0;
 		TTRPG[0, i] = new TTRPG_stats("chapter", 0, i, "blank");
 	}
-	for (i = 0; i <= 100; i++) {
-		i += 1;
-		role[100, i] = "";
-		wep1[100, i] = "";
-		wep2[100, i] = "";
-		armour[100, i] = "";
-		gear[100, i] = "";
-		mobi[100, i] = ""; //hirelings??
-		role[102, i] = "";
-		wep1[102, i] = "";
-		wep2[102, i] = "";
-		armour[102, i] = "";
-		gear[102, i] = "";
-		mobi[102, i] = ""; //hirelings??
-	}
+    for (var i = 0; i <= 100; i++) {
+        role[100, i] = "";
+        wep1[100, i] = "";
+        wep2[100, i] = "";
+        armour[100, i] = "";
+        gear[100, i] = "";
+        mobi[100, i] = ""; //hirelings??
+        role[102, i] = "";
+        wep1[102, i] = "";
+        wep2[102, i] = "";
+        armour[102, i] = "";
+        gear[102, i] = "";
+        mobi[102, i] = ""; //hirelings??
+    }
 
 	defaults_slot = 100;
 
@@ -2970,8 +2963,7 @@ function scr_initialize_custom() {
 	}
 
 	// Honour Guard
-	var _honour_guard_count = 0,
-		chapter_option, o, unit;
+	var _honour_guard_count = 0, unit;
 	o = 0;
 	chapter_option = 0;
 	repeat(4) {
@@ -2983,7 +2975,7 @@ function scr_initialize_custom() {
 	if (_honour_guard_count == 0) {
 		_honour_guard_count = 3
 	}
-	for (i = 0; i < min(_honour_guard_count, 10); i++) {
+	for (var i = 0; i < min(_honour_guard_count, 10); i++) {
 		k += 1;
 		commands += 1;
 		man_size += 1;
@@ -3012,7 +3004,7 @@ function scr_initialize_custom() {
 
 	// First Company
 	company = 1;
-	for (i = 0; i < 501; i++) {
+	for (var i = 0; i < 501; i++) {
 		race[company, i] = 1;
 		loc[company, i] = "";
 		name[company, i] = "";
@@ -3287,7 +3279,7 @@ function scr_initialize_custom() {
 		spawn_unit.roll_experience();
 	}
 
-	for (i = 0; i < 4; i++) {
+	for (var i = 0; i < 4; i++) {
 		v += 1;
 		man_size += 10;
 		veh_race[company, v] = 1;
@@ -3390,7 +3382,7 @@ function scr_initialize_custom() {
 	//non HQ and non firsst company initialised here
 	for (company = 2; company < 11; company++) {
 		// Initialize marines
-		for (i = 0; i < 501; i++) {
+		for (var i = 0; i < 501; i++) {
 			race[company, i] = 1;
 			loc[company, i] = "";
 			name[company, i] = "";
@@ -3417,7 +3409,6 @@ function scr_initialize_custom() {
 			stahp = 0;
 
 		v = 0;
-		i = -1;
 		k = 0;
 		v = 0;
 
@@ -4200,13 +4191,11 @@ function scr_initialize_custom() {
 	}
 
 
-	var i;
-	i = -1;
-	repeat(121) {
-		i += 1;
-		slave_batch_num[i] = 0;
-		slave_batch_eta[i] = 0;
-	}
+    for (var i = 0; i < 121; i += 1) {
+        slave_batch_num[i] = 0;
+        slave_batch_eta[i] = 0;
+    }
+
 
 
 
