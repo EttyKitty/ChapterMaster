@@ -1,7 +1,7 @@
 var _unit;
 
 if (obj_ncombat.defeat == 0) {
-    obj_ncombat.total_battle_exp_gain = obj_ncombat.threat * 75;
+    obj_ncombat.total_battle_exp_gain = obj_ncombat.threat * 50;
     var _current_exp;
     var _eligible_units = [];
     var _exp_mod = 1;
