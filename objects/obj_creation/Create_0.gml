@@ -394,7 +394,7 @@ function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constr
         for (var i=0;i<array_length(meta);i++){
             array_push(obj_creation.chapter_trait_meta, meta[i]);
         }
-        show_debug_message($"Meta updated, added: {meta}, all meta: {chapter_trait_meta}");
+        show_debug_message($"Meta updated, added: {meta}, all meta: {obj_creation.chapter_trait_meta}");
 
     }
     static remove_meta = function(){
@@ -408,7 +408,7 @@ function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constr
                 }
             }
         }
-        show_debug_message($"Meta updated, removed: {meta}, all meta: {chapter_trait_meta}");
+        show_debug_message($"Meta updated, removed: {meta}, all meta: {obj_creation.chapter_trait_meta}");
     }
 
     static print_meta = function(){
