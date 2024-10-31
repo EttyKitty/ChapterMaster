@@ -1,7 +1,7 @@
 var _unit;
 
 if (obj_ncombat.defeat == 0) {
-    obj_ncombat.total_battle_exp_gain = obj_ncombat.threat * 500;
+    obj_ncombat.total_battle_exp_gain = obj_ncombat.threat * 75;
     var _current_exp;
     var _eligible_units = [];
     var _exp_mod = 1;
@@ -21,15 +21,7 @@ if (obj_ncombat.defeat == 0) {
             if (marine_dead[i] == 0) { // EXP allocation
                 _current_exp = _unit.experience;
 
-                if (_current_exp < 50) {
-                    _exp_mod = 1;
-                } 
-                else if (_current_exp < 100) {
-                    _exp_mod = 0.8;
-                } 
-                else if (_current_exp >= 100) {
-                    _exp_mod = 0.4;
-                }
+                _exp_mod = 1 - (_current_exp / 200);
 
                 _unit_xp_data = [_unit, _exp_mod];
                 array_push(_eligible_units, _unit_xp_data);
@@ -46,7 +38,7 @@ if (obj_ncombat.defeat == 0) {
             var _unit = _eligible_units[i][0];
             var _exp_mod = _eligible_units[i][1];
 
-            _unit.add_exp(_individual_exp*_exp_mod);
+            _unit.add_exp(round(_individual_exp*_exp_mod));
             // TODO: Need some kind of report here
             if (_unit.IsSpecialist("libs")) then _unit.update_powers();
         }
