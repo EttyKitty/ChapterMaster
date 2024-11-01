@@ -8,7 +8,7 @@ if (obj_main_menu.stage>2){
     draw_set_color(c_gray);
     draw_set_halign(fa_right);
     draw_text(1598, 858, _version_line);
-    // draw_text(1598, 878, _build_date_line);
+    draw_text(1598, 878, _build_date_line);
     draw_set_halign(fa_left);
     draw_set_alpha(1);
 }
