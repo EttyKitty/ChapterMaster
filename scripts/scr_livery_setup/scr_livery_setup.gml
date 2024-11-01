@@ -11,7 +11,7 @@ function scr_livery_setup(){
     tooltip2="";
     obj_cursor.image_index=0;
 
-    draw_text_color_simple(800,80,string_hash_to_newline(string(chapter)),38144);
+    draw_text_color_simple(800,80,string_hash_to_newline(string(chapter_name)),38144);
     var draw_sprites = [spr_mk7_colors, spr_mk4_colors,spr_mk5_colors,spr_beakie_colors,spr_mk8_colors,spr_mk3_colors, spr_terminator3_colors];
     var draw_hem = [spr_generic_sgt_mk7, spr_generic_sgt_mk4,spr_generic_sgt_mk5,spr_generic_sgt_mk6,spr_generic_sgt_mk8,spr_generic_sgt_mk3, spr_generic_terminator_sgt];
     
