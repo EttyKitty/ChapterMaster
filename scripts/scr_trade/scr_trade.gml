@@ -49,33 +49,33 @@ function scr_trade(argument0) {
 	    if (trade_take[i]="License: Repair") then their_worth+=trade_tnum[i]*750;
 	    if (trade_take[i]="License: Crusade") then their_worth+=trade_tnum[i]*1500;
     
-	    if (trade_take[i]="Terminator Armour") then their_worth+=trade_tnum[i]*400;
-	    if (trade_take[i]="Tartaros") then their_worth+=trade_tnum[i]*900;
-	    if (trade_take[i]="Land Raider") then their_worth+=trade_tnum[i]*600;
-	    if (trade_take[i]="Castellax Battle Automata") then their_worth+=trade_tnum[i]*1200;
+	    if (trade_take[i]="Terminator Armour") then their_worth+=trade_tnum[i]*400;				 // TODO - remove
+	    if (trade_take[i]="Tartaros") then their_worth+=trade_tnum[i]*900;						 // TODO - remove
+	    if (trade_take[i]="Land Raider") then their_worth+=trade_tnum[i]*600;					 // TODO - remove
+	    if (trade_take[i]="Castellax Battle Automata") then their_worth+=trade_tnum[i]*1200;	 // TODO - remove
 	    if (trade_take[i]="Minor Artifact") then their_worth+=trade_tnum[i]*450;
 	    if (trade_take[i]="Skitarii") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Techpriest") then their_worth+=trade_tnum[i]*150;
     
-	    if (trade_take[i]="Condemnor Boltgun") then their_worth+=trade_tnum[i]*15;
-	    if (trade_take[i]="Hellrifle") then their_worth+=trade_tnum[i]*20;
-	    if (trade_take[i]="Incinerator") then their_worth+=trade_tnum[i]*20;
+	    if (trade_take[i]="Condemnor Boltgun") then their_worth+=trade_tnum[i]*15;				 // TODO - remove, it seemingly also does not exist
+	    if (trade_take[i]="Hellrifle") then their_worth+=trade_tnum[i]*20;						 // TODO - remove
+	    if (trade_take[i]="Incinerator") then their_worth+=trade_tnum[i]*20;					 // TODO - remove
 	    if (trade_take[i]="Crusader") then their_worth+=trade_tnum[i]*40;
-	    if (trade_take[i]="Exterminatus") then their_worth+=trade_tnum[i]*1500;
-	    if (trade_take[i]="Cyclonic Torpedo") then their_worth+=trade_tnum[i]*3000;
+	    if (trade_take[i]="Exterminatus") then their_worth+=trade_tnum[i]*1500;					 // TODO - consider removing
+	    if (trade_take[i]="Cyclonic Torpedo") then their_worth+=trade_tnum[i]*3000;				 // TODO - consider removing
     
-	    if (trade_take[i]="Eviscerator") then their_worth+=trade_tnum[i]*20;
-	    if (trade_take[i]="Heavy Flamer") then their_worth+=trade_tnum[i]*12;
-	    if (trade_take[i]="Inferno Bolts") then their_worth+=trade_tnum[i]*5;
+	    if (trade_take[i]="Eviscerator") then their_worth+=trade_tnum[i]*20;					 // TODO - remove
+	    if (trade_take[i]="Heavy Flamer") then their_worth+=trade_tnum[i]*12;					 // TODO - remove
+	    if (trade_take[i]="Inferno Bolts") then their_worth+=trade_tnum[i]*5;					 // TODO - remove, it seemingly does not exist
 	    if (trade_take[i]="Sister of Battle") then their_worth+=trade_tnum[i]*50;
 	    if (trade_take[i]="Sister Hospitaler") then their_worth+=trade_tnum[i]*70;
     
-	    if (trade_take[i]="Eldar Power Sword") then their_worth+=trade_tnum[i]*50;
-	    if (trade_take[i]="Archeotech Laspistol") then their_worth+=trade_tnum[i]*150;
+	    if (trade_take[i]="Eldar Power Sword") then their_worth+=trade_tnum[i]*50;				 // TODO - remove
+	    if (trade_take[i]="Archeotech Laspistol") then their_worth+=trade_tnum[i]*150;			 // TODO - remove
 	    if (trade_take[i]="Ranger") then their_worth+=trade_tnum[i]*100;
 	    if (trade_take[i]="Useful Information") then their_worth+=trade_tnum[i]*600;
     
-	    if (trade_take[i]="Power Klaw") then their_worth+=trade_tnum[i]*50;
+	    if (trade_take[i]="Power Klaw") then their_worth+=trade_tnum[i]*50;						 // TODO - remove
 	    if (trade_take[i]="Ork Sniper") then their_worth+=trade_tnum[i]*30;
 	    if (trade_take[i]="Flash Git") then their_worth+=trade_tnum[i]*60;
     

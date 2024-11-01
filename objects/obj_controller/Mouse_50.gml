@@ -381,8 +381,8 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Mechanicus trade goods
             if (diplomacy==3){
                 cooldown=8;
-                trade_theirs[1]="Terminator Armour";
-                trade_theirs[2]="Land Raider";
+                trade_theirs[1]="Terminator Armour";			 // TODO - remove
+                trade_theirs[2]="Land Raider";					 // TODO - remove
                 trade_theirs[3]="Minor Artifact";
                 trade_theirs[4]="Skitarii";
                 trade_theirs[5]="Techpriest";
@@ -395,12 +395,12 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Inquisition trade goods
             if (diplomacy==4){
                 cooldown=8;
-                trade_theirs[1]="Condemnor Boltgun";
-                trade_theirs[2]="Hellrifle";
-                trade_theirs[3]="Incinerator";
+                trade_theirs[1]="Condemnor Boltgun";			 // TODO - remove
+                trade_theirs[2]="Hellrifle";					 // TODO - remove
+                trade_theirs[3]="Incinerator";					 // TODO - remove
                 trade_theirs[4]="Crusader";
-                trade_theirs[5]="Exterminatus";
-                trade_theirs[6]="Cyclonic Torpedo";
+                trade_theirs[5]="Exterminatus";					 // TODO - consider removing
+                trade_theirs[6]="Cyclonic Torpedo";				 // TODO - consider removing
                 trade_disp[1]=20;
                 trade_disp[2]=30;
                 trade_disp[3]=20;
@@ -411,9 +411,9 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Ecclesiarchy trade goods
             if (diplomacy==5){
                 cooldown=8;
-                trade_theirs[1]="Eviscerator";
-                trade_theirs[2]="Heavy Flamer";
-                trade_theirs[3]="Inferno Bolts";
+                trade_theirs[1]="Eviscerator";					 // TODO - remove
+                trade_theirs[2]="Heavy Flamer";					 // TODO - remove
+                trade_theirs[3]="Inferno Bolts";				 // TODO - remove
                 trade_theirs[4]="Sister of Battle";
                 trade_theirs[5]="Sister Hospitaler";
                 trade_disp[1]=20;
@@ -425,8 +425,8 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Eldar trade goods
             if (diplomacy==6){
                 cooldown=8;
-                trade_theirs[1]="Master Crafted Power Sword";
-                trade_theirs[2]="Archeotech Laspistol";
+                trade_theirs[1]="Master Crafted Power Sword";	 // TODO - remove
+                trade_theirs[2]="Archeotech Laspistol";			 // TODO - remove
                 trade_theirs[3]="Ranger";
                 trade_theirs[4]="Useful Information";
                 trade_disp[1]=-10;
@@ -438,7 +438,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Ork trade goods
             if (diplomacy==7){
                 cooldown=8;
-                trade_theirs[1]="Power Klaw";
+                trade_theirs[1]="Power Klaw";					 // TODO - remove
                 trade_theirs[2]="Ork Sniper";
                 trade_theirs[3]="Flash Git";
             }
