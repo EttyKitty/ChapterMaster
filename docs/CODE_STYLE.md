@@ -40,7 +40,10 @@ All variable names, function names, etc., should use `snake_case` unless otherwi
 - Indentation should be 4 spaces (avoid tabs).
 - End simple statements with semicolons.
 - For string interpolation, use `$"text {variable}"` as it’s least error-prone and applies `string()` to `{variables}` automatically.
-- Use parentheses around conditions with multiple logical operators.
+- Use parentheses to clarify conditions with mixed `&&` and `||` operators, ensuring consistent behavior across platforms.
+   - Example (recommended for mixed operators): `if ((condition1 && condition2) || (condition3 && condition4))`
+   - Simple sequences of the same operator (like `&&` alone) don’t need extra parentheses: `if (condition1 && condition2 && condition3)`
+   - Avoid wrapping each condition individually when using the same operator: `if ((condition1) && (condition2) && (condition3))`
 
 ### Formatters:
 > [!WARNING]
