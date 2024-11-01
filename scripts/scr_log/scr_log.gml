@@ -28,7 +28,7 @@ function try_and_report_loop(dev_marker="generic crash",func, turn_end=true, arg
         var _formatted_stacktrace = array_to_string_list(_exception.stacktrace);
         var _line_break = LB_92;
         var _full_message = "";
-        var _report_title = $"[{GM_version}] {_exception.stacktrace[0]}\n";
+        var _report_title = $"[{global.game_version}] {_exception.stacktrace[0]}\n";
 
         // var pip = instance_create(0,0,obj_popup);
         // pip.title = _popup_header;
@@ -42,7 +42,7 @@ function try_and_report_loop(dev_marker="generic crash",func, turn_end=true, arg
 
         _full_message = $"{_line_break}\n";
         _full_message += $"Caught an Exception ({dev_marker})!\n";
-        _full_message += $"Game Version: {global.game_version}\n\n";
+        _full_message += $"Game Version: {global.game_version}; Build Date: {global.build_date}\n\n";
         _full_message += $"{_exception.longMessage}\n";
         _full_message += $"Stacktrace:\n";
         _full_message += $"{_formatted_stacktrace}\n";
@@ -71,12 +71,12 @@ function handle_exception(_exception){
     var _formatted_stacktrace = array_to_string_list(_exception.stacktrace);
     var _line_break = LB_92;
     var _full_message = "";
-    var _report_title = $"[{GM_version}] {_exception.stacktrace[0]}\n";
+    var _report_title = $"[{global.game_version}] {_exception.stacktrace[0]}\n";
 
     show_message(_player_message);
     _full_message = $"{_line_break}\n";
     _full_message += $"Caught an Exception!\n";
-    _full_message += $"Game Version: {global.game_version}\n\n";
+    _full_message += $"Game Version: {global.game_version}; Build Date: {global.build_date}\n\n";
     _full_message += $"{_exception.longMessage}\n";
     _full_message += $"Stacktrace:\n";
     _full_message += $"{_formatted_stacktrace}\n";
@@ -92,11 +92,11 @@ exception_unhandled_handler(function(_exception) {
     var _line_break = LB_92;
     var _popup_header = $"Your game just encountered a critical error :(\n\n";
     var _player_message = _popup_header + MSG_error_message;
-    var _report_title = $"[{GM_version}] {_exception.stacktrace[0]}\n";
+    var _report_title = $"[{global.game_version}] {_exception.stacktrace[0]}\n";
 
     _full_message = $"{_line_break}\n";
     _full_message += $"Unhandled Exception!\n";
-    _full_message += $"Game Version: {global.game_version}\n\n";
+    _full_message += $"Game Version: {global.game_version}; Build Date: {global.build_date}\n\n";
     _full_message += $"{_exception.longMessage}\n";
     _full_message += $"Stacktrace:\n";
     _full_message += $"{_formatted_stacktrace}\n";
@@ -109,25 +109,6 @@ exception_unhandled_handler(function(_exception) {
 
     return 0;
 });
-
-/// @function array_to_string_list
-/// @description Converts an array into a string, with each element on a newline.
-/// @param {array} stacktrace stacktrace.
-/// @return {string}
-function array_to_string_list(_array) {
-    var _string_list = "";
-
-    if (!is_array(_array)) {
-        return;
-    }
-    for (var i = 0; i < array_length(_array); i++) {
-        _string_list += _array[i];
-        if (i < array_length(_array) - 1) {
-            _string_list += "\n";
-        }
-    }
-    return _string_list;
-}
 
 /// @function markdown_codeblock
 /// @description Puts codeblock symbols around a string.

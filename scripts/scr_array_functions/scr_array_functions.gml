@@ -44,3 +44,22 @@ function array_random_element(choice_array){
 function array_random_index(choice_array){
 	return irandom(array_length(choice_array) - 1);
 }
+
+/// @function array_to_string_list
+/// @description Converts an array into a string, with each element on a newline.
+/// @param {array} stacktrace stacktrace.
+/// @return {string}
+function array_to_string_list(_array) {
+    var _string_list = "";
+
+    if (!is_array(_array)) {
+        return;
+    }
+    for (var i = 0; i < array_length(_array); i++) {
+        _string_list += _array[i];
+        if (i < array_length(_array) - 1) {
+            _string_list += "\n";
+        }
+    }
+    return _string_list;
+}
