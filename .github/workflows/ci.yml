@@ -37,7 +37,8 @@ jobs:
       - id: get_date_time
         name: Get current date and time
         run: echo "date_time::$(date +'%d-%m-%Y-%H%M')" >> $GITHUB_OUTPUT
-      - name: Build Bump
+      - id: bump_build_date
+        name: bump-build-date
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
@@ -59,4 +60,11 @@ jobs:
           name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
           path: ${{ steps.igor_build.outputs.out-dir }}
           retention-days: 1 # Longer retention days can incur additional charges. See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+          
+      - id: create_release
+        name: Create Release
+        uses: softprops/action-gh-release@v2.0.9
+        with:
+          name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
+          files: ${{ steps.igor_build.outputs.out-dir }}
           
