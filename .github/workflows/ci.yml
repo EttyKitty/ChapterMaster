@@ -13,59 +13,55 @@ jobs:
           lfs: true
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
-        name: find-the-yyp-file
+        name: Find The yyp File
         run: |
           $yyp = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter *.yyp
           Write-Output "YYP file found at: $yyp"
           "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-      - name: build_bump
-        uses: jaywcjlove/github-action-modify-file-content@main
-        with:
-          path: datafiles/main/version.json
-          openDelimiter: "BS"
-          closeDelimiter: "BE"
-          body: "{{date:DD-MM-YYYY-HHmm}}"
       # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
       - id: igor_setup
-        name: setup-igor-environment
+        name: Setup Igor
         uses: bscotch/igor-setup@v1.1.0
         with:
           runtime-version: 2023.11.1.160
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.ACCESS_KEY }} # 📝 To generate your Access Key, check out the Access Key section of the GameMaker Manual's Building via Command Line page: https://manual.gamemaker.io/monthly/en/#t=Settings%2FBuilding_via_Command_Line.htm
-      # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
+      #
       - id: get_date_time
-        name: Get current date and time
+        name: Get Current Date
         run: echo "date_time::$(date +'%d-%m-%Y-%H%M')" >> $GITHUB_OUTPUT
+      #
       - id: bump_build_date
-        name: bump-build-date
+        name: Bump Build Date
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
           openDelimiter: "B"
           closeDelimiter: "BE"
           body: "${{ steps.get_date_time.outputs.date_time }}"
+      # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
-        name: igor-build
+        name: Build with Igor
         uses: bscotch/igor-build@v1.0.3
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
           yyc: false
       # This step uploads the build to the artifacts, so you can download it from the GitHub Actions page or use it in another workflow
-      - id: upload_artifact
-        name: upload-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
-          path: ${{ steps.igor_build.outputs.out-dir }}
-          retention-days: 1 # Longer retention days can incur additional charges. See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
-          
+      # - id: upload_artifact
+      #   name: Upload Build as an Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
+      #     path: ${{ steps.igor_build.outputs.out-dir }}
+      #     retention-days: 1 # Longer retention days can incur additional charges. See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+      #
       - id: create_release
-        name: Create Release
+        name: Create a Pre-Release with the Build
         uses: softprops/action-gh-release@v2.0.9
         with:
           name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
+          tag_name: ${{ steps.get_date_time.outputs.date_time }}
           files: ${{ steps.igor_build.outputs.out-dir }}
           prerelease: true
           
