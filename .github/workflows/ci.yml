@@ -2,7 +2,7 @@ name: Build-Windows-YYC
 on: 
   # push: #Uncomment this line to run the workflow on push
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
-  workflow_call: #This line allows you to run the workflow from another workflow
+  # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
   build:
     runs-on: windows-2022
@@ -29,7 +29,10 @@ jobs:
       #
       - id: get_date_time
         name: Get Current Date
-        run: echo "date_time::$(date +'%d-%m-%Y-%H%M')" >> $GITHUB_OUTPUT
+        shell: pwsh
+        run: |
+          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+          echo "date_time=$date_time" >> $env:GITHUB_ENV
       #
       - id: bump_build_date
         name: Bump Build Date
@@ -38,7 +41,7 @@ jobs:
           path: datafiles/main/version.json
           openDelimiter: "B"
           closeDelimiter: "BE"
-          body: "${{ steps.get_date_time.outputs.date_time }}"
+          body: "${{ env.date_time }}"
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
@@ -60,8 +63,9 @@ jobs:
         name: Create a Pre-Release with the Build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
-          tag_name: ${{ steps.get_date_time.outputs.date_time }}
+          name: ChapterMaster-${{ env.date_time }}
           files: ${{ steps.igor_build.outputs.out-dir }}
+          tag_name: ${{ env.date_time }}
           prerelease: true
+          generate_release_notes: true
           
