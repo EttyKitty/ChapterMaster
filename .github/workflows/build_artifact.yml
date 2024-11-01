@@ -39,7 +39,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
-          openDelimiter: "B"
+          openDelimiter: "BS"
           closeDelimiter: "BE"
           body: "${{ env.date_time }}"
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
