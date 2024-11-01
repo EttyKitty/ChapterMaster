@@ -63,9 +63,9 @@ jobs:
         name: Create a Pre-Release with the Build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster-${{ env.date_time }}
+          name: ChapterMaster-b${{ env.date_time }}
           files: ${{ steps.igor_build.outputs.out-dir }}
-          tag_name: ${{ env.date_time }}
+          tag_name: b${{ env.date_time }}
           prerelease: true
           generate_release_notes: true
           
