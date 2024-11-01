@@ -1,0 +1,6 @@
+Doc:
+- changed-files:
+  - any-glob-to-any-file: ['docs/*', 'guides/*', '**/*.md']
+
+Feat:
+ - head-branch: ['^feature', 'feature', '^feat', 'feat']
