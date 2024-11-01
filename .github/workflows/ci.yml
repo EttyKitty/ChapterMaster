@@ -67,4 +67,5 @@ jobs:
         with:
           name: ChapterMaster-Windows-${{ steps.get_date_time.outputs.date_time }}
           files: ${{ steps.igor_build.outputs.out-dir }}
+          prerelease: true
           
