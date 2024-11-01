@@ -29,7 +29,8 @@ All variable names, function names, etc., should use `snake_case` unless otherwi
 
 - **Enum** constants:
   - Enum names should start with an `e` prefix and be in all caps.
-  - Enum entries should use PascalCase.
+  - Enum names should start with an `e` prefix and be in all caps.
+  - Enum entries should use `PascalCase`.
   - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling:
