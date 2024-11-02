@@ -193,7 +193,7 @@ function navy_attack_player_world(){
 	    if (instance_exists(orbiting)){
 	        var tar=0;
 			var i=0;
-	        for (i=1;i<=orniting.planets;i++){
+	        for (i = 1; i <= orbiting.planets; i++) {
 	            if (orbiting.p_owner[i]=eFACTION.Player) 
 					and (planet_feature_bool(orbiting.p_feature[i],P_features.Monastery)==0) 
 					and (orbiting.p_guardsmen[i]=0) 
