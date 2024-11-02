@@ -58,13 +58,5 @@ jobs:
           tag_name: b${{ env.date_time }}
           prerelease: true
           generate_release_notes: true
-      # This step uploads the build to the artifacts, so you can download it from the GitHub Actions page or use it in another workflow
-      - id: upload_artifact
-        name: Upload Build as an Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ChapterMaster-Windows-b${{ env.date_time }}
-          path: ${{ steps.create_release.outputs.upload_url }}
-          retention-days: 1 # Longer retention days can incur additional charges. See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
-      
-          
+          files: |
+            ${{ steps.igor_build.outputs.out-dir }}/*
