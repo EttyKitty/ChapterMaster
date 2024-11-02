@@ -19,7 +19,7 @@ function press_exclusive(press_choice){
 }
 
 
-function hold_exclusive(press_choice){
+function hold_exclusive(press_choice) {
 	if (keyboard_check(vk_nokey)) then return false;
 	if (!keyboard_check(press_choice)) then return false;
 	for (var i=0;i<array_length(global.virtual_keys);i++){

@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function gauss(base, sd){
     var x1, x2, w;
     do {
@@ -12,17 +10,17 @@ function gauss(base, sd){
     return base + sd * x1 * w;
 }
 
-function gauss_negative(base, sd){
-    var x1, x2, w;
-    do {
-        x1 = random_range(-1, 0);
-        x2 = random_range(-1, 0);
-        w = sqr(x1)+sqr(x2);
-    } until (0 < w and w < 1);
+// function gauss_negative(base, sd){
+//     var x1, x2, w;
+//     do {
+//         x1 = random_range(-1, 0);
+//         x2 = random_range(-1, 0);
+//         w = sqr(x1)+sqr(x2);
+//     } until (0 < w and w < 1);
 
-    w = sqrt(-2 * ln(w) / w);
-    return base + (sd * x1 * w);
-}
+//     w = sqrt(-2 * ln(w) / w);
+//     return base + (sd * x1 * w);
+// }
 
 
 function gauss_positive(base, sd){
@@ -37,19 +35,19 @@ function gauss_positive(base, sd){
     return base + (sd * x1 * w);
 }
 
-function skewed_guass(minimum, maximum, average){
-    var skew = choose(0,1);
-    if (skew){
-        return gauss_positive(average, maximum/3.3);
-    } else {
-        return gauss_negative(average, minimum/3.3);
-    }
-}
+// function skewed_guass(minimum, maximum, average){
+//     var skew = choose(0,1);
+//     if (skew){
+//         return gauss_positive(average, maximum/3.3);
+//     } else {
+//         return gauss_negative(average, minimum/3.3);
+//     }
+// }
 
 
-function pareto(base, exponent=1){
-    return base * (1 - power(random(1), 1 / (1 + exponent)));
-}
+// function pareto(base, exponent=1){
+//     return base * (1 - power(random(1), 1 / (1 + exponent)));
+// }
 
 function lanczos_gamma(x1) {
     var g = 7;
@@ -72,14 +70,14 @@ function lanczos_gamma(x1) {
     }
 }
 
-function beta_function(alpha, beta) {
-    return lanczos_gamma(alpha) * lanczos_gamma(beta) / lanczos_gamma(alpha + beta);
-}
+// function beta_function(alpha, beta) {
+//     return lanczos_gamma(alpha) * lanczos_gamma(beta) / lanczos_gamma(alpha + beta);
+// }
 
-function beta_distribution(alpha, beta) {
-    var x1 = random_range(0, 1);
-    return power(x1, alpha - 1) * power(1 - x1, beta - 1) / beta_function(alpha, beta);
-}
+// function beta_distribution(alpha, beta) {
+//     var x1 = random_range(0, 1);
+//     return power(x1, alpha - 1) * power(1 - x1, beta - 1) / beta_function(alpha, beta);
+// }
 
 // function exponent(lambda, base) {
 //     var u = random(1);  // Generate a uniform random number between 0 and 1

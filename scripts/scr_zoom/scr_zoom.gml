@@ -28,7 +28,10 @@ function set_zoom_to_defualt(){
     camera_set_view_size(view_camera[0], global.default_view_width, global.default_view_height);
 }
 
-function scr_zoom_keys(){
+/// @function scr_zoom_keys
+/// @description This script will zoom in and out of the game view based on the keys pressed.
+/// @self obj_controller
+function scr_zoom_keys() {
     var change = 0;
     var zoom_speed = 0.1;
 
@@ -60,13 +63,15 @@ function scr_zoom_keys(){
     if (change!=0){
         var view_w = camera_get_view_width(view_camera[0]);
         var view_h = camera_get_view_height(view_camera[0]);
+        // @stitch-ignore-next-line: undeclared-global
         x = clamp(x, 0, room_width);
+        // @stitch-ignore-next-line: undeclared-global
         y = clamp(y, 0, room_height);
     }
 
     exit;
 
-    zoom_level = clamp(zoom_level + (((mouse_wheel_down() - mouse_wheel_up())) * 0.1), 0.5, 2);
+    global.zoom_level = clamp(global.zoom_level + (((mouse_wheel_down() - mouse_wheel_up())) * 0.1), 0.5, 2);
 
     //Get current size
     var view_w = camera_get_view_width(view_camera[0]);
@@ -76,8 +81,8 @@ function scr_zoom_keys(){
     var rate = 0.2;
 
     //Get new sizes by interpolating current and target zoomed size
-    var new_w = lerp(view_w, zoom_level * default_zoom_width, rate);
-    var new_h = lerp(view_h, zoom_level * default_zoom_height, rate);
+    var new_w = lerp(view_w, global.zoom_level * global.default_zoom_width, rate);
+    var new_h = lerp(view_h, global.zoom_level * global.default_zoom_height, rate);
 
     //Apply the new size
     camera_set_view_size(view_camera[0], new_w, new_h);
@@ -86,12 +91,12 @@ function scr_zoom_keys(){
     var vpos_y = camera_get_view_y(view_camera[0]);
 
     //change coordinates of camera so zoom is centered
-    var new_x = lerp(vpos_x,vpos_x+(view_w - zoom_level * default_zoom_width)/2, rate);
-    var new_y = lerp(vpos_y,vpos_y+(view_h - zoom_level * default_zoom_height)/2, rate);
+    var new_x = lerp(vpos_x,vpos_x+(view_w - global.zoom_level * global.default_zoom_width)/2, rate);
+    var new_y = lerp(vpos_y,vpos_y+(view_h - global.zoom_level * global.default_zoom_height)/2, rate);
 
 }
-/*zoom_level = 1;
+global.zoom_level = 1;
 
 //Get the starting view size to be used for interpolation later
-default_zoom_width = camera_get_view_width(view_camera[0]);
-default_zoom_height = camera_get_view_height(view_camera[0]);
+global.default_zoom_width = camera_get_view_width(view_camera[0]);
+global.default_zoom_height = camera_get_view_height(view_camera[0]);

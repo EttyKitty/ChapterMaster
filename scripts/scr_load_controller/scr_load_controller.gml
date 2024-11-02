@@ -36,9 +36,7 @@ function scr_load_controller(save_id){
 			debugl("Could not load save game " + save_file_name + ", file does not exist.");
 			game_restart();
 		}
-	    
-		// TODO temporary disabled. Will be reenabled during ironman/autosave feature task
-		//file_decrypt("tsave.ini","p");
+
 	    ini_open("tsave.ini");
 
 	    // Global variables

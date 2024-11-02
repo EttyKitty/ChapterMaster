@@ -138,7 +138,6 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	type_data={};
 	formation_place=""
 	formation_options=[];
-	//nickname = scr_squad_names();
 
 
 	//TODO introduce loyalty hits from long periods of exile from hierarchy nodes

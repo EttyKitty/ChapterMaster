@@ -79,13 +79,3 @@ if (fade<=20){
 }
 
 if (mouse_x<552) or (mouse_y<441) or (mouse_x>608) or (mouse_y>457) and (browser=1) then browser=0;
-
-
-
-if (string_count("dukedecrypt",keyboard_string)>0){
-    var which;which=get_integer("Which save?",1);
-    file_copy("save"+string(which)+".ini","dec_save"+string(which)+".ini");
-    file_decrypt("dec_save"+string(which)+".ini","p");
-    game_end();
-}
-
