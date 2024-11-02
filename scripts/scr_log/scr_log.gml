@@ -115,7 +115,7 @@ exception_unhandled_handler(function(_exception) {
 /// @param {string} _message
 /// @return {string}
 function markdown_codeblock(_message) {
-    if (string_length(_message > 0)) {
+    if (string_length(_message) > 0) {
         var _formatted_message = "```\n" +_message + "\n```";
         return _formatted_message;
     }
