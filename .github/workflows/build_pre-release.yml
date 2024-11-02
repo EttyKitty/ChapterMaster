@@ -49,9 +49,10 @@ jobs:
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
-          yyc: false
+          name: ChapterMaster-b${{ env.date_time }}-Windows.zip
+          yyc: true
       - id: create_release
-        name: Create a Pre-Release with the Build
+        name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
         with:
           name: ChapterMaster-b${{ env.date_time }}
