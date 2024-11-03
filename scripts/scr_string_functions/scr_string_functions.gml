@@ -65,13 +65,11 @@ function string_truncate(_text, _max_width) {
     }
 }
 
-function integer_to_letters(_integer, _capitalize = false) {
-    var _ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+function integer_to_letters(_integer, _capitalize_first = false, _possessive = false) {
+    var _ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
     var _teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
     var _tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
     var _thousands = ["", "thousand", "million", "billion"];
-
-    if (_integer == 0) return "zero";  // Handle zero
 
     var _num_str = "";
     var _num_int = floor(_integer);
@@ -96,7 +94,20 @@ function integer_to_letters(_integer, _capitalize = false) {
 
     _num_str = string_trim(_num_str);
 
-    if (_capitalize) {
+    // Convert to possessive ordinal form if needed
+    if (_possessive) {
+        if (_num_int == 1) {
+            _num_str = "first";
+        } else if (_num_int == 2) {
+            _num_str = "second";
+        } else if (_num_int == 3) {
+            _num_str = "third";
+        } else {
+            _num_str = $"{_num_str}th"; // Default for all other numbers
+        }
+    }
+
+    if (_capitalize_first) {
         _num_str = string_upper_first(_num_str);
     }
 
