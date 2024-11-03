@@ -442,11 +442,11 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
         cooldown=999;
         obj_controller.cooldown=8;
 
-        if (n_wep1="(None)") then n_wep1="";
-        if (n_wep2="(None)") then n_wep2="";
-        if (n_armour="(None)") then n_armour="";
-        if (n_gear="(None)") then n_gear="";
-        if (n_mobi="(None)") then n_mobi="";
+        if (n_wep1=global.item_name_none) then n_wep1="";
+        if (n_wep2=global.item_name_none) then n_wep2="";
+        if (n_armour=global.item_name_none) then n_armour="";
+        if (n_gear=global.item_name_none) then n_gear="";
+        if (n_mobi=global.item_name_none) then n_mobi="";
 
 
         for (var i=0;i<array_length(obj_controller.display_unit);i++){
@@ -523,7 +523,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
                             if (obj_controller.ma_gear[i]!="") then scr_add_item(obj_controller.ma_gear[i],1);
                             obj_controller.ma_gear[i]="";
                             obj_ini.veh_upgrade[unit[0],unit[1]]="";
-                            if (n_gear!="(None)") and (n_gear!=""){
+                            if (n_gear!=global.item_name_none) and (n_gear!=""){
                                 obj_controller.ma_gear[i]=n_gear;
                                 obj_ini.veh_upgrade[unit[0],unit[1]]=n_gear;
                             }

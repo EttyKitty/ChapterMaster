@@ -60,133 +60,145 @@ if (total_role_number>0){
 
 
 
-if (total_role_number>0) and (tab>0){   
-    if (tab<=2){told=tab;tab=1;}
-    if (tab>2){told=tab;tab=tab;}
+if (total_role_number > 0 && tab > 0) {
+    if (tab <= 2) {
+        told = tab;
+        tab = 1;
+    } else {
+        told = tab;
+    }
+
     item_name = scr_get_item_names(
         tab,
         tab,
         obj_controller.settings,
-        true, // include the company standard
-        false, // do not limit to available items
+        true,  // include the company standard
+        false  // do not limit to available items
     );
-    tab=told;
+    tab = told;
 
     draw_set_color(0);
-    draw_rectangle(xx+1183,yy+160,xx+1506,yy+747,0);
+    draw_rectangle(xx + 1183, yy + 160, xx + 1506, yy + 747, 0);
     
     draw_set_color(c_gray);
-    draw_rectangle(xx+1184,yy+161,xx+1505,yy+746,1);
-    draw_rectangle(xx+1185,yy+162,xx+1504,yy+745,1);
-    draw_rectangle(xx+1186,yy+163,xx+1503,yy+744,1);
+    draw_rectangle(xx + 1184, yy + 161, xx + 1505, yy + 746, 1);
+    draw_rectangle(xx + 1185, yy + 162, xx + 1504, yy + 745, 1);
+    draw_rectangle(xx + 1186, yy + 163, xx + 1503, yy + 744, 1);
     
     draw_set_font(fnt_40k_30b);
-    if (tab=1) then draw_text_transformed(xx+1203,yy+174,string_hash_to_newline("Select First Weapon"),0.6,0.6,0);
-    if (tab=2) then draw_text_transformed(xx+1203,yy+174,string_hash_to_newline("Select Second Weapon"),0.6,0.6,0);
-    if (tab=3) then draw_text_transformed(xx+1203,yy+174,string_hash_to_newline("Select Armour"),0.6,0.6,0);
-    if (tab=4) then draw_text_transformed(xx+1203,yy+174,string_hash_to_newline("Select Special Item"),0.6,0.6,0);
-    if (tab=5) then draw_text_transformed(xx+1203,yy+174,string_hash_to_newline("Select Mobility Item"),0.6,0.6,0);
+    var slot_name = get_slot_name(obj_controller.settings, tab);
+    draw_text_transformed(xx + 1203, yy + 174, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
     
-    
-    var x3,y3,space,h;h=0;x3=xx+1205;y3=yy+205;space=18;
-    repeat(23){
-        h+=1;draw_set_color(c_gray);
-        if (item_name[h]!=""){
-            if (string_width(string_hash_to_newline(item_name[h]))>=140) then draw_text_transformed(x3,y3,string_hash_to_newline(item_name[h]),0.75,1,0);
-            if (string_width(string_hash_to_newline(item_name[h]))<140) then draw_text_transformed(x3,y3,string_hash_to_newline(item_name[h]),1,1,0);y3+=space;
-            
-            // x2 was 1150
-            if (scr_hit(x3,y3-space,x3+143,y3+17-space)=true){
-                if (string_width(string_hash_to_newline(item_name[h]))<140){
-                    draw_set_color(c_white);draw_set_alpha(0.2);
-                    draw_text_transformed(x3,y3-space,string_hash_to_newline(item_name[h]),1,1,0);draw_set_alpha(1);
+    var x3 = xx + 1205;
+    var y3 = yy + 205;
+    var space = 18;
+
+    for (var h = 0; h < array_length(item_name); h++) {
+        draw_set_color(c_gray);
+        var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
+        draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
+        y3 += space;
+
+        if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
+            draw_set_color(c_white);
+            draw_set_alpha(0.2);
+            draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
+            draw_set_alpha(1);
+
+            if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
+                var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                obj_controller.cooldown = 8000;
+                switch (tab) {
+                    case 1: obj_ini.wep1[100, role] = buh; break;
+                    case 2: obj_ini.wep2[100, role] = buh; break;
+                    case 3:
+                        obj_ini.armour[100, role] = buh;
+                        // No bikes or jump packs for Terminators
+                        if (buh == "Terminator Armour") {
+                            obj_ini.mobi[100, role] = "";
+                        }
+                        break;
+                    case 4: obj_ini.gear[100, role] = buh; break;
+                    case 5: obj_ini.mobi[100, role] = buh; break;
                 }
-                if (string_width(string_hash_to_newline(item_name[h]))>=140){
-                    draw_set_color(c_white);draw_set_alpha(0.2);
-                    draw_text_transformed(x3,y3-space,string_hash_to_newline(item_name[h]),0.75,1,0);draw_set_alpha(1);
-                }
-                
-                if (obj_controller.mouse_left=1) and (obj_controller.cooldown<=0){
-                    var buh;buh=item_name[h];obj_controller.cooldown=8000;
-                    if (item_name[h]="(None)") then buh="";
-                    if (tab=1) then obj_ini.wep1[100][role]=buh;
-                    if (tab=2) then obj_ini.wep2[100][role]=buh;
-                    if (tab=3){
-                        obj_ini.armour[100,role]=buh;
-                        if (buh="Terminator Armour") then obj_ini.mobi[100,role]="";
-                    }
-                    if (tab=4) then obj_ini.gear[100,role]=buh;
-                    if (tab=5) then obj_ini.mobi[100,role]=buh;
-                    tab=0;refresh=true;
-                }
+                tab = 0;
+                refresh = true;
             }
         }
     }
-    if (tab=1) or (tab=2){
-        if (tab<=2){told=tab;tab=2;}
-        if (tab>2){told=tab;tab=tab;}
+
+    if (tab == 1 || tab == 2) {
+        if (tab <= 2) {
+            told = tab;
+            tab = 2;
+        } else {
+            told = tab;
+        }
+
         item_name = scr_get_item_names(
             tab,
             tab,
             obj_controller.settings,
-            true, // include the company standard
-            false, // do not limit to available items
+            true,  // include the company standard
+            false  // do not limit to available items
         );
-        tab=told;
+        tab = told;
+
+        x3 = xx + 1205 + 146;
+        y3 = yy + 205;
         
-        var x3,y3,h,space;h=0;x3=xx+1205+146;y3=yy+205;space=18;
-        repeat(23){h+=1;draw_set_color(c_gray);
-            if (item_name[h]!=""){
-                if (string_width(string_hash_to_newline(item_name[h]))>=140) then draw_text_transformed(x3,y3,string_hash_to_newline(item_name[h]),0.75,1,0);
-                if (string_width(string_hash_to_newline(item_name[h]))<140) then draw_text_transformed(x3,y3,string_hash_to_newline(item_name[h]),1,1,0);y3+=space;
-                
-                if (scr_hit(x3,y3-space,x3+143,y3+17-space)=true){
-                    
-                    if (string_width(string_hash_to_newline(item_name[h]))<140){
-                        draw_set_color(c_white);draw_set_alpha(0.2);
-                        draw_text_transformed(x3,y3-space,string_hash_to_newline(item_name[h]),1,1,0);draw_set_alpha(1);
+        for (var h = 0; h < array_length(item_name); h++) {
+            draw_set_color(c_gray);
+            var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
+            draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
+            y3 += space;
+
+            if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
+                draw_set_color(c_white);
+                draw_set_alpha(0.2);
+                draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
+                draw_set_alpha(1);
+
+                if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
+                    var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                    obj_controller.cooldown = 8000;
+                    switch (tab) {
+                        case 1: obj_ini.wep1[100, role] = buh; break;
+                        case 2: obj_ini.wep2[100, role] = buh; break;
+                        case 3:
+                            obj_ini.armour[100, role] = buh;
+                            if (buh == "Terminator Armour") obj_ini.mobi[100, role] = "";
+                            break;
+                        case 4: obj_ini.gear[100, role] = buh; break;
+                        case 5: obj_ini.mobi[100, role] = buh; break;
                     }
-                    if (string_width(string_hash_to_newline(item_name[h]))>=140){
-                        draw_set_color(c_white);draw_set_alpha(0.2);
-                        draw_text_transformed(x3,y3-space,string_hash_to_newline(item_name[h]),0.75,1,0);draw_set_alpha(1);
-                    }
-                    
-                    if (obj_controller.mouse_left=1) and (obj_controller.cooldown<=0){
-                        var buh;buh=item_name[h];obj_controller.cooldown=8000;
-                        if (item_name[h]="(None)") then buh="";
-                        if (tab=1) then obj_ini.wep1[100,role]=buh;
-                        if (tab=2) then obj_ini.wep2[100,role]=buh;
-                        if (tab=3){
-                            obj_ini.armour[100,role]=buh;
-                            if (buh="Terminator Armour") then obj_ini.mobi[100,role]="";
-                        }
-                        if (tab=4) then obj_ini.gear[100,role]=buh;
-                        if (tab=5) then obj_ini.mobi[100,role]=buh;
-                        tab=0;refresh=true;
-                    }
+                    tab = 0;
+                    refresh = true;
                 }
             }
         }
-        
-        // tab=told;
     }
     
-    
-    
-    draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
-    draw_set_color(c_gray);draw_rectangle(xx+1347-(string_width(string_hash_to_newline("CANCEL"))/2),yy+720,xx+1347+(string_width(string_hash_to_newline("CANCEL"))/2),yy+741,0);
-    draw_set_color(0);draw_text(xx+1347,yy+721,string_hash_to_newline("CANCEL"));
-    if (scr_hit(xx+1347-(string_width(string_hash_to_newline("CANCEL"))/2),yy+720,xx+1347+(string_width(string_hash_to_newline("CANCEL"))/2),yy+741)=true){
-        draw_set_color(c_white);draw_set_alpha(0.2);
-        draw_rectangle(xx+1347-(string_width(string_hash_to_newline("CANCEL"))/2),yy+720,xx+1347+(string_width(string_hash_to_newline("CANCEL"))/2),yy+741,0);draw_set_alpha(1);
-        if (obj_controller.mouse_left=1){obj_controller.cooldown=8000;tab=0;}
-    }draw_set_alpha(1);
-    
-    
-    
-    
+    draw_set_halign(fa_center);
+    draw_set_font(fnt_40k_14b);
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741, 0);
+    draw_set_color(0);
+    draw_text(xx + 1347, yy + 721, string_hash_to_newline("CANCEL"));
+    if (scr_hit(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741)) {
+        draw_set_color(c_white);
+        draw_set_alpha(0.2);
+        draw_rectangle(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741, 0);
+        draw_set_alpha(1);
+        if (obj_controller.mouse_left == 1) {
+            obj_controller.cooldown = 8000;
+            tab = 0;
+        }
+    }
+    draw_set_alpha(1);
 }
+
 
 /* */
 /*  */

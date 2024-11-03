@@ -507,7 +507,7 @@ function scr_draw_unit_image(_background=false){
             case "Dreadnought":
                 armour_type = ArmourType.Dreadnought;
                 break;
-            case "(None)":
+            case global.item_name_none:
             case "":
             case "None":
                 armour_type = ArmourType.None;
