@@ -70,7 +70,7 @@ function string_truncate(_text, _max_width) {
     }
 }
 
-function integer_to_letters(_integer) {
+function integer_to_letters(_integer, _capitalize = false) {
     var _ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
     var _teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
     var _tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
@@ -99,7 +99,13 @@ function integer_to_letters(_integer) {
         }
     }
 
-    return string_trim(_num_str);
+    _num_str = string_trim(_num_str);
+
+    if (_capitalize) {
+        string_upper_first(_num_str);
+    }
+
+    return _num_str;
 }
 
 function string_reverse(argument0) {
