@@ -138,7 +138,7 @@ function scr_fleet_advisor(){
                 }
             }
             draw_set_color(c_white);
-            draw_sprite(spr_ship_back_black, ship_im, xx + 488, yy + 492);
+            draw_sprite(spr_ship_back_white, ship_im, xx + 488, yy + 492);
 
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14);
