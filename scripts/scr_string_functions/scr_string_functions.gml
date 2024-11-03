@@ -65,14 +65,26 @@ function string_truncate(_text, _max_width) {
     }
 }
 
-function integer_to_letters(_integer, _capitalize_first = false, _possessive = false) {
-    var _ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-    var _teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
-    var _tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
-    var _thousands = ["", "thousand", "million", "billion"];
+function integer_to_letters(_integer, _capitalize_first = false, _ordinal = false) {
+    var _ones = [];
+    var _teens = [];
+    var _tens = [];
+    var _thousands = [];
+
+    if (_ordinal) {
+        _ones = ["zeroth", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"];
+        _teens = ["tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth"];
+        _tens = ["", "tenth", "twentieth", "thirtieth", "fortieth", "fiftieth", "sixtieth", "seventieth", "eightieth", "ninetieth"];
+        _thousands = ["", "thousandth", "millionth", "billionth"];
+    } else {
+        _ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+        _teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+        _tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+        _thousands = ["", "thousand", "million", "billion"];
+    }
 
     var _num_str = "";
-    var _num_int = floor(_integer);
+    var _num_int = floor(real(_integer));
 
     if (_num_int < 10) {
         _num_str += _ones[_num_int];
@@ -93,19 +105,6 @@ function integer_to_letters(_integer, _capitalize_first = false, _possessive = f
     }
 
     _num_str = string_trim(_num_str);
-
-    // Convert to possessive ordinal form if needed
-    if (_possessive) {
-        if (_num_int == 1) {
-            _num_str = "first";
-        } else if (_num_int == 2) {
-            _num_str = "second";
-        } else if (_num_int == 3) {
-            _num_str = "third";
-        } else {
-            _num_str = $"{_num_str}th"; // Default for all other numbers
-        }
-    }
 
     if (_capitalize_first) {
         _num_str = string_upper_first(_num_str);
