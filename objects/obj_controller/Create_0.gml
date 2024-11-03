@@ -1475,14 +1475,14 @@ if (global.load==0) then marines-=command;
 // **** INTRO SCREEN ****
 temp[30]=string(check_number)+" "+string(year_fraction)+" "+string(year)+".M"+string(millenium);// Date
 temp[31]=string_upper(adept_name);// Adept name
-temp[32]=string_upper(obj_ini.name[0,1]);// Master name
+temp[32]=string_upper(obj_ini.name[0][0]);// Master name
 temp[33]=string_upper(scr_thought());// Thought of the day
 
 // Starts the vars for the 4 pages of intro
 var njm=34,com=0,vih=0,word="",masta=0,forga=0,chapla=0,apa=0,liba=0,techa=0,libra=0,coda=0,lexa=0,apotha=0,old_dudes=0;
 
 var honoh=0,termi=0,veter=0,capt=0,chap=0,apoth=0,stand=0,dread=0,tact=0,assa=0,deva=0,rhino=0,speeder=0,raider=0,standard=0,bike=0,scou=0,whirl=0,pred=0;
-for(var mm=1; mm<=100; mm++){
+for(var mm=0; mm<=100; mm++){
     if (obj_ini.role[com,mm]=="Chapter Master") then masta=1;
     if (obj_ini.role[com,mm]=="Forge Master") then forga=1;
     if (obj_ini.role[com,mm]=="Master of Sanctity") then chapla=1;
@@ -1497,30 +1497,31 @@ for(var mm=1; mm<=100; mm++){
     if (obj_ini.role[com,mm]==obj_ini.role[100][2]) then honoh+=1;
 }
 
-temp[njm]="Command staff which includes";
+temp[njm]="Command staff made of";
 
-if (masta==1) then temp[njm]+=", your majesty "+string(obj_ini.name[com,1]);
-if (forga==1) then temp[njm]+=",  Forge Master "+string(obj_ini.name[com,2]);
-if (chapla==1) then temp[njm]+=",  Master of Sanctity "+string(obj_ini.name[com,3]);
-if (apa==1) then temp[njm]+=",  Master of the Apothecarion "+string(obj_ini.name[com,4]);
-if (liba==1) then temp[njm]+=",  and Chief Librarian "+string(obj_ini.name[com,5])+".  ";
+if (masta == 1) then temp[njm] += $", your majesty Chapter Master {obj_ini.name[com][0]}";
+if (forga == 1) then temp[njm] += $", Forge Master {obj_ini.name[com][1]}";
+if (chapla == 1) then temp[njm] += $", Master of Sanctity {obj_ini.name[com][2]}";
+if (apa == 1) then temp[njm] += $", Master of the Apothecarion {obj_ini.name[com][3]}";
+if (liba == 1) then temp[njm] += $", and Chief Librarian {obj_ini.name[com][4]}.  ";
+
 
 vih=string_pos(",",temp[njm]);
 temp[njm]=string_delete(temp[njm],vih,1);
 njm+=1;
-temp[njm] = "";
-temp[njm]+="  It has";
-if (techa>0) then temp[njm]+=", "+string(techa)+" "+string(obj_ini.role[100][16])+"s";
-if (old_dudes>0) then temp[njm]+=", "+string(techa)+" "+string(obj_ini.role[100][16])+"s";
-if (apotha>0) then temp[njm]+=", "+string(apotha)+" "+string(obj_ini.role[100][15])+"s";
-if (libra>0) then temp[njm]+=", "+string(libra)+" "+string(obj_ini.role[100,17])+"s";
-if (coda>0) then temp[njm]+=", "+string(coda)+" Codiciery";
-if (lexa>0) then temp[njm]+=", "+string(lexa)+" Lexicanum.";
+temp[njm] = "Specialist branches staffed by";
+if (techa > 0) then temp[njm] += $", {integer_to_letters(techa)} {string_plural(obj_ini.role[100][16], techa)}";
+if (old_dudes > 0) then temp[njm] += $", {integer_to_letters(old_dudes)} {string_plural(obj_ini.role[100][14], old_dudes)}";
+if (apotha > 0) then temp[njm] += $", {integer_to_letters(apotha)} {string_plural(obj_ini.role[100][15], apotha)}";
+if (libra > 0) then temp[njm] += $", {integer_to_letters(libra)} {string_plural(obj_ini.role[100,17], libra)}";
+if (coda > 0) then temp[njm] += $", {integer_to_letters(coda)} Codiciery";
+if (lexa > 0) then temp[njm] += $", {integer_to_letters(lexa)} Lexicanum.";
 
 vih=string_pos(",",temp[njm]);
 temp[njm]=string_delete(temp[njm],vih,1);
 
-if (honoh>0) then temp[njm]+="  You have an Honour Guard which contains "+string(honoh)+" souls.";
+if (honoh>0) then temp[njm]+=$"\n\nHonour Guard, having the {integer_to_letters(honoh)} most veteran {string_plural("marine", honoh)} of your chapter serving in it.";
+
 for(var company=0; company<10; company++){
     njm+=1;
     com+=1;
@@ -1579,7 +1580,7 @@ for(var company=0; company<10; company++){
     if (com==9) then word="ninth";
     if (com==10) then word="tenth";
     if (com>=1){
-        if (veter+termi+stand+dread+tact+assa+deva+rhino+raider+standard+scou+whirl>0) then temp[njm]="You have a "+string(word)+" company.  It has";
+        if (veter+termi+stand+dread+tact+assa+deva+rhino+raider+standard+scou+whirl>0) then temp[njm]="You have the "+string(word)+" company.  It has";
         else{temp[njm]="";}
     }
     
@@ -1621,10 +1622,12 @@ for(var company=0; company<10; company++){
     }
 }
 
-temp[59]="CLASSIFICATION: SECTOR LOGISTICAE#++++++++++DATE: "+string(temp[30])+"#++++++++AUTHOR: MASTER ADEPT "+string(temp[31])+"#++++++++++++RE: INTRODUCTORY MISSIVE#+++++RECIPIENT: CHAPTER MASTER "+string(temp[32])+"##++THOUGHT: "+string(temp[33])+"++##I see you have made it unscathed, your grace.  Death comes with you as it should!  The enemy is on the horizon.  Thy chapter is mighty and only waits for your word to wreak havoc upon our enemies.##Your chapter contains-#";
-temp[60]=string(temp[59])+string(temp[34])+string(temp[35])+"##"+string(temp[36])+"##"+string(temp[37])+"##"+string(temp[38])+"##"+string(temp[39])+"##"+string(temp[40])+"##"+string(temp[41])+"##"+string(temp[42])+"##"+string(temp[43])+"##"+string(temp[44])+"##"+string(temp[45]);
+temp[59] = $"CLASSIFICATION: SECTOR LOGISTICAE#++++++++++DATE: {temp[30]}#++++++++AUTHOR: MASTER ADEPT {temp[31]}#++++++++++++RE: INTRODUCTORY MISSIVE#+++++RECIPIENT: CHAPTER MASTER {temp[32]}##++THOUGHT: {temp[33]}++##I see you have made it unscathed, your grace. Death comes with you as it should! The enemy is on the horizon. Thy chapter is mighty and only waits for your word to wreak havoc upon our enemies.##Your chapter contains-";
 
-temp[61]="##Your armamentarium contains some spare equipment- ";
+temp[60] = $"{temp[59]}\n\n{temp[34]}\n\n{temp[35]}##{temp[36]}##{temp[37]}##{temp[38]}##{temp[39]}##{temp[40]}##{temp[41]}##{temp[42]}##{temp[43]}##{temp[44]}##{temp[45]}";
+
+
+temp[61]="\n\nYour armamentarium contains some spare equipment- \n";
 for(var u=1; u<=30; u++){
     if (obj_ini.equipment[u]!="") then temp[61]+=string(obj_ini.equipment_number[u])+" "+string(obj_ini.equipment[u])+", ";
     if (obj_ini.equipment[u]=="") and (obj_ini.equipment[u-1]!=""){
@@ -1693,10 +1696,10 @@ if (hunt>0){
 // show_message(temp[62]);
 // 61 : equipment
 // 62 : ships
-var lol=160;
+var lol=240;
 draw_set_font(fnt_small);
 vih=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
-vih-=210;vih=(vih/lol)+1;
+vih-=260;vih=(vih/lol)+1;
 
 if (floor(vih)<vih){
     vih+=1;
@@ -1715,7 +1718,7 @@ var lig=0,remov=0,stahp=0;
 
 if (vih>=1){
     for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[65]))>210){
+        if (string_height(string_hash_to_newline(temp[65]))>260){
             lig=string_length(temp[65]);
             temp[65]=string_delete(temp[65],lig-1,1);
         }
@@ -1726,7 +1729,7 @@ remov=string_length(string(temp[65]))+1;
 if (vih>=2){
     temp[66]=string_delete(temp[66],1,remov);
     for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[66]))>130){
+        if (string_height(string_hash_to_newline(temp[66]))>lol){
             lig=string_length(temp[66]);
             temp[66]=string_delete(temp[66],lig-1,1);
         }
