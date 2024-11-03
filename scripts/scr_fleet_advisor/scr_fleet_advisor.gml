@@ -54,7 +54,7 @@ function scr_fleet_advisor(){
     va = real(temp[42]);
     if (va = 2) then blurp += "  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.";
     if (va > 2) then blurp += "  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.";
-    blurp += "##Here are the current positions of our ships and their contents:";
+    blurp += "\n\nHere are the current positions of our ships and their contents:";
 
     if (menu_adept = 1) {
         blurp = string_replace(blurp, "Our", "Your");
@@ -78,12 +78,16 @@ function scr_fleet_advisor(){
             if (obj_ini.ship[i] != "") {
                 draw_rectangle(xx + 950, yy + 80 + (i * 20), xx + 1546, yy + 100 + (i * 20), 1);
                 draw_sprite(spr_view_small, 0, xx + 953, yy + 84 + (i * 20));
-                draw_text(xx + 970, yy + 80 + (i * 20), $"{obj_ini.ship[i]}  ( {obj_ini.ship_class[i]} )");
-                draw_text(xx + 1222, yy + 80 + (i * 20), obj_ini.ship_location[i]);
-                draw_text(xx + 1372, yy + 80 + (i * 20), $"{round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)}% HP");
-                draw_text(xx + 1450, yy + 80 + (i * 20),$"{obj_ini.ship_carrying[i]} / {obj_ini.ship_capacity[i]} Space");
+                draw_text(xx + 972, yy + 80 + (i * 20), string_truncate($"{obj_ini.ship[i]}", 120));
+                draw_text(xx + 1102, yy + 80 + (i * 20), $"{obj_ini.ship_class[i]}");
+                draw_text(xx + 1222, yy + 80 + (i * 20), $"{obj_ini.ship_location[i]}");
+                draw_set_halign(fa_right);
+                // To save space, may be possible to remove health number and color ship name depending on HP percentage.
+                draw_text(xx + 1410, yy + 80 + (i * 20), $"{round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)}% HP");
+                draw_text(xx + 1542, yy + 80 + (i * 20), $"{obj_ini.ship_carrying[i]} / {obj_ini.ship_capacity[i]} Space");
+                draw_set_halign(fa_left);
 
-                if scr_hit(xx + 950,yy + 80 + (i * 20),xx + 1546,yy + 100 + (i * 20)) {
+                if scr_hit(xx + 950, yy + 80 + (i * 20), xx + 1546, yy + 100 + (i * 20)) {
                     if (cn.temp[101] != obj_ini.ship[i]) {
                         cn.temp[101] = obj_ini.ship[i];
                         cn.temp[102] = obj_ini.ship_class[i];
@@ -112,6 +116,7 @@ function scr_fleet_advisor(){
                         cn.temp[119] = "";
                         if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = scr_ship_occupants(i);
                     }
+                    tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
                 }
             }
         }
@@ -120,51 +125,48 @@ function scr_fleet_advisor(){
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 622, yy + 434, cn.temp[101], 0.75, 0.75, 0);
-            draw_text_transformed(xx + 622, yy + 460, cn.temp[102], 0.5, 0.5, 0);
+            draw_text_transformed(xx + 622, yy + 464, cn.temp[102], 0.5, 0.5, 0);
 
-            draw_set_color(c_white);
-            draw_rectangle(xx + 498, yy + 492, xx + 746, yy + 623, 0);
+            draw_set_color(c_gray);
+            draw_rectangle(xx + 488, yy + 492, xx + 756, yy + 634, 1);
             var ships = ["Battle Barge", "Strike Cruiser","Gladius","Hunter"];
             var ship_im = 0;
             for (var i=0;i<array_length(ships);i++){
-            	if (cn.temp[102]==ships[i]){
-            		ship_im=i;
-            		break;
-            	}
+                if (cn.temp[102]==ships[i]){
+                    ship_im=i;
+                    break;
+                }
             }
-            draw_sprite(spr_ship_back_black, ship_im, xx + 390, yy + 390);
-            draw_set_color(c_gray);
+            draw_set_color(c_white);
+            draw_sprite(spr_ship_back_black, ship_im, xx + 488, yy + 492);
 
+            draw_set_color(c_gray);
             draw_set_font(fnt_40k_14);
             draw_set_halign(fa_left);
 
-            yy -= 34;
+            draw_text(xx + 383, yy + 655, $"Health: {cn.temp[103]}/{cn.temp[104]}");
+            draw_text(xx + 588, yy + 655, $"Shields: {cn.temp[105]}" );
+            draw_text(xx + 768, yy + 655, $"Armour: {cn.temp[107]},{cn.temp[108]}");
 
-            draw_text(xx + 383, yy + 665, $"Health: {cn.temp[103]}/{cn.temp[104]}");
-            draw_text(xx + 588, yy + 665, $"Shields: {cn.temp[105]}" );
-            draw_text(xx + 768, yy + 665, $"Armour: {cn.temp[107]},{cn.temp[108]}");
-
-            draw_text(xx + 485, yy + 683, $"Speed: {cn.temp[106]}");
-            draw_text(xx + 678, yy + 683, $"Turrets: {cn.temp[109]}");
+            draw_text(xx + 495, yy + 675, $"Speed: {cn.temp[106]}");
+            draw_text(xx + 680, yy + 675, $"Turrets: {cn.temp[109]}");
 
             if (cn.temp[110] != "") {
-                draw_text(xx + 383, yy + 701, $"-{cn.temp[110]} ({cn.temp[111]})");
+                draw_text(xx + 383, yy + 705, $"-{cn.temp[110]} ({cn.temp[111]})");
             }
             if (cn.temp[112] != "") {
-                draw_text(xx + 383, yy + 719, "-" + cn.temp[112] + " (" + string(cn.temp[113]) + ")");
+                draw_text(xx + 383, yy + 725, "-" + cn.temp[112] + " (" + string(cn.temp[113]) + ")");
             }
             if (cn.temp[114] != "") {
-                draw_text(xx + 383, yy + 737, "-" + cn.temp[114] + " (" + string(cn.temp[115]) + ")");
+                draw_text(xx + 383, yy + 745, "-" + cn.temp[114] + " (" + string(cn.temp[115]) + ")");
             }
             if (cn.temp[116] != "") {
-                draw_text(xx + 383, yy + 755, "-" + cn.temp[116] + " (" + string(cn.temp[117]) + ")");
+                draw_text(xx + 383, yy + 765, "-" + cn.temp[116] + " (" + string(cn.temp[117]) + ")");
             }
 
             draw_set_font(fnt_40k_12);
-            draw_text_ext(xx + 352, yy + 775, $"Carrying ({cn.temp[118]}): {cn.temp[119]}", -1, 542);
+            // draw_text_ext(xx + 352, 775, $"Carrying ({cn.temp[118]}): {cn.temp[119]}", -1, 542);
             draw_set_font(fnt_40k_14);
-
-            yy += 34;
         }
     }
     // 31 wide
