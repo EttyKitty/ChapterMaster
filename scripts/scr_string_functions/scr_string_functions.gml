@@ -5,13 +5,11 @@
 
 function string_upper_first(_string) {
     try {
-        var _first_char;
-        var _modified_string;
+        var _first_char = string_char_at(_string, 1);
+        var _modified_string = _string;
     
-        _first_char = string_char_at(_string, 1);
-        _first_char = string_upper( _first_char );
+        _first_char = string_upper(_first_char);
         
-        _modified_string = _string;
         _modified_string = string_delete(_modified_string, 1, 1);
         _modified_string = string_insert(_first_char, _modified_string, 1);
     
@@ -19,9 +17,6 @@ function string_upper_first(_string) {
 	}
     catch(_exception) {
         handle_exception(_exception);
-		log_into_file(_exception.script);
-		log_into_file(_exception.stacktrace);
-        show_debug_message(_exception.longMessage);
 	}
 }
 
@@ -102,7 +97,7 @@ function integer_to_letters(_integer, _capitalize = false) {
     _num_str = string_trim(_num_str);
 
     if (_capitalize) {
-        string_upper_first(_num_str);
+        _num_str = string_upper_first(_num_str);
     }
 
     return _num_str;
