@@ -18,7 +18,7 @@ function string_upper_first(_string) {
         return _modified_string;
 	}
     catch(_exception) {
-		log_into_file(_exception.longMessage);
+        handle_exception(_exception);
 		log_into_file(_exception.script);
 		log_into_file(_exception.stacktrace);
         show_debug_message(_exception.longMessage);

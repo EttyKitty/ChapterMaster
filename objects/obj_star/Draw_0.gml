@@ -55,7 +55,7 @@ if (!global.load && (obj_controller.zoomed || in_camera_view(star_box_shape())))
                     var faction_sprite = obj_img.force[owner];
                     draw_sprite_ext(faction_sprite,faction_index,xx+(panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);
                 } catch(_exception){
-                    show_debug_message("{0}", _exception);
+                    handle_exception(_exception);
                 }
             } else {
                 draw_sprite_ext(faction_sprite,faction_index,xx+(panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);

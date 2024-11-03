@@ -295,7 +295,7 @@ function scr_random_event(execute_now) {
 		        evented = true;
 			}
 			catch(_exception){
-				show_debug_message("{0} \n hulk error",_exception);
+				handle_exception(_exception);
 			}
 		}
 	}

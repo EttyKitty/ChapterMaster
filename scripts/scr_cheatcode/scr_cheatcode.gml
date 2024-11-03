@@ -283,9 +283,6 @@ function scr_cheatcode(argument0) {
 			}
 		}
 	} catch(_exception) {
-		log_into_file(_exception.longMessage);
-		log_into_file(_exception.script);
-		log_into_file(_exception.stacktrace);
 		show_debug_message(_exception.longMessage);
 	}
 }

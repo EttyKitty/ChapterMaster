@@ -13,7 +13,7 @@ function temp_marine_variables(co, unit_num){
 						break;
 					}
 				} catch( _exception) {
-					show_debug_message("{0}",_exception);
+					handle_exception(_exception);
 					unit.squad="none";
 				}
 			}

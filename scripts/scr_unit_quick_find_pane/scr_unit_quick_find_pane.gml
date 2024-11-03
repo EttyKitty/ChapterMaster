@@ -102,7 +102,7 @@ function UnitQuickFindPanel() constructor{
 		    		}
 		    	}
 		    }catch(_exception){
-				show_debug_message(_exception.message);
+				handle_exception(_exception);
 			}
 	    }
 	    update_mission_log();	
