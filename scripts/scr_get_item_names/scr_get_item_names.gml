@@ -17,6 +17,7 @@ function get_none_or_any_item_names(_with_none=false, _with_any=false) {
 
 /// @description This function returns the hard-coded list of ranged weapons.
 /// @param {array} _item_names - The list of ranged weapons to append to.
+/// @returns {array} The appended list.
 function push_marine_ranged_weapons_item_names(_item_names) {
     array_push(_item_names, "Archeotech Laspistol");
     array_push(_item_names, "Assault Cannon");
@@ -41,10 +42,13 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     array_push(_item_names, "Sniper Rifle");
     array_push(_item_names, "Storm Bolter");
     array_push(_item_names, "Webber");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function returns the hard-coded list of melee weapons.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_marine_melee_weapons_item_names(_item_names) {
     array_push(_item_names, "Combat Knife");
     array_push(_item_names, "Chainsword");
@@ -61,11 +65,14 @@ function push_marine_melee_weapons_item_names(_item_names) {
     array_push(_item_names, "Storm Shield");
     array_push(_item_names, "Bolt Pistol");
     array_push(_item_names, "Bolter");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 
 /// @description This function appends the list of marine armour items to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_marine_armour_item_names(_item_names) {
     array_push(_item_names, "Scout Armour");
     array_push(_item_names, "Power Armour");
@@ -78,30 +85,39 @@ function push_marine_armour_item_names(_item_names) {
     array_push(_item_names, "Artificer Armour");
     array_push(_item_names, "Terminator Armour");
     array_push(_item_names, "Tartaros");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of marine gear items to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_marine_gear_item_names(_item_names) {
     // array_push(item_names, "Bionics");
     array_push(_item_names, "Iron Halo");
     array_push(_item_names, "Narthecium");
     array_push(_item_names, "Psychic Hood");
     array_push(_item_names, "Rosarius");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of marine mobility items to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_marine_mobility_item_names(_item_names) {
     array_push(_item_names, "Bike");
     array_push(_item_names, "Jump Pack");
     array_push(_item_names, "Servo-arm");
     array_push(_item_names, "Servo-harness");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 
 /// @description This function appends the list of dreadnought ranged weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_dreadnought_ranged_weapons_item_names(_item_names) {
     array_push(_item_names, "Multi-Melta");
     array_push(_item_names, "Twin Linked Heavy Flamer Sponsons");
@@ -113,74 +129,98 @@ function push_dreadnought_ranged_weapons_item_names(_item_names) {
     array_push(_item_names, "Twin Linked Assault Cannon Mount");
     array_push(_item_names, "Twin Linked Heavy Bolter");
     array_push(_item_names, "Heavy Conversion Beam Projector");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of dreadnought melee weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_dreadnought_melee_weapons_item_names(_item_names) {
     array_push(_item_names, "Close Combat Weapon");
     array_push(_item_names, "Dreadnought Power Claw");
     array_push(_item_names, "Dreadnought Lightning Claw");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land raider front weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_raider_front_weapons_item_names(_item_names) {
     array_push(_item_names, "Twin Linked Heavy Bolter Mount");
     array_push(_item_names, "Twin Linked Lascannon Mount");
     array_push(_item_names, "Twin Linked Assault Cannon Mount");
     array_push(_item_names, "Whirlwind Missiles");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land raider relic front weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_raider_relic_front_weapons_item_names(_item_names) {
     // array_push(_item_names, "Thunderfire Cannon Mount");
     array_push(_item_names, "Neutron Blaster Turret");
     array_push(_item_names, "Reaper Autocannon Mount");
     // array_push(_item_names, "Twin Linked Helfrost Cannon Mount");
     // array_push(_item_names, "Graviton Cannon Mount");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land raider sponson weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_raider_regular_sponsons_item_names(_item_names) {
     array_push(_item_names, "Twin Linked Lascannon Sponsons");
     array_push(_item_names, "Hurricane Bolter Sponsons");
     array_push(_item_names, "Flamestorm Cannon Sponsons");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function returns the hard-coded list of land raider relic sponsons.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_raider_relic_sponsons_item_names(_item_names) {
     array_push(_item_names, "Quad Linked Heavy Bolter Sponsons");
     array_push(_item_names, "Twin Linked Heavy Flamer Sponsons");
     array_push(_item_names, "Twin Linked Multi-Melta Sponsons");
     array_push(_item_names, "Twin Linked Volkite Culverin Sponsons");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land raider pintle weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_raider_pintle_item_names(_item_names) {
     array_push(_item_names, "Bolter");
     array_push(_item_names, "Combiflamer");
     array_push(_item_names, "Twin Linked Bolters");
     array_push(_item_names, "Storm Bolter");
     array_push(_item_names, "HK Missile");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of rhino weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_rhino_weapons_item_names(_item_names) {
     array_push(_item_names, "Bolter");
     array_push(_item_names, "Combiflamer");
     array_push(_item_names, "Twin Linked Bolters");
     array_push(_item_names, "Storm Bolter");
     array_push(_item_names, "HK Missile");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of predator turret weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_predator_turret_item_names(_item_names) {
     array_push(_item_names, "Autocannon Turret");
     array_push(_item_names, "Twin Linked Lascannon Turret");
@@ -192,60 +232,81 @@ function push_predator_turret_item_names(_item_names) {
     array_push(_item_names, "Neutron Blaster Turret");
     array_push(_item_names, "Volkite Saker Turret");
     // array_push(item_names, "Graviton Cannon Turret");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of predator sponson weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_predator_sponsons_item_names(_item_names) {
     array_push(_item_names, "Heavy Bolter Sponsons");
     array_push(_item_names, "Lascannon Sponsons");
     array_push(_item_names, "Heavy Flamer Sponsons");
     array_push(_item_names, "Volkite Culverin Sponsons");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of predator pintle weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_predator_pintle_item_names(_item_names) {
     array_push(_item_names, "Bolter");
     array_push(_item_names, "Combiflamer");
     array_push(_item_names, "Twin Linked Bolters");
     array_push(_item_names, "Storm Bolter");
     array_push(_item_names, "HK Missile");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land speeder primary weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_speeder_primary_item_names(_item_names) {
     array_push(_item_names, "Multi-Melta");
     array_push(_item_names, "Heavy Bolter");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of land speeder secondary weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_land_speeder_secondary_item_names(_item_names) {
     array_push(_item_names, "Assault Cannon");
     array_push(_item_names, "Heavy Flamer");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of whirlwind missiles to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_whirlwind_missiles_item_names(_item_names) {
     array_push(_item_names, "Whirlwind Missiles");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of whirlwind pintle weapons to the given list.
 /// @param {array} _item_names - The list to append to.
+/// @returns {array} The appended list.
 function push_whirlwind_pintle_item_names(_item_names) {
     array_push(_item_names, "Bolter");
     array_push(_item_names, "Combiflamer");
     array_push(_item_names, "Twin Linked Bolters");
     array_push(_item_names, "Storm Bolter");
     array_push(_item_names, "HK Missile");
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of tank upgrade items to the given list.
 /// @param {array} _item_names - The list to append to.
 /// @param {bool} _is_land_raider - Whether the tank is a land raider.
+/// @returns {array} The appended list.
 function push_tank_upgrade_item_names(_item_names, _is_land_raider=false) {
     array_push(_item_names, "Armoured Ceramite");
     array_push(_item_names, "Artificer Hull");
@@ -253,12 +314,15 @@ function push_tank_upgrade_item_names(_item_names, _is_land_raider=false) {
     if (_is_land_raider) {
         array_push(_item_names, "Void Shield");
     }
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description This function appends the list of tank accessory items to the given list.
 /// @param {array} _item_names - The list to append to.
 /// @param {bool} _is_land_raider - Whether the tank is a land raider.
 /// @param {bool} _is_dreadnought - Whether the 'tank' is a dreadnought.
+/// @returns {array} The appended list.
 function push_tank_accessory_item_names(_item_names, _is_land_raider=false, _is_dreadnought=false) {
     if (!_is_dreadnought) {
         array_push(_item_names, "Dozer Blades");
@@ -269,6 +333,8 @@ function push_tank_accessory_item_names(_item_names, _is_land_raider=false, _is_
     if (!_is_land_raider && !_is_dreadnought) {
         array_push(_item_names, "Lucifer Pattern Engine");
     }
+    // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
+    return _item_names;
 }
 
 /// @description Returns a list of equipment names filtered by given criteria.
@@ -433,7 +499,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                             );
                         } else {
                             _item_names = get_none_or_any_item_names(true, false);
-                            push_marine_ranged_weapons_item_names(_item_names);
+                            _item_names = push_marine_ranged_weapons_item_names(_item_names);
                         }
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
                         if (_show_available_only) {
@@ -451,7 +517,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                             }
                         } else {
                             _item_names = get_none_or_any_item_names(true, false);
-                            push_marine_melee_weapons_item_names(_item_names);
+                            _item_names = push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
                         show_error("scr_get_item_names: Invalid equipment subtype for infantry", true);
@@ -470,7 +536,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                         );
                     } else {
                         _item_names = get_none_or_any_item_names(true, false);
-                        push_marine_armour_item_names(_item_names);
+                        _item_names = push_marine_armour_item_names(_item_names);
                     }
                     break;
                 case eEQUIPMENT_TYPE.GearUpgrade:
@@ -486,7 +552,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                         );
                     } else {
                         _item_names = get_none_or_any_item_names(true, false);
-                        push_marine_gear_item_names(_item_names);
+                        _item_names = push_marine_gear_item_names(_item_names);
                     }
                     break;
                 case eEQUIPMENT_TYPE.MobilityAccessory:
@@ -502,7 +568,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                         );
                     } else {
                         _item_names = get_none_or_any_item_names(true, false);
-                        push_marine_mobility_item_names(_item_names);
+                        _item_names = push_marine_mobility_item_names(_item_names);
                     }
                     break;
                 default:
@@ -526,7 +592,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                             );
                         } else {
                             _item_names = get_none_or_any_item_names(true, false);
-                            push_dreadnought_ranged_weapons_item_names(_item_names);
+                            _item_names = push_dreadnought_ranged_weapons_item_names(_item_names);
                         }
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
                         if (_show_available_only) {
@@ -541,7 +607,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                             );
                         } else {
                             _item_names = get_none_or_any_item_names(true, false);
-                            push_dreadnought_melee_weapons_item_names(_item_names);
+                            _item_names = push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
                         show_error("scr_get_item_names: Invalid equipment subtype for dreadnought", true);
@@ -549,7 +615,7 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
                     break;
                 case eEQUIPMENT_TYPE.MobilityAccessory:
                     _item_names = get_none_or_any_item_names(true, false);
-                    push_tank_accessory_item_names(_item_names, false, true);
+                    _item_names = push_tank_accessory_item_names(_item_names, false, true);
                     break;
                 case eEQUIPMENT_TYPE.Armour:
                 case eEQUIPMENT_TYPE.GearUpgrade:
@@ -564,25 +630,25 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
                     if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) { // Regular land raider weapons
-                        push_land_raider_front_weapons_item_names(_item_names);
+                        _item_names = push_land_raider_front_weapons_item_names(_item_names);
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
-                        push_land_raider_relic_front_weapons_item_names(_item_names);
+                        _item_names = push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
                         show_error("scr_get_item_names: Invalid equipment subtype for land raider", true);
                     }
                     break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
                     if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) { // Regular land raider weapons
-                        push_land_raider_regular_sponsons_item_names(_item_names);
+                        _item_names = push_land_raider_regular_sponsons_item_names(_item_names);
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
-                        push_land_raider_relic_sponsons_item_names(_item_names);
+                        _item_names = push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
                         show_error("scr_get_item_names: Invalid equipment subtype for land raider", true);
                     }
                     break;
-                case eEQUIPMENT_TYPE.Armour: push_land_raider_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, true); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, true, false); break;
+                case eEQUIPMENT_TYPE.Armour: _item_names = push_land_raider_pintle_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.GearUpgrade: _item_names = push_tank_upgrade_item_names(_item_names, true); break;
+                case eEQUIPMENT_TYPE.MobilityAccessory: _item_names = push_tank_accessory_item_names(_item_names, true, false); break;
                 default:
                     show_error("scr_get_item_names: Invalid equipment type for land raider", true);
             }
@@ -590,9 +656,9 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
         case eUNIT_TYPE.Rhino:
             _item_names = get_none_or_any_item_names(true, false);
             switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_rhino_weapons_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
+                case eEQUIPMENT_TYPE.PrimaryWeapon: _item_names = push_rhino_weapons_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.GearUpgrade: _item_names = push_tank_upgrade_item_names(_item_names, false); break;
+                case eEQUIPMENT_TYPE.MobilityAccessory: _item_names = push_tank_accessory_item_names(_item_names, false, false); break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
                 case eEQUIPMENT_TYPE.Armour:
                     // Rhino doesn't have these equipment types, but empty lists are shown in the UI
@@ -604,11 +670,11 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
         case eUNIT_TYPE.Predator:
             _item_names = get_none_or_any_item_names(true, false);
             switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_predator_turret_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_predator_sponsons_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.Armour: push_predator_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
+                case eEQUIPMENT_TYPE.PrimaryWeapon: _item_names = push_predator_turret_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.SecondaryWeapon: _item_names = push_predator_sponsons_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.Armour: _item_names = push_predator_pintle_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.GearUpgrade: _item_names = push_tank_upgrade_item_names(_item_names, false); break;
+                case eEQUIPMENT_TYPE.MobilityAccessory: _item_names = push_tank_accessory_item_names(_item_names, false, false); break;
                 default:
                     show_error("scr_get_item_names: Invalid equipment type for predator", true);
             }
@@ -616,8 +682,8 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
         case eUNIT_TYPE.LandSpeeder:
             _item_names = get_none_or_any_item_names(true, false);
             switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_land_speeder_primary_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_land_speeder_secondary_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.PrimaryWeapon: _item_names = push_land_speeder_primary_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.SecondaryWeapon: _item_names = push_land_speeder_secondary_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.GearUpgrade:
                 case eEQUIPMENT_TYPE.Armour:
                 case eEQUIPMENT_TYPE.MobilityAccessory:
@@ -630,10 +696,10 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
         case eUNIT_TYPE.Whirlwind:
             _item_names = get_none_or_any_item_names(true, false);
             switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_whirlwind_missiles_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_whirlwind_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
+                case eEQUIPMENT_TYPE.PrimaryWeapon: _item_names = push_whirlwind_missiles_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.SecondaryWeapon: _item_names = push_whirlwind_pintle_item_names(_item_names); break;
+                case eEQUIPMENT_TYPE.GearUpgrade: _item_names = push_tank_upgrade_item_names(_item_names, false); break;
+                case eEQUIPMENT_TYPE.MobilityAccessory: _item_names = push_tank_accessory_item_names(_item_names, false, false); break;
                 case eEQUIPMENT_TYPE.Armour:
                     // Whirlwind doesn't have this equipment type, but an empty list is shown in the UI
                     break;
