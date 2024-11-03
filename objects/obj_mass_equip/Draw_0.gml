@@ -168,6 +168,7 @@ if (total_role_number > 0 && tab > 0) {
                         case 2: obj_ini.wep2[100, role] = buh; break;
                         case 3:
                             obj_ini.armour[100, role] = buh;
+                            //TODO move to use equipment tags and look for "terminator" tag
                             if (buh == "Terminator Armour") obj_ini.mobi[100, role] = "";
                             break;
                         case 4: obj_ini.gear[100, role] = buh; break;
