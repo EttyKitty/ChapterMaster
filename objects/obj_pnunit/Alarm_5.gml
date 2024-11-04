@@ -21,7 +21,7 @@ if (obj_ncombat.defeat == 0) {
             if (!marine_dead[i]) { // EXP allocation
                 _current_exp = _unit.experience;
 
-                _exp_mod = 1 - (_current_exp / 200);
+                _exp_mod = max(1 - (_current_exp / 200), 0.03);
 
                 _unit_xp_data = [_unit, _exp_mod];
                 array_push(_eligible_units, _unit_xp_data);
