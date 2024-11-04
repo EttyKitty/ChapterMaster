@@ -363,7 +363,7 @@ function get_filtered_equipment_item_names(_equip_category, _melee_or_ranged, _i
             }
 			var valid = true;
             if (_required_tags != undefined) {
-                for (var _t = 0; _t < array_length(_required_tags); _i++) {
+                for (var _t = 0; _t < array_length(_required_tags); _t++) {
                     if (!equip_data.has_tag(_required_tags[_t])) {
                         valid = false;
                         break;
@@ -371,7 +371,7 @@ function get_filtered_equipment_item_names(_equip_category, _melee_or_ranged, _i
                 }
             }
             if (_excluded_tags != undefined) {
-                for (var _t = 0; _t < array_length(_excluded_tags); _i++) {
+                for (var _t = 0; _t < array_length(_excluded_tags); _t++) {
                     if (equip_data.has_tag(_excluded_tags[_t])) {
                         valid = false;
                         break;
@@ -414,46 +414,46 @@ enum eUNIT_TYPE {
 
 // slot names differ by unit type then equipment type
 global.slot_names = {
-    "1": { // Infantry
-        "1": "Left Hand",
-        "2": "Right Hand",
-        "3": "Armour",
-        "4": "Gear",
-        "5": "Mobility"
+    "_1": { // Infantry
+        "_1": "Left Hand",
+        "_2": "Right Hand",
+        "_3": "Armour",
+        "_4": "Gear",
+        "_5": "Mobility"
     },
-    "6": { // Dreadnought
-        "1": "Left Arm",
-        "2": "Right Arm",
-        "5": "Accessory"
+    "_6": { // Dreadnought
+        "_1": "Left Arm",
+        "_2": "Right Arm",
+        "_5": "Accessory"
     },
-    "50": { // Land Raider
-        "1": "Front",
-        "2": "Sponson",
-        "3": "Pintle",
-        "4": "Upgrade",
-        "5": "Accessory"
+    "_50": { // Land Raider
+        "_1": "Front",
+        "_2": "Sponson",
+        "_3": "Pintle",
+        "_4": "Upgrade",
+        "_5": "Accessory"
     },
-    "51": { // Rhino
-        "1": "Weapon",
-        "4": "Upgrade",
-        "5": "Accessory"
+    "_51": { // Rhino
+        "_1": "Weapon",
+        "_4": "Upgrade",
+        "_5": "Accessory"
     },
-    "52": { // Predator
-        "1": "Turret",
-        "2": "Sponsons",
-        "3": "Pintle",
-        "4": "Upgrade",
-        "5": "Accessory"
+    "_52": { // Predator
+        "_1": "Turret",
+        "_2": "Sponsons",
+        "_3": "Pintle",
+        "_4": "Upgrade",
+        "_5": "Accessory"
     },
-    "53": { // Land Speeder
-        "1": "Primary",
-        "2": "Secondary"
+    "_53": { // Land Speeder
+        "_1": "Primary",
+        "_2": "Secondary"
     },
-    "54": { // Whirlwind
-        "1": "Missiles",
-        "2": "Pintle",
-        "4": "Upgrade",
-        "5": "Accessory"
+    "_54": { // Whirlwind
+        "_1": "Missiles",
+        "_2": "Pintle",
+        "_4": "Upgrade",
+        "_5": "Accessory"
     }
 };
 
@@ -462,11 +462,11 @@ global.slot_names = {
 /// @param {real} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
 /// @returns {string} The name of the slot.
 function get_slot_name(_unit_type, _equipment_type) {
-    var _unit_key = string(_unit_type);
-    var _equip_key = string(_equipment_type);
+    var _unit_key_str = $"_{_unit_type}";
+    var _equip_key_str = $"_{_equipment_type}";
 
-    if (global.slot_names[_unit_key] && global.slot_names[_unit_key][_equip_key]) {
-        return global.slot_names[_unit_key][_equip_key];
+    if (global.slot_names[_unit_key_str] && global.slot_names[_unit_key_str][_equip_key_str]) {
+        return global.slot_names[_unit_key_str][_equip_key_str];
     }
     return "Unknown";
 }
@@ -480,6 +480,7 @@ function get_slot_name(_unit_type, _equipment_type) {
 /// @param {bool} _master_crafted_only - Whether to show only master crafted items, or hide them.
 /// @returns {array} The list of items to populate the selection list with.
 function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false) {
+    show_debug_message("scr_get_item_names: " + string(_equipment_type) + ", " + string(_equipment_subtype) + ", " + string(_unit_type) + ", " + string(_include_company_standard) + ", " + string(_show_available_only) + ", " + string(_master_crafted_only));
     var _item_names;
     switch(_unit_type) {
         case eUNIT_TYPE.Infantry:
@@ -708,5 +709,6 @@ function scr_get_item_names(_equipment_type, _equipment_subtype, _unit_type, _in
             }
             break;
     }
+    show_debug_message("scr_get_item_names: " + string(_item_names));
     return _item_names;
 }

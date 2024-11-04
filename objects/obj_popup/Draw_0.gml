@@ -888,7 +888,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         var weapon_one_data = gear_weapon_data("weapon", n_wep1);
         var weapon_two_data = gear_weapon_data("weapon", n_wep2);
         var armour_data = gear_weapon_data("armour", n_armour);
-    }
+
 
     if (target_comp=1) and (is_struct(weapon_one_data)){// Check numbers
         req_wep1_num=units;have_wep1_num=0;
