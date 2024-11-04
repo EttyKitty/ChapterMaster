@@ -1691,7 +1691,7 @@ if (hunt > 0) {
 // show_message(temp[62]);
 // 61 : equipment
 // 62 : ships
-var lol=260;
+var lol=240;
 draw_set_font(fnt_small);
 welcome_pages=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
 welcome_pages-=260;
@@ -1716,7 +1716,7 @@ if (welcome_pages>=1){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[65]))>260){
             lig=string_length(temp[65]);
-            temp[65]=string_delete(temp[65],lig-1,1);
+            temp[65]=string_delete(temp[65],lig,1);
         }
     }
 }
@@ -1727,7 +1727,7 @@ if (welcome_pages>=2){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[66]))>lol){
             lig=string_length(temp[66]);
-            temp[66]=string_delete(temp[66],lig-1,1);
+            temp[66]=string_delete(temp[66],lig,1);
         }
     }
 }
@@ -1739,7 +1739,7 @@ if (welcome_pages>=3){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[67]))>lol){
             lig=string_length(temp[67]);
-            temp[67]=string_delete(temp[67],lig-1,1);
+            temp[67]=string_delete(temp[67],lig,1);
         }
     }
 }
@@ -1751,7 +1751,7 @@ if (welcome_pages>=4){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[68]))>lol){
             lig=string_length(temp[68]);
-            temp[68]=string_delete(temp[68],lig-1,1);
+            temp[68]=string_delete(temp[68],lig,1);
         }
     }
 }
@@ -1763,7 +1763,7 @@ if (welcome_pages>=5){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[69]))>lol){
             lig=string_length(temp[69]);
-            temp[69]=string_delete(temp[69],lig-1,1);
+            temp[69]=string_delete(temp[69],lig,1);
         }
     }
 }
