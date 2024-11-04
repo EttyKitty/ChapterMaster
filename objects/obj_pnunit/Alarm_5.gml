@@ -14,11 +14,11 @@ if (obj_ncombat.defeat == 0) {
             if (marine_dead[i] == 1 && marine_type[i] != "" && _unit_recovery_score > 0) { // Apothecaries saving marines
                 obj_ncombat.unit_recovery_score -= 1;
                 _unit.update_health(irandom(20) - 10);
-                marine_dead[i] = 0;
+                marine_dead[i] = false;
                 obj_ncombat.units_saved += 1;
             } 
             
-            if (marine_dead[i] == 0) { // EXP allocation
+            if (!marine_dead[i]) { // EXP allocation
                 _current_exp = _unit.experience;
 
                 _exp_mod = 1 - (_current_exp / 200);
@@ -51,7 +51,7 @@ if (obj_ncombat.defeat == 0) {
     var rand1;
     var survival;
     for (var i = 0; i < array_length(veh_dead); i++) {
-        if (veh_type[i] != "") && (veh_dead[i] = 1) && (veh_ally[i] = false) {
+        if (veh_type[i] != "") && (veh_dead[i]) && (!veh_ally[i] ) {
             if (obj_controller.stc_bonus[3] = 4) {
                 survival = 20;
                 rand1 = floor(random(100)) + 1;
@@ -72,7 +72,6 @@ if (obj_ncombat.defeat == 0) {
 }
 
 for (var i=0;i<array_length(unit_struct);i++){
-    if (marine_id[i]==0) then continue;
     _unit=unit_struct[i];
     if (marine_dead[i]=0) and (marine_type[i]=="Death Company"){
         if( _unit.role()!="Death Company"){
