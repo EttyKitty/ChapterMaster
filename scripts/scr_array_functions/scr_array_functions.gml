@@ -63,3 +63,30 @@ function array_to_string_list(_array) {
     }
     return _string_list;
 }
+
+/// @function array_to_string_order
+/// @description Converts an array into a string, with "," after each member and "and" before the last one.
+/// @param {array} _strings_array An array of strings.
+/// @return {string}
+function array_to_string_order(_strings_array) {
+    var result = "";
+    var length = array_length(_strings_array);
+
+    // Loop through the array
+    for (var i = 0; i < length; i++) {
+        // Append the current string
+        result += _strings_array[i];
+        
+        // Check if it's the last string
+        if (i < length - 1) {
+            // If it's the second last item, add " and " before the last one
+            if (i == length - 2) {
+                result += " and ";
+            } else {
+                result += ", ";
+            }
+        }
+    }
+
+    return result;
+}

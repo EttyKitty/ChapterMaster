@@ -1633,9 +1633,10 @@ for(var u=0; u<=30; u++){
     }
 }
 
+
 temp[62]="##Your fleet contains ";
 
-var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names="",sk_names="",glad_names="",hunt_names="";
+var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
 codex[0]="";codex_discovered[0]=0;
 for(var mm=0; mm<=30; mm++){
@@ -1643,52 +1644,46 @@ for(var mm=0; mm<=30; mm++){
         ships++;
         if (obj_ini.ship_class[mm] == "Battle Barge") {
             bb++;
-            bb_names += $", {obj_ini.ship[mm]}";
+            array_push(bb_names, string(obj_ini.ship[mm]));
         }
         if (obj_ini.ship_class[mm] == "Strike Cruiser") {
             sk++;
-            sk_names += $", {obj_ini.ship[mm]}";
+            array_push(sk_names, string(obj_ini.ship[mm]));
         }
         if (obj_ini.ship_class[mm] == "Gladius") {
             glad++;
-            glad_names += $", {obj_ini.ship[mm]}";
+            array_push(glad_names, string(obj_ini.ship[mm]));
         }
         if (obj_ini.ship_class[mm] == "Hunter") {
             hunt++;
-            hunt_names += $", {obj_ini.ship[mm]}";
+            array_push(hunt_names, string(obj_ini.ship[mm]));
         }
     }
     codex[mm]="";
     codex_discovered[mm]=0;
 }
-temp[62]+=string(ships)+$" {string_plural("warship")}.#";
+temp[62]+=string(ships)+$" {string_plural("warship")}-\n";
 
-vih=string_pos(",",bb_names);
-bb_names=string_delete(bb_names,vih,1);
-vih=string_pos(",",sk_names);
-sk_names=string_delete(sk_names,vih,1);
-vih=string_pos(",",glad_names);
-glad_names=string_delete(glad_names,vih,1);
-vih=string_pos(",",hunt_names);
-hunt_names=string_delete(hunt_names,vih,1);
-
-if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) 
-    temp[62] += $"Your flagship is the Battle Barge {obj_ini.ship[1]}.  ";
-if (obj_ini.fleet_type == ePlayerBase.home_world && bb > 1) {
-    temp[62] += $"There are {bb} {string_plural("Battle Barge")}; {bb_names}.  ";
+if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
+    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[1]}.";
+    temp[62] += "\n";
+    bb--;
 }
-temp[62] += "#";
+if (bb > 0) {
+    temp[62] += $"{bb} {string_plural("Battle Barge")}: {array_to_string_order(bb_names)}.";
+    temp[62] += "\n";
+}
 if (sk > 0) {
-    temp[62] += $"There are {sk} {string_plural("Strike Cruiser")}; {sk_names}.  ";
-    temp[62] += "#";
+    temp[62] += $"{sk} {string_plural("Strike Cruiser")}: {array_to_string_order(sk_names)}.";
+    temp[62] += "\n";
 }
 if (glad > 0) {
-    temp[62] += $"There are {glad} {string_plural("Gladius Escort")}; {glad_names}.  ";
-    temp[62] += "#";
+    temp[62] += $"{glad} {string_plural("Gladius Escort")}: {array_to_string_order(glad_names)}.";
+    temp[62] += "\n";
 }
 if (hunt > 0) {
-    temp[62] += $"There are {hunt} {string_plural("Hunter Escort")}; {hunt_names}.";
-    temp[62] += "#";
+    temp[62] += $"{hunt} {string_plural("Hunter Escort")}: {array_to_string_order(hunt_names)}.";
+    temp[62] += "\n";
 }
 
 
@@ -1696,7 +1691,7 @@ if (hunt > 0) {
 // show_message(temp[62]);
 // 61 : equipment
 // 62 : ships
-var lol=240;
+var lol=260;
 draw_set_font(fnt_small);
 welcome_pages=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
 welcome_pages-=260;
