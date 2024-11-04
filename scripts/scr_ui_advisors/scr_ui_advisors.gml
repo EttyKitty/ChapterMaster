@@ -1,4 +1,4 @@
-
+/// @mixin obj_controller
 function scr_ui_advisors() {
 
     var xx, yy, blurp, eta, va;
@@ -861,8 +861,7 @@ function scr_ui_advisors() {
         if (menu = 502) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[67])), -1, 660);
         if (menu = 503) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[68])), -1, 660);
         draw_set_halign(fa_center);
-        if (temp[68] = "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
-        if (temp[68] != "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
+        draw_text(xx + 702, yy + 695, $"{menu - 499}/{welcome_pages} (Press Any Key)");
         draw_set_halign(fa_left);
 
     }

@@ -1698,25 +1698,26 @@ if (hunt > 0) {
 // 62 : ships
 var lol=240;
 draw_set_font(fnt_small);
-vih=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
-vih-=260;vih=(vih/lol)+1;
+welcome_pages=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
+welcome_pages-=260;
+welcome_pages=(welcome_pages/lol)+1;
 
-if (floor(vih)<vih){
-    vih+=1;
-    vih=floor(vih);
+if (floor(welcome_pages)<welcome_pages){
+    welcome_pages+=1;
+    welcome_pages=floor(welcome_pages);
 }
 
-// show_message(string(vih)+" pages");
+// show_message(string(welcome_pages)+" pages");
 var tman=65;
 temp[65]=string(temp[60])+string(temp[61])+string(temp[62]);
-for(var i=0; i<vih; i++){
+for(var i=0; i<welcome_pages; i++){
     tman+=1;
     temp[tman]=string(temp[60])+string(temp[61])+string(temp[62]);
 }
 
 var lig=0,remov=0,stahp=0;
 
-if (vih>=1){
+if (welcome_pages>=1){
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[65]))>260){
             lig=string_length(temp[65]);
@@ -1726,7 +1727,7 @@ if (vih>=1){
 }
 remov=string_length(string(temp[65]))+1;
 
-if (vih>=2){
+if (welcome_pages>=2){
     temp[66]=string_delete(temp[66],1,remov);
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[66]))>lol){
@@ -1738,7 +1739,7 @@ if (vih>=2){
 remov=string_length(string(temp[65])+string(temp[66]))+1;
 // show_message(remov);
 
-if (vih>=3){
+if (welcome_pages>=3){
     temp[67]=string_delete(temp[67],1,remov);
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[67]))>lol){
@@ -1749,8 +1750,8 @@ if (vih>=3){
 }
 remov=string_length(string(temp[65])+string(temp[66])+string(temp[67]))+1;
 
-if (vih<4) then temp[68]="";
-if (vih>=4){
+if (welcome_pages<4) then temp[68]="";
+if (welcome_pages>=4){
     temp[68]=string_delete(temp[68],1,remov);
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[68]))>lol){
@@ -1761,8 +1762,8 @@ if (vih>=4){
 }
 remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(temp[68]))+1;
 
-if (vih<5) then temp[69]="";
-if (vih>=5){
+if (welcome_pages<5) then temp[69]="";
+if (welcome_pages>=5){
     temp[69]=string_delete(temp[69],1,remov);
     for(var i=0; i<4000; i++){
         if (string_height(string_hash_to_newline(temp[69]))>lol){
