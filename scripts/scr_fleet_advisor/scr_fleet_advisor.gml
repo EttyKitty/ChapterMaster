@@ -80,29 +80,54 @@ function scr_fleet_advisor(){
         var _line_height = 20;
         var _line_gap = 2;
         var _headers = {
-            name: { x1: xx + 953, w: 168, text: "Name", h_align: fa_left },
-            class: { x1: xx + 1123, w: 128, text: "Class", h_align: fa_left },
-            location: { x1: xx + 1270, w: 138, text: "Location", h_align: fa_left },
-            hp: { x1: xx + 1408, w: 44, text: "HP", h_align: fa_right },
-            carrying: { x1: xx + 1452, w: 84, text: "Carrying", h_align: fa_right },
+            name: {
+                x1: xx + 953,
+                w: 168,
+                text: "Name",
+                h_align: fa_left
+            },
+            class: {
+                x1: xx + 1123,
+                w: 128,
+                text: "Class",
+                h_align: fa_left
+            },
+            location: {
+                x1: xx + 1270,
+                w: 138,
+                text: "Location",
+                h_align: fa_left
+            },
+            hp: {
+                x1: xx + 1408,
+                w: 44,
+                text: "HP",
+                h_align: fa_right
+            },
+            carrying: {
+                x1: xx + 1452,
+                w: 84,
+                text: "Carrying",
+                h_align: fa_right
+            },
         };
         var _headers_array = struct_get_names(_headers);
         for (var i = 0; i < array_length(_headers_array); i++) {
-            with (_headers[$ _headers_array[i]]) {
+            with(_headers[$ _headers_array[i]]) {
                 x2 = x1 + w;
                 y1 = yy + _header_offset;
                 header_y = (y1 - 2);
                 switch (h_align) {
-                    case fa_right: 
-                        header_x = x2; 
-                        break;
-                    case fa_center: 
-                        header_x = (x1 + x2) / 2; 
-                        break;
-                    case fa_left: 
-                    default:
-                        header_x = x1; 
-                        break;
+                case fa_right:
+                    header_x = x2;
+                    break;
+                case fa_center:
+                    header_x = (x1 + x2) / 2;
+                    break;
+                case fa_left:
+                default:
+                    header_x = x1;
+                    break;
                 }
                 draw_set_halign(h_align);
                 draw_text(header_x, header_y, text);
@@ -119,7 +144,7 @@ function scr_fleet_advisor(){
                     y1: current_y + 4,
                     sprite: spr_view_small,
                 };
-                with (_goto_button) {
+                with(_goto_button) {
                     w = sprite_get_width(sprite);
                     h = sprite_get_height(sprite);
                     x2 = x1 + w;
@@ -130,7 +155,7 @@ function scr_fleet_advisor(){
                 draw_text(_headers.name.x1, current_y, string_truncate(obj_ini.ship[i], _headers.name.w - 6));
                 draw_text(_headers.class.x1, current_y, obj_ini.ship_class[i]);
                 draw_text(_headers.location.x1, current_y, obj_ini.ship_location[i]);
-                
+
                 draw_set_halign(fa_right);
                 draw_text(_headers.hp.x2, current_y, string(round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)) + "%");
                 draw_text(_headers.carrying.x2, current_y, string(obj_ini.ship_carrying[i]) + "/" + string(obj_ini.ship_capacity[i]));
@@ -167,22 +192,25 @@ function scr_fleet_advisor(){
                     }
                     tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
                     if (point_and_click([_goto_button.x1, _goto_button.y1, _goto_button.x2, _goto_button.y2])) {
-                        temp[40]=obj_ini.ship[i];
-                        with(obj_p_fleet){
-                            for(var k=1; k<=40; k++){
-                                if (capital[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
-                                if (frigate[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
-                                if (escort[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
+                        obj_controller.temp[40] = obj_ini.ship[i];
+                        with(obj_p_fleet) {
+                            for (var k = 0; k <= 40; k++) {
+                                if (capital[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
+                                if (frigate[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
+                                if (escort[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
                             }
                         }
-                        if (instance_exists(obj_temp7)){
-                            x=obj_temp7.x;
-                            y=obj_temp7.y;
-                            cooldown=8000;
-                            menu=0;
-                            with(obj_fleet_show){instance_destroy();}
-                            instance_create(obj_temp7.x,obj_temp7.y,obj_fleet_show);
-                            with(obj_temp7){instance_destroy();}
+                        if (instance_exists(obj_temp7)) {
+                            obj_controller.x = obj_temp7.x;
+                            obj_controller.y = obj_temp7.y;
+                            obj_controller.menu = 0;
+                            with(obj_fleet_show) {
+                                instance_destroy();
+                            }
+                            instance_create(obj_temp7.x, obj_temp7.y, obj_fleet_show);
+                            with(obj_temp7) {
+                                instance_destroy();
+                            }
                         }
                     }
                 }
