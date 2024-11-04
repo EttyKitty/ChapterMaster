@@ -144,6 +144,9 @@ function scr_fleet_advisor(){
                     x1: _columns.location.x1 - 20,
                     y1: _row_y + 4,
                     sprite: spr_view_small,
+                    click: function() {
+                        return point_and_click([x1, y1, x2, y2]);
+                    }
                 };
                 with(_goto_button) {
                     w = sprite_get_width(sprite);
@@ -209,7 +212,7 @@ function scr_fleet_advisor(){
                         if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = scr_ship_occupants(i);
                     }
                     tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
-                    if (point_and_click([_goto_button.x1, _goto_button.y1, _goto_button.x2, _goto_button.y2])) {
+                    if (_goto_button.click()) {
                         obj_controller.temp[40] = obj_ini.ship[i];
                         with(obj_p_fleet) {
                             for (var k = 0; k <= 40; k++) {
