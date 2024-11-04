@@ -167,7 +167,8 @@ else if (menu==15) and (cooldown<=0){
     }
 }
 // ** Fleet count **
-if (menu==16) and (cooldown<=0){
+// Moved to scr_fleet_advisor();
+/* if (menu==16) and (cooldown<=0){
     var i=ship_current;
     for(var j=0; j<34; j++){
         i+=1;
@@ -191,7 +192,7 @@ if (menu==16) and (cooldown<=0){
             }
         }
     }
-}
+} */
 
 
 // ** Diplomacy **

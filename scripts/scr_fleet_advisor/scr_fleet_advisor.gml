@@ -66,7 +66,7 @@ function scr_fleet_advisor(){
 
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
-    draw_text_transformed(xx + 1262, yy + 70, "Fleet", 0.6, 0.6, 0);
+    draw_text_transformed(xx + 1262, yy + 40, "Fleet", 0.6, 0.6, 0);
 
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
@@ -74,20 +74,80 @@ function scr_fleet_advisor(){
     var cn = obj_controller;
 
     if (instance_exists(cn)) {
+        var _line_gap = 22;
+        var _name_column = {
+            x1: xx+953,
+            w: 168,
+            header: "Name",
+            h_align: fa_left,
+        };
+        var _class_column = {
+            x1: xx+1123,
+            w: 128,
+            header: "Class",
+            h_align: fa_left,
+        };
+        var _location_column = {
+            x1: xx+1270,
+            w: 138,
+            header: "Location",
+            h_align: fa_left,
+        };
+        var _hp_column = {
+            x1: xx+1408,
+            w: 44,
+            header: "HP",
+            h_align: fa_right,
+        };
+        var _carrying_column = {
+            x1: xx+1452,
+            w: 84,
+            header: "Carrying",
+            h_align: fa_right,
+        };
+        var _columns = [_name_column, _class_column, _location_column, _hp_column, _carrying_column];
+        for (var i = 0; i < array_length(_columns); i++) {
+            with (_columns[i]) {
+                x2 = x1 + w;
+                y1 = yy + 80;
+                header_y = (y1 - 2);
+                if (h_align == fa_left) {
+                    header_x = x1;
+                } else if (h_align == fa_right) {
+                    header_x = x2;
+                } else if (h_align == fa_center) {
+                    header_x = (x1 + x2) / 2;
+                }
+                draw_set_halign(h_align);
+                draw_text(header_x, header_y, header);
+            }
+        }
+        draw_set_halign(fa_left);
         for (var i = ship_current; i < ship_current + 34; i++) {
             if (obj_ini.ship[i] != "") {
-                draw_rectangle(xx + 950, yy + 80 + (i * 20), xx + 1546, yy + 100 + (i * 20), 1);
-                draw_sprite(spr_view_small, 0, xx + 953, yy + 84 + (i * 20));
-                draw_text(xx + 972, yy + 80 + (i * 20), string_truncate($"{obj_ini.ship[i]}", 120));
-                draw_text(xx + 1102, yy + 80 + (i * 20), $"{obj_ini.ship_class[i]}");
-                draw_text(xx + 1222, yy + 80 + (i * 20), $"{obj_ini.ship_location[i]}");
+                draw_rectangle(xx + 950, yy + 80 + (i * _line_gap), xx + 1546, yy + 100 + (i * _line_gap), 1);
+                var _goto_button = {
+                    x1: _location_column.x1 - 20,
+                    y1: yy + 84 + (i * _line_gap),
+                    sprite: spr_view_small,
+                };
+                with (_goto_button) {
+                    w = sprite_get_width(sprite);
+                    h = sprite_get_height(sprite);
+                    x2 = x1 + w;
+                    y2 = y1 + h;
+                    draw_sprite(sprite, 0, x1, y1);
+                }
+                draw_text(_name_column.x1, _name_column.y1 + (i * _line_gap), string_truncate($"{obj_ini.ship[i]}", _name_column.w - 6));
+                draw_text(_class_column.x1, _class_column.y1 + (i * _line_gap), $"{obj_ini.ship_class[i]}");
+                draw_text(_location_column.x1, _location_column.y1 + (i * _line_gap), $"{obj_ini.ship_location[i]}");
                 draw_set_halign(fa_right);
                 // To save space, may be possible to remove health number and color ship name depending on HP percentage.
-                draw_text(xx + 1410, yy + 80 + (i * 20), $"{round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)}% HP");
-                draw_text(xx + 1542, yy + 80 + (i * 20), $"{obj_ini.ship_carrying[i]} / {obj_ini.ship_capacity[i]} Space");
+                draw_text(_hp_column.x2, _hp_column.y1 + (i * _line_gap), $"{round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)}%");
+                draw_text(_carrying_column.x2, _carrying_column.y1 + (i * _line_gap), $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}");
                 draw_set_halign(fa_left);
 
-                if scr_hit(xx + 950, yy + 80 + (i * 20), xx + 1546, yy + 100 + (i * 20)) {
+                if scr_hit(xx + 950, yy + 80 + (i * _line_gap), xx + 1546, yy + 100 + (i * _line_gap)) {
                     if (cn.temp[101] != obj_ini.ship[i]) {
                         cn.temp[101] = obj_ini.ship[i];
                         cn.temp[102] = obj_ini.ship_class[i];
@@ -117,6 +177,25 @@ function scr_fleet_advisor(){
                         if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = scr_ship_occupants(i);
                     }
                     tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
+                    if (point_and_click([_goto_button.x1, _goto_button.y1, _goto_button.x2, _goto_button.y2])) {
+                        temp[40]=obj_ini.ship[i];
+                        with(obj_p_fleet){
+                            for(var k=1; k<=40; k++){
+                                if (capital[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
+                                if (frigate[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
+                                if (escort[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
+                            }
+                        }
+                        if (instance_exists(obj_temp7)){
+                            x=obj_temp7.x;
+                            y=obj_temp7.y;
+                            cooldown=8000;
+                            menu=0;
+                            with(obj_fleet_show){instance_destroy();}
+                            instance_create(obj_temp7.x,obj_temp7.y,obj_fleet_show);
+                            with(obj_temp7){instance_destroy();}
+                        }
+                    }
                 }
             }
         }
