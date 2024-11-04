@@ -1516,8 +1516,8 @@ if (techa > 0) then temp[njm] += $", {techa} {string_plural(obj_ini.role[100][16
 if (old_dudes > 0) then temp[njm] += $", {old_dudes} {string_plural(obj_ini.role[100][14], old_dudes)}";
 if (apotha > 0) then temp[njm] += $", {apotha} {string_plural(obj_ini.role[100][15], apotha)}";
 if (libra > 0) then temp[njm] += $", {libra} {string_plural(obj_ini.role[100,17], libra)}";
-if (coda > 0) then temp[njm] += $", {coda} {string_plural("Codiciery")}";
-if (lexa > 0) then temp[njm] += $", {lexa} {string_plural("Lexicanum")}.";
+if (coda > 0) then temp[njm] += $", {coda} {string_plural("Codiciery", coda)}";
+if (lexa > 0) then temp[njm] += $", {lexa} {string_plural("Lexicanum", lexa)}.";
 
 vih=string_pos(",",temp[njm]);
 temp[njm]=string_delete(temp[njm],vih,1);
