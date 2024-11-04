@@ -1,8 +1,7 @@
 /// @function string_upper_first
 /// @description Capitalizes the first character in a string.
-/// @param {string} _string The string to be modified.
-/// @returns {string} Modified string.
-
+/// @param {string} _string
+/// @returns {string}
 function string_upper_first(_string) {
     try {
         var _first_char = string_char_at(_string, 1);
@@ -22,6 +21,9 @@ function string_upper_first(_string) {
 
 /// @function string_plural
 /// @description This function formats a string into a plural form by adding affixes following common rules.
+/// @param {string} _string
+/// @param {real} _variable (Optional) Variable to check if more than 1 before converting to plural.
+/// @returns {string} Modified string.
 function string_plural(_string, _variable = 2) {
     if (_variable < 2) {
         return _string;
@@ -45,26 +47,32 @@ function string_plural(_string, _variable = 2) {
 
 /// @function string_truncate
 /// @description Truncates a string to fit within a specified pixel width, appending "..." if the string was truncated.
-/// @param {string} _text The string to be truncated.
-/// @param {int} _max_width The maximum allowable pixel width for the string.
-/// @returns {string} Original or truncated string.
-function string_truncate(_text, _max_width) {
+/// @param {string} _string
+/// @param {real} _max_width The maximum allowable pixel width for the string.
+/// @returns {string}
+function string_truncate(_string, _max_width) {
     var _ellipsis = "...";
     var _ellipsis_width = string_width(_ellipsis);
-    var _text_width = string_width(_text);
+    var _text_width = string_width(_string);
     if (_text_width > _max_width) {
-        var i = string_length(_text);
+        var i = string_length(_string);
         while (_text_width + _ellipsis_width > _max_width && i > 0) {
             i--;
-            _text = string_delete(_text, i+1, 1);
-            _text_width = string_width(_text + _ellipsis);
+            _string = string_delete(_string, i+1, 1);
+            _text_width = string_width(_string + _ellipsis);
         }
-        return _text + _ellipsis;
+        return _string + _ellipsis;
     } else {
-        return _text;
+        return _string;
     }
 }
 
+/// @function integer_to_words
+/// @description Converts an integer to an english word.
+/// @param {real} _integer
+/// @param {bool} _capitalize_first Capitalize first letter of the resulting word?
+/// @param {bool} _ordinal Use ordinal form?
+/// @returns {string}
 function integer_to_words(_integer, _capitalize_first = false, _ordinal = false) {
     var _ones = [];
     var _teens = [];
@@ -113,26 +121,28 @@ function integer_to_words(_integer, _capitalize_first = false, _ordinal = false)
     return _num_str;
 }
 
-function string_reverse(argument0) {
-    /*
-    Reverse String
-    Reverse a string with ease
-
-    Argument0 - String
-    */
-
+/// @function string_reverse
+/// @description Returns the string written backwards.
+/// @param {string} _string
+/// @returns {string}
+function string_reverse(_string) {
 	var str,length,i,out,char;
-	str=argument0
+	str=_string
 	out=""
-	length=string_length(argument0)
-	for(i=0;i<string_length(argument0);i+=1){
+	length=string_length(_string)
+	for(i=0;i<string_length(_string);i+=1){
         char=string_char_at(str,length-i)
         out+=char
 	}
 	return out;
 }
 
-function string_rpos(argument0, argument1) {
+/// @function string_rpos
+/// @description Returns the right-most position of the given substring within the given string.
+/// @param {string} _sub_string
+/// @param {string} _string
+/// @returns {real}
+function string_rpos(_sub_string, _string) {
 	/*
 	**  Usage:
 	**      string_rpos(substr,str)
@@ -147,8 +157,8 @@ function string_rpos(argument0, argument1) {
 	*/
 
     var sub,str,pos,ind;
-    sub = argument0;
-    str = argument1;
+    sub = _sub_string;
+    str = _string;
     pos = 0;
     ind = 0;
     do {
@@ -159,6 +169,12 @@ function string_rpos(argument0, argument1) {
     return pos;
 }
 
+/// @function scr_convert_company_to_string
+/// @description Accepts a number and adds an affix to convert it to ordinal form.
+/// @param {real} company_num Company number.
+/// @param {bool} possessive Add 's affix?
+/// @param {bool} flavour Add company designation text (Veteran, Battle, Reserve, etc.)?
+/// @returns {string}
 function scr_convert_company_to_string(company_num, possessive = false, flavour=false){
 	var _company_num = company_num;
 	var _suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th"];
@@ -175,18 +191,18 @@ function scr_convert_company_to_string(company_num, possessive = false, flavour=
 	}
 }
 
-function string_to_integer(argument0) {
-
-	// Argument0: string
-
-	// This script converts a word or longer string into an integer, with each letter
-	// corresponding to a value from 1-26.  The purpose of this is to allow a marine's
+/// @function scr_convert_company_to_string
+/// @description This script converts a word or longer string into an integer, with each letter corresponding to a value from 1-26.
+/// @param {string} _string
+/// @returns {real}
+function string_to_integer(_string) {
+	// The purpose of this is to allow a marine's
 	// name to generate a semi-unique variable for the future display of veterency
 	// decorations when inspected in management.  Whether it is odd, from 0-9, and so
 	// on can determine what shows on their picture at certain experience values.
 
 	var lol,m1,val;
-	lol=argument0;val=0;
+	lol=_string;val=0;
 	m1=string_length(lol);
 
     repeat(m1){
@@ -219,6 +235,4 @@ function string_to_integer(argument0) {
         lol=string_delete(lol,0,1);
     }
     return(val);
-
-
 }
