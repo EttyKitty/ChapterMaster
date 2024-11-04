@@ -81,39 +81,39 @@ function scr_fleet_advisor(){
         var _line_gap = 2;
         var _columns = {
             name: {
-                x1: xx + 953,
-                w: 168,
+                w: 176,
                 text: "Name",
                 h_align: fa_left,
             },
             class: {
-                x1: xx + 1123,
-                w: 128,
+                w: 154,
                 text: "Class",
                 h_align: fa_left,
             },
             location: {
-                x1: xx + 1270,
-                w: 138,
+                w: 130,
                 text: "Location",
                 h_align: fa_left,
             },
             hp: {
-                x1: xx + 1408,
                 w: 44,
                 text: "HP",
                 h_align: fa_right,
             },
             carrying: {
-                x1: xx + 1452,
                 w: 84,
                 text: "Carrying",
                 h_align: fa_right,
             },
         };
-        var _columns_array = struct_get_names(_columns);
+
+        var current_x = xx + 953; 
+        var _columns_array = ["name", "class", "location", "hp", "carrying"];
+
         for (var i = 0; i < array_length(_columns_array); i++) {
             with(_columns[$ _columns_array[i]]) {
+                x1 = current_x;
+                current_x += w;
                 x2 = x1 + w;
                 y1 = yy + _header_offset;
                 header_y = (y1 - 2);
@@ -134,6 +134,7 @@ function scr_fleet_advisor(){
             }
         }
         draw_set_halign(fa_left);
+
         for (var i = ship_current; i < ship_current + 34; i++) {
             if (obj_ini.ship[i] != "") {
                 var current_y = yy + _header_offset + (i * (_line_height + _line_gap));
