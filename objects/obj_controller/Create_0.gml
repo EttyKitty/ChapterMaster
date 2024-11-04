@@ -1582,7 +1582,7 @@ for(var company=0; company<10; company++){
     }
     
     if (com > 0){
-        if (veter+termi+stand+dread+tact+assa+deva+rhino+raider+standard+scou+whirl>0) then temp[njm]=$"{integer_to_letters(com, true, true)} company made of";
+        if (veter+termi+stand+dread+tact+assa+deva+rhino+raider+standard+scou+whirl>0) then temp[njm]=$"{integer_to_words(com, true, true)} company made of";
         else{temp[njm]="";}
     }
     

@@ -65,7 +65,7 @@ function string_truncate(_text, _max_width) {
     }
 }
 
-function integer_to_letters(_integer, _capitalize_first = false, _ordinal = false) {
+function integer_to_words(_integer, _capitalize_first = false, _ordinal = false) {
     var _ones = [];
     var _teens = [];
     var _tens = [];
@@ -93,11 +93,11 @@ function integer_to_letters(_integer, _capitalize_first = false, _ordinal = fals
     } else if (_num_int < 100) {
         _num_str += _tens[floor(_num_int / 10)] + (_num_int % 10 != 0 ? " " + _ones[_num_int % 10] : "");
     } else if (_num_int < 1000) {
-        _num_str += _ones[floor(_num_int / 100)] + " hundred" + (_num_int % 100 != 0 ? " " + integer_to_letters(_num_int % 100) : "");
+        _num_str += _ones[floor(_num_int / 100)] + " hundred" + (_num_int % 100 != 0 ? " " + integer_to_words(_num_int % 100) : "");
     } else {
         for (var _i = 0; _num_int > 0; _i += 1) {
             if (_num_int % 1000 != 0) {
-                var _part = integer_to_letters(_num_int % 1000);
+                var _part = integer_to_words(_num_int % 1000);
                 _num_str = _part + " " + _thousands[_i] + (_num_str != "" ? " " : "") + _num_str;
             }
             _num_int = floor(_num_int / 1000);
