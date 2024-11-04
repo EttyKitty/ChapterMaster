@@ -79,41 +79,41 @@ function scr_fleet_advisor(){
         var _header_offset = 80;
         var _line_height = 20;
         var _line_gap = 2;
-        var _headers = {
+        var _columns = {
             name: {
                 x1: xx + 953,
                 w: 168,
                 text: "Name",
-                h_align: fa_left
+                h_align: fa_left,
             },
             class: {
                 x1: xx + 1123,
                 w: 128,
                 text: "Class",
-                h_align: fa_left
+                h_align: fa_left,
             },
             location: {
                 x1: xx + 1270,
                 w: 138,
                 text: "Location",
-                h_align: fa_left
+                h_align: fa_left,
             },
             hp: {
                 x1: xx + 1408,
                 w: 44,
                 text: "HP",
-                h_align: fa_right
+                h_align: fa_right,
             },
             carrying: {
                 x1: xx + 1452,
                 w: 84,
                 text: "Carrying",
-                h_align: fa_right
+                h_align: fa_right,
             },
         };
-        var _headers_array = struct_get_names(_headers);
-        for (var i = 0; i < array_length(_headers_array); i++) {
-            with(_headers[$ _headers_array[i]]) {
+        var _columns_array = struct_get_names(_columns);
+        for (var i = 0; i < array_length(_columns_array); i++) {
+            with(_columns[$ _columns_array[i]]) {
                 x2 = x1 + w;
                 y1 = yy + _header_offset;
                 header_y = (y1 - 2);
@@ -140,7 +140,7 @@ function scr_fleet_advisor(){
                 draw_rectangle(xx + 950, current_y, xx + 1546, current_y + _line_height, 1);
 
                 var _goto_button = {
-                    x1: _headers.location.x1 - 20,
+                    x1: _columns.location.x1 - 20,
                     y1: current_y + 4,
                     sprite: spr_view_small,
                 };
@@ -152,14 +152,31 @@ function scr_fleet_advisor(){
                     draw_sprite(sprite, 0, x1, y1);
                 }
 
-                draw_text(_headers.name.x1, current_y, string_truncate(obj_ini.ship[i], _headers.name.w - 6));
-                draw_text(_headers.class.x1, current_y, obj_ini.ship_class[i]);
-                draw_text(_headers.location.x1, current_y, obj_ini.ship_location[i]);
+                with(_columns) {
+                    name.contents = string_truncate(obj_ini.ship[i], _columns.name.w - 6);
+                    class.contents = obj_ini.ship_class[i];
+                    location.contents = obj_ini.ship_location[i];
+                    hp.contents = $"{round(obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i] * 100)}%";
+                    carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                }
 
-                draw_set_halign(fa_right);
-                draw_text(_headers.hp.x2, current_y, string(round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)) + "%");
-                draw_text(_headers.carrying.x2, current_y, string(obj_ini.ship_carrying[i]) + "/" + string(obj_ini.ship_capacity[i]));
-                draw_set_halign(fa_left);
+                for (var g = 0; g < array_length(_columns_array); g++) {
+                    with(_columns[$ _columns_array[g]]) {
+                        draw_set_halign(h_align);
+                        switch (h_align) {
+                            case fa_right:
+                                draw_text(x2, current_y, contents);
+                                break;
+                            case fa_center:
+                                draw_text((x1 + x2) / 2, current_y, contents);
+                                break;
+                            case fa_left:
+                            default:
+                                draw_text(x1, current_y, contents);
+                                break;
+                            }
+                    }
+                }
 
                 if scr_hit(xx + 950, current_y, xx + 1546, yy + 100 + (i * (_line_height + _line_gap))) {
                     if (cn.temp[101] != obj_ini.ship[i]) {
