@@ -77,8 +77,8 @@ function scr_fleet_advisor(){
     // I have no passion for this atm.
     if (instance_exists(cn)) {
         var _header_offset = 80;
-        var _line_height = 20;
-        var _line_gap = 2;
+        var _row_height = 20;
+        var _row_gap = 2;
         var _columns = {
             name: {
                 w: 176,
@@ -107,13 +107,13 @@ function scr_fleet_advisor(){
             },
         };
 
-        var current_x = xx + 953; 
+        var _column_x = xx + 953; 
         var _columns_array = ["name", "class", "location", "hp", "carrying"];
 
         for (var i = 0; i < array_length(_columns_array); i++) {
             with(_columns[$ _columns_array[i]]) {
-                x1 = current_x;
-                current_x += w;
+                x1 = _column_x;
+                _column_x += w;
                 x2 = x1 + w;
                 y1 = yy + _header_offset;
                 header_y = (y1 - 2);
@@ -137,12 +137,12 @@ function scr_fleet_advisor(){
 
         for (var i = ship_current; i < ship_current + 34; i++) {
             if (obj_ini.ship[i] != "") {
-                var current_y = yy + _header_offset + (i * (_line_height + _line_gap));
-                draw_rectangle(xx + 950, current_y, xx + 1546, current_y + _line_height, 1);
+                var _row_y = yy + _header_offset + (i * (_row_height + _row_gap));
+                draw_rectangle(xx + 950, _row_y, xx + 1546, _row_y + _row_height, 1);
 
                 var _goto_button = {
                     x1: _columns.location.x1 - 20,
-                    y1: current_y + 4,
+                    y1: _row_y + 4,
                     sprite: spr_view_small,
                 };
                 with(_goto_button) {
@@ -166,20 +166,20 @@ function scr_fleet_advisor(){
                         draw_set_halign(h_align);
                         switch (h_align) {
                             case fa_right:
-                                draw_text(x2, current_y, contents);
+                                draw_text(x2, _row_y, contents);
                                 break;
                             case fa_center:
-                                draw_text((x1 + x2) / 2, current_y, contents);
+                                draw_text((x1 + x2) / 2, _row_y, contents);
                                 break;
                             case fa_left:
                             default:
-                                draw_text(x1, current_y, contents);
+                                draw_text(x1, _row_y, contents);
                                 break;
                             }
                     }
                 }
 
-                if scr_hit(xx + 950, current_y, xx + 1546, yy + 100 + (i * (_line_height + _line_gap))) {
+                if scr_hit(xx + 950, _row_y, xx + 1546, yy + 100 + (i * (_row_height + _row_gap))) {
                     if (cn.temp[101] != obj_ini.ship[i]) {
                         cn.temp[101] = obj_ini.ship[i];
                         cn.temp[102] = obj_ini.ship_class[i];
