@@ -73,62 +73,50 @@ function scr_fleet_advisor(){
 
     var cn = obj_controller;
 
+    // TODO: Probably a good idea to turn this whole interactive list/sheet generating logic into a constructor, that can be reused on many screens.
+    // I have no passion for this atm.
     if (instance_exists(cn)) {
-        var _line_gap = 22;
-        var _name_column = {
-            x1: xx+953,
-            w: 168,
-            header: "Name",
-            h_align: fa_left,
+        var _header_offset = 80;
+        var _line_height = 20;
+        var _line_gap = 2;
+        var _headers = {
+            name: { x1: xx + 953, w: 168, text: "Name", h_align: fa_left },
+            class: { x1: xx + 1123, w: 128, text: "Class", h_align: fa_left },
+            location: { x1: xx + 1270, w: 138, text: "Location", h_align: fa_left },
+            hp: { x1: xx + 1408, w: 44, text: "HP", h_align: fa_right },
+            carrying: { x1: xx + 1452, w: 84, text: "Carrying", h_align: fa_right },
         };
-        var _class_column = {
-            x1: xx+1123,
-            w: 128,
-            header: "Class",
-            h_align: fa_left,
-        };
-        var _location_column = {
-            x1: xx+1270,
-            w: 138,
-            header: "Location",
-            h_align: fa_left,
-        };
-        var _hp_column = {
-            x1: xx+1408,
-            w: 44,
-            header: "HP",
-            h_align: fa_right,
-        };
-        var _carrying_column = {
-            x1: xx+1452,
-            w: 84,
-            header: "Carrying",
-            h_align: fa_right,
-        };
-        var _columns = [_name_column, _class_column, _location_column, _hp_column, _carrying_column];
-        for (var i = 0; i < array_length(_columns); i++) {
-            with (_columns[i]) {
+        var _headers_array = struct_get_names(_headers);
+        for (var i = 0; i < array_length(_headers_array); i++) {
+            with (_headers[$ _headers_array[i]]) {
                 x2 = x1 + w;
-                y1 = yy + 80;
+                y1 = yy + _header_offset;
                 header_y = (y1 - 2);
-                if (h_align == fa_left) {
-                    header_x = x1;
-                } else if (h_align == fa_right) {
-                    header_x = x2;
-                } else if (h_align == fa_center) {
-                    header_x = (x1 + x2) / 2;
+                switch (h_align) {
+                    case fa_right: 
+                        header_x = x2; 
+                        break;
+                    case fa_center: 
+                        header_x = (x1 + x2) / 2; 
+                        break;
+                    case fa_left: 
+                    default:
+                        header_x = x1; 
+                        break;
                 }
                 draw_set_halign(h_align);
-                draw_text(header_x, header_y, header);
+                draw_text(header_x, header_y, text);
             }
         }
         draw_set_halign(fa_left);
         for (var i = ship_current; i < ship_current + 34; i++) {
             if (obj_ini.ship[i] != "") {
-                draw_rectangle(xx + 950, yy + 80 + (i * _line_gap), xx + 1546, yy + 100 + (i * _line_gap), 1);
+                var current_y = yy + _header_offset + (i * (_line_height + _line_gap));
+                draw_rectangle(xx + 950, current_y, xx + 1546, current_y + _line_height, 1);
+
                 var _goto_button = {
-                    x1: _location_column.x1 - 20,
-                    y1: yy + 84 + (i * _line_gap),
+                    x1: _headers.location.x1 - 20,
+                    y1: current_y + 4,
                     sprite: spr_view_small,
                 };
                 with (_goto_button) {
@@ -138,16 +126,17 @@ function scr_fleet_advisor(){
                     y2 = y1 + h;
                     draw_sprite(sprite, 0, x1, y1);
                 }
-                draw_text(_name_column.x1, _name_column.y1 + (i * _line_gap), string_truncate($"{obj_ini.ship[i]}", _name_column.w - 6));
-                draw_text(_class_column.x1, _class_column.y1 + (i * _line_gap), $"{obj_ini.ship_class[i]}");
-                draw_text(_location_column.x1, _location_column.y1 + (i * _line_gap), $"{obj_ini.ship_location[i]}");
+
+                draw_text(_headers.name.x1, current_y, string_truncate(obj_ini.ship[i], _headers.name.w - 6));
+                draw_text(_headers.class.x1, current_y, obj_ini.ship_class[i]);
+                draw_text(_headers.location.x1, current_y, obj_ini.ship_location[i]);
+                
                 draw_set_halign(fa_right);
-                // To save space, may be possible to remove health number and color ship name depending on HP percentage.
-                draw_text(_hp_column.x2, _hp_column.y1 + (i * _line_gap), $"{round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)}%");
-                draw_text(_carrying_column.x2, _carrying_column.y1 + (i * _line_gap), $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}");
+                draw_text(_headers.hp.x2, current_y, string(round((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) * 100)) + "%");
+                draw_text(_headers.carrying.x2, current_y, string(obj_ini.ship_carrying[i]) + "/" + string(obj_ini.ship_capacity[i]));
                 draw_set_halign(fa_left);
 
-                if scr_hit(xx + 950, yy + 80 + (i * _line_gap), xx + 1546, yy + 100 + (i * _line_gap)) {
+                if scr_hit(xx + 950, current_y, xx + 1546, yy + 100 + (i * (_line_height + _line_gap))) {
                     if (cn.temp[101] != obj_ini.ship[i]) {
                         cn.temp[101] = obj_ini.ship[i];
                         cn.temp[102] = obj_ini.ship_class[i];
@@ -249,5 +238,5 @@ function scr_fleet_advisor(){
         }
     }
     // 31 wide
-    scr_scrollbar(1547, 100, 1577, 780, 34, ship_max, ship_current);
+    scr_scrollbar(1550, 100, 1577, 818, 34, ship_max, ship_current);
 }
