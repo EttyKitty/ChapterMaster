@@ -848,18 +848,19 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         var box_y;
         var top = 0;
 
-        for (var o = 0; o < array_length(item_name); o++) {
-            if (item_name[o] != "") {
-                box_x = xx + 1016 + (row * 154);
-                box_y = yy + 355 + (column * 20);
-                box = [box_x, box_y, box_x + 144, box_y + 20];
-                check = target_role == o ? "x" : " ";
-                item_string = $"[{check}] {item_name[o]}";
-                draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
+        var selected_item_name = [n_wep1, n_wep2, n_armour, n_gear, n_mobi];
+        selected_item_name = selected_item_name[target_comp-1];
 
-                if (point_and_click(box)) {
-                    top = o;
-                }
+        for (var o = 0; o < array_length(item_name); o++) {
+            box_x = xx + 1016 + (row * 154);
+            box_y = yy + 355 + (column * 20);
+            box = [box_x, box_y, box_x + 144, box_y + 20];
+            check = selected_item_name == item_name[o] ? "x" : " ";
+            item_string = $"[{check}] {item_name[o]}";
+            draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
+
+            if (point_and_click(box)) {
+                top = o;
             }
             column++;
             if (column > 6) {
