@@ -107,7 +107,7 @@ if (total_role_number > 0 && tab > 0) {
             draw_set_alpha(1);
 
             if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
-                var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                 obj_controller.cooldown = 8000;
                 switch (tab) {
                     case 1: obj_ini.wep1[100, role] = buh; break;
@@ -161,7 +161,7 @@ if (total_role_number > 0 && tab > 0) {
                 draw_set_alpha(1);
 
                 if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
-                    var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                    var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     obj_controller.cooldown = 8000;
                     switch (tab) {
                         case 1: obj_ini.wep1[100, role] = buh; break;

@@ -231,7 +231,7 @@ if (target_gear > 0) {
             draw_set_alpha(1);
             
             if (obj_creation.mouse_left && obj_creation.cooldown <= 0) {
-                var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                 obj_creation.cooldown = 8000;
                 switch (target_gear) {
                     case 1: obj_creation.wep1[co, ide] = buh; break;
@@ -271,7 +271,7 @@ if (target_gear > 0) {
                 draw_set_alpha(1);
 
                 if (obj_creation.mouse_left && obj_creation.cooldown <= 0) {
-                    var buh = item_name[h] == global.item_name_none ? "" : item_name[h];
+                    var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     obj_creation.cooldown = 8000;
                     switch (target_gear) {
                         case 1: obj_creation.wep1[co, ide] = buh; break;

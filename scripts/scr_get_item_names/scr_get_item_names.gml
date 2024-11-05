@@ -1,16 +1,16 @@
-global.item_name_none = "(None)";
-global.item_name_any = "(any)";
+#macro ITEM_NAME_NONE "(None)"
+#macro ITEM_NAME_ANY "(any)"
 
 /// @description This function returns an array with common empty or wildcard names as needed.
-/// @param {bool} _with_none - Whether to include global.item_name_none in the list.
-/// @param {bool} _with_any - Whether to include global.item_name_any in the list.
+/// @param {bool} _with_none - Whether to include ITEM_NAME_NONE in the list.
+/// @param {bool} _with_any - Whether to include ITEM_NAME_ANY in the list.
 function get_none_or_any_item_names(_with_none=false, _with_any=false) {
     var _item_names = [];
     if (_with_none) {
-        array_push(_item_names, global.item_name_none);
+        array_push(_item_names, ITEM_NAME_NONE);
     }
     if (_with_any) {
-        array_push(_item_names, global.item_name_any);
+        array_push(_item_names, ITEM_NAME_ANY);
     }
     return _item_names;
 }

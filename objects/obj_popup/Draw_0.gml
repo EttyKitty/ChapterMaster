@@ -742,27 +742,27 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
     show_name=o_wep1;
     if (a_wep1!="") then show_name=a_wep1;
     if (o_wep1!="") then draw_text(xx+1014,yy+215,string_hash_to_newline(show_name));
-    else draw_text(xx+1014,yy+215,global.item_name_none);
+    else draw_text(xx+1014,yy+215,ITEM_NAME_NONE);
     
     show_name=o_wep2;
     if (a_wep2!="") then show_name=a_wep2;
     if (o_wep2!="") then draw_text(xx+1014,yy+235,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1014,yy+235,global.item_name_none);
+    else draw_text(xx+1014,yy+235,ITEM_NAME_NONE);
     
     show_name=o_armour;
     if (a_armour!="") then show_name=a_armour;
     if (o_armour!="") then draw_text(xx+1014,yy+255,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1014,yy+255,global.item_name_none);
+    else draw_text(xx+1014,yy+255,ITEM_NAME_NONE);
     
     show_name=o_gear;
     if (a_gear!="") then show_name=a_gear;
     if (o_gear!="") then draw_text(xx+1014,yy+275,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1014,yy+275,global.item_name_none);
+    else draw_text(xx+1014,yy+275,ITEM_NAME_NONE);
     
     show_name=o_mobi;
     if (a_mobi!="") then show_name=a_mobi;
     if (o_mobi!="") then draw_text(xx+1014,yy+295,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1014,yy+295,global.item_name_none);
+    else draw_text(xx+1014,yy+295,ITEM_NAME_NONE);
     
     draw_text(xx+1296,yy+195,string_hash_to_newline("After"));
     draw_text(xx+1296.5,yy+195.5,"After");
@@ -772,35 +772,35 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
     show_name=n_wep1;
     if (a_wep1!="") and (n_wep1=o_wep1) then show_name=a_wep1;
     if (n_wep1!="") then draw_text(xx+1300,yy+215,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1300,yy+215,string_hash_to_newline(global.item_name_none));
+    else draw_text(xx+1300,yy+215,string_hash_to_newline(ITEM_NAME_NONE));
     
     draw_set_color(c_gray);
     if (n_good2=0) then draw_set_color(255);
     show_name=n_wep2;
     if (a_wep2!="") and (n_wep2=o_wep2) then show_name=a_wep2;
     if (n_wep2!="") then draw_text(xx+1300,yy+235,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1300,yy+235,string_hash_to_newline(global.item_name_none));
+    else draw_text(xx+1300,yy+235,string_hash_to_newline(ITEM_NAME_NONE));
     
     draw_set_color(c_gray);
     if (n_good3=0) then draw_set_color(255);
     show_name=n_armour;
     if (a_armour!="") and (n_armour=o_armour) then show_name=a_armour;
     if (n_armour!="") then draw_text(xx+1300,yy+255,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1300,yy+255,string_hash_to_newline(global.item_name_none));
+    else draw_text(xx+1300,yy+255,string_hash_to_newline(ITEM_NAME_NONE));
     
     draw_set_color(c_gray);
     if (n_good4=0) then draw_set_color(255);
     show_name=n_gear;
     if (a_gear!="") and (n_gear=o_gear) then show_name=a_gear;
     if (n_gear!="") then draw_text(xx+1300,yy+275,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1300,yy+275,string_hash_to_newline(global.item_name_none));
+    else draw_text(xx+1300,yy+275,string_hash_to_newline(ITEM_NAME_NONE));
     
     draw_set_color(c_gray);
     if (n_good5=0) then draw_set_color(255);
     show_name=n_mobi;
     if (a_mobi!="") and (n_mobi=o_mobi) then show_name=a_mobi;
     if (n_mobi!="") then draw_text(xx+1300,yy+295,string_hash_to_newline(string(show_name)));
-    else draw_text(xx+1300,yy+295,string_hash_to_newline(global.item_name_none));
+    else draw_text(xx+1300,yy+295,string_hash_to_newline(ITEM_NAME_NONE));
     
     draw_set_color(c_gray);
     
@@ -879,11 +879,11 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
             }
         }
 
-        if (target_comp == 1 && (n_wep1 == global.item_name_none || n_wep1 == "")) { n_good1 = 1; }
-        if (target_comp == 2 && (n_wep2 == global.item_name_none || n_wep2 == "")) { n_good2 = 1; }
-        if (target_comp == 3 && (n_armour == global.item_name_none || n_armour == "")) { n_good3 = 1; }
-        if (target_comp == 4 && (n_gear == global.item_name_none || n_gear == "")) { n_good4 = 1; }
-        if (target_comp == 5 && (n_mobi == global.item_name_none || n_mobi == "")) { n_good5 = 1; }
+        if (target_comp == 1 && (n_wep1 == ITEM_NAME_NONE || n_wep1 == "")) { n_good1 = 1; }
+        if (target_comp == 2 && (n_wep2 == ITEM_NAME_NONE || n_wep2 == "")) { n_good2 = 1; }
+        if (target_comp == 3 && (n_armour == ITEM_NAME_NONE || n_armour == "")) { n_good3 = 1; }
+        if (target_comp == 4 && (n_gear == ITEM_NAME_NONE || n_gear == "")) { n_good4 = 1; }
+        if (target_comp == 5 && (n_mobi == ITEM_NAME_NONE || n_mobi == "")) { n_good5 = 1; }
     
         var weapon_one_data = gear_weapon_data("weapon", n_wep1);
         var weapon_two_data = gear_weapon_data("weapon", n_wep2);
@@ -896,11 +896,11 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         repeat(array_length(obj_controller.display_unit)){i+=1;
             if (vehicle_equipment!=-1) and (obj_controller.ma_wep1[i]=n_wep1) then have_wep1_num+=1;
         }
-        // req_wep1_num+=scr_item_count(n_wep1);
         have_wep1_num+=scr_item_count(n_wep1);
-        // req_wep1_num=units;
-        if (have_wep1_num>=req_wep1_num) or (n_wep1="(None") then n_good1=1;
-        if (have_wep1_num<req_wep1_num){
+        if (have_wep1_num >= req_wep1_num || n_wep == ITEM_NAME_NONE) {
+             n_good1=1;
+        }
+        if (have_wep1_num < req_wep1_num){
             n_good1=0;
             warning="Not enough "+string(n_wep1)+"; "+string(req_wep1_num-have_wep1_num)+" more are required.";
         }
@@ -940,7 +940,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         have_wep2_num+=scr_item_count(n_wep2);
         // req_wep2_num=units;
 
-        if (have_wep2_num>=req_wep2_num) or (n_wep2="(None") then n_good2=1;
+        if (have_wep2_num>=req_wep2_num) or (n_wep2=ITEM_NAME_NONE) then n_good2=1;
         if (have_wep2_num<req_wep2_num){
             n_good2=0;warning=$"Not enough {n_wep2}; {req_wep2_num-have_wep2_num} more are required.";
         }
@@ -980,7 +980,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         }
         have_armour_num+=scr_item_count(n_armour);
 
-        if (have_armour_num>=req_armour_num) or (n_armour="(None") then n_good3=1;
+        if (have_armour_num>=req_armour_num) or (n_armour=ITEM_NAME_NONE) then n_good3=1;
         if (have_armour_num<req_armour_num){
             n_good3=0;
             warning=$"Not enough {n_armour} : {units-have_armour_num} more are required.";
@@ -1009,7 +1009,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         }
 
     }
-    if (target_comp=4) and (n_gear!="Assortment") and (n_gear!=global.item_name_none){// Check numbers
+    if (target_comp=4) and (n_gear!="Assortment") and (n_gear!=ITEM_NAME_NONE){// Check numbers
         req_gear_num=units;have_gear_num=0;
         var i;i=-1;
         repeat(array_length(obj_controller.display_unit)){i+=1;
@@ -1017,15 +1017,15 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         }
         have_gear_num+=scr_item_count(n_gear);
 
-        if (have_gear_num>=req_gear_num) or (n_gear="(None") then n_good4=1;
+        if (have_gear_num>=req_gear_num) or (n_gear=ITEM_NAME_NONE) then n_good4=1;
         if (have_gear_num<req_gear_num){n_good4=0;warning="Not enough "+string(n_gear)+"; "+string(units-req_gear_num)+" more are required.";}
 
-        if (n_gear!=global.item_name_none) and (n_gear!="") and (string_count("Dreadnought",n_armour)>0){
+        if (n_gear!=ITEM_NAME_NONE) and (n_gear!="") and (string_count("Dreadnought",n_armour)>0){
             n_good4=0;
             warning="Dreadnoughts may not use infantry equipment.";
         }
     }
-    if (target_comp=5) and (n_mobi!="Assortment") and (n_mobi!=global.item_name_none){// Check numbers
+    if (target_comp=5) and (n_mobi!="Assortment") and (n_mobi!=ITEM_NAME_NONE){// Check numbers
         req_mobi_num=units;have_mobi_num=0;
         var i;i=-1;
         repeat(array_length(obj_controller.display_unit)){i+=1;
@@ -1033,7 +1033,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         }
         have_mobi_num+=scr_item_count(n_mobi);
 
-        if (have_mobi_num>=req_mobi_num) or (n_mobi="(None")  then n_good5=1;
+        if (have_mobi_num>=req_mobi_num) or (n_mobi=ITEM_NAME_NONE)  then n_good5=1;
         if (have_mobi_num<req_mobi_num){n_good5=0;warning="Not enough "+string(n_mobi)+"; "+string(units-req_mobi_num)+" more are required.";}
 
         var terminator_mobi = ["", "Servo-arm", "Servo-harness", "Conversion Beamer Pack"];
@@ -1041,7 +1041,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
             n_good5=0;warning="Cannot use this gear with Terminator Armour.";
         }
 
-        if (n_mobi!=global.item_name_none) and (n_mobi!="") and (n_armour="Dreadnought"){
+        if (n_mobi!=ITEM_NAME_NONE) and (n_mobi!="") and (n_armour="Dreadnought"){
             n_good5=0;
             warning=string(obj_ini.role[100][6])+"s may not use mobility gear.";
         }
