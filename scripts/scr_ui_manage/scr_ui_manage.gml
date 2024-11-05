@@ -466,7 +466,7 @@ function scr_ui_manage() {
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-	        if (cn.temp[113]!="") then draw_text_outline(x_left,yy+466,string_hash_to_newline("Experience: "+string(cn.temp[113])));
+	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+466, string_hash_to_newline($"Experience: {round(cn.temp[113])}"));
 
        
         		 
@@ -503,7 +503,7 @@ function scr_ui_manage() {
 							}
 						}
         		var_text = string_hash_to_newline(string("Damage Resistance: {0}",cn.temp[118]))
-	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#XP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
+	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#EXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
 	        	x1 = x_left;
 	        	y1 = yy+378;
 	        	x2 = x1+string_width(var_text);

@@ -32,12 +32,12 @@ if (obj_ncombat.defeat == 0) {
     // EXP allocation
     var _eligible_units_count = array_length(_eligible_units);
     if (_eligible_units_count > 0 && obj_ncombat.total_battle_exp_gain > 0) {
-        var _individual_exp = round(obj_ncombat.total_battle_exp_gain / _eligible_units_count);
+        var _individual_exp = obj_ncombat.total_battle_exp_gain / _eligible_units_count;
         obj_ncombat.average_battle_exp_gain = _individual_exp;
         for (var i = 0; i < _eligible_units_count; i++) {
             var _unit = _eligible_units[i][0];
             var _exp_mod = _eligible_units[i][1];
-            var _exp_update_data = _unit.add_exp(round(_individual_exp*_exp_mod));
+            var _exp_update_data = _unit.add_exp(_individual_exp*_exp_mod);
 
             var _powers_learned = _exp_update_data[1];
             if (_powers_learned > 0) {
