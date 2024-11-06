@@ -5,6 +5,7 @@ on:
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
   build:
+    name: Build and Release a Nightly version
     runs-on: windows-2022
     steps:
       # Check out the repository with the GameMaker project
@@ -50,7 +51,7 @@ jobs:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
           name: ChapterMaster-${{ env.date_time }}-Windows.zip
-          yyc: false
+          yyc: true
       - name: Check if a nightly release exists
         id: check_nightly
         run: |
@@ -79,5 +80,6 @@ jobs:
           tag_name: nightly
           prerelease: true
           generate_release_notes: true
+          make_latest: true
           files: |
             ${{ steps.igor_build.outputs.out-dir }}/*
