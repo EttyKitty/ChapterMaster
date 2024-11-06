@@ -4,8 +4,8 @@ on:
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
-  build:
-    name: Build and Release a Nightly version
+  build_upload:
+    name: Build and upload as artifact
     runs-on: windows-2022
     steps:
       # Check out the repository with the GameMaker project
