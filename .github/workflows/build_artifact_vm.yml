@@ -1,10 +1,11 @@
-name: Build-Windows-YYC
+name: Build-for-Windows-VM
 on: 
   # push: #Uncomment this line to run the workflow on push
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
   build:
+    name: Build and Release a Nightly version
     runs-on: windows-2022
     steps:
       # Check out the repository with the GameMaker project
@@ -33,15 +34,6 @@ jobs:
         run: |
           $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
           echo "date_time=$date_time" >> $env:GITHUB_ENV
-      #
-      - id: bump_build_date
-        name: Bump Build Date
-        uses: jaywcjlove/github-action-modify-file-content@main
-        with:
-          path: datafiles/main/version.json
-          openDelimiter: "BS"
-          closeDelimiter: "BE"
-          body: "${{ env.date_time }}"
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
@@ -49,12 +41,12 @@ jobs:
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
+          name: ChapterMaster-${{ env.date_time }}-Windows.zip
           yyc: false
-      # This step uploads the build to the artifacts, so you can download it from the GitHub Actions page or use it in another workflow
-      - id: upload_artifact
-        name: Upload Build as an Artifact
+      #
+      - name: upload-build
         uses: actions/upload-artifact@v4
         with:
-          name: ChapterMaster-Windows-b${{ env.date_time }}
+          name: ChapterMaster-${{ env.date_time }}-Windows.zip
           path: ${{ steps.igor_build.outputs.out-dir }}
           retention-days: 1 # Longer retention days can incur additional charges. See https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
