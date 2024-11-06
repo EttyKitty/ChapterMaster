@@ -49,14 +49,30 @@ jobs:
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
-          name: ChapterMaster-b${{ env.date_time }}-Windows.zip
-          yyc: true
+          name: ChapterMaster-${{ env.date_time }}-Windows.zip
+          yyc: false
+      - name: Check if a nightly release exists
+        id: check_nightly
+        run: |
+          gh release view nightly --repo ${{ github.repository }}
+          if [ $? -eq 0 ] ; then
+            echo "release_exists=true" >> $GITHUB_OUTPUT;
+          else
+            echo "release_exists=false" >> $GITHUB_OUTPUT;
+          fi
+        shell: bash
+        continue-on-error: true
+      - id: delete_release_tag
+        name: Delete the existing nightly tag and release
+        if: steps.check_nightly.outputs.release_exists
+        run: |
+          gh release delete nightly -y --cleanup-tag
       - id: create_release
         name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster-b${{ env.date_time }}
-          tag_name: b${{ env.date_time }}
+          name: ChapterMaster-${{ env.date_time }}
+          tag_name: nightly
           prerelease: true
           generate_release_notes: true
           files: |
