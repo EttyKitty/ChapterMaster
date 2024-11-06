@@ -38,7 +38,7 @@ if (loading=1){
     }
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select)) and (!obj_controller.cooldown);
-if (device_mouse_check_button_pressed(0,mb_left)){
+if (scr_click_left()){
     if (!obj_controller.menu) and (click_accepted){
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
@@ -393,7 +393,7 @@ if (obj_controller.selecting_planet!=0){
                     draw_set_color(0);
                     draw_set_alpha(0.2);
                     draw_rectangle(xx+481,yy+280,xx+716,yy+298,0);
-                    if (obj_controller.cooldown<=0) and (obj_controller.mouse_left=1) and (obj_controller.requisition>=improve_cost){
+                    if (obj_controller.cooldown<=0) and (scr_click_left()) and (obj_controller.requisition>=improve_cost){
                         obj_controller.cooldown=8000;
                         obj_controller.requisition-=improve_cost;
                         target.p_fortified[current_planet]+=1;
@@ -665,7 +665,6 @@ if (obj_controller.selecting_planet!=0){
             
             
             obj_controller.temp[104]=string(scr_master_loc());
-            obj_controller.cooldown=3000;
             obj_controller.menu=60;
             with(obj_star_select){instance_destroy();}
         }else if (current_button=="Raid"){
@@ -674,7 +673,6 @@ if (obj_controller.selecting_planet!=0){
             obj_drop_select.planet_number = obj_controller.selecting_planet;
             obj_drop_select.sh_target=instance_nearest(x,y,obj_p_fleet);
             if (instance_nearest(x,y,obj_p_fleet).acted>1) then with(obj_drop_select){instance_destroy();}
-            obj_controller.cooldown=3000;
         }else if (current_button=="Attack"){
             instance_create(x,y,obj_drop_select);
             obj_drop_select.p_target=target;
@@ -685,7 +683,6 @@ if (obj_controller.selecting_planet!=0){
                 obj_drop_select.sh_target=instance_nearest(x,y,obj_p_fleet);
                 if (instance_nearest(x,y,obj_p_fleet).acted>=2) then with(obj_drop_select){instance_destroy();}
             }
-            obj_controller.cooldown=3000;
         }else if (current_button=="Purge"){
             instance_create(x,y,obj_drop_select);
             obj_drop_select.p_target=target;
@@ -696,7 +693,6 @@ if (obj_controller.selecting_planet!=0){
                 obj_drop_select.sh_target=instance_nearest(x,y,obj_p_fleet);
                 if (instance_nearest(x,y,obj_p_fleet).acted>0) then with(obj_drop_select){instance_destroy();}
             }
-            obj_controller.cooldown=3000;
         }else if (current_button=="Bombard"){
             instance_create(x,y,obj_bomb_select);
             if (instance_exists(obj_bomb_select)){
@@ -705,11 +701,9 @@ if (obj_controller.selecting_planet!=0){
                 if (instance_nearest(x,y,obj_p_fleet).acted=0) then instance_create(target.x,target.y,obj_temp3);
                 if (instance_nearest(x,y,obj_p_fleet).acted>0) then with(obj_bomb_select){instance_destroy();}
             }
-            obj_controller.cooldown=3000;
         }else if (current_button=="+Recruiting"){
             if (obj_controller.recruiting_worlds_bought>0) and (target.p_owner[obj_controller.selecting_planet]<=5) and (obj_controller.faction_status[target.p_owner[obj_controller.selecting_planet]]!="War"){
                 if (planet_feature_bool(target.p_feature[obj_controller.selecting_planet],P_features.Recruiting_World)==0){
-                    obj_controller.cooldown=3000;
                     obj_controller.recruiting_worlds_bought-=1;
                     array_push(target.p_feature[obj_controller.selecting_planet] ,new NewPlanetFeature(P_features.Recruiting_World))
                     
@@ -727,7 +721,6 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
         }else if (current_button=="Cyclonic Torpedo"){
-            obj_controller.cooldown=6000;
             scr_destroy_planet(2);
         }
     } 
@@ -779,7 +772,7 @@ if (target!=0){
 if (debug){
     var current_planet;
     
-    if (!scr_hit([36,174,337,455]) && mouse_check_button_pressed(mb_left)){
+    if (!scr_hit([36,174,337,455]) && scr_click_left()){
         debug=0;
         obj_controller.cooldown=8000;
         exit;

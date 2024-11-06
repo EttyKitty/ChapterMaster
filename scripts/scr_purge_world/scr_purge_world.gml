@@ -24,11 +24,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
 	if (action_type=1){// Bombardment
-	    txt1="Your cruiser and larger ship";
+	    txt1=choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
 	    if (ships_selected>1) then txt1+="s";
-	    txt1+=" position themselves over the target in close orbit, and unleash";
+	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
 	    if (ships_selected=1) then txt1+="s";
-	     txt1+=" annihilation upon "+string(star.name)+" "+string(planet)+". Even from the void, explosions can be seen, battering across the planet's surface.";
+		txt1+= $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
  
 	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;// Population if normal, TODO as in scr_bomb_world, reconsider this formula
 	    if (star.p_large[planet]=1) then max_kill=action_score*0.015;// Population if large
@@ -54,9 +54,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    if (star.p_large[planet]=0) then pop_after=round(pop_after);    
 	    if (pop_after<=0) and (pop_before>0) then heres_after=0;
  
-	    if (star.p_large[planet]=0) then txt1+="##It had a population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" were purged over the duration of the bombardment.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
-	    if (star.p_large[planet]=1) then txt1+="##it had a population of "+string(pop_before)+" billion and "+string(kill)+" billion were purged over the duration of the bombardment.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
-    
+		var _displayed_population = star.p_large[planet] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
+		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
+	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
     
 	    if (pop_after=0){
 	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
@@ -101,7 +101,10 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	            scr_gov_disp(star.name,planet,choose(1,2,3));
 	        }
 	    }else if (isquest=0){ // TODO add more variation, with planets, features, marine equipment perhaps?
-	        txt1="Timing their visits right, Your forces scour "+string(star.name)+" "+string(planet)+", burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.";
+	        txt1=choose(
+				$"Timing their visits right, Your forces scour {star.name} {planet} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.",
+				$"Your forces scour {star.name} {planet}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air."
+				);
      
 	        if (star.p_large[planet]=0) then max_kill=action_score*12000;// Population if normal
 	        if (star.p_large[planet]=1) then max_kill=action_score*0.0000012;// Population if large
@@ -166,7 +169,10 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        }
 	    }
 	    else if (isquest=0){ // TODO add more variation, with planets, features, possibly marine equipment
-	        txt1=$"Your marines move across {star.name} {scr_roman(planet)}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.";
+	        txt1=choose(
+				$"Your marines move across {star.name} {scr_roman(planet)}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.",
+				$"Your marines move across {star.name} {scr_roman(planet)}, rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets."
+				);
     
 	        if (star.p_large[planet]=0) then max_kill=action_score*30;// Population if normal
 	        if (star.p_large[planet]=1) then max_kill=0;// Population if large

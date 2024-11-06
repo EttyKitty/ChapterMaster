@@ -5,11 +5,11 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 
 	// TODO - update descriptions below, once we get Surface to Orbit weaponry into the game
 
-	var txt1="Your cruiser and larger ship"; // TODO - add more variation, for different planets, perhaps different ships, CMs positioning, planetary features and other factors
+	var txt1=choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship"); // TODO - add more variation, for different planets, perhaps different ships, CMs positioning, planetary features and other factors
 	if (ships_selected>1) then txt1+="s";
-	txt1+=" position themselves over the target in close orbit, and unleash";
+	txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
 	if (ships_selected=1) then txt1+="s";
-	txt1+= $" annihilation upon {planet_numeral_name(planet_number, star_system)}.  Even from space the explosions can be seen , {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
+	txt1+= $" annihilation upon {planet_numeral_name(planet_number, star_system)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
 	if (star_system.p_large[planet_number]=0){
 		kill=bombard_ment_power*15000000;// Population if normal, TODO consider making loses to be more percentage-wise, rather than flat, also in scr_purge_world
@@ -141,17 +141,23 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	// if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
 		//	txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
 	// ?
-		if (rel>0 && rel<=20){
-			txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
-		}else if (rel>20 && rel<=40){ 
-	    	txt2+=" moderate losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
-	    }else if (rel>40 && rel<=60){ 
-	    	txt2+=" heavy losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
-	    }else if (rel>60 && (target_strength-strength_reduction)>0){ 
-	    	txt2+=" devastating losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
-	    }else if ((target_strength-strength_reduction)<=0){ 
-	    	txt2+=" total annihilation from the bombardment. They have been wiped clean from the planet.";
-	    }
+		if ((target_strength-strength_reduction)<=0){ 
+			txt2+=" total annihilation from the bombardment and are wiped clean from the planet.";
+		} else {
+			var _losses_text = "";
+			if (rel>0 && rel<=20) {
+				_losses_text = "minor losses";
+			} else if (rel>20 && rel<=40) { 
+				_losses_text = "moderate losses";
+			} else if (rel>40 && rel<=60) { 
+				_losses_text = "heavy losses";
+			} else if (rel>60 && (target_strength-strength_reduction)>0) { 
+				_losses_text = "devastating losses";
+			} else {
+				_losses_text = "some losses";
+			}
+			txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
+		}
     
 	    // 135; ?
 	    if (bombard_target_faction>=6){
@@ -176,7 +182,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	            if (rel>20) and (rel<=40) then txt2+=" they suffer moderate losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
 	            if (rel>40) and (rel<=60) then txt2+=" they suffer heavy losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
 	            if (rel>60) and (star_system.p_pdf[planet_number]>0) then txt2+=" they suffer devastating losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
-	            if (wob>0) and (star_system.p_pdf[planet_number]=0) then txt2+=" they suffer total annihilation from the bombardment.  They have been wiped clean from the planet.";
+	            if (wob>0) and (star_system.p_pdf[planet_number]=0) then txt2+=" they suffer total annihilation from the bombardment and are wiped clean from the planet.";
 	        }
         
         	switch(bombard_target_faction){
@@ -225,13 +231,10 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    if (kill>0) then kill=min(star_system.p_population[planet_number],kill);
     
 	    txt3=""; // Life is the Emperor's currency. Spend it well
-	    if (pop_before>0) and (star_system.p_type[planet_number]!="Daemon"){
-	        if (star_system.p_large[planet_number]==0){
-	        	pop_after=round(max(0,pop_after-kill)); // Potential TODO if alien planets will be implemented, add a check for planet ownership
-	        	txt3="##It had "+string(scr_display_number(floor(pop_before)))+" Imperium subjects and "+string(scr_display_number(floor(kill)))+" were annihilated over the duration of the bombardment.";
-	    	}else if (star_system.p_large[planet_number]=1){
-	    		txt3="##It had "+string(pop_before)+" billion Imperium subjects and "+string(kill)+" billion were annihilated over the duration of the bombardment.";
-	    	}
+	    if (pop_before > 0 && star_system.p_type[planet_number] != "Daemon") {
+			var _displayed_population = star_system.p_large[planet_number] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
+			var _displayed_killed = star_system.p_large[planet_number] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
+			txt3 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} died over the duration of the bombardment.";
 	    }
     
     
@@ -271,7 +274,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	        	delete_features(star_system.p_feature[planet_number], P_features.Gene_Stealer_Cult);
 	        	adjust_influence(eFACTION.Tyranids, -100, planet_number,star_system);
 	        }
-	        pip.text+= "The xenos taint of the tyranids infecting the population has been completely eradicated with the planets cleansing";
+	        pip.text+= " The xenos taint of the tyranids infecting the population has been completely eradicated with the planets cleansing";
 	    }
 	    if (bombard_target_faction=8) and (obj_controller.faction_status[eFACTION.Tau]!="War"){
 	        obj_controller.audiences+=1;
