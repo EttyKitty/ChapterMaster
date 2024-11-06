@@ -62,11 +62,15 @@ jobs:
           fi
         shell: bash
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - id: delete_release_tag
         name: Delete the existing nightly tag and release
         if: steps.check_nightly.outputs.release_exists
         run: |
           gh release delete nightly -y --cleanup-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - id: create_release
         name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
