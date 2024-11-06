@@ -38,8 +38,8 @@ if (loading=1){
     }
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select)) and (!obj_controller.cooldown);
-if (scr_click_left()){
-    if (!obj_controller.menu) and (click_accepted){
+if (click_accepted) {
+    if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
         sta1=instance_nearest(mouse_consts[0],mouse_consts[1],obj_star);
