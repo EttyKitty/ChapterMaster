@@ -30,7 +30,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    if (ships_selected=1) then txt1+="s";
 		txt1+= $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
  
-	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;// Population if normal, TODO as in scr_bomb_world, reconsider this formula
+	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;
 	    if (star.p_large[planet]=1) then max_kill=action_score*0.015;// Population if large
     
 	    pop_before=star.p_population[planet];
