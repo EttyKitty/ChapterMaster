@@ -19,29 +19,34 @@ function get_none_or_any_item_names(_with_none=false, _with_any=false) {
 /// @param {array} _item_names - The list of ranged weapons to append to.
 /// @returns {array} The appended list.
 function push_marine_ranged_weapons_item_names(_item_names) {
-    array_push(_item_names, "Archeotech Laspistol");
-    array_push(_item_names, "Assault Cannon");
-    array_push(_item_names, "Bolt Pistol");
-    array_push(_item_names, "Bolter");
-    array_push(_item_names, "Stalker Pattern Bolter");
-    array_push(_item_names, "Combiflamer");
-    array_push(_item_names, "Flamer");
-    array_push(_item_names, "Heavy Bolter");
-    array_push(_item_names, "Heavy Flamer");
-    array_push(_item_names, "Hellrifle");
-    array_push(_item_names, "Incinerator");
-    array_push(_item_names, "Integrated Bolter");
-    array_push(_item_names, "Lascannon");
-    array_push(_item_names, "Lascutter");
-    array_push(_item_names, "Meltagun");
-    array_push(_item_names, "Missile Launcher");
-    array_push(_item_names, "Multi-Melta");
-    array_push(_item_names, "Autocannon");
-    array_push(_item_names, "Plasma Gun");
-    array_push(_item_names, "Plasma Pistol");
-    array_push(_item_names, "Sniper Rifle");
-    array_push(_item_names, "Storm Bolter");
-    array_push(_item_names, "Webber");
+    var item_count = 23
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Archeotech Laspistol";
+    _item_names[index++] = "Assault Cannon";
+    _item_names[index++] = "Bolt Pistol";
+    _item_names[index++] = "Bolter";
+    _item_names[index++] = "Stalker Pattern Bolter";
+    _item_names[index++] = "Combiflamer";
+    _item_names[index++] = "Flamer";
+    _item_names[index++] = "Heavy Bolter";
+    _item_names[index++] = "Heavy Flamer";
+    _item_names[index++] = "Hellrifle";
+    _item_names[index++] = "Incinerator";
+    _item_names[index++] = "Integrated Bolter";
+    _item_names[index++] = "Lascannon";
+    _item_names[index++] = "Lascutter";
+    _item_names[index++] = "Meltagun";
+    _item_names[index++] = "Missile Launcher";
+    _item_names[index++] = "Multi-Melta";
+    _item_names[index++] = "Autocannon";
+    _item_names[index++] = "Plasma Gun";
+    _item_names[index++] = "Plasma Pistol";
+    _item_names[index++] = "Sniper Rifle";
+    _item_names[index++] = "Storm Bolter";
+    _item_names[index++] = "Webber"; // 23
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -50,21 +55,26 @@ function push_marine_ranged_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_marine_melee_weapons_item_names(_item_names) {
-    array_push(_item_names, "Combat Knife");
-    array_push(_item_names, "Chainsword");
-    array_push(_item_names, "Chainaxe");
-    array_push(_item_names, "Eviscerator");
-    array_push(_item_names, "Power Sword");
-    array_push(_item_names, "Power Axe");
-    array_push(_item_names, "Power Fist");
-    array_push(_item_names, "Chainfist");
-    array_push(_item_names, "Lightning Claw");
-    array_push(_item_names, "Force Staff");
-    array_push(_item_names, "Thunder Hammer");
-    array_push(_item_names, "Boarding Shield");
-    array_push(_item_names, "Storm Shield");
-    array_push(_item_names, "Bolt Pistol");
-    array_push(_item_names, "Bolter");
+    var item_count = 15;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Combat Knife";
+    _item_names[index++] = "Chainsword";
+    _item_names[index++] = "Chainaxe";
+    _item_names[index++] = "Eviscerator";
+    _item_names[index++] = "Power Sword";
+    _item_names[index++] = "Power Axe";
+    _item_names[index++] = "Power Fist";
+    _item_names[index++] = "Chainfist";
+    _item_names[index++] = "Lightning Claw";
+    _item_names[index++] = "Force Staff";
+    _item_names[index++] = "Thunder Hammer";
+    _item_names[index++] = "Boarding Shield";
+    _item_names[index++] = "Storm Shield";
+    _item_names[index++] = "Bolt Pistol";
+    _item_names[index++] = "Bolter"; // 15
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -74,17 +84,22 @@ function push_marine_melee_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_marine_armour_item_names(_item_names) {
-    array_push(_item_names, "Scout Armour");
-    array_push(_item_names, "Power Armour");
-    array_push(_item_names, "MK3 Iron Armour");
-    array_push(_item_names, "MK4 Maximus");
-    array_push(_item_names, "MK5 Heresy");
-    array_push(_item_names, "MK6 Corvus");
-    array_push(_item_names, "MK7 Aquila");
-    array_push(_item_names, "MK8 Errant");
-    array_push(_item_names, "Artificer Armour");
-    array_push(_item_names, "Terminator Armour");
-    array_push(_item_names, "Tartaros");
+    var item_count = 11;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Scout Armour";
+    _item_names[index++] = "Power Armour";
+    _item_names[index++] = "MK3 Iron Armour";
+    _item_names[index++] = "MK4 Maximus";
+    _item_names[index++] = "MK5 Heresy";
+    _item_names[index++] = "MK6 Corvus";
+    _item_names[index++] = "MK7 Aquila";
+    _item_names[index++] = "MK8 Errant";
+    _item_names[index++] = "Artificer Armour";
+    _item_names[index++] = "Terminator Armour";
+    _item_names[index++] = "Tartaros"; // 11
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -93,11 +108,16 @@ function push_marine_armour_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_marine_gear_item_names(_item_names) {
-    // array_push(item_names, "Bionics");
-    array_push(_item_names, "Iron Halo");
-    array_push(_item_names, "Narthecium");
-    array_push(_item_names, "Psychic Hood");
-    array_push(_item_names, "Rosarius");
+    var item_count = 4;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    // _item_names[index++] = "Bionics";
+    _item_names[index++] = "Iron Halo";
+    _item_names[index++] = "Narthecium";
+    _item_names[index++] = "Psychic Hood";
+    _item_names[index++] = "Rosarius"; // 4
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -106,10 +126,15 @@ function push_marine_gear_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_marine_mobility_item_names(_item_names) {
-    array_push(_item_names, "Bike");
-    array_push(_item_names, "Jump Pack");
-    array_push(_item_names, "Servo-arm");
-    array_push(_item_names, "Servo-harness");
+    var item_count = 4;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Bike";
+    _item_names[index++] = "Jump Pack";
+    _item_names[index++] = "Servo-arm";
+    _item_names[index++] = "Servo-harness"; // 4
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -119,16 +144,21 @@ function push_marine_mobility_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_dreadnought_ranged_weapons_item_names(_item_names) {
-    array_push(_item_names, "Multi-Melta");
-    array_push(_item_names, "Twin Linked Heavy Flamer Sponsons");
-    array_push(_item_names, "Plasma Cannon");
-    array_push(_item_names, "Assault Cannon");
-    array_push(_item_names, "Autocannon");
-    array_push(_item_names, "Missile Launcher");
-    array_push(_item_names, "Twin Linked Lascannon");
-    array_push(_item_names, "Twin Linked Assault Cannon Mount");
-    array_push(_item_names, "Twin Linked Heavy Bolter");
-    array_push(_item_names, "Heavy Conversion Beam Projector");
+    var item_count = 10;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Multi-Melta";
+    _item_names[index++] = "Twin Linked Heavy Flamer Sponsons";
+    _item_names[index++] = "Plasma Cannon";
+    _item_names[index++] = "Assault Cannon";
+    _item_names[index++] = "Autocannon";
+    _item_names[index++] = "Missile Launcher";
+    _item_names[index++] = "Twin Linked Lascannon";
+    _item_names[index++] = "Twin Linked Assault Cannon Mount";
+    _item_names[index++] = "Twin Linked Heavy Bolter";
+    _item_names[index++] = "Heavy Conversion Beam Projector"; // 10
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -137,9 +167,14 @@ function push_dreadnought_ranged_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_dreadnought_melee_weapons_item_names(_item_names) {
-    array_push(_item_names, "Close Combat Weapon");
-    array_push(_item_names, "Dreadnought Power Claw");
-    array_push(_item_names, "Dreadnought Lightning Claw");
+    var item_count = 3;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Close Combat Weapon";
+    _item_names[index++] = "Dreadnought Power Claw";
+    _item_names[index++] = "Dreadnought Lightning Claw"; // 3
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -148,10 +183,15 @@ function push_dreadnought_melee_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_raider_front_weapons_item_names(_item_names) {
-    array_push(_item_names, "Twin Linked Heavy Bolter Mount");
-    array_push(_item_names, "Twin Linked Lascannon Mount");
-    array_push(_item_names, "Twin Linked Assault Cannon Mount");
-    array_push(_item_names, "Whirlwind Missiles");
+    var item_count = 4;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Twin Linked Heavy Bolter Mount";
+    _item_names[index++] = "Twin Linked Lascannon Mount";
+    _item_names[index++] = "Twin Linked Assault Cannon Mount";
+    _item_names[index++] = "Whirlwind Missiles"; // 4
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -160,11 +200,16 @@ function push_land_raider_front_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_raider_relic_front_weapons_item_names(_item_names) {
-    // array_push(_item_names, "Thunderfire Cannon Mount");
-    array_push(_item_names, "Neutron Blaster Turret");
-    array_push(_item_names, "Reaper Autocannon Mount");
-    // array_push(_item_names, "Twin Linked Helfrost Cannon Mount");
-    // array_push(_item_names, "Graviton Cannon Mount");
+    var item_count = 2;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    // _item_names[index++] = "Thunderfire Cannon Mount";
+    _item_names[index++] = "Neutron Blaster Turret";
+    _item_names[index++] = "Reaper Autocannon Mount"; // 2
+    // _item_names[index++] = "Twin Linked Helfrost Cannon Mount";
+    // _item_names[index++] = "Graviton Cannon Mount";
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -173,9 +218,14 @@ function push_land_raider_relic_front_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_raider_regular_sponsons_item_names(_item_names) {
-    array_push(_item_names, "Twin Linked Lascannon Sponsons");
-    array_push(_item_names, "Hurricane Bolter Sponsons");
-    array_push(_item_names, "Flamestorm Cannon Sponsons");
+    var item_count = 3;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Twin Linked Lascannon Sponsons";
+    _item_names[index++] = "Hurricane Bolter Sponsons";
+    _item_names[index++] = "Flamestorm Cannon Sponsons"; // 3
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -184,10 +234,15 @@ function push_land_raider_regular_sponsons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_raider_relic_sponsons_item_names(_item_names) {
-    array_push(_item_names, "Quad Linked Heavy Bolter Sponsons");
-    array_push(_item_names, "Twin Linked Heavy Flamer Sponsons");
-    array_push(_item_names, "Twin Linked Multi-Melta Sponsons");
-    array_push(_item_names, "Twin Linked Volkite Culverin Sponsons");
+    var item_count = 4;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Quad Linked Heavy Bolter Sponsons";
+    _item_names[index++] = "Twin Linked Heavy Flamer Sponsons";
+    _item_names[index++] = "Twin Linked Multi-Melta Sponsons";
+    _item_names[index++] = "Twin Linked Volkite Culverin Sponsons"; // 4
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -196,11 +251,16 @@ function push_land_raider_relic_sponsons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_raider_pintle_item_names(_item_names) {
-    array_push(_item_names, "Bolter");
-    array_push(_item_names, "Combiflamer");
-    array_push(_item_names, "Twin Linked Bolters");
-    array_push(_item_names, "Storm Bolter");
-    array_push(_item_names, "HK Missile");
+    var item_count = 5;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Bolter";
+    _item_names[index++] = "Combiflamer";
+    _item_names[index++] = "Twin Linked Bolters";
+    _item_names[index++] = "Storm Bolter";
+    _item_names[index++] = "HK Missile"; // 5
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -209,11 +269,16 @@ function push_land_raider_pintle_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_rhino_weapons_item_names(_item_names) {
-    array_push(_item_names, "Bolter");
-    array_push(_item_names, "Combiflamer");
-    array_push(_item_names, "Twin Linked Bolters");
-    array_push(_item_names, "Storm Bolter");
-    array_push(_item_names, "HK Missile");
+    var item_count = 5;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Bolter";
+    _item_names[index++] = "Combiflamer";
+    _item_names[index++] = "Twin Linked Bolters";
+    _item_names[index++] = "Storm Bolter";
+    _item_names[index++] = "HK Missile"; // 5
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -222,16 +287,21 @@ function push_rhino_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_predator_turret_item_names(_item_names) {
-    array_push(_item_names, "Autocannon Turret");
-    array_push(_item_names, "Twin Linked Lascannon Turret");
-    array_push(_item_names, "Flamestorm Cannon Turret");
-    array_push(_item_names, "Twin Linked Assault Cannon Turret");
-    array_push(_item_names, "Magna-Melta Turret");
-    array_push(_item_names, "Plasma Destroyer Turret");
-    array_push(_item_names, "Heavy Conversion Beam Projector");
-    array_push(_item_names, "Neutron Blaster Turret");
-    array_push(_item_names, "Volkite Saker Turret");
-    // array_push(item_names, "Graviton Cannon Turret");
+    var item_count = 9;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Autocannon Turret";
+    _item_names[index++] = "Twin Linked Lascannon Turret";
+    _item_names[index++] = "Flamestorm Cannon Turret";
+    _item_names[index++] = "Twin Linked Assault Cannon Turret";
+    _item_names[index++] = "Magna-Melta Turret";
+    _item_names[index++] = "Plasma Destroyer Turret";
+    _item_names[index++] = "Heavy Conversion Beam Projector";
+    _item_names[index++] = "Neutron Blaster Turret";
+    _item_names[index++] = "Volkite Saker Turret"; // 9
+    // _item_names[index++] = "Graviton Cannon Turret";
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -240,10 +310,15 @@ function push_predator_turret_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_predator_sponsons_item_names(_item_names) {
-    array_push(_item_names, "Heavy Bolter Sponsons");
-    array_push(_item_names, "Lascannon Sponsons");
-    array_push(_item_names, "Heavy Flamer Sponsons");
-    array_push(_item_names, "Volkite Culverin Sponsons");
+    var item_count = 4;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Heavy Bolter Sponsons";
+    _item_names[index++] = "Lascannon Sponsons";
+    _item_names[index++] = "Heavy Flamer Sponsons";
+    _item_names[index++] = "Volkite Culverin Sponsons"; // 4
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -252,11 +327,16 @@ function push_predator_sponsons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_predator_pintle_item_names(_item_names) {
-    array_push(_item_names, "Bolter");
-    array_push(_item_names, "Combiflamer");
-    array_push(_item_names, "Twin Linked Bolters");
-    array_push(_item_names, "Storm Bolter");
-    array_push(_item_names, "HK Missile");
+    var item_count = 5;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Bolter";
+    _item_names[index++] = "Combiflamer";
+    _item_names[index++] = "Twin Linked Bolters";
+    _item_names[index++] = "Storm Bolter";
+    _item_names[index++] = "HK Missile"; // 5
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -265,8 +345,13 @@ function push_predator_pintle_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_speeder_primary_item_names(_item_names) {
-    array_push(_item_names, "Multi-Melta");
-    array_push(_item_names, "Heavy Bolter");
+    var item_count = 2;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Multi-Melta";
+    _item_names[index++] = "Heavy Bolter"; // 2
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -275,8 +360,13 @@ function push_land_speeder_primary_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {array} The appended list.
 function push_land_speeder_secondary_item_names(_item_names) {
-    array_push(_item_names, "Assault Cannon");
-    array_push(_item_names, "Heavy Flamer");
+    var item_count = 2;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[index++] = "Heavy Flamer";
+    _item_names[index++] = "Assault Cannon"; // 2
     // future: not needed when we stop using GML's deprecated Copy-on-Write behavior
     return _item_names;
 }
@@ -413,6 +503,8 @@ enum eUNIT_TYPE {
 }
 
 // slot names differ by unit type then equipment type
+// HACK: GM doesn't like strings that look like numbers as struct keys
+//  so we prefix them with an underscore
 global.slot_names = {
     "_1": { // Infantry
         "_1": "Left Hand",
