@@ -846,7 +846,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
         var box = [];
         var box_x;
         var box_y;
-        var top = 0;
+        var top = -1;
 
         var selected_item_name = [n_wep1, n_wep2, n_armour, n_gear, n_mobi];
         selected_item_name = selected_item_name[target_comp-1];
@@ -869,7 +869,7 @@ if (zoom=0) and (type=6) and (instance_exists(obj_controller)){
             }
         }
 
-        if (top != 0) {
+        if (top != -1) {
             warning = "";
             switch (target_comp) {
                 case 1: n_wep1 = item_name[top]; sel1 = top; break;
