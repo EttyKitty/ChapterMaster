@@ -500,102 +500,13 @@ function scr_draw_armentarium(){
         draw_set_color(0);       
         //draw_rectangle(xx + 359, yy + 66, xx + 886, yy + 818, 0);
 
-        var forge_buttons= [xx + 359, yy + 77, 0, 0]
-        draw_unit_buttons([forge_buttons[0] , forge_buttons[1]],"<-- Overview",[1,1],c_red);
-        forge_buttons[2] = forge_buttons[0] + (string_width("<-- Overview")) + 8;
-        forge_buttons[3] = forge_buttons[1] + (string_height("<-- Overview")) + 5;
-        if (point_in_rectangle(
-            mouse_x,
-            mouse_y, 
-            forge_buttons[0], 
-            forge_buttons[1], 
-            forge_buttons[2],
-            forge_buttons[3]
-            ) && mouse_check_button_pressed(mb_left)
-        ){
+        if (point_and_click(draw_unit_buttons([xx + 359, yy + 77],"<-- Overview",[1,1],c_red))){
             in_forge=false;
         }        
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 359, yy + 107, xx + 886, yy + 127, 0);
-        draw_set_alpha(1);
-        draw_set_font(fnt_40k_14);
-        draw_set_color(0);
-        draw_text(xx+359,yy+109,"Name");
-        draw_text(xx+500,yy+109,"Number");
-        draw_text(xx+600,yy+109,"Forge Points");
-        draw_text(xx+700,yy+109,"Construction ETA");        
-        draw_set_color(c_gray);
-        var item_gap = 130;
-        var total_eta=0;
-        static top_point=0;
-        for (var i=top_point; i<13; i++){
-            if (i+1>array_length(specialist_point_handler.forge_queue)) then break;
-            draw_set_color(c_gray);
-            if point_in_rectangle(mouse_x, mouse_y, xx + 359,yy +item_gap, xx + 886, yy +item_gap+20){
-                draw_set_color(c_white)
-            }
-            if (is_string(specialist_point_handler.forge_queue[i].name)){
-                draw_text(xx+359,yy + item_gap,string_hash_to_newline(specialist_point_handler.forge_queue[i].name));
-                draw_text(xx+525,yy + item_gap,string_hash_to_newline(specialist_point_handler.forge_queue[i].count));
-                if (specialist_point_handler.forge_queue[i].ordered==obj_controller.turn){
-                    if (specialist_point_handler.forge_queue[i].count>1){
-                         draw_unit_buttons([xx+500 , yy + item_gap],"-",[0.75,0.75],c_red);
-                         if (point_in_rectangle(
-                            mouse_x,
-                            mouse_y, 
-                            xx+500, 
-                            yy + item_gap, 
-                            xx+500+3+(0.75*string_width("-")),
-                            yy + item_gap+3+(0.75*string_height("-")), 
-                            ) && mouse_check_button_pressed(mb_left)
-                        ){
-                            var unit_cost = specialist_point_handler.forge_queue[i].forge_points/specialist_point_handler.forge_queue[i].count;
-                            specialist_point_handler.forge_queue[i].count--;
-                            specialist_point_handler.forge_queue[i].forge_points-=unit_cost;
-                         }               
-                    }
-                    if (specialist_point_handler.forge_queue[i].count<100){
-                        draw_unit_buttons([xx+545 , yy + item_gap],"+",[0.75,0.75],c_green);
-                         if (point_in_rectangle(
-                            mouse_x,
-                            mouse_y, 
-                            xx+545, 
-                            yy + item_gap, 
-                            xx+545+3+(0.75*string_width("+")),
-                            yy + item_gap+3+(0.75*string_height("+")) 
-                            ) && mouse_check_button_pressed(mb_left) && current_target==false
-                        ){
-                            var unit_cost = specialist_point_handler.forge_queue[i].forge_points/specialist_point_handler.forge_queue[i].count;
-                            specialist_point_handler.forge_queue[i].count++;
-                            specialist_point_handler.forge_queue[i].forge_points+=unit_cost;
-                         }                  
-                    }
-                }
-            } else if (is_array(specialist_point_handler.forge_queue[i].name)){
-                if (specialist_point_handler.forge_queue[i].name[0]  == "research"){
-                    draw_text(xx+359,yy + item_gap,string_hash_to_newline(specialist_point_handler.forge_queue[i].name[1]));
-                }
-            }
-            draw_text(xx+630,yy + item_gap,string_hash_to_newline(specialist_point_handler.forge_queue[i].forge_points));
-            total_eta += ceil(specialist_point_handler.forge_queue[i].forge_points/forge_points);
-            draw_text(xx+735,yy+ item_gap,string_hash_to_newline(total_eta) + " turns");        
-            forge_buttons= [xx+850, yy + item_gap, 0, 0]
-            draw_unit_buttons([forge_buttons[0] , forge_buttons[1]],"X",[0.75,0.75],c_red);
-            forge_buttons[2] = forge_buttons[0] + (string_width("X")) + 8;
-            forge_buttons[3] = forge_buttons[1] + (string_height("X")) + 5;            
-             if (point_in_rectangle(
-                mouse_x,
-                mouse_y, 
-                forge_buttons[0], 
-                forge_buttons[1], 
-                forge_buttons[2],
-                forge_buttons[3]
-                ) && mouse_check_button_pressed(mb_left)
-            ){
-                array_delete(specialist_point_handler.forge_queue, i, 1);
-             }                     
-            item_gap +=20
-        }
+
+        specialist_point_handler.draw_forge_queue(xx+ 359,yy + 107);
+
+        
         // draw_set_color(c_red);
         //draw_line(xx + 326 + 16, yy + 426, xx + 887 + 16, yy + 426);         
         draw_set_color(#af5a00);

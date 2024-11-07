@@ -1467,7 +1467,7 @@ game_start_squads();
 squads = false;
 
 // **sets up starting forge_points
-specialist_point_handler = new SpecialistPointHandler
+specialist_point_handler = new SpecialistPointHandler();
 specialist_point_handler.calculate_research_points();
 
 //** sets up marine_by_location view

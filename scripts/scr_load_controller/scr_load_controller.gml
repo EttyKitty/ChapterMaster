@@ -230,9 +230,9 @@ function scr_load_controller(save_id){
 	    if (Production_research!=0){
 	    	obj_controller.production_research = json_parse(base64_decode(Production_research));
 	    }
-	    var specialist_point_handler.forge_queue=ini_read_string("Controller","specialist_point_handler.forge_queue",0);
-	    if (specialist_point_handler.forge_queue!=0){
-	    	obj_controller.specialist_point_handler.forge_queue = json_parse(base64_decode(specialist_point_handler.forge_queue));
+	    var forge_queue=ini_read_string("Controller","specialist_point_handler.forge_queue",0);
+	    if (forge_queue!=0){
+	    	obj_controller.specialist_point_handler.forge_queue = json_parse(base64_decode(forge_queue));
 	    }
 	    var Stc_research=ini_read_string("Controller","stc_research",0);
 	    if (Stc_research!=0){

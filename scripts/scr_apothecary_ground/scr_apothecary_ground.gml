@@ -1,7 +1,7 @@
 
 
 
-function calculate_full_chapter_spread(turn_end=true){
+function calculate_full_chapter_spread(){
  	obj_controller.command=0;
  	obj_controller.marines=0;	
 	var _mar_loc,is_healer,_is_tech,key_val,veh_location,array_slot,_unit;
@@ -21,7 +21,7 @@ function calculate_full_chapter_spread(turn_end=true){
 	    			obj_controller.marines++;
 	    		}
 	    	}
-	        tech_points_used += _unit.equipment_tech_points_used();
+	        tech_points_used += _unit.equipment_maintenance_burden();
 		    _is_tech = (_unit.IsSpecialist("forge") && _unit.hp()>=10);
 		    if (_is_tech){
 		    	add_forge_points_to_stack(_unit);
@@ -107,14 +107,14 @@ function calculate_full_chapter_spread(turn_end=true){
 }
 
 
-function apothecary_simple(turn_end=true){
+function apothecary_simple(){
 	var  _unit;
 	var _spreads = chapter_spread();
 	var _tech_spread = _spreads[0];
 	var _apoth_spread = _spreads[1];
 	var _unit_spread = _spreads[2];
 	var apoth_points_used = 0;
-	obj_controller.forge_string += $"Equipment Maintenance : -{tech_points_used}#";
+	forge_string += $"Equipment Maintenance : -{tech_points_used}#";
     //marines-=1;
 
 	var _locations = struct_get_names(_unit_spread);

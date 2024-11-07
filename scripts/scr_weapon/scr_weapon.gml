@@ -881,7 +881,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["vehicle", "dreadnought", "fist"]
+		"tags": ["vehicle", "dreadnought", "fist"],
 		"maintenance" : 0.1,
 	},
 	"Inferno Cannon": {
@@ -1383,7 +1383,7 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"],
 		"maintenance" : 0.05,
 	},
 	"Twin Linked Volkite Culverin Sponsons": {
@@ -1416,7 +1416,7 @@ global.weapons = {
 		"range": 16,
 		"spli": 4,
 		"arp": 1,
-		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"]
+		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"],
 	},
 	"Heavy Flamer Sponsons": {
 		"abbreviation": "HvyFlmrs",
@@ -1433,7 +1433,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 4,
 		"arp": -1,
-		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "sponson"],
 		"maintenance" : 0.05,
 	},
 	"Volkite Culverin Sponsons": {

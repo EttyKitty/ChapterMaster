@@ -4,7 +4,10 @@ function SpecialistPointHandler() constructor{
 
     static chapter_spread = calculate_full_chapter_spread;
     static healing_and_point_use = apothecary_simple;
-
+    forge_queue = [];
+    techs = [];
+    forge_master=-1;
+    master_craft_chance = 0;
     static calculate_research_points = function(turn_end=false){
         self.turn_end=turn_end;
         research_points = 0;
@@ -21,7 +24,7 @@ function SpecialistPointHandler() constructor{
         heretics = [];
 
         forge_string = $"Forge Production Rate#";
-        forge_master=-1,
+        forge_master=-1;
         healing_and_point_use(turn_end);
         var _noticed_heresy=false, at_forge=0;
         var _tech_locations=[]
@@ -66,16 +69,17 @@ function SpecialistPointHandler() constructor{
                 forge_points-=floor(forge_veh_maintenance.small_vehicles);
             }
         }
-        if (player_forge_data.player_forges>0){
-            forge_points += 5*player_forge_data.player_forges;
-            forge_string += $"Forges: +{5*player_forge_data.player_forges}#";
+        var _forge_data = obj_controller.player_forge_data;
+        if (_forge_data.player_forges>0){
+            forge_points += 5*_forge_data.player_forges;
+            forge_string += $"Forges: +{5*_forge_data.player_forges}#";
         }
         forge_points = floor(forge_points);
         //in this instance tech heretics are techmarines with the "tech_heretic" trait
         if (turn_end){
             if (array_length(techs)==0) then scr_loyalty("Upset Machine Spirits","+");
 
-            tech_ideology_spread()
+            tech_ideology_spread();
             new_tech_heretic_spawn();
 
             if (forge_master==-1){ 
@@ -99,7 +103,7 @@ function SpecialistPointHandler() constructor{
         var _possibility_of_heresy = 8;
         if (array_contains(obj_ini.dis,"Tech-Heresy")) then _possibility_of_heresy = 6;
         if (irandom(power(_possibility_of_heresy,(array_length(heretics)+2.2))) == 0 && array_length(techs)>0){
-            var _current_tech = techs[irandom(array_length(techs)-1)];
+            var _current_tech = array_random_element(techs);
            if  (!global.character_tester.standard_test(_current_tech, "piety")[0]){
                _current_tech.add_trait("tech_heretic");
                _current_tech.edit_corruption(20+irandom(15));
@@ -107,8 +111,8 @@ function SpecialistPointHandler() constructor{
         }
     }
 
-    static add_forge_points_to_stack(unit){
-        array_push(techs, _unit);
+    static add_forge_points_to_stack = function(unit){
+        array_push(techs, unit);
         if (unit.technology>40 && unit.hp() > 0){
             var _cur_tech = unit
             research_points += _cur_tech.technology-40;
@@ -243,9 +247,104 @@ function SpecialistPointHandler() constructor{
         } 
     }
 
-    static apothecary_points_calc(){
-
+    static draw_forge_queue = function(xx,yy){
+        var _box_width = 527;
+        draw_set_color(c_gray);
+        draw_rectangle(xx, yy , xx + _box_width, yy + 50, 0);
+        draw_set_alpha(1);
+        draw_set_font(fnt_40k_14);
+        draw_set_color(0);
+        draw_text(xx,yy,"Name");
+        draw_text(xx+141,yy,"Number");
+        draw_text(xx+241,yy,"Forge Points");
+        draw_text(xx+341,yy,"Construction ETA");        
+        draw_set_color(c_gray);
+        var item_gap = 13;
+        var total_eta=0;        
+        static top_point=0;
+        for (var i=top_point; i<13; i++){
+            if (i+1>array_length(forge_queue)) then break;
+            draw_set_color(c_gray);
+            if scr_hit(xx,yy+item_gap,xx+_box_width,yy+item_gap+20){
+                draw_set_color(c_white)
+            }
+            if (is_string(forge_queue[i].name)){
+                draw_text(xx,yy + item_gap,string_hash_to_newline(forge_queue[i].name));
+                draw_text(xx+166,yy + item_gap,forge_queue[i].count);
+                if (forge_queue[i].ordered==obj_controller.turn){
+                    if (forge_queue[i].count>1){
+                        if (point_and_click(draw_unit_buttons([xx+141 , yy + item_gap],"-",[0.75,0.75],c_red))){
+                            var unit_cost = forge_queue[i].forge_points/forge_queue[i].count;
+                            forge_queue[i].count--;
+                            forge_queue[i].forge_points-=unit_cost;
+                        }               
+                    }
+                    if (forge_queue[i].count<100){
+                        if (point_and_click(draw_unit_buttons([xx+545 , yy + item_gap],"+",[0.75,0.75],c_green))){
+                            var unit_cost = forge_queue[i].forge_points/forge_queue[i].count;
+                            forge_queue[i].count++;
+                            forge_queue[i].forge_points+=unit_cost;
+                        }                 
+                    }
+                }
+            } else if (is_array(forge_queue[i].name)){
+                if (forge_queue[i].name[0]  == "research"){
+                    draw_text(xx+359,yy + item_gap,forge_queue[i].name[1]);
+                }
+            }
+            draw_text(xx+271,yy + item_gap,string_hash_to_newline(forge_queue[i].forge_points));
+            total_eta += ceil(forge_queue[i].forge_points/forge_points);
+            draw_text(xx+376,yy+ item_gap,$"{total_eta} turns");        
+            if (point_and_click(draw_unit_buttons([xx+491, yy + item_gap],"X",[0.75,0.75],c_red))){
+                array_delete(forge_queue, i, 1);
+            }                    
+            item_gap +=20
+        }        
     }
+    static scr_forge_item = function(item){
+        var master_craft_count=0;
+        var quality_string="";
+        var normal_count=0;
+        for (var s=0;s<item.count;s++){
+            if (master_craft_chance && (irandom(100)<master_craft_chance)){
+                master_craft_count++;
+            } else {
+                normal_count++;
+            }
+        }
+        scr_add_item(item.name, normal_count);
+        if (master_craft_count>0){
+            scr_add_item(item.name, master_craft_count,"master_crafted");
+            var numerical_string = master_craft_count==1?"was":"were";
+            quality_string=$"X{master_craft_count} {numerical_string} Completed to a Master Crafted standard";
+        }else {
+            quality_string=$"all were completed to a standard STC compliant quality";
+        }
+        scr_popup("Forge Completed",$"{item.name} X{item.count} construction finished {quality_string}","","");
+    }    
+    static scr_evaluate_forge_item_completion = function(item){
+        if (is_string(item.name)){
+            var _vehicles = ["Rhino","Predator","Land Raider","Whirlwind","Land Speeder"];
+            var is_vehicle =  array_contains(_vehicles,item.name);
+            if (!is_vehicle){
+                scr_forge_item(item);
+            } else {
+                repeat(item.count){
+                    var vehicle = scr_add_vehicle(item.name,9,"standard","standard","standard","standard","standard");
+                    var build_loc = array_random(obj_controller.player_forge_data.vehicle_hanger);
+                    obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
+                    obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
+                    obj_ini.veh_lid[vehicle[0]][vehicle[1]] = 0;
+                }
+                scr_popup("Forge Completed",$"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}","","");
+            }                      
+        } else if (is_array(item.name)){
+            scr_advance_research(item);
+        }
+    }
+    /*static apothecary_points_calc(){
+
+    }*/
 }
 
 
@@ -289,29 +388,6 @@ function unit_forge_point_generation(turn_end=false){
     return [points,reasons];
 }
 
-
-function scr_forge_item(item){
-    var master_craft_count=0;
-    var quality_string="";
-    var normal_count=0;
-    for (var s=0;s<item.count;s++){
-        if (master_craft_chance && (irandom(100)<master_craft_chance)){
-            master_craft_count++;
-        } else {
-            normal_count++;
-        }
-    }
-    scr_add_item(item.name, normal_count);
-    if (master_craft_count>0){
-        scr_add_item(item.name, master_craft_count,"master_crafted");
-        var numerical_string = master_craft_count==1?"was":"were";
-        quality_string=$"X{master_craft_count} {numerical_string} Completed to a Master Crafted standard";
-    }else {
-        quality_string=$"all were completed to a standard STC compliant quality";
-    }
-    scr_popup("Forge Completed",$"{item.name} X{item.count} construction finished {quality_string}","","");
-}
-
 function scr_advance_research(research){
     if (research.name[0]=="research"){
         var tier_depth = array_length(research.name[2]);
@@ -324,27 +400,6 @@ function scr_advance_research(research){
             production_research[$ tier_names[0]][1][$ tier_names[1]][1][$ tier_names[2]][0]++;
         }
     }    
-}
-
-function scr_evaluate_forge_item_completion(item){
-    if (is_string(item.name)){
-        var _vehicles = ["Rhino","Predator","Land Raider","Whirlwind","Land Speeder"];
-        var is_vehicle =  array_contains(_vehicles,item.name);
-        if (!is_vehicle){
-            scr_forge_item(item);
-        } else {
-            repeat(item.count){
-                var vehicle = scr_add_vehicle(item.name,9,"standard","standard","standard","standard","standard");
-                var build_loc = array_random(player_forge_data.vehicle_hanger);
-                obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
-                obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
-                obj_ini.veh_lid[vehicle[0]][vehicle[1]] = 0;
-            }
-            scr_popup("Forge Completed",$"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}","","");
-        }                      
-    } else if (is_array(item.name)){
-        scr_advance_research(item);
-    }
 }
 
 function research_end(){

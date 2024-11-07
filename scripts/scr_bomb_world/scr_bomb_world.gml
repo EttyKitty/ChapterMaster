@@ -74,7 +74,7 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
     
 	    reduced_bombard_score=bombard_ment_power/3;
 	    strength_reduction=0;
-    
+
 	    var i=reduced_bombard_score;
 	    roll=0;
     	
