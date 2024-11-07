@@ -225,7 +225,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    // Ambushers go!
 	    if (ambush=true) then chance=round(chance/2);
     
-	    var txt,spec1,spec2;spec1=0;spec2=0; // TODO consider making it a battle with Planetary governor's guards
+	    var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
 	    txt="Your Astartes descend upon the surface of "+string(star.name)+" "+string(scr_roman(planet))+" and plot the movements and schedule of the governor.  ";    
 	    txt+="Once the time is right their target is ambushed "+choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
     
