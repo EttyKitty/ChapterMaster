@@ -136,6 +136,19 @@ if (!directory_exists("ErrorLogs")) {
     directory_create("ErrorLogs");
 }
 
+if (global.messages_updated == false) {
+    var _log_file = file_text_open_write("ErrorLogs/" + $"last_messages.log");
+    file_text_close(_log_file);
+    global.messages_updated = true;
+}
+
+// Delete leftover files from old versions;
+if (file_exists("debug_log.ini")) {
+    file_delete("debug_log.ini");
+}
+if (file_exists("message_log.log")) {
+    file_delete("message_log.log");
+}
 
 // TODO: maybe replace the OG debug_log.ini with something like this.
 // if (!directory_exists("SessionLogs")) {

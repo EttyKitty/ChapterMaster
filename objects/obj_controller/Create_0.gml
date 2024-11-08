@@ -323,11 +323,6 @@ if (window_get_fullscreen()=1){
 cheatcode=0;
 cheatyface=0;
 // ** Debugging file created **
-debug_lines=0;
-ini_open("debug_log.ini");
-debug_lines=ini_read_real("Main","lines",0);
-ini_close();
-
 debugl("=========Controller Created");
 // ** Creates saves.ini with default settings **
 ini_open("saves.ini");
