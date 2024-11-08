@@ -1,6 +1,24 @@
-Doc:
+"PR: Docs":
 - changed-files:
   - any-glob-to-any-file: ['docs/*', 'guides/*', '**/*.md']
+- head-branch: ['^docs', 'docs']
 
-Feat:
- - head-branch: ['^feature', 'feature', '^feat', 'feat']
+"PR: Feature":
+ - head-branch: ['^feature', 'feature', '^feat', 'feat', 'add']
+
+"PR: Fix":
+ - head-branch: ['^fix', 'fix']
+
+"PR: Chore":
+ - head-branch: ['^chore', 'chore']
+ - changed-files:
+  - any-glob-to-any-file: ['.github/*', '**/*.yml']
+
+"PR: Refactor":
+ - head-branch: ['^refactor', 'refactor']
+
+"PR: Performance":
+ - head-branch: ['^perf', 'perf', 'performance']
+
+"PR: JSON":
+  - any-glob-to-any-file: ['**/*.json']
