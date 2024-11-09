@@ -1,11 +1,11 @@
 name: Build-and-Release-Windows-YYC
 on: 
-  # push: #Uncomment this line to run the workflow on push
-  workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
-  # workflow_call: #This line allows you to run the workflow from another workflow
+  push:
+    tags:        
+      - v*.*.*
 jobs:
   build:
-    name: Build and Release a Nightly version
+    name: Build and Release a version
     runs-on: windows-2022
     steps:
       # Check out the repository with the GameMaker project
@@ -43,7 +43,18 @@ jobs:
           openDelimiter: "BS"
           closeDelimiter: "BE"
           body: "${{ env.date_time }}"
-          message: "chore: Update build-date."
+          message: "chore: Update build-date"
+      - name: fetch tags
+        run: git fetch --tags origin
+      - id: change_version
+        name: Change Version
+        uses: jaywcjlove/github-action-modify-file-content@main
+        with:
+          path: datafiles/main/version.json
+          openDelimiter: "VS"
+          closeDelimiter: "VE"
+          body: "${{ github.ref_name }}"
+          message: "chore: Update version"
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
@@ -51,16 +62,13 @@ jobs:
         with:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
-          name: ChapterMaster-${{ env.date_time }}-Windows.zip
+          name: ChapterMaster-${{ github.ref_name }}-Windows.zip
           yyc: true
-      - name: fetch tags
-        run: git fetch --tags origin
       - id: create_release
         name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster-${{ env.date_time }}
-          tag_name: nightly
+          name: ChapterMaster ${{ github.ref_name }}
           prerelease: false
           generate_release_notes: true
           make_latest: true
