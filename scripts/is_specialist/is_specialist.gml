@@ -375,7 +375,7 @@ function group_selection(group, selection_data){
         if (array_length(vehicles)>0){
         	for (var veh=0;veh<array_length(vehicles);veh++){
         		unit = vehicles[veh];
-        		_add_vehicle_to_manage_arrays(unit)       		
+        		add_vehicle_to_manage_arrays(unit)       		
         	}
         }
         other_manage_data();
