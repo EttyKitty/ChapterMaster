@@ -391,7 +391,7 @@ function push_tank_upgrade_item_names(_item_names, _is_land_raider=false) {
 /// @param {bool} _is_dreadnought - Whether the 'tank' is a dreadnought.
 /// @returns {void}
 function push_tank_accessory_item_names(_item_names, _is_land_raider=false, _is_dreadnought=false) {
-    var item_count = 4 + (_is_land_raider != 0) + (_is_land_raider !=0 && _is_dreadnought != 0);
+    var item_count = 3 + (!_is_dreadnought) + (!_is_land_raider && !_is_dreadnought);
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -576,10 +576,12 @@ function get_slot_name(_unit_type, _equipment_type) {
 function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _unit_type, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false) {
     show_debug_message("scr_get_item_names: " + string(_equipment_type) + ", " + string(_equipment_subtype) + ", " + string(_unit_type) + ", " + string(_include_company_standard) + ", " + string(_show_available_only) + ", " + string(_master_crafted_only));
     if (_item_names == undefined) {
-        show_error("scr_get_item_names: _item_names is undefined", true);
+        assert_error_popup("_item_names is undefined");
+        return;
     }
     if (!is_array(_item_names)) {
-        show_error("scr_get_item_names: _item_names is not an array", true);
+        assert_error_popup("_item_names is not an array");
+        return;
     }
     switch(_unit_type) {
         case eUNIT_TYPE.Infantry:
@@ -622,7 +624,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        show_error("scr_get_item_names: Invalid equipment subtype for infantry", true);
+                        assert_error_popup("Invalid equipment subtype for infantry");
+                        return;
                     }
                     break;
                 case eEQUIPMENT_TYPE.Armour:
@@ -677,7 +680,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     }
                     break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for infantry", true);
+                    assert_error_popup("Invalid equipment type for infantry");
+                    return;
             }        
             break;
         case eUNIT_TYPE.Dreadnought:
@@ -717,7 +721,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        show_error("scr_get_item_names: Invalid equipment subtype for dreadnought", true);
+                        assert_error_popup("Invalid equipment subtype for dreadnought");
+                        return;
                     }
                     break;
                 case eEQUIPMENT_TYPE.MobilityAccessory:
@@ -729,7 +734,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     // Dreadnought doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for dreadnought", true);
+                    assert_error_popup("Invalid equipment type for dreadnought");
+                    return;
             }
             break;
         case eUNIT_TYPE.LandRaider:
@@ -741,7 +747,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
                         push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
-                        show_error("scr_get_item_names: Invalid equipment subtype for land raider", true);
+                        assert_error_popup("Invalid equipment subtype for land raider");
+                        return;
                     }
                     break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
@@ -750,14 +757,16 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
-                        show_error("scr_get_item_names: Invalid equipment subtype for land raider", true);
+                        assert_error_popup("Invalid equipment subtype for land raider");
+                        return;
                     }
                     break;
                 case eEQUIPMENT_TYPE.Armour: push_land_raider_pintle_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, true); break;
                 case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, true, false); break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for land raider", true);
+                    assert_error_popup("Invalid equipment type for land raider");
+                    return;
             }
             break;
         case eUNIT_TYPE.Rhino:
@@ -771,7 +780,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     // Rhino doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for rhino", true);
+                    assert_error_popup("Invalid equipment type for rhino");
+                    return;
             }
             break;
         case eUNIT_TYPE.Predator:
@@ -783,7 +793,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                 case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
                 case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for predator", true);
+                    assert_error_popup("Invalid equipment type for predator");
+                    return;
             }
             break;
         case eUNIT_TYPE.LandSpeeder:
@@ -797,7 +808,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     // Land speeder doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for land speeder", true);
+                    assert_error_popup("Invalid equipment type for land speeder");
+                    return;
             }
             break;
         case eUNIT_TYPE.Whirlwind:
@@ -811,7 +823,8 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     // Whirlwind doesn't have this equipment type, but an empty list is shown in the UI
                     break;
                 default:
-                    show_error("scr_get_item_names: Invalid equipment type for whirlwind", true);
+                    assert_error_popup("Invalid equipment type for whirlwind");
+                    return;
             }
             break;
     }

@@ -154,7 +154,7 @@ if (col_shift){
                     if (!is_invalid) {
                         obj_creation.cooldown = 8000;
 
-                        item_name = []
+                        item_name = [];
                         scr_get_item_names(
                             item_name,
                             gg,
@@ -195,7 +195,7 @@ if (col_shift){
 
 if (target_gear > 0) {
     tab = 1;
-    item_name = []
+    item_name = [];
     scr_get_item_names(
         item_name,
         target_gear,
@@ -251,7 +251,7 @@ if (target_gear > 0) {
     
     if (target_gear == 1 || target_gear == 2) {
         tab = 2;
-        item_name = []
+        item_name = [];
         scr_get_item_names(
             item_name,
             target_gear,

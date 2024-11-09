@@ -68,7 +68,7 @@ if (total_role_number > 0 && tab > 0) {
         told = tab;
     }
 
-    item_name = []
+    item_name = [];
     scr_get_item_names(
         item_name,
         tab,
@@ -138,7 +138,7 @@ if (total_role_number > 0 && tab > 0) {
             told = tab;
         }
 
-        item_name = []
+        item_name = [];
         scr_get_item_names(
             item_name,
             tab,

@@ -80,7 +80,10 @@ function array_to_string_list(_array) {
         return;
     }
     for (var i = 0; i < array_length(_array); i++) {
-        _string_list += _array[i];
+		if (_array[i] == 0) { // top of a stack trace from debug_get_callstack
+			continue;
+		}
+        _string_list += string(_array[i]);
         if (i < array_length(_array) - 1) {
             _string_list += "\n";
         }
