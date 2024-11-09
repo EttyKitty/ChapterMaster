@@ -16,7 +16,7 @@ function scr_hit(x1=0, y1=0, x2=0, y2=0) {
 /// @description Returns true if left mouse button was clicked on the desired rectangle area.
 /// @param {array} rect x1, y1, x2, y2 array.
 /// @returns {bool}
-function point_and_click(rect) {
+function point_and_click(rect, cooldown = 60) {
 	var controller_exist = instance_exists(obj_controller);
 	var click_check = false;
 	var mouse_consts = return_mouse_consts();
@@ -27,18 +27,18 @@ function point_and_click(rect) {
 	}
 
 	if (controller_exist && obj_controller.cooldown > 0) {
-		// show_debug_message("point_and_click: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
+		show_debug_message("point_and_click: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
 		return false;
 	}
 
 	var click_check = point_in_rectangle(mouse_consts[0], mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
 	if (controller_exist && click_check) {
-		obj_controller.cooldown = 8000;
+		obj_controller.cooldown = cooldown * delta_time/1000000;
 	}
 	return click_check;
 }
 
-function scr_click_left(){
+function scr_click_left(cooldown = 60){
 	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mb_left) : mouse_check_button_pressed(mb_left);
 
 	if (!mouse_clicked) {
@@ -46,9 +46,12 @@ function scr_click_left(){
 	}
 
 	var controller_exist = instance_exists(obj_controller);
+
 	if (controller_exist && obj_controller.cooldown > 0) {
 		show_debug_message("scr_click_left: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
 		return false;
+	} else if (controller_exist) {
+		obj_controller.cooldown = cooldown * delta_time/1000000;
 	}
 
 	return mouse_clicked;

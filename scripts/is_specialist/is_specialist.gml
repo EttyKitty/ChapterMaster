@@ -189,46 +189,81 @@ function is_specialist(unit_role, type="standard", include_trainee=false) {
 	return array_contains(specialists,unit_role);
 }
 
+//TODO write this out with proper formatting when i can be assed
+//Used to quikcly collect groups of marines with given parameters
+// group takes a string relating to options in the role_groups function, to ignore filtering by group use "all"
+	// can also pass an array to filter for mutiple groups
+// location takes wther a string with a system name or an array with 3 parameters [<location name>,<planet number>,<ship number>]
+// if opposite is true then then the roles defined in the group argument are ignored and all others collected
+// search conditions
+	// companies, takes either an int or an arrat to define which companies to search in
+	// any stat allowed by the stat_valuator basically allows you to look for marines whith certain stat lines
+	// job allows you to find marines forfuling certain tasks like garrison or forge etc
+
 function collect_role_group(group="standard", location="", opposite=false, search_conditions = {companies:"all"}){
-	var units = [], unit, count=0, add=false, is_special_group;
+	var _units = [], unit, count=0, _add=false, _is_special_group;
+	var _max_count = 0;
+	var _total_count = 0;
+	if (struct_exists(search_conditions, "max")){
+		_max_count =  search_conditions.max;
+	}
+	if (!struct_exists(search_conditions, "companies")){
+		search_conditions.companies = "all";
+	}
 	for (var com=0;com<=10;com++){
-		var wanted_companies = search_conditions.companies;
-		if (wanted_companies!="all"){
-			if (is_array(wanted_companies)){
-				if (!array_contains(wanted_companies, com)) then continue;
+    	if (_max_count>0){
+    		if (array_length(_units)>=_max_count){
+    			break;
+    		}
+    	}		
+		var _wanted_companies = search_conditions.companies;
+		if (_wanted_companies!="all"){
+			if (is_array(_wanted_companies)){
+				if (!array_contains(_wanted_companies, com)) then continue;
 			} else {
-				if (wanted_companies != com) then continue;
+				if (_wanted_companies != com) then continue;
 			}
 		}
 	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
-	    	add=false;
+	    	if (_max_count>0){
+	    		if (array_length(_units)>=_max_count){
+	    			break;
+	    		}
+	    	}
+	    	if array_length(_units)
+	    	_add=false;
 			unit=fetch_unit([com,i]);
 			if (unit.name()=="") then continue;
 			if (group!="all"){
 				if (is_array(group)){
-					is_special_group = unit.IsSpecialist(group[0], group[1]);
+					_is_special_group = unit.IsSpecialist(group[0], group[1]);
 				} else {
-					is_special_group = unit.IsSpecialist(group);
+					_is_special_group = unit.IsSpecialist(group);
 				}
 			} else {
-				is_special_group = true;
+				_is_special_group = true;
 			}
-	        if ((is_special_group && !opposite) || (!is_special_group && opposite)){
+	        if ((_is_special_group && !opposite) || (!_is_special_group && opposite)){
 	        	if (location==""){
-	        		add=true;
-	       		} else if (unit.is_at_location(location, 0, 0)){
-	       			add=true;
-	       		}
+	        		_add=true;
+	       		} else if (!is_array(location)){
+		       		_add=unit.is_at_location(location, 0, 0);
+		       	} else {
+		       		_add=unit.is_at_location(location[0], location[1], location[2]);
+		       	}
 	        }
-	        if (add){
+	        if (_add){
 	        	if (struct_exists(search_conditions, "stat")){
-	        		add = stat_valuator(search_conditions[$ "stat"], unit);
+	        		_add = stat_valuator(search_conditions[$ "stat"], unit);
+	        	}
+	        	if (struct_exists(search_conditions,"job")){
+	        		_add =  (unit.assignment() == search_conditions.job);
 	        	}
 	        }
-	        if (add) then array_push(units, obj_ini.TTRPG[com][i]);
+	        if (_add) then array_push(_units, obj_ini.TTRPG[com][i]);
 	    }    
 	}
-	return units;
+	return _units;
 }
 
 function stat_valuator(search_params, unit){
@@ -250,10 +285,10 @@ function stat_valuator(search_params, unit){
 }
 
 function collect_by_religeon(religion, sub_cult="", location=""){
-	var units = [], unit, count=0, add=false;
+	var _units = [], unit, count=0, _add=false;
 	for (var com=0;com<=10;com++){
 	    for (i=1;i<array_length(obj_ini.TTRPG[com]);i++){
-	    	add=false;
+	    	_add=false;
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue; 	
 	        if (unit.religion == religion){
@@ -263,15 +298,15 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 	        		}
 	        	}
 	        	if (location==""){
-	        		add=true;
+	        		_add=true;
 	       		} else if (unit.is_at_location(location, 0, 0)){
-	       			add=true;
+	       			_add=true;
 	       		}
 	        }
-	        if (add) then array_push(units, obj_ini.TTRPG[com][i]);
+	        if (_add) then array_push(_units, obj_ini.TTRPG[com][i]);
 	    }    
 	}
-	return units;
+	return _units;
 }
 
 function group_selection(group, selection_data){

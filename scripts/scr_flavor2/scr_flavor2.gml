@@ -35,7 +35,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		j5 = hehh;
 
 		_hostile_range = 999;
-		_hostile_weapon = obj_nfort.hostile_weapon;
+		_hostile_weapon = obj_nfort.hostile_weapons;
 		_hostile_shots = obj_nfort.hostile_shots;
 	}
 

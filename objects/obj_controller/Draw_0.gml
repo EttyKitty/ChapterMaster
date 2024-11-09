@@ -3,7 +3,7 @@
 try{
     scr_ui_manage();
 } catch(_exception){
-    show_debug_message(_exception);
+    handle_exception(_exception);
     manage = 0;
     menu = 0;
 
@@ -11,21 +11,21 @@ try{
 try{
     scr_ui_advisors();
 } catch(_exception){
-    show_debug_message(_exception);
+    handle_exception(_exception);
     manage = 0;
     menu = 0;   
 }
 try{
     scr_ui_diplomacy();
 } catch(_exception){
-    show_debug_message(_exception);
+    handle_exception(_exception);
     manage = 0;
     menu = 0;   
 }
 try{
     scr_ui_settings();
 } catch(_exception){
-    show_debug_message(_exception);
+    handle_exception(_exception);
     manage = 0;
     menu = 0;   
 }

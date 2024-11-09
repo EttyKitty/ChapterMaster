@@ -16,35 +16,38 @@ function scr_ancient_ruins_setup(){
 }
 
 function scr_ruins_suprise_attack_player(){
-    instance_deactivate_all(true);
-    instance_activate_object(obj_controller);
-    instance_activate_object(obj_ini);
-    var _explore_feature = obj_ground_mission.explore_feature;
-	var _star = _explore_feature.star;
-	var _planet = _explore_feature.planet;
-    
-    instance_create(0,0,obj_ncombat);
-    
-    instance_activate_object(_star);
-	obj_ncombat.man_size_limit = _explore_feature.man_size_limit;
-    
-    //that_one=instance_nearest(0,0,obj_star);
-   // instance_activate_object(obj_star);
-    scr_battle_roster(_star.name ,_planet,true);
-    obj_controller.cooldown=10;
-    obj_ncombat.battle_object=_star;
-    obj_ncombat.battle_loc=_star.name;
-    instance_deactivate_object(obj_star);    
-    obj_ncombat.battle_id =_planet;
-    obj_ncombat.battle_special="ruins";
-    if (obj_ground_mission.ruins_race=6) then obj_ncombat.battle_special="ruins_eldar";
-    obj_ncombat.dropping=0;
-    obj_ncombat.attacking=0;
-    obj_ncombat.enemy=obj_ground_mission.ruins_battle;
-    obj_ncombat.threat=obj_ground_mission.battle_threat;
-    obj_ncombat.formation_set=1;
-    instance_destroy(obj_popup);
-    instance_destroy(obj_star_select);	
+	try_and_report_loop("Ruins Ambush", function(){
+	    instance_deactivate_all(true);
+	    instance_activate_object(obj_controller);
+	    instance_activate_object(obj_ini);
+	    instance_activate_object(obj_star);
+		var _star = star_by_name(obj_ground_mission.loc);
+		var _planet = planet;
+	    
+	    instance_create(0,0,obj_ncombat);
+	    
+		obj_ncombat.man_size_limit = man_size_limit;
+	    
+	    //that_one=instance_nearest(0,0,obj_star);
+	   // instance_activate_object(obj_star);
+	    scr_battle_roster(_star.name ,_planet,true);
+	    obj_controller.cooldown=10;
+	    obj_ncombat.battle_object=_star;
+	    obj_ncombat.battle_loc=_star.name;
+	    instance_deactivate_object(obj_star);    
+	    obj_ncombat.battle_id =_planet;
+	    obj_ncombat.battle_special="ruins";
+	    if (obj_ground_mission.ruins_race=6) then obj_ncombat.battle_special="ruins_eldar";
+	    obj_ncombat.dropping=0;
+	    obj_ncombat.attacking=0;
+	    obj_ncombat.enemy=obj_ground_mission.ruins_battle;
+	    obj_ncombat.threat=obj_ground_mission.battle_threat;
+	    obj_ncombat.formation_set=1;
+	    instance_destroy(obj_popup);
+	    instance_destroy(obj_star_select);	
+	}, [], function(){
+		instance_activate_all();
+	});
 }
 //spawn point for starship
 function scr_ruins_find_starship (){

@@ -152,7 +152,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}else if (cult_control<75){
 					control_string = "Has managed to galvanise the populace to overcome the former governor of the planet turning much of the local pdf to it's cause, it must be stopped, lest it spread.";
 				} else {
-					control_string = "The Cults rot and control of the planet is complete even if the cult can be dismantled the rot is great and the population will need significant purging and monitering to remove the rot";
+					control_string = "The Cults rot and control of the planet is complete even if the cult can be dismantled the rot is great and the population will need significant purging and monitering to remove the taint";
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
@@ -209,6 +209,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 								system:obj_controller.selected.id,
 								feature:obj_star_select.feature,
 								planet : obj_controller.selecting_planet,
+								array_slot : feature.array_position,
 								selections : []
 							});
 							destroy=true;

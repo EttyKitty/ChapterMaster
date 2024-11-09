@@ -365,26 +365,26 @@ function scr_navy_planet_action(){
 	        	}
 	        }
 	    }
-    	show_debug_message($"{selected_planet},{highest}, {array_sum(orbiting.p_guardsmen)}")
+
 	    if (selected_planet>0) and (highest>0) and (array_sum(orbiting.p_guardsmen)<=0){
 	        if (highest>2) or (orbiting.p_pdf[selected_planet]=0){
 	            scr_navy_unload_guard(selected_planet)
 	        }
 	    }
     
-	    var player_planet=false;
-	    if (obj_controller.faction_status[eFACTION.Imperium]="War"){
-	        if (orbiting.present_fleet[1]>0) then player_planet=true;
+	    var _player_planet=false;
+	    if (obj_controller.faction_status[eFACTION.Imperium]=="War"){
+	        if (scr_orbiting_fleet(eFACTION.Player)!="none") then _player_planet=true;
 
-            for (var r=1;r<=orbiting.planet;r++){
-	            player_planet = orbiting.p_owner[r]==eFACTION.Player;
-	            if (!player_planet){
-	            	player_planet = planet_feature_bool(orbiting.p_feature[r], P_features.Monastery);
+            for (var r=1;r<=orbiting.planets;r++){
+	            _player_planet = orbiting.p_owner[r]==eFACTION.Player;
+	            if (!_player_planet){
+	            	_player_planet = planet_feature_bool(orbiting.p_feature[r], P_features.Monastery);
 	            }
 	        }
 	    }
     
-	    if (selected_planet=0) and (highest=0) and (!player_planet){
+	    if (selected_planet=0) and (highest=0) and (!_player_planet){
 	        var halp=0;
 	        var stars_needing_help = [];
         
@@ -396,19 +396,19 @@ function scr_navy_planet_action(){
 	        }
 	        if (array_length(stars_needing_help)){
 	            var _current=nearest_from_array(x,y,stars_needing_help);
-	            current_star = stars_needing_help[_current];
-	            var star_distance = point_distance(x,y,current_star.x,current_star.y);
-	            if (star_distance>600) then halp=0;
+	            var _current_star = stars_needing_help[_current];
+	            var _star_distance = point_distance(x,y,_current_star.x,_current_star.y);
+	            if (_star_distance>600) then halp=0;
 
-	            if (star_distance<=600){
+	            if (_star_distance<=600){
                 
-	                var star_to_rescue=instance_nearest(current_star.x,current_star.y,obj_star);
+	                var star_to_rescue=instance_nearest(_current_star.x,_current_star.y,obj_star);
 	                with(star_to_rescue){
 	                	array_replace_value(p_halp, 1,1.1);
 	                }
                 
-	                action_x=current_star.x;
-	                action_y=current_star.y;
+	                action_x=_current_star.x;
+	                action_y=_current_star.y;
 	                set_fleet_movement();
 	                halp=1;// show_message("F");
 	            }

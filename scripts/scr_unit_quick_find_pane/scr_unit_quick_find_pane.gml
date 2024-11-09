@@ -1,39 +1,5 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
-function mission_name_key(mission){
-	var mission_key = {
-		"meeting_trap" : "Chaos Lord Meeting",
-		"meeting" : "Chaos Lord Meeting",
-		"succession" : "War of succession",
-		"spyrer" : "Kill Spyrer for Inquisitor",
-		"mech_raider" : "Provide Land Raider to Mechanicus",
-		"mech_bionics" : "Provide Bionic Augmented marines to study",
-		"mech_mars" : "Send Techmarines to mars",
-		"mech_tomb1": "Explore Mechanicus Tomb",
-		"fallen" : "Find Chapter Fallen",
-		"recon" : "Recon Mission for Inquisitor",
-		"cleanse" : "Cleanse Planet for Inquisitor",
-		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		"recon" : "Recon Mission for Inquisitor",
-		"bomb" : "Bombard World for inquisitor",
-		"great_crusade": "Answer Crusade Muster Call",
-		"harlequins" : "Harlequin presence Report",
-		"artifact_loan" : "Safeguard Artifact for the inquisition",
-		"fund_elder" : "provide assistance to Eldar",
-		"provide_garrison" : "Provision Garrison",
-		"hunt_beast" : "Hunt Beasts",
-		"protect_raiders" : "Protect From Raiders",
-		"join_communion" : "Join Planetary Religious Celebration",
-		"join_parade" : "Join Parade on Planet Surface",
-		"recover_artifacts" : "Recover Artifacts"
-	}
-	if (struct_exists(mission_key, mission)){
-		return mission_key[$ mission];
-	} else{
-		return "none"
-	}  
-}
 function UnitQuickFindPanel() constructor{
 	main_panel = new DataSlate();
 	tab_buttons = {
@@ -102,7 +68,7 @@ function UnitQuickFindPanel() constructor{
 		    		}
 		    	}
 		    }catch(_exception){
-				show_debug_message(_exception.message);
+				handle_exception(_exception);
 			}
 	    }
 	    update_mission_log();	

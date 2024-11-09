@@ -6,28 +6,86 @@ All notable changes to this project will be documented in this file.
 
 ### New:
 - example list
-    - example nested list
+  - example nested list
 
 ### Changed:
 - example list
-    - example nested list
+  - example nested list
 
 ### Fixed:
 - example list
-    - example nested list
+  - example nested list
 
 ### Under The Hood:
 - here go changes that are important only to other collaborators.
-    - everything that a normal player doesn't need to know.
+  - everything that a normal player doesn't need to know.
 ----------------------------------
 
-## [0.9.4.1]
+## [0.9.6]
 
 ### Fixed:
-- garrisons crashing and returning the game to map
-- crash during enemy end turn with chaos fleets
-- fix crash from trying to spawn chaos warlord with poor methods
-- fix crash from bombarding due to old planet name methods
+Crashes:
+  - When assigning marines to forge, loading saves and probably some other weird cases (`gml_Script_scr_ui_advisors (line 864)`).
+  - On creation screen role equip (`gml_Object_obj_creation_popup_Draw_0 (line 132)`).
+
+### Under The Hood:
+- Made the garbage collector run every minute. Doesn't seem to inflict performance loss and fixes the array corruption. Let's see if there are any caveats.
+- Reduced redundancy a bit in error report functions.
+
+## [0.9.5]
+
+### Changed:
+- Build Date is displayed in the main menu.
+- Error logging edits:
+  - Error logs now have the pre-built title for the bug report on their first most line. You can just cut and paste it into the title.
+  - Errors now display a system message and not an in-game popup, as there are some unintended consequences with popup.
+  - Error message itself is edited a bit, for clarity and to include new instructions.
+  - Error itself is now wrapped in markdown codeblock.
+  - Error logs now also display Build Date, for when there are different builds of the same version.
+- Chapter fleet tab is edited ([#69](https://github.com/EttyKitty/ChapterMaster/pull/69)).
+  - Carrying is now displayed in the tooltip, when hovering over a ship.
+  - Ship list is edited, overlapping text fixed, headers added.
+  - Ship images are now white on black.
+- Welcome message is edited ([#70](https://github.com/EttyKitty/ChapterMaster/pull/70)).
+  - Added units that were missed from the listing: Champions, Librarians, Sergeants, Veteran Sergeants.
+  - Edited bits of text a little and changed some formatting, so it's more nice and readable (I hope).
+  - Increased the amount of info on each page after the first, removing the need for the 4th page.
+
+### Fixed:
+- Crashes:
+  - Garrisons crashing and returning the game to star map.
+  - Crash during enemy end turn with chaos fleets.
+  - Crash from trying to spawn chaos warlord with poor methods.
+  - Crash from bombarding due to old planet name methods.
+  - Crash when entering company management screen (`tooltip_text`).
+  - Battle crashes related to `obj_pnunt` ([#29](https://github.com/EttyKitty/ChapterMaster/pull/29)).
+  - Unknown amount of crashes caused by garbage collector (GC).
+  - Crash cause by GC on the role equipment slide of creation screen.
+  - Crash when calculation fleet speed ([#39](https://github.com/EttyKitty/ChapterMaster/pull/39)).
+- Inquisitor inspection target fleet getting invalid ([#36](https://github.com/EttyKitty/ChapterMaster/pull/36)).
+- Most of the librarium artifact list bugs should be fixed ([#32](https://github.com/EttyKitty/ChapterMaster/pull/32)).
+- Duplicate inquisition inspection ([#33](https://github.com/EttyKitty/ChapterMaster/pull/33)).
+- Health values going over 100% ([#43](https://github.com/EttyKitty/ChapterMaster/pull/43)).
+- Bombard target planet display name ([#46](https://github.com/EttyKitty/ChapterMaster/pull/46)).
+- Fleet tab ship sprites centred, some text issues are also fixed.
+- Fix and finish hunt beast governor audience ([#76](https://github.com/EttyKitty/ChapterMaster/pull/76)).
+- Some weird cases where you had to click two times on stuff for the click to register may be fixed now.
+
+### Under The Hood:
+- `obj_ini.experience` deprecated in favour of unit struct `experience` variable ([#37](https://github.com/EttyKitty/ChapterMaster/pull/37)).
+- Game Version and Build Date are now handled through an external json file.
+- Game Version is tracked through `global.game_version`, Build Date through `global.build_date`.
+- `scr_fleet_advisor` is refactored a bit. Less hardcoding, should be easier to adjust ([#69](https://github.com/EttyKitty/ChapterMaster/pull/69)).
+- All string manupulation functions are moved into `scr_string_functions` ([#70](https://github.com/EttyKitty/ChapterMaster/pull/70)).
+- `handle_exception()` in all catch statements.
+- `scr_click_left` now sets the cooldown, in addition to checking it.
+- Click detection functions now accept a custom cooldown value.
+- New functions: 
+  - `array_to_string_list()` - renamed `format_stacktrace()`, array into a string, with each element on a newline.
+  - `json_to_gamemaker()` - accepts path to json file and outputs a struct or a dslist.
+  - `markdown_codeblock()` - accepts a string and wraps it with markdown codeblock symbols.
+  - `handle_exception()` - accepts an exception struct, usually from a try-catch loop, displays an error and creates an error log.
+  - `integer_to_letters()` - converts an integer to an english word, supports ordinal forms.
 
 ## [0.9.4.0]
 

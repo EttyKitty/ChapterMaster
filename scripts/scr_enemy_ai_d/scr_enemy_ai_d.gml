@@ -385,72 +385,17 @@ function scr_enemy_ai_d() {
         }
         var garrison_mission = has_problem_planet_and_time(i,"provide_garrison", 0);
         if (garrison_mission>-1){
-            var planet = new PlanetData(i, self);
-            if (problem_has_key_and_value(i,garrison_mission,"stage", "active")){
-                if (planet.current_owner == eFACTION.Imperium && system_garrison[i-1].garrison_force){
-                    var mission_string = $"The garrison on {planet_numeral_name(i)} has finished the period of garrison support agreed with the planetary governor.";
-                    var p_garrison = system_garrison[i-1];
-                    var  result = p_garrison.garrison_disposition_change(id, i);
-                    if (!p_garrison.garrison_leader){
-                        p_garrison.find_leader();
-                    }
-                    if (result == "none"){
-                    //TODO make a dedicated plus minus string function if there isn't one already
-                    } else if (!result){
-                        var effect = result * irandom_range(1,5);
-                        dispo[i] += effect;
-                        mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{effect})";
-                    } else {
-                        var effect = result * irandom_range(1,5);
-                        dispo[i] += result * effect;
-                        mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{effect})";
-                    }
-                    var tester = global.character_tester;
-                    var widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["siege"]);
-                    if (widom_test[0]){
-                        p_fortified[i]++;
-                        mission_string+=$"while stationed {p_garrison.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications++).";
-                    }
-                    //TODO just generall apply this each turn with a garrison to see if a cult is found
-                    if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)){
-                        var cult = return_planet_features(planet.features,P_features.Gene_Stealer_Cult)[0];
-                        if (cult.hiding){
-                            widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["tyranids"]);
-                            if (widom_test[0]){
-                                cult.hiding = false;
-                                mission_string+="Most alarmingly signs of a genestealer cult are noted by the garrison. how far the rot has gone will now need to be investigated and the xenos taint purged.";
-                            }
-                        }
-                    }
-                    scr_popup($"Agreed Garrison of {planet_numeral_name(i)} complete",mission_string,"","");
-                } else {
-                    dispo[i] -= 20;
-                    scr_popup($"Agreed Garrison of {planet_numeral_name(i)}",$"your agreed garrison of  {planet_numeral_name(i)} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)","","");
-                }
-                remove_planet_problem(i, "provide_garrison");
-            } else {
-                remove_planet_problem(i, "provide_garrison");
-            }
+            try_and_report_loop("complete garrison mission", complete_garrison_mission,true, [i,garrison_mission]);
         }
         var beast_hunt = has_problem_planet_and_time(i,"hunt_beast", 0);
         if (beast_hunt>-1){
-            var planet = new PlanetData(i, self);
-            if (problem_has_key_and_value(i,beast_hunt,"stage","active")){
-                mission_string = "";
-                
-                scr_popup($"Agreed Garrison of {planet_numeral_name(i)} complete story line mission and rewards need work",mission_string,"","");
-               
-                remove_planet_problem(i, "hunt_beast");
-            } else {
-                remove_planet_problem(i, "hunt_beast");
-            }
+             try_and_report_loop("complete beast hunt mission", complete_beast_hunt_mission,true, [i,beast_hunt]);
         }        
     
 	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){
 	        if (!(has_problem_planet(i, "Hive Fleet"))){
-	            var roll, cont;
-	            roll=irandom_range(100,300);
-	            cont=0;
+	            var roll=irandom_range(100,300);
+	            var cont=0;
         
             
 	            if (p_tyranids[i]=3) and (roll<=5) then cont=1;

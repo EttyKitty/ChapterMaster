@@ -380,7 +380,7 @@ function corrupt_artifact_collectors(last_artifact){
 		}
 	}
 	catch( _exception){
-	    show_debug_message(_exception.message);	
+        handle_exception(_exception);
 	}
 }
 

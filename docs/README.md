@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f57f81af-e82c-407c-9550-4a8f4341b43c" alt="Chapter Master - Adeptus Dominus Logo"/>
+  <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
 # Chapter Master - Adeptus Dominus
@@ -14,7 +14,7 @@ This project aims to continue development on the game, fix any bugs, expand and 
    - Where most of the development talk, features suggestion and just general 40K talk takes place.
    - If you can code, design, draw or just love WH40K then you'll have a great time with us. :)
    - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
-- [1d6Chan Wiki](https://1d6chan.miraheze.org/wiki/Chapter_Master_(game))
+- [1d6Chan Wiki](https://1d6chan.miraheze.org/wiki/Category:Chapter_Master_:_Adeptus_Dominus)
    - With some helpful pages that explain new systems added in the Adeptus Dominus version.
 
 ## Building and/or Contributing

@@ -1,47 +1,60 @@
 # How to style your code
 
 ## Required:
-- Constructor names should always use PascalCase.\
-That is to prevent any possible overlap with variable names, that is known to cause errors with YYC compiler.
-- As such, variable names, function names, etc, should never use PascalCase.\
-The exception are enum entries.
+- Constructor names should always use `PascalCase`.\
+  This prevents possible overlaps with variable names, which can cause errors with the YYC compiler.
+- Variable names, function names, etc., should never use `PascalCase`.\
+  The exception is for enum entries.
 
 ## Recommended:
 
 ### File names:
-Here it's simple, just follow the general GameMaker way of naming files with type prefixes.
+Follow the general GameMaker convention of using type prefixes in file names.
 
 ### Names:
-All variable names, function names, etc. should use snake_case.\
-Unless stated otherwise, all names should just be `variable_name`, with no additional prefixes.
-- **Local** variables are recommended to have a `_` prefix. This may ease code reading.
+All variable names, function names, etc., should use `snake_case` unless otherwise specified.
+
+- **Local** variables are recommended to have a `_` prefix, which can ease readability.
   - Example: `var _example_e1`.
-- **Global** variables don't require any additional rules, as they already require a `global.` prefix to use.
+
+- **Global** variables require no additional prefix, as they already use `global.`.
   - Example: `global.example_e1`.
-- **Functions** don't require any prefixes, but to avoid accidental overlaps with instance variables:
-  - Name them with at least 2 words: `draw_something()` and not `drawing()`.
-  - And as an action: `draw_something()` and not `green_apple()`.
-  - Here we just try to follow default GM function naming scheme.
+
+- **Functions** don’t need prefixes but should:
+  - Use at least two words to avoid overlap with instance variables (e.g., `draw_something()`).
+  - Name functions as actions where possible (`draw_something()` vs. `green_apple()`).
+
 - **Macro** constants:
-  - A short `PREFIX_` should state their group in all caps.
-  - After the prefix, they should be written in snake_case.
-  - Examples: `COL_bright_red`, `COL_dark_green`; `DIR_left`, `DIR_up`.
-  - Here we just try to follow default GM macro naming scheme.
+  - To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
+  - After the prefix, use `snake_case`.
+  - Examples: `COL_bright_red`, `DIR_left`.
+
 - **Enum** constants:
-  - Name of the enum should start with an `e` prefix and be written in all caps.
-  - Name of the enum entries should use PascalCase.
-  - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc. 
+  - Enum names should start with an `e` prefix and be in all caps.
+  - Enum entries should use `PascalCase`.
+  - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling:
-- It's recommended to initialize variables when declaring them. I.e `var variable = 0`, instead of just `var variable`.
-- It's also recommended to declaring each variable on a new line, avoiding `var variable1 = 0, variable2 = 2...`, to improve readability.
-- `&&` and `||` should be used instead of `and` and `or`.\
-This is to ensure compatibility with JavaScript formatters.
-- Indentation should be 4 **spaces**. Don't use tabs. Different editors interpret tabs differently.
-- Remember to use semicolons at the end of simple statements.
-- You can use [this](https://beautifier.io/) JavaScript formatter to format your code. The format it outputs fits our requirements. Just be sure to select:
+- Initialize variables when declaring them (`var variable = 0`).
+- Declare each variable on a new line, avoiding `var variable1 = 0, variable2 = 2...` for readability.
+- Use `&&` and `||` instead of `and` and `or` to ensure compatibility with JavaScript formatters.
+- Indentation should be 4 spaces (avoid tabs).
+- End simple statements with semicolons.
+- For string interpolation choose one of these methods: 
+  - For big strings - [template strings](https://manual.gamemaker.io/beta/en/index.htm#t=GameMaker_Language%2FGML_Reference%2FStrings%2FStrings.htm) (`$"text {variable}"`), as they are easier to read, less typo-prone and convert `{variables}` to strings automatically.
+  - For small strings - [string()](https://manual.gamemaker.io/lts/en/GameMaker_Language/GML_Reference/Strings/string.htm) function (`string("text {0}", value_to_insert)`), as it may be easier to read in some cases.
+- Use parentheses to clarify conditions with mixed `&&` and `||` operators, ensuring consistent behavior across platforms.
+  - Example (recommended for mixed operators): `if ((condition1 && condition2) || (condition3 && condition4))`
+  - Simple sequences of the same operator (like `&&` alone) don’t need extra parentheses: `if (condition1 && condition2 && condition3)`
+  - Avoid wrapping each condition individually when using the same operator: `if ((condition1) && (condition2) && (condition3))`
+- Use `++`/`--` instead of `+=1`/`-=1`.
+
+### Formatters:
+> [!WARNING]
+> JavaScript formatters may break `$"something {variable}"` syntax by adding a space after `$`. Manually correct this as needed.
+
+- You can use [this](https://beautifier.io/) JavaScript formatter with:
   - Indent with 4 spaces.
   - Allow unlimited newlines between tokens.
   - Don't wrap lines.
   - Spaces before conditional.
-- **If you use JS formatters they break `$"something {variable}"` syntax, by adding a space after `$`, i.e. `$ "something {variable}"`. Be sure to manually fix this after using a formatter.**

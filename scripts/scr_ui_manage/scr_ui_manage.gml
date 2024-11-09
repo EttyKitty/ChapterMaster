@@ -575,7 +575,7 @@ function scr_ui_manage() {
 			draw_set_color(line_color);
 		}
 
-		if (cn.temp[116]!=""){
+		if (is_array(cn.temp[116])){
 			carry_data = cn.temp[116][2];
 			var carry_string = $"Melee Burden: {carry_data[0]}/{carry_data[1]}"
 			x1 = x_right;
@@ -591,7 +591,7 @@ function scr_ui_manage() {
 			draw_set_color(line_color);
 		}
 
-		if (cn.temp[117]!=""){
+		if (is_array(cn.temp[117])){
 			carry_data = cn.temp[117][2];
 			var carry_string = $"Ranged Burden: {carry_data[0]}/{carry_data[1]}"
 			x1 = x_right;
@@ -730,7 +730,9 @@ function scr_ui_manage() {
 		    		}		    				    		
 		    	}
 		    	if (sel>=array_length(display_unit)) then break;
-		    	while (man[sel]=="hide") and (sel<array_length(display_unit)-1){sel+=1;}
+		    	while (man[sel]=="hide") and (sel<array_length(display_unit)-1){
+		    		sel+=1;
+		    	}
 		    	if (scr_draw_management_unit(sel, yy, xx) == "continue"){
 		    		sel++
 		    		i--;

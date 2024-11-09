@@ -1,5 +1,39 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+
+function mission_name_key(mission){
+	var mission_key = {
+		"meeting_trap" : "Chaos Lord Meeting",
+		"meeting" : "Chaos Lord Meeting",
+		"succession" : "War of succession",
+		"spyrer" : "Kill Spyrer for Inquisitor",
+		"mech_raider" : "Provide Land Raider to Mechanicus",
+		"mech_bionics" : "Provide Bionic Augmented marines to study",
+		"mech_mars" : "Send Techmarines to mars",
+		"mech_tomb1": "Explore Mechanicus Tomb",
+		"fallen" : "Find Chapter Fallen",
+		"recon" : "Recon Mission for Inquisitor",
+		"cleanse" : "Cleanse Planet for Inquisitor",
+		"tyranid_org" : "Capture Tyranid for Inquisitor",
+		"recon" : "Recon Mission for Inquisitor",
+		"bomb" : "Bombard World for inquisitor",
+		"great_crusade": "Answer Crusade Muster Call",
+		"harlequins" : "Harlequin presence Report",
+		"artifact_loan" : "Safeguard Artifact for the inquisition",
+		"fund_elder" : "provide assistance to Eldar",
+		"provide_garrison" : "Provision Garrison",
+		"hunt_beast" : "Hunt Beasts",
+		"protect_raiders" : "Protect From Raiders",
+		"join_communion" : "Join Planetary Religious Celebration",
+		"join_parade" : "Join Parade on Planet Surface",
+		"recover_artifacts" : "Recover Artifacts"
+	}
+	if (struct_exists(mission_key, mission)){
+		return mission_key[$ mission];
+	} else{
+		return "none"
+	}  
+}
 function scr_new_governor_mission(planet){
 	problem = "";
 	if p_owner[planet]!=eFACTION.Imperium then exit;
@@ -73,6 +107,8 @@ function init_garrison_mission(planet, star, mission_slot){
 	}	
 }
 
+
+
 function init_beast_hunt_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
 	var mission_data = problems_data[mission_slot];
@@ -91,8 +127,121 @@ function init_beast_hunt_mission(planet, star, mission_slot){
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=8;	    
-	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {mission_length} months.", target.name);
+	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {mission_length} months.", star.name);
 	}	
+}
+//@mixin obj_star
+function complete_garrison_mission(targ_planet, problem_index){
+	var planet = new PlanetData(targ_planet, self);
+    if (problem_has_key_and_value(targ_planet,problem_index,"stage", "active")){
+        if (planet.current_owner == eFACTION.Imperium && system_garrison[targ_planet-1].garrison_force){
+            var _mission_string = $"The garrison on {planet_numeral_name(targ_planet)} has finished the period of garrison support agreed with the planetary governor.";
+            var p_garrison = system_garrison[targ_planet-1];
+            var  result = p_garrison.garrison_disposition_change(id, targ_planet);
+            if (!p_garrison.garrison_leader){
+                p_garrison.find_leader();
+            }
+            if (result == "none"){
+            //TODO make a dedicated plus minus string function if there isn't one already
+            } else if (!result){
+                var effect = result * irandom_range(1,5);
+                dispo[targ_planet] += effect;
+                _mission_string += $"A number of diplomatic incidents occured over the period which had considerable negative effects on our disposition with the planetary governor (disposition -{effect})";
+            } else {
+                var effect = result * irandom_range(1,5);
+                dispo[targ_planet] += result * effect;
+                _mission_string += $"As a diplomatic mission the duration of the stay was a success with our political position with the planet being enhanced greatly (disposition +{effect})";
+            }
+            var tester = global.character_tester;
+            var widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["siege"]);
+            if (widom_test[0]){
+                p_fortified[targ_planet]++;
+                _mission_string+=$"while stationed {p_garrison.garrison_leader.name_role()} makes several notable observations and is able to instruct the planets defense core leaving the world better defended (fortifications++).";
+            }
+            //TODO just generall apply this each turn with a garrison to see if a cult is found
+            if (planet_feature_bool(p_feature[targ_planet], P_features.Gene_Stealer_Cult)){
+                var cult = return_planet_features(planet.features,P_features.Gene_Stealer_Cult)[0];
+                if (cult.hiding){
+                    widom_test = tester.standard_test(p_garrison.garrison_leader, "wisdom",0, ["tyranids"]);
+                    if (widom_test[0]){
+                        cult.hiding = false;
+                        _mission_string+="Most alarmingly signs of a genestealer cult are noted by the garrison. how far the rot has gone will now need to be investigated and the xenos taint purged.";
+                    }
+                }
+            }
+            scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)} complete",_mission_string,"","");
+        } else {
+            dispo[targ_planet] -= 20;
+            scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)}",$"your agreed garrison of  {planet_numeral_name(targ_planet)} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)","","");
+        }
+        remove_planet_problem(targ_planet, "provide_garrison");
+    } else {
+        remove_planet_problem(targ_planet, "provide_garrison");
+    }	
+}
+
+function complete_beast_hunt_mission(targ_planet, problem_index){
+    var planet = new PlanetData(targ_planet, self);
+    if (problem_has_key_and_value(targ_planet,problem_index,"stage","active")){
+        _mission_string = "";
+        var man_conditions = {
+            "job": "hunt_beast",
+            "max" : 3,
+        }
+        var _hunters = collect_role_group("all",[name,targ_planet,0], false, man_conditions);
+        var _success = false;
+        var _tester = global.character_tester;
+        var _unit_pass;
+        var _unit;
+        var _unit_report_string = "";
+        var _deaths = 0;
+        if (!array_length(_hunters)){
+        	remove_planet_problem(targ_planet, "hunt_beast");
+        	return;
+        }
+        for (var i=0;i<array_length(_hunters);i++){
+        	_unit = _hunters[i];
+			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, "beast");
+			if (_unit_pass[0]){
+				if (!_success) then _unit_pass=true;
+			}
+			if (_unit_pass[0]){
+				_unit.add_trait("beast_slayer");
+				_unit_report_string += $"{_unit.name_role()} Has gained the trait {global.trait_list.beast_slayer.display_name}\n";
+			} else {
+				var _tough_check = _unit_pass = _tester.standard_test(_unit, "constitution",unit.luck);
+				if (!_tough_check[0]){
+					if (_tough_check[1]<-10){
+						_unit_report_string += $"{_unit.name_role()} Was mauled to death\n";
+						scr_kill_unit(_unit.company, unit.marine_number);
+						_deaths++;
+					} else if (_tough_check[1]>=-10){
+						if (irandom(100)<unit.luck){
+							unit.add_or_sub_health(-100);
+							$"{_unit.name_role()} Was injured (health - 100)\n";
+						} else {
+							unit.add_or_sub_health(-250);
+							$"{_unit.name_role()} Was Badly injured, it is unknown if he will recover (health - 250)\n";
+						}
+					}
+				}
+			}
+			_unit.job="none"
+        }
+        if (_success){
+        	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
+        	if (_deaths){
+        		$"Unfortunatly {_deaths} of your marines died."
+        	}
+        	_mission_string += $"\n{_unit_report_string}";
+        } else {
+
+        }
+        scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"","");
+        remove_planet_problem(targ_planet, "hunt_beast");
+    } else {
+        remove_planet_problem(targ_planet, "hunt_beast");
+    }	
 }
 
 //TODO allow most of these functions to be condensed and allow arrays of problems or planets and maybe increase filtering options
@@ -168,40 +317,40 @@ function has_problem_planet(planet, problem, star="none"){
 
 //returns the array position of a given problem on a given planet if the specfied time is given
 function has_problem_planet_and_time(planet, problem, time,star="none"){
-	var had_problem = -1;
+	var _had_problem = -1;
 	if (star=="none"){
 		for (var i = 0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] == problem){
 				if (p_timer[planet][i] == time){
-					had_problem=i;
+					_had_problem=i;
 				}
 			}
 		}
 	} else {
 		with (star){
-			had_problem=has_problem_planet_and_time(planet, problem, time);
+			_had_problem=has_problem_planet_and_time(planet, problem, time);
 		}
 	}
-	return had_problem;	
+	return _had_problem;	
 }
 
 //returns the array position of a given problem on a given planet if the specfied time is above 0
  function has_problem_planet_with_time(planet, problem,star="none"){
-	var had_problem = -1;
+	var _had_problem = -1;
 	if (star=="none"){
 		for (var i = 0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] == problem){
 				if (p_timer[planet][i] >0){
-					had_problem=i;
+					_had_problem=i;
 				}
 			}
 		}
 	} else {
 		with (star){
-			had_problem=has_problem_planet_with_time(planet, problem)
+			_had_problem=has_problem_planet_with_time(planet, problem)
 		}
 	}
-	return had_problem;	
+	return _had_problem;	
 }
 
 
@@ -224,19 +373,19 @@ function find_problem_planet(planet, problem, star="none"){
 
 ///removie all of a given problem from a planet
 function remove_planet_problem(planet, problem, star="none"){
-	var had_problem = -1;
+	var _had_problem = -1;
 	if (star=="none"){
 		for (var i = 0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] == problem){
 				p_problem[planet][i]="";
 				p_timer[planet][i]=-1;
 				p_problem_other_data[planet][i]={};
-				had_problem=true;
+				_had_problem=true;
 			}
 		}
 	} else {
 		with (star){
-			had_problem=remove_planet_problem(planet, problem);
+			_had_problem=remove_planet_problem(planet, problem);
 		}
 	}
 	return -1;	

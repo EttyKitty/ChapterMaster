@@ -228,7 +228,7 @@ function scr_librarium(){
                     try{
                         artif_descr = obj_ini.artifact_struct[menu_artifact].description();
                     }   catch( _exception){
-                        show_debug_message(_exception.message); 
+                        handle_exception(_exception);
                     }
                     tooltip = "";
                     tooltip_other = "";

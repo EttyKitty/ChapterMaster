@@ -1,4 +1,4 @@
-
+/// @mixin obj_controller
 function scr_ui_advisors() {
 
     var xx, yy, blurp, eta, va;
@@ -306,10 +306,8 @@ function scr_ui_advisors() {
                 fest_star = "";
                 fest_sid = 0;
                 fest_wid = 0;
-                fest_planet = 0;
 
-                if (obj_ini.fleet_type != home_world) then fest_planet = -1;
-                if (obj_ini.fleet_type = ePlayerBase.home_world) then fest_planet = 1;
+                fest_planet = (obj_ini.fleet_type == ePlayerBase.home_world) ? 1 : -1;
 
                 fest_lav = 0;
                 fest_locals = 0;
@@ -720,7 +718,7 @@ function scr_ui_advisors() {
     }
 
     // ** Welcome menu **
-    if (menu >= 500) and(menu <= 510) {
+    if (menu >= 500 && menu <= 510) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);
         // draw_sprite(spr_advisors,0,xx+16,yy+16);
         scr_image("advisor", 0, xx + 16, yy + 16, 310, 828);
@@ -733,8 +731,7 @@ function scr_ui_advisors() {
         if (menu = 502) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[67])), -1, 660);
         if (menu = 503) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[68])), -1, 660);
         draw_set_halign(fa_center);
-        if (temp[68] = "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
-        if (temp[68] != "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
+        draw_text(xx + 702, yy + 695, $"{menu - 499} (Press Any Key)");
         draw_set_halign(fa_left);
 
     }
