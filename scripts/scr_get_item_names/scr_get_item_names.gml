@@ -486,17 +486,18 @@ enum eEQUIPMENT_TYPE {
     MobilityAccessory = 5
 }
 
-enum eEQUIPMENT_SUBTYPE {
-    None,
+enum eENGAGEMENT {
+    None = 0,
     Ranged = 1, // Regular land raider weapons
-    Melee = 2 // Relic land raider weapons
+    Melee = 2, // Relic land raider weapons
+    Any = 3
 }
 
 /// @description This function returns the name of the slot for a given unit type and equipment type.
 /// @param {eROLE} _unit_type - The type of unit to equip, see eROLE.
-/// @param {eEQUIPMENT_TYPE} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
+/// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
-function get_slot_name(_unit_type, _equipment_type) {
+function get_slot_name(_unit_type, _slot) {
     switch (_unit_type) {
         case eROLE.ChapterMaster:
         case eROLE.HonourGuard:
@@ -515,58 +516,58 @@ function get_slot_name(_unit_type, _equipment_type) {
         case eROLE.Librarian:
         case eROLE.Sergeant:
         case eROLE.VeteranSergeant:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Hand";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Hand";
-                case eEQUIPMENT_TYPE.Armour: return "Armour";
-                case eEQUIPMENT_TYPE.GearUpgrade: return "Gear";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Mobility";
+            switch (_slot) {
+                case 1: return "Left Hand";
+                case 2: return "Right Hand";
+                case 3: return "Armour";
+                case 4: return "Gear";
+                case 5: return "Mobility";
                 default: return "Unknown";
             }
         case eROLE.Dreadnought:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Arm";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Arm";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+            switch (_slot) {
+                case 1: return "Left Arm";
+                case 2: return "Right Arm";
+                case 5: return "Accessory";
                 default: return "Unknown";
             }
         case eROLE.LandRaider:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Front";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponson";
-                case eEQUIPMENT_TYPE.Armour: return "Pintle";
-                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+            switch (_slot) {
+                case 1: return "Front";
+                case 2: return "Sponson";
+                case 3: return "Pintle";
+                case 4: return "Upgrade";
+                case 5: return "Accessory";
                 default: return "Unknown";
             }
         case eROLE.Rhino:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Weapon";
-                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+            switch (_slot) {
+                case 1: return "Weapon";
+                case 4: return "Upgrade";
+                case 5: return "Accessory";
                 default: return "Unknown";
             }
         case eROLE.Predator:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Turret";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponsons";
-                case eEQUIPMENT_TYPE.Armour: return "Pintle";
-                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+            switch (_slot) {
+                case 1: return "Turret";
+                case 2: return "Sponsons";
+                case 3: return "Pintle";
+                case 4: return "Upgrade";
+                case 5: return "Accessory";
                 default: return "Unknown";
             }
         case eROLE.LandSpeeder:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Primary";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Secondary";
+            switch (_slot) {
+                case 1: return "Primary";
+                case 2: return "Secondary";
                 default: return "Unknown";
             }
         case eROLE.Whirlwind:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Missiles";
-                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Pintle";
-                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
-                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+            switch (_slot) {
+                case 1: return "Missiles";
+                case 2: return "Pintle";
+                case 4: return "Upgrade";
+                case 5: return "Accessory";
                 default: return "Unknown";
             }
         default:
@@ -576,15 +577,15 @@ function get_slot_name(_unit_type, _equipment_type) {
 
 /// @description This function is used to populate the weapon/equipment selection list in the equipment screen.
 /// @param {array} _item_names - The list of items to populate the selection list with.
-/// @param {real} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
-/// @param {real} _equipment_subtype - The subtype of equipment to equip, see eEQUIPMENT_SUBTYPE.
-/// @param {real} _unit_type - The type of unit to equip, see eROLE.
+/// @param {eRole} _role - The role of the unit to equip, see eRole.
+/// @param {real} _slot - The slot number to populate, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
+/// @param {eEngagement} _engagement - The desired engagement type to filter weapons by, see eEngagement.
 /// @param {bool} _include_company_standard - Whether to include the Company Standard in the selection list.
 /// @param {bool} _show_available_only - Whether to limit the selection to what is in inventory, or show all items.
 /// @param {bool} _master_crafted_only - Whether to show only master crafted items, or hide them.
 /// @param {bool} _skip_none - Omit the "(None)" option from the list. This help us avoid duplicates when combining range & melee hand weapons.
 /// @returns {array} The list of items to populate the selection list with.
-function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _unit_type, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false, _skip_none=false) {
+function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false, _skip_none=false) {
     if (_item_names == undefined) {
         assert_error_popup("_item_names is undefined");
         return;
@@ -596,7 +597,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
 
     var _with_none_if_not_skip = _skip_none ? false : true;
 
-    switch(_unit_type) {
+    switch(_role) {
         case eROLE.ChapterMaster:
         case eROLE.HonourGuard:
         case eROLE.Veteran:
@@ -614,10 +615,10 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
         case eROLE.Librarian:
         case eROLE.Sergeant:
         case eROLE.VeteranSergeant:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon:
-                case eEQUIPMENT_TYPE.SecondaryWeapon:
-                    if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) {
+            switch (_slot) {
+                case 1:
+                case 2:
+                    if (_engagement == eENGAGEMENT.Ranged) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -633,7 +634,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_ranged_weapons_item_names(_item_names);
                         }
-                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
+                    } else if (_engagement == eENGAGEMENT.Melee) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -652,7 +653,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_melee_weapons_item_names(_item_names);
                         }
-                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.None) {
+                    } else if (_engagement == eENGAGEMENT.None) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -670,11 +671,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup("Invalid equipment subtype for infantry: " + string(_equipment_subtype));
+                        assert_error_popup("Invalid equipment subtype for infantry: " + string(_engagement));
                         return;
                     }
                     break;
-                case eEQUIPMENT_TYPE.Armour:
+                case 3:
                     if (_show_available_only) {
                         _item_names = get_filtered_equipment_item_names(
                             _item_names,
@@ -691,7 +692,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                         push_marine_armour_item_names(_item_names);
                     }
                     break;
-                case eEQUIPMENT_TYPE.GearUpgrade:
+                case 4:
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
@@ -708,7 +709,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                         push_marine_gear_item_names(_item_names);
                     }
                     break;
-                case eEQUIPMENT_TYPE.MobilityAccessory:
+                case 5:
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
@@ -726,15 +727,15 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     }
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for infantry: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for infantry: " + string(_slot));
                     return;
             }        
             break;
         case eROLE.Dreadnought:
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon:
-                case eEQUIPMENT_TYPE.SecondaryWeapon:
-                    if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) {
+            switch (_slot) {
+                case 1:
+                case 2:
+                    if (_engagement == eENGAGEMENT.Ranged) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -750,7 +751,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_ranged_weapons_item_names(_item_names);
                         }
-                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
+                    } else if (_engagement == eENGAGEMENT.Melee) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -767,109 +768,109 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup("Invalid equipment subtype for dreadnought: " + string(_equipment_subtype));
+                        assert_error_popup("Invalid equipment subtype for dreadnought: " + string(_engagement));
                         return;
                     }
                     break;
-                case eEQUIPMENT_TYPE.MobilityAccessory:
+                case 5:
                     get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                     push_tank_accessory_item_names(_item_names, false, true);
                     break;
-                case eEQUIPMENT_TYPE.Armour:
-                case eEQUIPMENT_TYPE.GearUpgrade:
+                case 3:
+                case 4:
                     // Dreadnought doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for dreadnought: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for dreadnought: " + string(_slot));
                     return;
             }
             break;
         case eROLE.LandRaider:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon:
-                    if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) { // Regular land raider weapons
+            switch (_slot) {
+                case 1:
+                    if (_engagement == eENGAGEMENT.Ranged) { // Regular land raider weapons
                         push_land_raider_front_weapons_item_names(_item_names);
-                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
+                    } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
                         push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
-                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_equipment_subtype));
+                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_engagement));
                         return;
                     }
                     break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon:
-                    if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) { // Regular land raider weapons
+                case 2:
+                    if (_engagement == eENGAGEMENT.Ranged) { // Regular land raider weapons
                         push_land_raider_regular_sponsons_item_names(_item_names);
-                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) { // Relic land raider weapons
+                    } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
-                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_equipment_subtype));
+                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_engagement));
                         return;
                     }
                     break;
-                case eEQUIPMENT_TYPE.Armour: push_land_raider_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false); break;
+                case 3: push_land_raider_pintle_item_names(_item_names); break;
+                case 4: push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip); break;
+                case 5: push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false); break;
                 default:
-                    assert_error_popup("Invalid equipment type for land raider: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for land raider: " + string(_slot));
                     return;
             }
             break;
         case eROLE.Rhino:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_rhino_weapons_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon:
-                case eEQUIPMENT_TYPE.Armour:
+            switch (_slot) {
+                case 1: push_rhino_weapons_item_names(_item_names); break;
+                case 4: push_tank_upgrade_item_names(_item_names, false); break;
+                case 5: push_tank_accessory_item_names(_item_names, false, false); break;
+                case 2:
+                case 3:
                     // Rhino doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for rhino: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for rhino: " + string(_slot));
                     return;
             }
             break;
         case eROLE.Predator:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_predator_turret_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_predator_sponsons_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.Armour: push_predator_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
+            switch (_slot) {
+                case 1: push_predator_turret_item_names(_item_names); break;
+                case 2: push_predator_sponsons_item_names(_item_names); break;
+                case 3: push_predator_pintle_item_names(_item_names); break;
+                case 4: push_tank_upgrade_item_names(_item_names, false); break;
+                case 5: push_tank_accessory_item_names(_item_names, false, false); break;
                 default:
-                    assert_error_popup("Invalid equipment type for predator: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for predator: " + string(_slot));
                     return;
             }
             break;
         case eROLE.LandSpeeder:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_land_speeder_primary_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_land_speeder_secondary_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade:
-                case eEQUIPMENT_TYPE.Armour:
-                case eEQUIPMENT_TYPE.MobilityAccessory:
+            switch (_slot) {
+                case 1: push_land_speeder_primary_item_names(_item_names); break;
+                case 2: push_land_speeder_secondary_item_names(_item_names); break;
+                case 4:
+                case 3:
+                case 5:
                     // Land speeder doesn't have these equipment types, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for land speeder: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for land speeder: " + string(_slot));
                     return;
             }
             break;
         case eROLE.Whirlwind:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-            switch (_equipment_type) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: push_whirlwind_missiles_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: push_whirlwind_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, false, false); break;
-                case eEQUIPMENT_TYPE.Armour:
+            switch (_slot) {
+                case 1: push_whirlwind_missiles_item_names(_item_names); break;
+                case 2: push_whirlwind_pintle_item_names(_item_names); break;
+                case 4: push_tank_upgrade_item_names(_item_names, false); break;
+                case 5: push_tank_accessory_item_names(_item_names, false, false); break;
+                case 3:
                     // Whirlwind doesn't have this equipment type, but an empty list is shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for whirlwind: " + string(_equipment_type));
+                    assert_error_popup("Invalid equipment type for whirlwind: " + string(_slot));
                     return;
             }
             break;

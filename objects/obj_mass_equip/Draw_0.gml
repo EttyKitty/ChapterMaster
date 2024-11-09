@@ -82,23 +82,24 @@ if (total_role_number > 0 && tab > 0) {
         eROLE.VeteranSergeant,
     ];
     if (
-        (tab == eEQUIPMENT_TYPE.PrimaryWeapon || tab == eEQUIPMENT_TYPE.SecondaryWeapon) &&
+        // hand slots
+        (tab == 1 || tab ==2) &&
         array_get_index(infanty_roles, obj_controller.settings) >= 0
     ) {
         // Get all available hand weapons
         scr_get_item_names(
             item_name,
-            eEQUIPMENT_TYPE.PrimaryWeapon,
-            eEQUIPMENT_SUBTYPE.None,
-            obj_controller.settings,
+            obj_controller.settings, // eRole
+            1, // slot
+            eENGAGEMENT.Any,
             true,  // include the company standard
             false,  // do not limit to available items
         );
         scr_get_item_names(
             item_name,
-            eEQUIPMENT_TYPE.SecondaryWeapon,
-            eEQUIPMENT_SUBTYPE.None,
-            obj_controller.settings,
+            obj_controller.settings, // eRole
+            2, // slot
+            eENGAGEMENT.Any, 
             false,  // include the company standard
             false,  // do not limit to available items
             false, // not only mastercrafted
@@ -108,9 +109,9 @@ if (total_role_number > 0 && tab > 0) {
     } else {
         scr_get_item_names(
             item_name,
-            tab,
-            tab,
-            obj_controller.settings,
+            obj_controller.settings, // eRole
+            tab, // slot
+            eENGAGEMENT.None, // doesn't matter to non infantry/non hand slots
             true,  // include the company standard
             false,  // do not limit to available items
         );
@@ -161,17 +162,18 @@ if (total_role_number > 0 && tab > 0) {
                 obj_controller.cooldown = 8000;
 
                 switch (tab) {
-                    case eEQUIPMENT_TYPE.PrimaryWeapon: obj_ini.wep1[100, role] = buh; break;
-                    case eEQUIPMENT_TYPE.SecondaryWeapon: obj_ini.wep2[100, role] = buh; break;
-                    case eEQUIPMENT_TYPE.Armour:
+                    // slots
+                    case 1: obj_ini.wep1[100, role] = buh; break;
+                    case 2: obj_ini.wep2[100, role] = buh; break;
+                    case 3:
                         obj_ini.armour[100, role] = buh;
                         // No bikes or jump packs for Terminators
                         if (buh == "Terminator Armour") {
                             obj_ini.mobi[100, role] = "";
                         }
                         break;
-                    case eEQUIPMENT_TYPE.GearUpgrade: obj_ini.gear[100, role] = buh; break;
-                    case eEQUIPMENT_TYPE.MobilityAccessory: obj_ini.mobi[100, role] = buh; break;
+                    case 4: obj_ini.gear[100, role] = buh; break;
+                    case 5: obj_ini.mobi[100, role] = buh; break;
                 }
                 tab = 0;
                 refresh = true;

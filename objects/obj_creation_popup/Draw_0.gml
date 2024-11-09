@@ -123,11 +123,12 @@ if (col_shift){
             var title = $"{get_slot_name(type - 100, gg)}: ";
             var geh;
             switch (gg) {
-                case eEQUIPMENT_TYPE.PrimaryWeapon: geh = obj_creation.wep1[co, ide]; break;
-                case eEQUIPMENT_TYPE.SecondaryWeapon: geh = obj_creation.wep2[co, ide]; break;
-                case eEQUIPMENT_TYPE.Armour: geh = obj_creation.armour[co, ide]; break;
-                case eEQUIPMENT_TYPE.GearUpgrade: geh = obj_creation.gear[co, ide]; break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: geh = obj_creation.mobi[co, ide]; break;
+                // slots
+                case 1: geh = obj_creation.wep1[co, ide]; break;
+                case 2: geh = obj_creation.wep2[co, ide]; break;
+                case 3: geh = obj_creation.armour[co, ide]; break;
+                case 4: geh = obj_creation.gear[co, ide]; break;
+                case 5: geh = obj_creation.mobi[co, ide]; break;
             }
 
             draw_set_halign(fa_right);
@@ -145,9 +146,10 @@ if (col_shift){
                     var is_invalid = (
                         unit_type == eROLE.Dreadnought &&
                         (
-                            gg == eEQUIPMENT_TYPE.Armour ||
-                            gg == eEQUIPMENT_TYPE.GearUpgrade ||
-                            gg == eEQUIPMENT_TYPE.MobilityAccessory
+                            // slots
+                            gg == 3 ||
+                            gg == 4 ||
+                            gg == 5
                         )
                     );
 
@@ -157,9 +159,9 @@ if (col_shift){
                         item_name = [];
                         scr_get_item_names(
                             item_name,
-                            gg,
-                            eEQUIPMENT_SUBTYPE.Ranged,
-                            unit_type,
+                            unit_type, // eRole
+                            gg, // slot
+                            eENGAGEMENT.Ranged,
                             false,  // no company standard
                             false   // don't limit to available items
                         );
@@ -198,9 +200,9 @@ if (target_gear > 0) {
     item_name = [];
     scr_get_item_names(
         item_name,
-        target_gear,
-        tab,
-        type - 100,
+        type - 100, // eRole
+        target_gear, // slot
+        tab, // eEngagement
         false, // no company standard
         false  // don't limit to available items
     );
@@ -254,9 +256,9 @@ if (target_gear > 0) {
         item_name = [];
         scr_get_item_names(
             item_name,
-            target_gear,
-            tab,
-            type - 100,
+            type - 100, // eRole
+            target_gear, // slot
+            tab, // eEngagement
             false, // no company standard
             false  // don't limit to available items
         );

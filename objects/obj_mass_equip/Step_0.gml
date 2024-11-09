@@ -382,11 +382,12 @@ if (refresh=true) and (obj_controller.settings>0){
     
     if (tab > 0) {
 		item_name = [];
+		var is_hand_slot = (tab == 1 || tab == 2);
 		scr_get_item_names(
 			item_name,
-			tab,
-			tab,
-			obj_controller.settings,
+			obj_controller.settings, // eRole
+			tab, // slot
+			is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
 			true, // include company standard
 			false, // show all regardless of inventory
 		 );
