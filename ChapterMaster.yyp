@@ -727,6 +727,7 @@
     {"id":{"name":"spr_fleet_inquisition","path":"sprites/spr_fleet_inquisition/spr_fleet_inquisition.yy",},},
     {"id":{"name":"spr_tooltip1","path":"sprites/spr_tooltip1/spr_tooltip1.yy",},},
     {"id":{"name":"spr_fleet_chaos","path":"sprites/spr_fleet_chaos/spr_fleet_chaos.yy",},},
+    {"id":{"name":"__init_external","path":"scripts/__init_external/__init_external.yy",},},
     {"id":{"name":"spr_fleet_ork","path":"sprites/spr_fleet_ork/spr_fleet_ork.yy",},},
     {"id":{"name":"spr_fleet_necron","path":"sprites/spr_fleet_necron/spr_fleet_necron.yy",},},
     {"id":{"name":"spr_fleet_tau","path":"sprites/spr_fleet_tau/spr_fleet_tau.yy",},},

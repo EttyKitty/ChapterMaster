@@ -1,11 +1,11 @@
 /// @function log_into_file
-/// @description Creates an error_log file in ErrorLogs folder and puts _message there.
+/// @description Creates an error file in the logs folder and puts _message there.
 /// @param {string} _message string to put into the error log.
 function log_into_file(_message) {
     if (string_length(_message) > 0) {
         var _entry = string(_message);
-        var _date_time = $"{current_day}-{current_month}-{current_year}_{current_hour}{current_minute}{current_second}";
-        var _log_file = file_text_open_write("ErrorLogs/" + $"error_{_date_time}.log");
+        var _date_time = $"{START_DATE_TIME_1}";
+        var _log_file = file_text_open_write("logs/" + $"{_date_time}_error.log");
     
         file_text_write_string(_log_file, _entry);
         file_text_close(_log_file);
@@ -32,7 +32,7 @@ function handle_exception(_exception, custom_title = STR_error_message_head, cus
     #macro STR_error_message_head "Your game just encountered and caught an error :("
     #macro STR_error_message_head2 "Your game just encountered a critical error :("
     #macro STR_error_message_head3 "Your game just encountered and caught an error ({0}) :("
-    #macro MSG_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>ErrorLogs \n\nPlease, do the following: \n\n1) Create a bug report on the bug-report-forum in our 'Chapter Master Discord' server. \n\n2) Press CTRL+V to paste the error log into the bug report. \n\n3) Title your report by cutting and pasting the first line of the main message (it contains game version and file that caused the error). \n\n4) If for some reason the error log wasn't pasted, find the location that is mentioned above and attach the latest (sort by time) error_*date-time*.log to your bug report. In this case you can name your report as you wish. \n\n\nThank you :)"
+    #macro MSG_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>ErrorLogs \n\nPlease, do the following: \n\n1) Create a bug report on the bug-report-forum in our 'Chapter Master Discord' server. \n\n2) Press CTRL+V to paste the error log into the bug report. \n\n3) Title your report by cutting and pasting the first line of the main message (it contains game version and file that caused the error). \n\n4) If for some reason the error log wasn't pasted, find the location that is mentioned above and attach the latest (sort by time) _error.log to your bug report. In this case you can name your report as you wish. \n\n\nThank you :)"
     #macro MSG_error_message_ps $"P.S. You can ALT-TAB and try to continue playing - if the error is not severe, the game should continue working, just try to avoid what caused it. \n\nBut it's recommended to wait for a response on the bug-report forum, otherwise you may make the issue worse."
 
     var _popup_header = $"{custom_title}\n\n";
