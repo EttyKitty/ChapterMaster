@@ -66,6 +66,7 @@ function assert_error_popup(_message, _header="Assertion Error") {
     var _stacktrace_array = debug_get_callstack();
 
     array_shift(_stacktrace_array); // throw away the first line, it's this function
+    array_pop(_stacktrace_array); // and the last line, it's the `0` debug_get_callstack returns for the top of the stack
 
     var _stacktrace = array_to_string_list(_stacktrace_array);
 
