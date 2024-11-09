@@ -19,7 +19,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 
 	var roles = obj_ini.role[100];
 	var sergeant_found = false;
-	var sgt_types = [roles[Role.SERGEANT], roles[Role.VETERAN_SERGEANT]];
+	var sgt_types = [roles[eRole.Sergeant], roles[eRole.VeteranSergeant]];
 
 	//if squad has sergeants in find out if there are any available sergeants
 	for (var s = 0; s < 2;s++){

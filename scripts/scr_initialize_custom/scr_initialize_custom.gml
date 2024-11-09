@@ -1,22 +1,28 @@
-enum Role {
-	CHAPTER_MASTER = 1,
-	HONOUR_GUARD = 2,
-	VETERAN = 3,
-	TERMINATOR = 4,
-	CAPTAIN = 5,
-	DREADNOUGHT = 6,
-	CHAMPION = 7,
-	TACTICAL = 8,
-	DEVASTATOR = 9,
-	ASSAULT = 10,
-	ANCIENT = 11,
-	SCOUT = 12,
-	CHAPLAIN = 14,
-	APOTHECARY = 15,
-	TECHMARINE = 16,
-	LIBRARIAN = 17,
-	SERGEANT = 18,
-	VETERAN_SERGEANT = 19
+enum eROLE {
+	None = 0,
+	ChapterMaster = 1,
+	HonourGuard = 2,
+	Veteran = 3,
+	Terminator = 4,
+	Captain = 5,
+	Dreadnought = 6,
+	Champion = 7,
+	Tactical = 8,
+	Devastator = 9,
+	Assault = 10,
+	Ancient = 11,
+	Scout = 12,
+	Chaplain = 14,
+	Apothecary = 15,
+	Techmarine = 16,
+	Librarian = 17,
+	Sergeant = 18,
+	VeteranSergeant = 19,
+	LandRaider = 50,
+    Rhino = 51,
+    Predator = 52,
+    LandSpeeder = 53,
+    Whirlwind = 54
 }
 
 enum ePROGENITOR {
@@ -1218,46 +1224,46 @@ function scr_initialize_custom() {
 		_hi_qual_armour = "Power Armour";
 	}
 
-	load_default_gear(Role.HONOUR_GUARD, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
-	load_default_gear(Role.VETERAN, "Veteran", "Combiflamer", "Chainsword","Power Armour", "", "");
-	load_default_gear(Role.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-	load_default_gear(Role.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
-	load_default_gear(Role.DREADNOUGHT, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
-	load_default_gear(Role.CHAMPION, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-	load_default_gear(Role.TACTICAL, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(Role.DEVASTATOR, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(Role.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-	load_default_gear(Role.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(Role.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-	load_default_gear(Role.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-	load_default_gear(Role.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
-	load_default_gear(Role.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
-	load_default_gear(Role.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-	load_default_gear(Role.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(Role.VETERAN_SERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+	load_default_gear(eRole.HonourGuard, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
+	load_default_gear(eRole.Veteran, "Veteran", "Combiflamer", "Chainsword","Power Armour", "", "");
+	load_default_gear(eRole.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+	load_default_gear(eRole.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+	load_default_gear(eRole.Dreadnought, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
+	load_default_gear(eRole.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
+	load_default_gear(eRole.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
+	load_default_gear(eRole.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
+	load_default_gear(eRole.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
+	load_default_gear(eRole.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eRole.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+	load_default_gear(eRole.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
+	load_default_gear(eRole.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+	load_default_gear(eRole.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
+	load_default_gear(eRole.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
+	load_default_gear(eRole.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eRole.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
  	
 
 	if(struct_exists(obj_creation, "custom_roles")){
 		var c_roles = obj_creation.custom_roles;
 		var possible_custom_roles = [
-			["chapter_master", Role.CHAPTER_MASTER],
-			["honour_guard",Role.HONOUR_GUARD],
-			["veteran",Role.VETERAN],
-			["terminator",Role.TERMINATOR],
-			["captain",Role.CAPTAIN],
-			["dreadnought",Role.DREADNOUGHT],
-			["champion",Role.CHAMPION],
-			["tactical",Role.TACTICAL],
-			["devastator",Role.DEVASTATOR],
-			["assault",Role.ASSAULT],
-			["ancient",Role.ANCIENT],
-			["scout",Role.SCOUT],
-			["chaplain",Role.CHAPLAIN],
-			["apothecary",Role.APOTHECARY],
-			["techmarine",Role.TECHMARINE],
-			["librarian",Role.LIBRARIAN],
-			["sergeant",Role.SERGEANT],
-			["veteran_sergeant",Role.VETERAN_SERGEANT],
+			["chapter_master", eRole.ChapterMaster],
+			["honour_guard",eRole.HonourGuard],
+			["veteran",eRole.Veteran],
+			["terminator",eRole.Terminator],
+			["captain",eRole.Captain],
+			["dreadnought",eRole.Dreadnought],
+			["champion",eRole.Champion],
+			["tactical",eRole.Tactical],
+			["devastator",eRole.Devastator],
+			["assault",eRole.Assault],
+			["ancient",eRole.Ancient],
+			["scout",eRole.Scout],
+			["chaplain",eRole.Chaplain],
+			["apothecary",eRole.Apothecary],
+			["techmarine",eRole.Techmarine],
+			["librarian",eRole.Librarian],
+			["sergeant",eRole.Sergeant],
+			["veteran_sergeant",eRole.VeteranSergeant],
 		];
 		var possible_custom_attributes = [
 			"name", "wep1", "wep2", "mobi","gear","armour"
@@ -1295,24 +1301,24 @@ function scr_initialize_custom() {
 	}
 
 	var roles = {
-		chapter_master: role[defaults_slot][Role.CHAPTER_MASTER],
-		honour_guard: role[defaults_slot][Role.HONOUR_GUARD],
-		veteran: role[defaults_slot][Role.VETERAN],
-		terminator: role[defaults_slot][Role.TERMINATOR],
-		captain: role[defaults_slot][Role.CAPTAIN],
-		dreadnought: role[defaults_slot][Role.DREADNOUGHT],
-		champion: role[defaults_slot][Role.CHAMPION],
-		tactical: role[defaults_slot][Role.TACTICAL],
-		devastator: role[defaults_slot][Role.DEVASTATOR],
-		assault: role[defaults_slot][Role.ASSAULT],
-		ancient: role[defaults_slot][Role.ANCIENT],
-		scout: role[defaults_slot][Role.SCOUT],
-		chaplain: role[defaults_slot][Role.CHAPLAIN],
-		apothecary: role[defaults_slot][Role.APOTHECARY],
-		techmarine: role[defaults_slot][Role.TECHMARINE],
-		librarian: role[defaults_slot][Role.LIBRARIAN],
-		sergeant: role[defaults_slot][Role.SERGEANT],
-		veteran_sergeant: role[defaults_slot][Role.VETERAN_SERGEANT],
+		chapter_master: role[defaults_slot][eRole.ChapterMaster],
+		honour_guard: role[defaults_slot][eRole.HonourGuard],
+		veteran: role[defaults_slot][eRole.Veteran],
+		terminator: role[defaults_slot][eRole.Terminator],
+		captain: role[defaults_slot][eRole.Captain],
+		dreadnought: role[defaults_slot][eRole.Dreadnought],
+		champion: role[defaults_slot][eRole.Champion],
+		tactical: role[defaults_slot][eRole.Tactical],
+		devastator: role[defaults_slot][eRole.Devastator],
+		assault: role[defaults_slot][eRole.Assault],
+		ancient: role[defaults_slot][eRole.Ancient],
+		scout: role[defaults_slot][eRole.Scout],
+		chaplain: role[defaults_slot][eRole.Chaplain],
+		apothecary: role[defaults_slot][eRole.Apothecary],
+		techmarine: role[defaults_slot][eRole.Techmarine],
+		librarian: role[defaults_slot][eRole.Librarian],
+		sergeant: role[defaults_slot][eRole.Sergeant],
+		veteran_sergeant: role[defaults_slot][eRole.VeteranSergeant],
 	}
 	
 	var weapon_lists = {
@@ -2461,7 +2467,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.honour_guard, Role.HONOUR_GUARD,"default", "default","default","default","default");
+		add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HONOUR_GUARD,"default", "default","default","default","default");
 	}
 
 	specials = k;
@@ -2931,44 +2937,53 @@ function scr_initialize_custom() {
      	        }
      	    }
 
-			var _mobi = mobi[defaults_slot, Role.CAPTAIN];
+			var _mobi = mobi[defaults_slot, eROLE.CAPTAIN];
 			if (company = 8) and(obj_creation.equal_specialists = 0) then _mobi = "Jump Pack";
-			add_unit_to_company("marine", company, k, roles.captain, Role.CAPTAIN, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi,"");
+			add_unit_to_company("marine", company, k, roles.captain, eROLE.CAPTAIN, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi,"");
 
 			repeat (chaplains_per_company){
 				k += 1;
 				commands += 1; // Company Chaplain
-				var _mobi = mobi[defaults_slot, Role.CHAPLAIN];
-				if (company = 8) and(obj_creation.equal_specialists = 0) then _mobi = "Jump Pack";
-				add_unit_to_company("marine", company, k, roles.chaplain, Role.CHAPLAIN,"default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi,"");
+				race[company][k] = 1;
+				TTRPG[company][k] = new TTRPG_stats("chapter", company, k);
+				loc[company][k] = home_name;
+				role[company][k] = roles.chaplain;
+				wep1[company][k] = wep1[defaults_slot, eROLE.CHAPLAIN];
+				name[company][k] = global.name_generator.generate_space_marine_name();
+				wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
+				gear[company][k] = gear[defaults_slot, eROLE.CHAPLAIN];
+				if (company = 8) and(obj_creation.equal_specialists = 0) then mobi[company][k] = "Jump Pack";
+				if (mobi[defaults_slot, eROLE.CHAPLAIN] != "") then mobi[company][k] = mobi[defaults_slot, eROLE.CHAPLAIN];
+				spawn_unit = TTRPG[company][k]
+				spawn_unit.marine_assembling();
 			}
 			repeat (apothecary_per_company){
 				k += 1;
 				commands += 1; // Company Apothecary
-				add_unit_to_company("marine", company, k, roles.apothecary, Role.APOTHECARY, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.apothecary, eROLE.APOTHECARY, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
 			}
 
 			repeat(techmarines_per_company) {
 				k += 1; // Company Techmarine
 				commands += 1;
-				add_unit_to_company("marine", company, k, roles.techmarine, Role.TECHMARINE, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.techmarine, eROLE.TECHMARINE, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
 			}
 
 			if (!scr_has_disadv("Psyker Intolerant")) {
 				k += 1; // Company Librarian
 				commands += 1;
-				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, Role.LIBRARIAN, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, eROLE.LIBRARIAN, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
 			}
 
 			k += 1; // Standard Bearer
-			add_unit_to_company("marine", company, k, roles.ancient, Role.ANCIENT, "default","default","default","default","");
+			add_unit_to_company("marine", company, k, roles.ancient, eROLE.ANCIENT, "default","default","default","default","");
 			
 			k += 1;
 			man_size += 1; // Champion
 			if (company == 8) and(obj_creation.equal_specialists = 0){
-				add_unit_to_company("marine", company, k, roles.champion, Role.CHAMPION, "default","default","default","Jump Pack","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.CHAMPION, "default","default","default","Jump Pack","");
 			} else {
-				add_unit_to_company("marine", company, k, roles.champion, Role.CHAMPION, "default","default","default","","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.CHAMPION, "default","default","default","","");
 			}
 
 			// have equal spec true or false have same old_guard chance
@@ -2980,28 +2995,28 @@ function scr_initialize_custom() {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.tactical, Role.TACTICAL, "","", "", "", "");
+						add_unit_to_company("marine", company, k, roles.tactical, eROLE.TACTICAL, "","", "", "", "");
 					}
 					repeat(assault) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.assault, Role.ASSAULT, "", "", "", "default", "");
+						add_unit_to_company("marine", company, k, roles.assault, eROLE.ASSAULT, "", "", "", "default", "");
 					}
 					repeat(devastator) {
 						k += 1;
 						man_size += 1;
-						var _wep1 = wep1[defaults_slot, Role.DEVASTATOR];
-						if (wep1[defaults_slot, Role.DEVASTATOR] == "Heavy Ranged") {
+						var _wep1 = wep1[defaults_slot, eROLE.DEVASTATOR];
+						if (wep1[defaults_slot, eROLE.DEVASTATOR] == "Heavy Ranged") {
 							_wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
 						} 
-						add_unit_to_company("marine", company, k, roles.devastator, Role.DEVASTATOR, _wep1, "","", "default", "");
+						add_unit_to_company("marine", company, k, roles.devastator, eROLE.DEVASTATOR, _wep1, "","", "default", "");
 					}
 				}
 				if (company = 10) {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("scout", company, k, roles.scout, Role.SCOUT, "", "", "", "", "Scout Armour");
+						add_unit_to_company("scout", company, k, roles.scout, eROLE.SCOUT, "", "", "", "", "Scout Armour");
 					}
 				}
 			}
@@ -3010,14 +3025,14 @@ function scr_initialize_custom() {
 				if (company < 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1;
-					add_unit_to_company("marine", company, k, roles.tactical, Role.TACTICAL, "", "", "", "", "");
+					add_unit_to_company("marine", company, k, roles.tactical, eROLE.TACTICAL, "", "", "", "", "");
 				} 
 				
 				// reserve company only of assault
 				if (company = 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1; // assault reserve company
-					add_unit_to_company("marine", company, k, roles.assault,Role.ASSAULT, "", "", "", "default", "");
+					add_unit_to_company("marine", company, k, roles.assault,eROLE.ASSAULT, "", "", "", "default", "");
 				} 
 				
 				// reserve company only devo
@@ -3142,8 +3157,8 @@ function scr_initialize_custom() {
 	scr_add_item("Chainsword", 20);
 	scr_add_item("Bolt Pistol", 5);
 	scr_add_item("Heavy Weapons Pack", 10);
-	scr_add_item(wep1[defaults_slot, Role.SCOUT ], 20);
-	scr_add_item(wep2[defaults_slot, Role.SCOUT ], 20);
+	scr_add_item(wep1[defaults_slot, eRole.Scout ], 20);
+	scr_add_item(wep2[defaults_slot, eRole.Scout ], 20);
 
 	scr_add_item("Scout Armour", 20);
 	scr_add_item("MK8 Errant", 1);
@@ -3166,8 +3181,8 @@ function scr_initialize_custom() {
 	
 	if(scr_has_disadv("Sieged")){
 		scr_add_item("Narthecium", 4);
-		scr_add_item(wep1[defaults_slot, Role.APOTHECARY], 4);
-		scr_add_item(wep2[defaults_slot,  Role.APOTHECARY], 4);
+		scr_add_item(wep1[defaults_slot, eRole.Apothecary], 4);
+		scr_add_item(wep2[defaults_slot,  eRole.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);

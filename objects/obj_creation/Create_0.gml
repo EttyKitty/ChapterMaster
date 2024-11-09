@@ -783,23 +783,23 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     gear[defaults_slot, _role_id] = _gear;
     race[defaults_slot, _role_id] = 1;
 }
-load_default_gear(Role.HONOUR_GUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-load_default_gear(Role.VETERAN, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
-load_default_gear(Role.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-load_default_gear(Role.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
-load_default_gear(Role.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-load_default_gear(Role.CHAMPION, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-load_default_gear(Role.TACTICAL, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-load_default_gear(Role.DEVASTATOR, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-load_default_gear(Role.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-load_default_gear(Role.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
-load_default_gear(Role.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-load_default_gear(Role.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-load_default_gear(Role.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
-load_default_gear(Role.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-load_default_gear(Role.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-load_default_gear(Role.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-load_default_gear(Role.VETERAN_SERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+load_default_gear(eRole.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
+load_default_gear(eRole.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+load_default_gear(eRole.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+load_default_gear(eRole.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+load_default_gear(eRole.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
+load_default_gear(eRole.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
+load_default_gear(eRole.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
+load_default_gear(eRole.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
+load_default_gear(eRole.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
+load_default_gear(eRole.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(eRole.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+load_default_gear(eRole.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
+load_default_gear(eRole.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+load_default_gear(eRole.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
+load_default_gear(eRole.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
+load_default_gear(eRole.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(eRole.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
 
 
 

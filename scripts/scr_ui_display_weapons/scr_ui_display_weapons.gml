@@ -294,7 +294,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
     //////////
 
     if ("Storm Shield" == equiped_weapon) {
-        if (global.chapter_name == "Dark Angels" && role() == obj_ini.role[100][Role.HONOUR_GUARD]){
+        if (global.chapter_name == "Dark Angels" && role() == obj_ini.role[100][eRole.HonourGuard]){
             ui_weapon[left_or_right] = spr_weapon_storm;
         }
         else {

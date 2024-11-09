@@ -143,7 +143,7 @@ if (col_shift){
                 if (obj_creation.mouse_left == 1 && obj_creation.cooldown <= 0) {                   
                     var unit_type = type - 100;
                     var is_invalid = (
-                        unit_type == eUNIT_TYPE.Dreadnought &&
+                        unit_type == eROLE.Dreadnought &&
                         (
                             gg == eEQUIPMENT_TYPE.Armour ||
                             gg == eEQUIPMENT_TYPE.GearUpgrade ||

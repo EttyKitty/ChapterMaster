@@ -492,56 +492,29 @@ enum eEQUIPMENT_SUBTYPE {
     Melee = 2 // Relic land raider weapons
 }
 
-enum eUNIT_TYPE {
-    None,
-    Infantry = 1,
-    HonorGuard = 2,
-    Veteran = 3,
-    Terminator = 4,
-    Captain = 5,
-    Dreadnought = 6,
-    Champion = 7,
-    TacticalMarine = 8,
-    DevastatorMarine = 9,
-    AssaultMarine = 10,
-    Ancient = 11,
-    Scout = 12,
-    Chaplain = 14,
-    Apothecary = 15,
-    Techmarine = 16,
-    Librarian = 17,
-    Sergeant = 18,
-    VeteranSergeant = 19,
-    LandRaider = 50,
-    Rhino = 51,
-    Predator = 52,
-    LandSpeeder = 53,
-    Whirlwind = 54
-}
-
 /// @description This function returns the name of the slot for a given unit type and equipment type.
-/// @param {eUNIT_TYPE} _unit_type - The type of unit to equip, see eUNIT_TYPE.
+/// @param {eROLE} _unit_type - The type of unit to equip, see eROLE.
 /// @param {eEQUIPMENT_TYPE} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
 /// @returns {string} The name of the slot.
 function get_slot_name(_unit_type, _equipment_type) {
     switch (_unit_type) {
-        case eUNIT_TYPE.Infantry:
-        case eUNIT_TYPE.HonorGuard:
-        case eUNIT_TYPE.Veteran:
-        case eUNIT_TYPE.Terminator:
-        case eUNIT_TYPE.Captain:
-        case eUNIT_TYPE.Champion:
-        case eUNIT_TYPE.TacticalMarine:
-        case eUNIT_TYPE.DevastatorMarine:
-        case eUNIT_TYPE.AssaultMarine:
-        case eUNIT_TYPE.Ancient:
-        case eUNIT_TYPE.Scout:
-        case eUNIT_TYPE.Chaplain:
-        case eUNIT_TYPE.Apothecary:
-        case eUNIT_TYPE.Techmarine:
-        case eUNIT_TYPE.Librarian:
-        case eUNIT_TYPE.Sergeant:
-        case eUNIT_TYPE.VeteranSergeant:
+        case eROLE.ChapterMaster:
+        case eROLE.HonourGuard:
+        case eROLE.Veteran:
+        case eROLE.Terminator:
+        case eROLE.Captain:
+        case eROLE.Champion:
+        case eROLE.Tactical:
+        case eROLE.Devastator:
+        case eROLE.Assault:
+        case eROLE.Ancient:
+        case eROLE.Scout:
+        case eROLE.Chaplain:
+        case eROLE.Apothecary:
+        case eROLE.Techmarine:
+        case eROLE.Librarian:
+        case eROLE.Sergeant:
+        case eROLE.VeteranSergeant:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Hand";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Hand";
@@ -550,14 +523,14 @@ function get_slot_name(_unit_type, _equipment_type) {
                 case eEQUIPMENT_TYPE.MobilityAccessory: return "Mobility";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.Dreadnought:
+        case eROLE.Dreadnought:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Arm";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Arm";
                 case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.LandRaider:
+        case eROLE.LandRaider:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Front";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponson";
@@ -566,14 +539,14 @@ function get_slot_name(_unit_type, _equipment_type) {
                 case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.Rhino:
+        case eROLE.Rhino:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Weapon";
                 case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
                 case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.Predator:
+        case eROLE.Predator:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Turret";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponsons";
@@ -582,13 +555,13 @@ function get_slot_name(_unit_type, _equipment_type) {
                 case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.LandSpeeder:
+        case eROLE.LandSpeeder:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Primary";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Secondary";
                 default: return "Unknown";
             }
-        case eUNIT_TYPE.Whirlwind:
+        case eROLE.Whirlwind:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Missiles";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Pintle";
@@ -605,7 +578,7 @@ function get_slot_name(_unit_type, _equipment_type) {
 /// @param {array} _item_names - The list of items to populate the selection list with.
 /// @param {real} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
 /// @param {real} _equipment_subtype - The subtype of equipment to equip, see eEQUIPMENT_SUBTYPE.
-/// @param {real} _unit_type - The type of unit to equip, see eUNIT_TYPE.
+/// @param {real} _unit_type - The type of unit to equip, see eROLE.
 /// @param {bool} _include_company_standard - Whether to include the Company Standard in the selection list.
 /// @param {bool} _show_available_only - Whether to limit the selection to what is in inventory, or show all items.
 /// @param {bool} _master_crafted_only - Whether to show only master crafted items, or hide them.
@@ -624,23 +597,23 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
     var _with_none_if_not_skip = _skip_none ? false : true;
 
     switch(_unit_type) {
-        case eUNIT_TYPE.Infantry:
-        case eUNIT_TYPE.HonorGuard:
-        case eUNIT_TYPE.Veteran:
-        case eUNIT_TYPE.Terminator:
-        case eUNIT_TYPE.Captain:
-        case eUNIT_TYPE.Champion:
-        case eUNIT_TYPE.TacticalMarine:
-        case eUNIT_TYPE.DevastatorMarine:
-        case eUNIT_TYPE.AssaultMarine:
-        case eUNIT_TYPE.Ancient:
-        case eUNIT_TYPE.Scout:
-        case eUNIT_TYPE.Chaplain:
-        case eUNIT_TYPE.Apothecary:
-        case eUNIT_TYPE.Techmarine:
-        case eUNIT_TYPE.Librarian:
-        case eUNIT_TYPE.Sergeant:
-        case eUNIT_TYPE.VeteranSergeant:
+        case eROLE.ChapterMaster:
+        case eROLE.HonourGuard:
+        case eROLE.Veteran:
+        case eROLE.Terminator:
+        case eROLE.Captain:
+        case eROLE.Champion:
+        case eROLE.Tactical:
+        case eROLE.Devastator:
+        case eROLE.Assault:
+        case eROLE.Ancient:
+        case eROLE.Scout:
+        case eROLE.Chaplain:
+        case eROLE.Apothecary:
+        case eROLE.Techmarine:
+        case eROLE.Librarian:
+        case eROLE.Sergeant:
+        case eROLE.VeteranSergeant:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
@@ -757,7 +730,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }        
             break;
-        case eUNIT_TYPE.Dreadnought:
+        case eROLE.Dreadnought:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
@@ -811,7 +784,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }
             break;
-        case eUNIT_TYPE.LandRaider:
+        case eROLE.LandRaider:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
@@ -842,7 +815,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }
             break;
-        case eUNIT_TYPE.Rhino:
+        case eROLE.Rhino:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_rhino_weapons_item_names(_item_names); break;
@@ -857,7 +830,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }
             break;
-        case eUNIT_TYPE.Predator:
+        case eROLE.Predator:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_predator_turret_item_names(_item_names); break;
@@ -870,7 +843,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }
             break;
-        case eUNIT_TYPE.LandSpeeder:
+        case eROLE.LandSpeeder:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_land_speeder_primary_item_names(_item_names); break;
@@ -885,7 +858,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     return;
             }
             break;
-        case eUNIT_TYPE.Whirlwind:
+        case eROLE.Whirlwind:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_whirlwind_missiles_item_names(_item_names); break;
