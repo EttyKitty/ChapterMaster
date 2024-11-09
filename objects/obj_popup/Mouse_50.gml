@@ -259,7 +259,9 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
 
             master_crafted = !bool(master_crafted);
             obj_controller.popup_master_crafted = master_crafted;
-            item_name = scr_get_item_names(
+            item_name = []
+            scr_get_item_names(
+                item_name,
                 target_comp,
                 tab,
                 vehicle_equipment,
@@ -283,7 +285,9 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
         }
 
         if ((befi != target_comp && vehicle_equipment != -1) || change_tab == 1) {
-            item_name = scr_get_item_names(
+            item_name = []
+            scr_get_item_names(
+                item_name,
                 target_comp,
                 tab,
                 vehicle_equipment,

@@ -344,7 +344,9 @@ function scr_ui_settings() {
                             obj_mass_equip.refresh = true;
                         } else if (obj_mass_equip.tab == 0) {
                             obj_mass_equip.tab = gg;
-                            obj_mass_equip.item_name = scr_get_item_names(
+                            obj_mass_equip.item_name = [];
+                            scr_get_item_names(
+                                obj_mass_equip.item_name,
                                 gg,
                                 eEQUIPMENT_SUBTYPE.None,
                                 obj_controller.settings,

@@ -68,7 +68,9 @@ if (total_role_number > 0 && tab > 0) {
         told = tab;
     }
 
-    item_name = scr_get_item_names(
+    item_name = []
+    scr_get_item_names(
+        item_name,
         tab,
         tab,
         obj_controller.settings,
@@ -136,7 +138,9 @@ if (total_role_number > 0 && tab > 0) {
             told = tab;
         }
 
-        item_name = scr_get_item_names(
+        item_name = []
+        scr_get_item_names(
+            item_name,
             tab,
             tab,
             obj_controller.settings,

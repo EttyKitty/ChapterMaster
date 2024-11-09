@@ -381,7 +381,9 @@ if (refresh=true) and (obj_controller.settings>0){
     refresh=false;
     
     if (tab > 0) {
-		item_name = scr_get_item_names(
+		item_name = []
+		scr_get_item_names(
+			item_name,
 			tab,
 			tab,
 			obj_controller.settings,
