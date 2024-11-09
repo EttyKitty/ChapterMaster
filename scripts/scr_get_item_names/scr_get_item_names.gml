@@ -503,65 +503,70 @@ enum eUNIT_TYPE {
     Whirlwind = 54
 }
 
-// slot names differ by unit type then equipment type
-// HACK: GM doesn't like strings that look like numbers as struct keys
-//  so we prefix them with an underscore
-global.slot_names = {
-    "_1": { // Infantry
-        "_1": "Left Hand",
-        "_2": "Right Hand",
-        "_3": "Armour",
-        "_4": "Gear",
-        "_5": "Mobility"
-    },
-    "_6": { // Dreadnought
-        "_1": "Left Arm",
-        "_2": "Right Arm",
-        "_5": "Accessory"
-    },
-    "_50": { // Land Raider
-        "_1": "Front",
-        "_2": "Sponson",
-        "_3": "Pintle",
-        "_4": "Upgrade",
-        "_5": "Accessory"
-    },
-    "_51": { // Rhino
-        "_1": "Weapon",
-        "_4": "Upgrade",
-        "_5": "Accessory"
-    },
-    "_52": { // Predator
-        "_1": "Turret",
-        "_2": "Sponsons",
-        "_3": "Pintle",
-        "_4": "Upgrade",
-        "_5": "Accessory"
-    },
-    "_53": { // Land Speeder
-        "_1": "Primary",
-        "_2": "Secondary"
-    },
-    "_54": { // Whirlwind
-        "_1": "Missiles",
-        "_2": "Pintle",
-        "_4": "Upgrade",
-        "_5": "Accessory"
-    }
-};
-
 /// @description This function returns the name of the slot for a given unit type and equipment type.
-/// @param {real} _unit_type - The type of unit to equip, see eUNIT_TYPE.
-/// @param {real} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
+/// @param {eUNIT_TYPE} _unit_type - The type of unit to equip, see eUNIT_TYPE.
+/// @param {eEQUIPMENT_TYPE} _equipment_type - The type of equipment to equip, see eEQUIPMENT_TYPE.
 /// @returns {string} The name of the slot.
 function get_slot_name(_unit_type, _equipment_type) {
-    var _unit_key_str = $"_{_unit_type}";
-    var _equip_key_str = $"_{_equipment_type}";
-
-    if (global.slot_names[_unit_key_str] && global.slot_names[_unit_key_str][_equip_key_str]) {
-        return global.slot_names[_unit_key_str][_equip_key_str];
+    switch (_unit_type) {
+        case eUNIT_TYPE.Infantry:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Hand";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Hand";
+                case eEQUIPMENT_TYPE.Armour: return "Armour";
+                case eEQUIPMENT_TYPE.GearUpgrade: return "Gear";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Mobility";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.Dreadnought:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Arm";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Arm";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.LandRaider:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Front";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponson";
+                case eEQUIPMENT_TYPE.Armour: return "Pintle";
+                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.Rhino:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Weapon";
+                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.Predator:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Turret";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Sponsons";
+                case eEQUIPMENT_TYPE.Armour: return "Pintle";
+                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.LandSpeeder:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Primary";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Secondary";
+                default: return "Unknown";
+            }
+        case eUNIT_TYPE.Whirlwind:
+            switch (_equipment_type) {
+                case eEQUIPMENT_TYPE.PrimaryWeapon: return "Missiles";
+                case eEQUIPMENT_TYPE.SecondaryWeapon: return "Pintle";
+                case eEQUIPMENT_TYPE.GearUpgrade: return "Upgrade";
+                case eEQUIPMENT_TYPE.MobilityAccessory: return "Accessory";
+                default: return "Unknown";
+            }
+        default:
+            return "Unknown";
     }
-    return "Unknown";
 }
 
 /// @description This function is used to populate the weapon/equipment selection list in the equipment screen.
