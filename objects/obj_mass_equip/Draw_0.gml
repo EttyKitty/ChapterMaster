@@ -61,23 +61,60 @@ if (total_role_number>0){
 
 
 if (total_role_number > 0 && tab > 0) {
-    if (tab <= 2) {
-        told = tab;
-        tab = 1;
-    } else {
-        told = tab;
-    }
-
     item_name = [];
-    scr_get_item_names(
-        item_name,
-        tab,
-        tab,
-        obj_controller.settings,
-        true,  // include the company standard
-        false  // do not limit to available items
-    );
-    tab = told;
+    var infanty_roles = [
+        eUNIT_TYPE.Infantry,
+        eUNIT_TYPE.HonorGuard,
+        eUNIT_TYPE.Veteran,
+        eUNIT_TYPE.Terminator,
+        eUNIT_TYPE.Captain,
+        eUNIT_TYPE.Champion,
+        eUNIT_TYPE.TacticalMarine,
+        eUNIT_TYPE.DevastatorMarine,
+        eUNIT_TYPE.AssaultMarine,
+        eUNIT_TYPE.Ancient,
+        eUNIT_TYPE.Scout,
+        eUNIT_TYPE.Chaplain,
+        eUNIT_TYPE.Apothecary,
+        eUNIT_TYPE.Techmarine,
+        eUNIT_TYPE.Librarian,
+        eUNIT_TYPE.Sergeant,
+        eUNIT_TYPE.VeteranSergeant,
+    ];
+    if (
+        (tab == eEQUIPMENT_TYPE.PrimaryWeapon || tab == eEQUIPMENT_TYPE.SecondaryWeapon) &&
+        array_get_index(infanty_roles, obj_controller.settings) >= 0
+    ) {
+        // Get all available hand weapons
+        scr_get_item_names(
+            item_name,
+            eEQUIPMENT_TYPE.PrimaryWeapon,
+            eEQUIPMENT_SUBTYPE.None,
+            obj_controller.settings,
+            true,  // include the company standard
+            false,  // do not limit to available items
+        );
+        scr_get_item_names(
+            item_name,
+            eEQUIPMENT_TYPE.SecondaryWeapon,
+            eEQUIPMENT_SUBTYPE.None,
+            obj_controller.settings,
+            false,  // include the company standard
+            false,  // do not limit to available items
+            false, // not only mastercrafted
+            true // put none in the list only once
+        );
+        array_resize(item_name, array_unique_ext(item_name));
+    } else {
+        scr_get_item_names(
+            item_name,
+            tab,
+            tab,
+            obj_controller.settings,
+            true,  // include the company standard
+            false,  // do not limit to available items
+        );
+    }
 
     draw_set_color(0);
     draw_rectangle(xx + 1183, yy + 160, xx + 1506, yy + 747, 0);
@@ -91,100 +128,58 @@ if (total_role_number > 0 && tab > 0) {
     var slot_name = get_slot_name(obj_controller.settings, tab);
     draw_text_transformed(xx + 1203, yy + 174, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
-    
-    var x3 = xx + 1205;
-    var y3 = yy + 205;
-    var space = 18;
+
+    var x3 = xx + 1205; // Starting x position for the first column
+    var y3 = yy + 205; // Starting y position
+    var space = 18; // Amount to move down for each item
+    var items_per_column = 24;
+    var column_width = 146;
+    var column_gap = 3;
 
     for (var h = 0; h < array_length(item_name); h++) {
+        if (h > 0 && h % items_per_column == 0) {
+            x3 += column_width;
+            y3 = yy + 205;
+        }
+
         draw_set_color(c_gray);
         var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
         draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
-        y3 += space;
 
-        if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
+        // keep track of the item's bottom right corner
+        var item_x2 = x3 + (column_width - column_gap);
+        var item_y2 = y3 + space - 1;
+
+        if (scr_hit(x3, y3, item_x2, item_y2)) {
             draw_set_color(c_white);
             draw_set_alpha(0.2);
-            draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
+            draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
 
             if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                 obj_controller.cooldown = 8000;
+
                 switch (tab) {
-                    case 1: obj_ini.wep1[100, role] = buh; break;
-                    case 2: obj_ini.wep2[100, role] = buh; break;
-                    case 3:
+                    case eEQUIPMENT_TYPE.PrimaryWeapon: obj_ini.wep1[100, role] = buh; break;
+                    case eEQUIPMENT_TYPE.SecondaryWeapon: obj_ini.wep2[100, role] = buh; break;
+                    case eEQUIPMENT_TYPE.Armour:
                         obj_ini.armour[100, role] = buh;
                         // No bikes or jump packs for Terminators
                         if (buh == "Terminator Armour") {
                             obj_ini.mobi[100, role] = "";
                         }
                         break;
-                    case 4: obj_ini.gear[100, role] = buh; break;
-                    case 5: obj_ini.mobi[100, role] = buh; break;
+                    case eEQUIPMENT_TYPE.GearUpgrade: obj_ini.gear[100, role] = buh; break;
+                    case eEQUIPMENT_TYPE.MobilityAccessory: obj_ini.mobi[100, role] = buh; break;
                 }
                 tab = 0;
                 refresh = true;
             }
         }
+        y3 += space;
     }
 
-    if (tab == 1 || tab == 2) {
-        if (tab <= 2) {
-            told = tab;
-            tab = 2;
-        } else {
-            told = tab;
-        }
-
-        item_name = [];
-        scr_get_item_names(
-            item_name,
-            tab,
-            tab,
-            obj_controller.settings,
-            true,  // include the company standard
-            false  // do not limit to available items
-        );
-        tab = told;
-
-        x3 = xx + 1205 + 146;
-        y3 = yy + 205;
-        
-        for (var h = 0; h < array_length(item_name); h++) {
-            draw_set_color(c_gray);
-            var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
-            draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
-            y3 += space;
-
-            if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
-                draw_set_color(c_white);
-                draw_set_alpha(0.2);
-                draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
-                draw_set_alpha(1);
-
-                if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
-                    var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
-                    obj_controller.cooldown = 8000;
-                    switch (tab) {
-                        case 1: obj_ini.wep1[100, role] = buh; break;
-                        case 2: obj_ini.wep2[100, role] = buh; break;
-                        case 3:
-                            obj_ini.armour[100, role] = buh;
-                            //TODO move to use equipment tags and look for "terminator" tag
-                            if (buh == "Terminator Armour") obj_ini.mobi[100, role] = "";
-                            break;
-                        case 4: obj_ini.gear[100, role] = buh; break;
-                        case 5: obj_ini.mobi[100, role] = buh; break;
-                    }
-                    tab = 0;
-                    refresh = true;
-                }
-            }
-        }
-    }
-    
     draw_set_halign(fa_center);
     draw_set_font(fnt_40k_14b);
     draw_set_color(c_gray);

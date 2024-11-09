@@ -495,7 +495,23 @@ enum eEQUIPMENT_SUBTYPE {
 enum eUNIT_TYPE {
     None,
     Infantry = 1,
+    HonorGuard = 2,
+    Veteran = 3,
+    Terminator = 4,
+    Captain = 5,
     Dreadnought = 6,
+    Champion = 7,
+    TacticalMarine = 8,
+    DevastatorMarine = 9,
+    AssaultMarine = 10,
+    Ancient = 11,
+    Scout = 12,
+    Chaplain = 14,
+    Apothecary = 15,
+    Techmarine = 16,
+    Librarian = 17,
+    Sergeant = 18,
+    VeteranSergeant = 19,
     LandRaider = 50,
     Rhino = 51,
     Predator = 52,
@@ -510,6 +526,22 @@ enum eUNIT_TYPE {
 function get_slot_name(_unit_type, _equipment_type) {
     switch (_unit_type) {
         case eUNIT_TYPE.Infantry:
+        case eUNIT_TYPE.HonorGuard:
+        case eUNIT_TYPE.Veteran:
+        case eUNIT_TYPE.Terminator:
+        case eUNIT_TYPE.Captain:
+        case eUNIT_TYPE.Champion:
+        case eUNIT_TYPE.TacticalMarine:
+        case eUNIT_TYPE.DevastatorMarine:
+        case eUNIT_TYPE.AssaultMarine:
+        case eUNIT_TYPE.Ancient:
+        case eUNIT_TYPE.Scout:
+        case eUNIT_TYPE.Chaplain:
+        case eUNIT_TYPE.Apothecary:
+        case eUNIT_TYPE.Techmarine:
+        case eUNIT_TYPE.Librarian:
+        case eUNIT_TYPE.Sergeant:
+        case eUNIT_TYPE.VeteranSergeant:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: return "Left Hand";
                 case eEQUIPMENT_TYPE.SecondaryWeapon: return "Right Hand";
@@ -577,8 +609,9 @@ function get_slot_name(_unit_type, _equipment_type) {
 /// @param {bool} _include_company_standard - Whether to include the Company Standard in the selection list.
 /// @param {bool} _show_available_only - Whether to limit the selection to what is in inventory, or show all items.
 /// @param {bool} _master_crafted_only - Whether to show only master crafted items, or hide them.
+/// @param {bool} _skip_none - Omit the "(None)" option from the list. This help us avoid duplicates when combining range & melee hand weapons.
 /// @returns {array} The list of items to populate the selection list with.
-function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _unit_type, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false) {
+function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _unit_type, _include_company_standard=false, _show_available_only=false, _master_crafted_only=false, _skip_none=false) {
     if (_item_names == undefined) {
         assert_error_popup("_item_names is undefined");
         return;
@@ -587,8 +620,27 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
         assert_error_popup("_item_names is not an array: " + string(_item_names));
         return;
     }
+
+    var _with_none_if_not_skip = _skip_none ? false : true;
+
     switch(_unit_type) {
         case eUNIT_TYPE.Infantry:
+        case eUNIT_TYPE.HonorGuard:
+        case eUNIT_TYPE.Veteran:
+        case eUNIT_TYPE.Terminator:
+        case eUNIT_TYPE.Captain:
+        case eUNIT_TYPE.Champion:
+        case eUNIT_TYPE.TacticalMarine:
+        case eUNIT_TYPE.DevastatorMarine:
+        case eUNIT_TYPE.AssaultMarine:
+        case eUNIT_TYPE.Ancient:
+        case eUNIT_TYPE.Scout:
+        case eUNIT_TYPE.Chaplain:
+        case eUNIT_TYPE.Apothecary:
+        case eUNIT_TYPE.Techmarine:
+        case eUNIT_TYPE.Librarian:
+        case eUNIT_TYPE.Sergeant:
+        case eUNIT_TYPE.VeteranSergeant:
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
                 case eEQUIPMENT_TYPE.SecondaryWeapon:
@@ -601,11 +653,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                                 _master_crafted_only,
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
-                                true, // with_none
+                                _with_none_if_not_skip,
                                 true  // with_any
                             );
                         } else {
-                            get_none_or_any_item_names(_item_names, true, false);
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_ranged_weapons_item_names(_item_names);
                         }
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
@@ -617,14 +669,31 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                                 _master_crafted_only,
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
-                                true, // with_none
+                                _with_none_if_not_skip,
                                 true // with_any
                             );
                             if (_include_company_standard) {
                                 _item_names[@ array_length(_item_names)] = "Company Standard";
                             }
                         } else {
-                            get_none_or_any_item_names(_item_names, true, false);
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                            push_marine_melee_weapons_item_names(_item_names);
+                        }
+                    } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.None) {
+                        if (_show_available_only) {
+                            get_filtered_equipment_item_names(
+                                _item_names,
+                                "weapon",
+                                undefined, // no range filter
+                                _master_crafted_only,
+                                undefined, // no required tags
+                                ["vehicle"], // exclude vehicle weapons
+                                _with_none_if_not_skip,
+                                true // with_any
+                            );
+                        } else {
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                            push_marine_ranged_weapons_item_names(_item_names);
                             push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
@@ -641,11 +710,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             false, // not master crafted
                             undefined, // no required tags
                             ["vehicle"], // exclude vehicle armour
-                            true, // with_none
+                            _with_none_if_not_skip,
                             true // with_any
                         );
                     } else {
-                        get_none_or_any_item_names(_item_names, true, false);
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                         push_marine_armour_item_names(_item_names);
                     }
                     break;
@@ -658,11 +727,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             false, // not master crafted
                             undefined, // no required tags
                             ["vehicle"], // exclude vehicle gear
-                            true, // with_none
+                            _with_none_if_not_skip,
                             true // with_any
                         );
                     } else {
-                        get_none_or_any_item_names(_item_names, true, false);
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                         push_marine_gear_item_names(_item_names);
                     }
                     break;
@@ -675,11 +744,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                             false, // not master crafted
                             undefined, // no required tags
                             ["vehicle"], // exclude vehicle mobility
-                            true, // with_none
+                            _with_none_if_not_skip,
                             true // with_any
                         );
                     } else {
-                        get_none_or_any_item_names(_item_names, true, false);
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                         push_marine_mobility_item_names(_item_names);
                     }
                     break;
@@ -701,11 +770,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                                 _master_crafted_only,
                                 ["dreadnought"], // required tags
                                 undefined, // no excluded tags
-                                true, // with_none
+                                _with_none_if_not_skip,
                                 true // with_any
                             );
                         } else {
-                            get_none_or_any_item_names(_item_names, true, false);
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_ranged_weapons_item_names(_item_names);
                         }
                     } else if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Melee) {
@@ -717,11 +786,11 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                                 _master_crafted_only,
                                 ["dreadnought"], // required tags
                                 undefined, // no excluded tags
-                                true, // with_none
+                                _with_none_if_not_skip,
                                 true // with_any
                             );
                         } else {
-                            get_none_or_any_item_names(_item_names, true, false);
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
@@ -730,7 +799,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     }
                     break;
                 case eEQUIPMENT_TYPE.MobilityAccessory:
-                    get_none_or_any_item_names(_item_names, true, false);
+                    get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                     push_tank_accessory_item_names(_item_names, false, true);
                     break;
                 case eEQUIPMENT_TYPE.Armour:
@@ -743,7 +812,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
             }
             break;
         case eUNIT_TYPE.LandRaider:
-            get_none_or_any_item_names(_item_names, true, false);
+            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon:
                     if (_equipment_subtype == eEQUIPMENT_SUBTYPE.Ranged) { // Regular land raider weapons
@@ -766,15 +835,15 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
                     }
                     break;
                 case eEQUIPMENT_TYPE.Armour: push_land_raider_pintle_item_names(_item_names); break;
-                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, true); break;
-                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, true, false); break;
+                case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip); break;
+                case eEQUIPMENT_TYPE.MobilityAccessory: push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false); break;
                 default:
                     assert_error_popup("Invalid equipment type for land raider: " + string(_equipment_type));
                     return;
             }
             break;
         case eUNIT_TYPE.Rhino:
-            get_none_or_any_item_names(_item_names, true, false);
+            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_rhino_weapons_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.GearUpgrade: push_tank_upgrade_item_names(_item_names, false); break;
@@ -789,7 +858,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
             }
             break;
         case eUNIT_TYPE.Predator:
-            get_none_or_any_item_names(_item_names, true, false);
+            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_predator_turret_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon: push_predator_sponsons_item_names(_item_names); break;
@@ -802,7 +871,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
             }
             break;
         case eUNIT_TYPE.LandSpeeder:
-            get_none_or_any_item_names(_item_names, true, false);
+            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_land_speeder_primary_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon: push_land_speeder_secondary_item_names(_item_names); break;
@@ -817,7 +886,7 @@ function scr_get_item_names(_item_names, _equipment_type, _equipment_subtype, _u
             }
             break;
         case eUNIT_TYPE.Whirlwind:
-            get_none_or_any_item_names(_item_names, true, false);
+            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_equipment_type) {
                 case eEQUIPMENT_TYPE.PrimaryWeapon: push_whirlwind_missiles_item_names(_item_names); break;
                 case eEQUIPMENT_TYPE.SecondaryWeapon: push_whirlwind_pintle_item_names(_item_names); break;
