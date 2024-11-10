@@ -10,7 +10,7 @@
 
 "PR: Chore":
 - changed-files:
-  - any-glob-to-all-files: ['.github/*', '**/*.yml']
+  - any-glob-to-all-files: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
 
 "PR: Refactor":
 - head-branch: ['^refactor', 'refactor', '^ref', 'ref']
