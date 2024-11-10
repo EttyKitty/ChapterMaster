@@ -653,7 +653,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_marine_melee_weapons_item_names(_item_names);
                         }
-                    } else if (_engagement == eENGAGEMENT.None) {
+                    } else if (_engagement == eENGAGEMENT.Any) {
                         if (_show_available_only) {
                             get_filtered_equipment_item_names(
                                 _item_names,
@@ -767,6 +767,23 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
+                    } else if (_engagement == eENGAGEMENT.Any) {
+                        if (_show_available_only) {
+                            get_filtered_equipment_item_names(
+                                _item_names,
+                                "weapon",
+                                undefined, // no range filter
+                                _master_crafted_only,
+                                ["dreadnought"], // required tags
+                                undefined, // no excluded tags
+                                _with_none_if_not_skip,
+                                true // with_any
+                            );
+                        } else {
+                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                            push_dreadnought_ranged_weapons_item_names(_item_names);
+                            push_dreadnought_melee_weapons_item_names(_item_names);
+                        }
                     } else {
                         assert_error_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
                         return;
@@ -793,6 +810,9 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                         push_land_raider_front_weapons_item_names(_item_names);
                     } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
                         push_land_raider_relic_front_weapons_item_names(_item_names);
+                    } else if (_engagement == eENGAGEMENT.Any) {
+                        push_land_raider_front_weapons_item_names(_item_names);
+                        push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
                         assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");
                         return;
@@ -802,6 +822,9 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     if (_engagement == eENGAGEMENT.Ranged) { // Regular land raider weapons
                         push_land_raider_regular_sponsons_item_names(_item_names);
                     } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
+                        push_land_raider_relic_sponsons_item_names(_item_names);
+                    } else if (_engagement == eENGAGEMENT.Any) {
+                        push_land_raider_regular_sponsons_item_names(_item_names);
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
                         assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");

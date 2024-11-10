@@ -264,7 +264,7 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
                 item_name,
                 vehicle_equipment, // eROLE
                 target_comp, // slot
-                eENGAGEMENT.None, // doesn't matter to non infantry
+                tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee,
                 false, // include company standard
                 true, // limit to available equipment
                 master_crafted
@@ -290,7 +290,7 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
                 item_name,
                 vehicle_equipment, // eROLE
                 target_comp, // slot
-                eENGAGEMENT.None, // doesn't matter to non infantry
+                tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee,
                 false, // include company standard
                 true, // limit to available equipment
                 master_crafted

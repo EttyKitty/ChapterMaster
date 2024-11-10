@@ -315,12 +315,12 @@ function scr_ui_settings() {
 					geh=obj_ini.armour[co,ide];
 				}
 	            if (gg=4){
-					title="Mobility Item: ";
-					geh=obj_ini.mobi[co,ide];
-				}
-	            if (gg=5){
 					title="Special Item: ";
 					geh=obj_ini.gear[co,ide];
+				}
+	            if (gg=5){
+					title="Mobility Item: ";
+					geh=obj_ini.mobi[co,ide];
 				}
             
 	            draw_set_halign(fa_right);
@@ -345,12 +345,14 @@ function scr_ui_settings() {
                         } else if (obj_mass_equip.tab == 0) {
                             obj_mass_equip.tab = gg;
                             obj_mass_equip.item_name = [];
-							var is_hand_slot = (gg == 1 || gg == 2);
+                            var is_hand_slot = (gg == 1 || gg == 2);
                             scr_get_item_names(
                                 obj_mass_equip.item_name,
-								obj_controller.settings, // eROLE
+                                obj_controller.settings, // eROLE
                                 gg, // slot
-                                is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
+                                is_hand_slot ? (
+                                    obj_mass_equip.tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee
+                                ) : eENGAGEMENT.None,
                                 true, // include company standard
                                 false, // show all regardless of inventory
                             );
@@ -358,9 +360,9 @@ function scr_ui_settings() {
                     }
 	            }
 	            draw_set_alpha(1);
-				draw_set_color(c_gray);
+	            draw_set_color(c_gray);
 	            draw_set_halign(fa_left);
-				draw_text(x5+5,y5,string(geh));
+	            draw_text(x5+5,y5,string(geh));
 	        }
 	    }
 	}
