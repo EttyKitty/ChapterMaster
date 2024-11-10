@@ -68,8 +68,8 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    		bombard_protection=4; // Hi-tech faction
 	    		break;
 	    	case 7:
-	    		txt2="##The Ork forces are poorly dug in; ";
-	    		bombard_protection=1; // I think they shouldn't be so resistant to it, though, Ideally we might want to make them more capable, if warboss is present.
+	    		txt2="##The Ork forces, for brutal savages, are well dug in; "; // TODO spice up descriptions with variable levels of protection
+	    		bombard_protection=2; // TODO Make protection variable depending on leaders present
 	    		break;
 	    	case 8:
 	    		txt2="##The Tau forces are well fortified; ";
