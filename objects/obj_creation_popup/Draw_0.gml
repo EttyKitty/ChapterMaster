@@ -155,7 +155,8 @@ if (col_shift){
 
                     if (!is_invalid) {
                         obj_creation.cooldown = 8000;
-
+                        tab=1;
+                        target_gear=gg;
                         item_name = [];
                         scr_get_item_names(
                             item_name,
