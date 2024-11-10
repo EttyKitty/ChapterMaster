@@ -494,11 +494,11 @@ enum eENGAGEMENT {
 }
 
 /// @description This function returns the name of the slot for a given role and slot number.
-/// @param {eROLE} _unit_type - The type of unit to equip, see eROLE.
+/// @param {eROLE} _role - The type of unit to equip, see eROLE.
 /// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
-function get_slot_name(_unit_type, _slot) {
-    switch (_unit_type) {
+function get_slot_name(_role, _slot) {
+    switch (_role) {
         case eROLE.ChapterMaster:
         case eROLE.HonourGuard:
         case eROLE.Veteran:
