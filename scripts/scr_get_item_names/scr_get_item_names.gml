@@ -577,7 +577,7 @@ function get_slot_name(_unit_type, _slot) {
 
 /// @description This function is used to populate the weapon/equipment selection list in the equipment screen.
 /// @param {array} _item_names - The list of items to populate the selection list with.
-/// @param {eRole} _role - The role of the unit to equip, see eRole.
+/// @param {eROLE} _role - The role of the unit to equip, see eROLE.
 /// @param {real} _slot - The slot number to populate, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @param {eEngagement} _engagement - The desired engagement type to filter weapons by, see eEngagement.
 /// @param {bool} _include_company_standard - Whether to include the Company Standard in the selection list.

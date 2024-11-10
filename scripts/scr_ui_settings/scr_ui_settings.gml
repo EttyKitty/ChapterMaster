@@ -348,7 +348,7 @@ function scr_ui_settings() {
 							var is_hand_slot = (gg == 1 || gg == 2);
                             scr_get_item_names(
                                 obj_mass_equip.item_name,
-								obj_controller.settings, // eRole
+								obj_controller.settings, // eROLE
                                 gg, // slot
                                 is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
                                 true, // include company standard

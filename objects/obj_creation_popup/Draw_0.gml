@@ -159,7 +159,7 @@ if (col_shift){
                         item_name = [];
                         scr_get_item_names(
                             item_name,
-                            unit_type, // eRole
+                            unit_type, // eROLE
                             gg, // slot
                             eENGAGEMENT.Ranged,
                             false,  // no company standard
@@ -200,7 +200,7 @@ if (target_gear > 0) {
     item_name = [];
     scr_get_item_names(
         item_name,
-        type - 100, // eRole
+        type - 100, // eROLE
         target_gear, // slot
         tab, // eEngagement
         false, // no company standard
@@ -256,7 +256,7 @@ if (target_gear > 0) {
         item_name = [];
         scr_get_item_names(
             item_name,
-            type - 100, // eRole
+            type - 100, // eROLE
             target_gear, // slot
             tab, // eEngagement
             false, // no company standard

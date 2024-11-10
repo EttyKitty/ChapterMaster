@@ -262,7 +262,7 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
             item_name = [];
             scr_get_item_names(
                 item_name,
-                vehicle_equipment, // eRole
+                vehicle_equipment, // eROLE
                 target_comp, // slot
                 eENGAGEMENT.None, // doesn't matter to non infantry
                 false, // include company standard
@@ -288,7 +288,7 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
             item_name = [];
             scr_get_item_names(
                 item_name,
-                vehicle_equipment, // eRole
+                vehicle_equipment, // eROLE
                 target_comp, // slot
                 eENGAGEMENT.None, // doesn't matter to non infantry
                 false, // include company standard

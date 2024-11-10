@@ -89,7 +89,7 @@ if (total_role_number > 0 && tab > 0) {
         // Get all available hand weapons
         scr_get_item_names(
             item_name,
-            obj_controller.settings, // eRole
+            obj_controller.settings, // eROLE
             1, // slot
             eENGAGEMENT.Any,
             true,  // include the company standard
@@ -97,7 +97,7 @@ if (total_role_number > 0 && tab > 0) {
         );
         scr_get_item_names(
             item_name,
-            obj_controller.settings, // eRole
+            obj_controller.settings, // eROLE
             2, // slot
             eENGAGEMENT.Any, 
             false,  // include the company standard
@@ -109,7 +109,7 @@ if (total_role_number > 0 && tab > 0) {
     } else {
         scr_get_item_names(
             item_name,
-            obj_controller.settings, // eRole
+            obj_controller.settings, // eROLE
             tab, // slot
             eENGAGEMENT.None, // doesn't matter to non infantry/non hand slots
             true,  // include the company standard

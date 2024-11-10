@@ -480,18 +480,18 @@ function scr_livery_setup(){
         for (var role_slot =1;role_slot<=13;role_slot++){
             var id_array = [
                 0,
-                eRole.Apothecary,
-                eRole.Chaplain,
-                eRole.Librarian,
-                eRole.Techmarine,
-                eRole.Captain,
-                eRole.HonourGuard,
-                eRole.Terminator,
-                eRole.Veteran,eRole.Dreadnought,
-                eRole.Tactical,
-                eRole.Devastator,
-                eRole.Assault,
-                eRole.Scout
+                eROLE.Apothecary,
+                eROLE.Chaplain,
+                eROLE.Librarian,
+                eROLE.Techmarine,
+                eROLE.Captain,
+                eROLE.HonourGuard,
+                eROLE.Terminator,
+                eROLE.Veteran,eROLE.Dreadnought,
+                eROLE.Tactical,
+                eROLE.Devastator,
+                eROLE.Assault,
+                eROLE.Scout
             ];
             role_id = id_array[role_slot];
             

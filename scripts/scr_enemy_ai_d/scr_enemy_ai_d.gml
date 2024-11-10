@@ -240,7 +240,7 @@ function scr_enemy_ai_d() {
             for (com =0; com<=10;com++){
                 for (ide =0; ide<=array_length(obj_ini.role[com]);ide++){
                     unit = fetch_unit([com,ide])
-                    if (unit.role()=obj_ini.role[100][eRole.Techmarine]){
+                    if (unit.role()=obj_ini.role[100][eROLE.Techmarine]){
                         // Case 1: on planet
                         if (obj_ini.loc[com][ide]=name) and (unit.planet_location=i){
                             p_player[i]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);

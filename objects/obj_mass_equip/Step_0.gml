@@ -385,7 +385,7 @@ if (refresh=true) and (obj_controller.settings>0){
 		var is_hand_slot = (tab == 1 || tab == 2);
 		scr_get_item_names(
 			item_name,
-			obj_controller.settings, // eRole
+			obj_controller.settings, // eROLE
 			tab, // slot
 			is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
 			true, // include company standard
