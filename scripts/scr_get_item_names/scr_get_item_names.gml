@@ -493,7 +493,7 @@ enum eENGAGEMENT {
     Any = 3
 }
 
-/// @description This function returns the name of the slot for a given unit type and equipment type.
+/// @description This function returns the name of the slot for a given role and slot number.
 /// @param {eROLE} _unit_type - The type of unit to equip, see eROLE.
 /// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
@@ -591,7 +591,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
         return;
     }
     if (!is_array(_item_names)) {
-        assert_error_popup("_item_names is not an array: " + string(_item_names));
+        assert_error_popup($"_item_names is not an array: {_item_names}");
         return;
     }
 
@@ -671,7 +671,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             push_marine_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup("Invalid equipment subtype for infantry: " + string(_engagement));
+                        assert_error_popup($"Invalid engagement enumerator for infantry: {_engagement}");
                         return;
                     }
                     break;
@@ -727,7 +727,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     }
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for infantry: " + string(_slot));
+                    assert_error_popup($"Invalid slot for infantry: {_slot}");
                     return;
             }        
             break;
@@ -768,7 +768,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             push_dreadnought_melee_weapons_item_names(_item_names);
                         }
                     } else {
-                        assert_error_popup("Invalid equipment subtype for dreadnought: " + string(_engagement));
+                        assert_error_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
                         return;
                     }
                     break;
@@ -778,10 +778,10 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     break;
                 case 3:
                 case 4:
-                    // Dreadnought doesn't have these equipment types, but empty lists are shown in the UI
+                    // Dreadnought doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for dreadnought: " + string(_slot));
+                    assert_error_popup($"Invalid slot for dreadnought: {_slot}");
                     return;
             }
             break;
@@ -794,7 +794,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
                         push_land_raider_relic_front_weapons_item_names(_item_names);
                     } else {
-                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_engagement));
+                        assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");
                         return;
                     }
                     break;
@@ -804,7 +804,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                     } else if (_engagement == eENGAGEMENT.Melee) { // Relic land raider weapons
                         push_land_raider_relic_sponsons_item_names(_item_names);
                     } else {
-                        assert_error_popup("Invalid equipment subtype for land raider: " + string(_engagement));
+                        assert_error_popup($"Invalid engagement enumerator for land raider: {_engagement}");
                         return;
                     }
                     break;
@@ -812,7 +812,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 case 4: push_tank_upgrade_item_names(_item_names, _with_none_if_not_skip); break;
                 case 5: push_tank_accessory_item_names(_item_names, _with_none_if_not_skip, false); break;
                 default:
-                    assert_error_popup("Invalid equipment type for land raider: " + string(_slot));
+                    assert_error_popup($"Invalid slot for land raider: {_slot}");
                     return;
             }
             break;
@@ -824,10 +824,10 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 case 5: push_tank_accessory_item_names(_item_names, false, false); break;
                 case 2:
                 case 3:
-                    // Rhino doesn't have these equipment types, but empty lists are shown in the UI
+                    // Rhino doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for rhino: " + string(_slot));
+                    assert_error_popup($"Invalid slot for rhino: {_slot}");
                     return;
             }
             break;
@@ -840,7 +840,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 case 4: push_tank_upgrade_item_names(_item_names, false); break;
                 case 5: push_tank_accessory_item_names(_item_names, false, false); break;
                 default:
-                    assert_error_popup("Invalid equipment type for predator: " + string(_slot));
+                    assert_error_popup($"Invalid slot for predator: {_slot}");
                     return;
             }
             break;
@@ -852,10 +852,10 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 case 4:
                 case 3:
                 case 5:
-                    // Land speeder doesn't have these equipment types, but empty lists are shown in the UI
+                    // Land speeder doesn't have these slots, but empty lists are shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for land speeder: " + string(_slot));
+                    assert_error_popup($"Invalid slot for land speeder: {_slot}");
                     return;
             }
             break;
@@ -867,10 +867,10 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 case 4: push_tank_upgrade_item_names(_item_names, false); break;
                 case 5: push_tank_accessory_item_names(_item_names, false, false); break;
                 case 3:
-                    // Whirlwind doesn't have this equipment type, but an empty list is shown in the UI
+                    // Whirlwind doesn't have this slot, but an empty list is shown in the UI
                     break;
                 default:
-                    assert_error_popup("Invalid equipment type for whirlwind: " + string(_slot));
+                    assert_error_popup($"Invalid slot for whirlwind: {_slot}");
                     return;
             }
             break;

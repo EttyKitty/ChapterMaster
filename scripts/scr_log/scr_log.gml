@@ -9,7 +9,7 @@
 function log_into_file(_message) {
     if (string_length(_message) > 0) {
         var _date_time = $"{current_day}-{current_month}-{current_year}_{current_hour}{current_minute}{current_second}";
-        var _log_file = file_text_open_write("ErrorLogs/" + $"error_{_date_time}.log");
+        var _log_file = file_text_open_write($"ErrorLogs/error_{_date_time}.log");
         file_text_write_string(_log_file, _message);
         file_text_close(_log_file);
     }
@@ -20,11 +20,11 @@ function log_into_file(_message) {
 /// @param {string} _message - Detailed message for the error.
 /// @param {string} _stacktrace - Optional
 function show_error_popup(_header, _message, _stacktrace="") {
-    var _full_message = LB_92 + "\n" + _header + "\n" + "Game Version: " + global.game_version + "; Build Date: " + global.build_date + "\n\n" + _message + "\n" + "Details:\n" + _stacktrace + "\n" + LB_92;
-    var _player_message = STR_error_message_head + "\n\n" + _header + "\n\n" + MSG_error_message + "\n\n" + MSG_error_message_ps;
+    var _full_message = $"{LB_92}\n{_header}\nGame Version: {global.game_version}; Build Date: {global.build_date}\n\n{_message}\nDetails:\n{_stacktrace}\n{LB_92}";
+    var _player_message = $"{STR_error_message_head}\n\n{_header}\n\n{MSG_error_message}\n\n{MSG_error_message_ps}";
     show_message(_player_message);
     log_into_file(_full_message);
-    clipboard_set_text(_header + "\n" + markdown_codeblock(_full_message));
+    clipboard_set_text($"{_header}\n{markdown_codeblock(_full_message)}");
     show_debug_message(_full_message);
 }
 
