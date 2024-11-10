@@ -517,8 +517,8 @@ function get_slot_name(_role, _slot) {
         case eROLE.Sergeant:
         case eROLE.VeteranSergeant:
             switch (_slot) {
-                case 1: return "Left Hand";
-                case 2: return "Right Hand";
+                case 1: return "First Weapon";
+                case 2: return "Second Weapon";
                 case 3: return "Armour";
                 case 4: return "Gear";
                 case 5: return "Mobility";
@@ -526,8 +526,8 @@ function get_slot_name(_role, _slot) {
             }
         case eROLE.Dreadnought:
             switch (_slot) {
-                case 1: return "Left Arm";
-                case 2: return "Right Arm";
+                case 1: return "First Weapon";
+                case 2: return "Second Weapon";
                 case 5: return "Accessory";
                 default: return "Unknown";
             }
@@ -558,8 +558,8 @@ function get_slot_name(_role, _slot) {
             }
         case eROLE.LandSpeeder:
             switch (_slot) {
-                case 1: return "Primary";
-                case 2: return "Secondary";
+                case 1: return "First Weapon";
+                case 2: return "Second Weapon";
                 default: return "Unknown";
             }
         case eROLE.Whirlwind:
