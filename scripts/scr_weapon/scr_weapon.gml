@@ -904,9 +904,9 @@ global.weapons = {
 	"Inferno Cannon": {
 		"abbreviation": "InfCann",
 		"attack": {
-			"standard": 400,
-			"master_crafted": 440,
-			"artifact": 480
+			"standard": 750,
+			"master_crafted": 875,
+			"artifact": 1000
 		},
 		"description": "A huge vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
 		"melee_hands": 0,
@@ -1176,25 +1176,25 @@ global.weapons = {
 	"Twin Linked Heavy Bolter": {
 		"abbreviation": "TwnHvyBltr",
 		"attack": {
-			"standard": 320,
-			"master_crafted": 352,
-			"artifact": 384
+			"standard": 450,
+			"master_crafted": 500,
+			"artifact": 650
 		},
 		"description": "Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon, which is known for its high rate of fire and effectiveness against infantry and light vehicles.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 20,
 		"range": 16,
-		"spli": 9,
-		"arp": 1,
+		"spli": 28,
+		"arp": 0,
 		"tags": ["bolt", "heavy_ranged", "vehicle", "dreadnought"]
 	},
 	"Twin Linked Lascannon": {
 		"abbreviation": "TwnLascnn",
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
-			"artifact": 900
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1000
 		},
 		"description": "The Twin-Linked Lascannons is a powerful anti-armour weapons that fire highly focused and devastating duel energy beams capable of penetrating even the toughest armor.",
 		"melee_hands": 0,
@@ -1223,9 +1223,9 @@ global.weapons = {
 	},
 	"Whirlwind Missiles": {
 		"attack": {
-			"standard": 400,
-			"master_crafted": 440,
-			"artifact": 480
+			"standard": 600,
+			"master_crafted": 650,
+			"artifact": 800
 		},
 		"description": "The Whirlwind Missile Launcher is a vehicle-mounted artillery weapon that launches a barrage of powerful missiles at the enemy.",
 		"abbreviation": "WhrlMssl",
@@ -1233,7 +1233,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 6,
 		"range": 20,
-		"spli": 25,
+		"spli": 40,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
@@ -1244,9 +1244,9 @@ global.weapons = {
 	},
 	"Twin Linked Heavy Bolter Mount": {
 		"attack": {
-			"standard": 240,
-			"master_crafted": 264,
-			"artifact": 288
+			"standard": 450,
+			"master_crafted": 550,
+			"artifact": 700
 		},
 		"description": "The Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon. They are mounted onto vehicles to create effective fire support platforms.",
 		"abbreviation": "TwnHvyBltr",
@@ -1254,15 +1254,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 20,
 		"range": 16,
-		"spli": 3,
+		"spli": 21,
 		"arp": 1,
 		"tags": ["vehicle", "dreadnought", "heavy_ranged", "bolt"]
 	},
 	"Twin Linked Lascannon Mount": {
 		"attack": {
-			"standard": 250,
-			"master_crafted": 275,
-			"artifact": 300
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1000
 		},
 		"description": "The Twin-Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto vehicles to incease anti-armor capabilities.",
 		"abbreviation": "TwnLascnn",
@@ -1270,15 +1270,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 10,
 		"range": 20,
-		"spli": 3,
+		"spli": 2,
 		"arp": 1,
 		"tags": ["las", "energy", "vehicle", "heavy_ranged", "dreadnought"]
 	},
 	"Twin Linked Assault Cannon Mount": {
 		"attack": {
-			"standard": 240,
-			"master_crafted": 264,
-			"artifact": 288
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1100
 		},
 		"description": "A twin mount of rotary autocannons, boasting an incredible rate of fire numbering in the hundreds of shots fired per second.",
 		"abbreviation": "TwnAssCnn",
@@ -1286,15 +1286,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 6,
 		"range": 12,
-		"spli": 30,
+		"spli": 40,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
 		"attack": {
-			"standard": 500,
-			"master_crafted": 550,
-			"artifact": 600
+			"standard": 700,
+			"master_crafted": 850,
+			"artifact": 1000
 		},
 		"description": "An archaic twin-linked autocannon design dating back to the Great Crusade. The Reaper Autocannon is effective against infantry and armored targets. This version is mounted onto vehicles.",
 		"abbreviation": "RprAtcnn",
@@ -1302,15 +1302,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 25,
 		"range": 15,
-		"spli": 6,
+		"spli": 24,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
 		"attack": {
-			"standard": 320,
-			"master_crafted": 352,
-			"artifact": 384
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1100
 		},
 		"description": "Quad-linked Heavy Bolters are a significantly upgraded version of the standard Heavy Bolter mount; already punishing in a single mount, this quad mount is devastating against a variety of targets.",
 		"abbreviation": "QdHvyBltrs",
@@ -1318,15 +1318,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 15,
 		"range": 16,
-		"spli": 5,
-		"arp": 1,
+		"spli": 50,
+		"arp": 0,
 		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Lascannon Sponsons": {
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
-			"artifact": 900
+			"standard": 800,
+			"master_crafted": 1000,
+			"artifact": 1200
 		},
 		"description": "The Twin-Linked Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
 		"abbreviation": "TwnLascnns",
@@ -1334,15 +1334,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 5,
 		"range": 20,
-		"spli": 3,
+		"spli": 4,
 		"arp": 1,
 		"tags": ["las", "energy", "vehicle", "heavy_ranged", "sponson", "twin_linked"]
 	},
 	"Lascannon Sponsons": {
 		"attack": {
-			"standard": 500,
-			"master_crafted": 600,
-			"artifact": 750
+			"standard": 700,
+			"master_crafted": 850,
+			"artifact": 1000
 		},
 		"description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
 		"abbreviation": "Lscnns",
@@ -1350,15 +1350,15 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 8,
 		"range": 20,
-		"spli": 1,
+		"spli": 2,
 		"arp": 1,
 		"tags": ["las", "energy","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Hurricane Bolter Sponsons": {
 		"attack": {
-			"standard": 50,
-			"master_crafted": 55,
-			"artifact": 60
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 800
 		},
 		"description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges. This version is mounted onto the sides of vehicles.",
 		"abbreviation": "HrcBltrs",
@@ -1372,41 +1372,41 @@ global.weapons = {
 	},
 	"Flamestorm Cannon Sponsons": {
 		"attack": {
-			"standard": 600,
-			"master_crafted": 660,
-			"artifact": 720
+			"standard": 750,
+			"master_crafted": 850,
+			"artifact": 900
 		},
 		"description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
 		"abbreviation": "FlmstCnns",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 6,
-		"range": 2,
-		"spli": 3,
+		"range": 4.1,
+		"spli": 30,
 		"arp": 1,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Heavy Flamer Sponsons": {
 		"attack": {
-			"standard": 500,
-			"master_crafted": 550,
-			"artifact": 600
+			"standard": 600,
+			"master_crafted": 750,
+			"artifact": 900
 		},
 		"description": "A twin-linked significantly heavier flamer attached to the sponsons on a vehicle.",
 		"abbreviation": "TwnHvyFlmrs",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 8,
-		"range": 2.1,
-		"spli": 8,
+		"range": 4.1,
+		"spli": 40,
 		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "dreadnought", "sponson"]
 	},
 	"Twin Linked Bolters": {
 		"attack": {
-			"standard": 80,
-			"master_crafted": 140,
-			"artifact": 180
+			"standard": 225,
+			"master_crafted": 350,
+			"artifact": 450
 		},
 		"description": "A Twin-linked Bolter consists of two Bolter weapons mounted side by side, typically on a vehicle or a dedicated weapons platform.",
 		"abbreviation": "TwnBltrs",
@@ -1414,56 +1414,56 @@ global.weapons = {
 		"ranged_hands": 2,
 		"ammo": 30,
 		"range": 12,
-		"spli": 6,
+		"spli": 8,
 		"arp": 0,
 		"tags": ["bolt", "vehicle"]
 	},
 	"Twin Linked Multi-Melta Sponsons": {
 		"abbreviation": "TwnMltMelts",
 		"attack": {
-			"standard": 800,
-			"master_crafted": 850,
-			"artifact": 900
+			"standard": 1200,
+			"master_crafted": 1400,
+			"artifact": 1650
 		},
 		"description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles. In this case it is mounted to the sponsons on a vehicle.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 8,
 		"range": 4.1,
-		"spli": 2,
+		"spli": 20,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"]
 	},
 	"Twin Linked Volkite Culverin Sponsons": {
 		"abbreviation": "TwnVlkCulvs",
 		"attack": {
-			"standard": 480,
-			"master_crafted": 510,
-			"artifact": 540
+			"standard": 950,
+			"master_crafted": 1150,
+			"artifact": 1300
 		},
 		"description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 25,
 		"range": 18,
-		"spli": 9,
-		"arp": 0,
+		"spli": 12,
+		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Heavy Bolter Sponsons": {
 		"abbreviation": "HvyBltrs",
 		"attack": {
-			"standard": 240,
-			"master_crafted": 264,
-			"artifact": 288
+			"standard": 450,
+			"master_crafted": 550,
+			"artifact": 750
 		},
 		"description": "Heavy Bolters are mounted in sponsons. They are known for high rates of fire and effectiveness against infantry and light vehicles.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 20,
 		"range": 16,
-		"spli": 4,
-		"arp": 1,
+		"spli": 28,
+		"arp": 0,
 		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"]
 	},
 	"Heavy Flamer Sponsons": {
@@ -1478,8 +1478,8 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 8,
-		"range": 2.1,
-		"spli": 4,
+		"range": 4.1,
+		"spli": 40,
 		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
@@ -1487,32 +1487,32 @@ global.weapons = {
 		"abbreviation": "VlkClvs",
 		"attack": {
 			"standard": 480,
-			"master_crafted": 528,
-			"artifact": 576
+			"master_crafted": 600,
+			"artifact": 750
 		},
 		"description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 25,
 		"range": 18,
-		"spli": 5,
+		"spli": 6,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Autocannon Turret": {
 		"abbreviation": "Autocnn",
 		"attack": {
-			"standard": 380,
-			"master_crafted": 528,
-			"artifact": 576
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 850
 		},
 		"description": "A Predator-compatible turret mounting a reliable all-purpose autocannon capable of doing effective damage to infantry and lightly armored targets.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
-		"ammo": 25,
+		"ammo": 18,
 		"range": 18,
 		"spli": 15,
-		"arp": 0,
+		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Storm Bolter": {
@@ -1736,48 +1736,48 @@ global.weapons = {
 	},
 	"Twin Linked Lascannon Turret": {
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
-			"artifact": 900
+			"standard": 1000,
+			"master_crafted": 1100,
+			"artifact": 1300
 		},
 		"abbreviation": "TwnLscnn",
 		"description": "A Predator-compatible turret mounting a twin-linked lascannon.",
 		"arp": 1,
 		"range": 24,
 		"ammo": 5,
-		"spli": 2,
+		"spli": 1,
 		"tags": ["las", "energy", "twin_linked","heavy_ranged", "vehicle", "turret"]
 	},
 	"Twin Linked Assault Cannon Turret": {
 		"abbreviation": "TwnAssCnn",
 		"attack": {
-			"standard": 240,
-			"master_crafted": 264,
-			"artifact": 288
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1100
 		},
 		"description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute, in a twin mount. It is incredibly effective against infantry and lightly armored targets.",
 		"melee_hands": 2.1,
 		"ranged_hands": 2.25,
 		"ammo": 5,
 		"range": 12,
-		"spli": 30,
-		"arp": 1,
+		"spli": 40,
+		"arp": 0,
 		"tags": ["heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Flamestorm Cannon Turret": {
 		"abbreviation": "FlmstCnn",
 		"attack": {
-			"standard": 600,
-			"master_crafted": 660,
-			"artifact": 720
+			"standard": 700,
+			"master_crafted": 850,
+			"artifact": 900
 		},
 		"description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 12,
-		"range": 2,
-		"spli": 3,
-		"arp": 1,
+		"range": 4.1,
+		"spli": 25,
+		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "turret"]
 	},
 	"Magna-Melta Turret": {
@@ -1791,24 +1791,24 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 6,
-		"range": 5.1,
-		"spli": 2,
+		"range": 4.1,
+		"spli": 20,
 		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "turret", "melta"]
 	},
 	"Plasma Destroyer Turret": {
 		"abbreviation": "PlsmDestr",
 		"attack": {
-			"standard": 500,
-			"master_crafted": 600,
-			"artifact": 750
+			"standard": 800,
+			"master_crafted": 900,
+			"artifact": 1000
 		},
 		"description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it is mounted in a tank turret.",
 		"melee_hands": 1,
 		"ranged_hands": 3,
 		"ammo": 16,
 		"range": 14,
-		"spli": 3,
+		"spli": 12,
 		"arp": 1,
 		"tags": ["plasma", "energy","heavy_ranged", "vehicle", "turret"]
 	},
@@ -1847,9 +1847,9 @@ global.weapons = {
 	"Volkite Saker Turret": {
 		"abbreviation": "VlkSkr",
 		"attack": {
-			"standard": 300,
-			"master_crafted": 333,
-			"artifact": 375
+			"standard": 1000,
+			"master_crafted": 1150,
+			"artifact": 1400
 		},
 		"description": "An advanced thermal weapon from a bygone era, Volkite sakers are optimized for spreading damage across swaths of enemy troops.",
 		"melee_hands": 0,
