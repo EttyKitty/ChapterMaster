@@ -109,9 +109,9 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    roll=0;
     	
 	    if (bombard_protection==0){i=i*4;} // No protection, Nids out in the open use this
-	    else if (bombard_protection==1){i=i*0.9;} // Poor protection, PDF/Renegades, Sisters and Orks use it,
-	    else if (bombard_protection==2){i=i*0.75;} // Competent protection - IG and standard chaos forces
-	    else if (bombard_protection==3){i=i*0.5;} // Hi-tech, Admech and Tau, And Daemons kind of
+	    else if (bombard_protection==1){i=i*0.9;} // Poor protection, PDF/Renegades and Ecclesiarchy use it,
+	    else if (bombard_protection==2){i=i*0.75;} // Competent protection - IG, standard chaos forces and Orks
+	    else if (bombard_protection==3){i=i*0.5;} // Hi-tech, Admech, Tau and Daemons kind of
 	    else if (bombard_protection==4){i=i*0.34;} // Figured I add a level 4 to this, Ultra hi-tech, Necrons and Eldar
     
 	    for(var r=0;r<100;r++){
