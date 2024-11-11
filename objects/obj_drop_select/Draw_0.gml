@@ -417,47 +417,46 @@ if (btn_attack.clicked()) and btn_attack.locked = false and !obj_controller.cool
         }
     }
     
-    
-    
-    
     scr_battle_allies();
     
-    var co, v, stop;
-    co=0;v=0;stop=0;  
-    repeat(3600){
-        if (co<11){v+=1;
-            if (v>300){co+=1;v=1;}
-            if (co>10) then stop=1;
-            if (stop=0){
-                if (fighting[co][v]!=0){obj_ncombat.fighting[co][v]=1;}// show_message(string(co)+":"+string(v)+" is fighting");
-                if (attack=1) and (v<=100){
-                    if (veh_fighting[co][v]!=0) then obj_ncombat.veh_fighting[co][v]=1;
+    for (var company = 0; company <= 10; company++) {
+        for (var unit = 0; unit <= 300; unit++) {
+            if (fighting[company][unit] != 0) {
+                obj_ncombat.fighting[company][unit] = 1;
+            }
+
+            if ((attack == 1) && (unit <= 100)) {
+                if (veh_fighting[company][unit] != 0) {
+                    obj_ncombat.veh_fighting[company][unit] = 1;
                 }
-                if (attack=1) and (ship_all[500]=1){
-                    if (obj_ini.loc[co][v]=p_target.name) and (obj_ini.TTRPG[co][v].planet_location=planet_number) and (fighting[co][v]=1) then obj_ncombat.fighting[co][v]=1;
-                    if (v<=100){if (obj_ini.veh_loc[co][v]=p_target.name) and (obj_ini.veh_wid[co][v]=planet_number) then obj_ncombat.veh_fighting[co][v]=1;}
+            }
+
+            if ((attack == 1) && (ship_all[500] == 1)) {
+                if ((obj_ini.loc[company][unit] == p_target.name) && (obj_ini.TTRPG[company][unit].planet_location == planet_number) && (fighting[company][unit] == 1)) {
+                    obj_ncombat.fighting[company][unit] = 1;
+                }
+                if (unit <= 100) {
+                    if ((obj_ini.veh_loc[company][unit] == p_target.name) && (obj_ini.veh_wid[company][unit] == planet_number)) {
+                        obj_ncombat.veh_fighting[company][unit] = 1;
+                    }
                 }
             }
         }
-        
-        // Iterates through all selected "ships" (max 30), including the planet (Local on the drop menu), 
-        // and fills the battle roster with any marines found.
-        var i;i=-1;ships_selected=0;
-        repeat(31){
-            i+=1;if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
-        }
-		//ship_all[500] equals "Local" status on the drop menu
-		if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,planet_number,true);
     }
-    
-    // Iterates through all selected "ships" (max 30), including the planet (Local on the drop menu), 
+
+    // Iterates through all selected "ships", including the planet (Local on the drop menu),
     // and fills the battle roster with any marines found.
-    var i;i=-1;ships_selected=0;
-    repeat(31){
-        i+=1;if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
+    ships_selected = 0;
+    var ships_len = array_length(ship_all);
+    for (var ship = 0; ship < ships_len; ship++) {
+        if (ship_all[ship] != 0) {
+            scr_battle_roster(ship[ship], ship_ide[ship], false);
+        }
     }
     //ship_all[500] equals "Local" status on the drop menu
-    if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,planet_number,true);
+    if ((ship_all[500] == 1) && (attack == 1)) {
+        scr_battle_roster(p_target.name, planet_number, true);
+    }
 }
 
 
