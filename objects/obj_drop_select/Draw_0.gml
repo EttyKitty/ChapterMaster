@@ -419,25 +419,25 @@ if (btn_attack.clicked()) and btn_attack.locked = false and !obj_controller.cool
     
     scr_battle_allies();
     
-    for (var company = 0; company <= 10; company++) {
-        for (var unit = 0; unit <= 300; unit++) {
-            if (fighting[company][unit] != 0) {
-                obj_ncombat.fighting[company][unit] = 1;
+    for (var company_i = 0; company_i <= 10; company_i++) {
+        for (var unit_i = 0; unit_i <= 300; unit_i++) {
+            if (fighting[company_i][unit_i] != 0) {
+                obj_ncombat.fighting[company_i][unit_i] = 1;
             }
 
-            if ((attack == 1) && (unit <= 100)) {
-                if (veh_fighting[company][unit] != 0) {
-                    obj_ncombat.veh_fighting[company][unit] = 1;
+            if ((attack == 1) && (unit_i <= 100)) {
+                if (veh_fighting[company_i][unit_i] != 0) {
+                    obj_ncombat.veh_fighting[company_i][unit_i] = 1;
                 }
             }
 
             if ((attack == 1) && (ship_all[500] == 1)) {
-                if ((obj_ini.loc[company][unit] == p_target.name) && (obj_ini.TTRPG[company][unit].planet_location == planet_number) && (fighting[company][unit] == 1)) {
-                    obj_ncombat.fighting[company][unit] = 1;
+                if ((obj_ini.loc[company_i][unit_i] == p_target.name) && (obj_ini.TTRPG[company_i][unit_i].planet_location == planet_number) && (fighting[company_i][unit_i] == 1)) {
+                    obj_ncombat.fighting[company_i][unit_i] = 1;
                 }
-                if (unit <= 100) {
-                    if ((obj_ini.veh_loc[company][unit] == p_target.name) && (obj_ini.veh_wid[company][unit] == planet_number)) {
-                        obj_ncombat.veh_fighting[company][unit] = 1;
+                if (unit_i <= 100) {
+                    if ((obj_ini.veh_loc[company_i][unit_i] == p_target.name) && (obj_ini.veh_wid[company_i][unit_i] == planet_number)) {
+                        obj_ncombat.veh_fighting[company_i][unit_i] = 1;
                     }
                 }
             }
@@ -447,10 +447,10 @@ if (btn_attack.clicked()) and btn_attack.locked = false and !obj_controller.cool
     // Iterates through all selected "ships", including the planet (Local on the drop menu),
     // and fills the battle roster with any marines found.
     ships_selected = 0;
-    var ships_len = array_length(ship_all);
-    for (var ship = 0; ship < ships_len; ship++) {
-        if (ship_all[ship] != 0) {
-            scr_battle_roster(ship[ship], ship_ide[ship], false);
+    var _ships_len = array_length(ship_all);
+    for (var ship_i = 0; ship_i < _ships_len; ship_i++) {
+        if (ship_all[ship_i] != 0) {
+            scr_battle_roster(ship[ship_i], ship_ide[ship_i], false);
         }
     }
     //ship_all[500] equals "Local" status on the drop menu
