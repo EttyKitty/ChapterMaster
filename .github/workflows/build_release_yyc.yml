@@ -40,6 +40,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
+          branch: compile/main
           openDelimiter: "BS"
           closeDelimiter: "BE"
           body: "${{ env.date_time }}"
@@ -51,6 +52,7 @@ jobs:
         uses: jaywcjlove/github-action-modify-file-content@main
         with:
           path: datafiles/main/version.json
+          branch: compile/main
           openDelimiter: "VS"
           closeDelimiter: "VE"
           body: "${{ github.ref_name }}"
