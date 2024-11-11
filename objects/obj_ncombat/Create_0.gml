@@ -9,7 +9,7 @@ repeat(15){co+=1;i=-1;
     }
 }co=0;i=0;hue=0;
 
-
+turn_count = 0;
 debugl("Ground Combat Started");
 
 audio_stop_sound(snd_royal);

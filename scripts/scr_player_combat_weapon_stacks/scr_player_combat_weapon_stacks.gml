@@ -98,9 +98,11 @@ function scr_player_combat_weapon_stacks() {
     if (defenses=1) then exit;
 
 
-    var i,g=0;men=0;dreads=0;
-    veh=0
-    for (i=1;i<array_length(att);i++) {
+    var i,g=0;
+    veh=0;
+    men=0;
+    dreads=0;
+    for (i=0;i<array_length(att);i++) {
         // dudes[i]="";
         dudes_num[i]=0;
         // dudes_vehicle[i]=0;
@@ -120,8 +122,8 @@ function scr_player_combat_weapon_stacks() {
             if (marine_casting[g]>=0) then marine_casting[g]=0;
             if (marine_casting[g]<0) then marine_casting[g]+=1;//timer for libs to be able to cast
 
-            if ((marine_id[g]>0) or (ally[g]=true)) and (unit.hp()>0) then marine_dead[g]=0;
-            if ((marine_id[g]>0) or (ally[g]=true)) and (unit.hp()>0) and (marine_dead[g]!=1){
+            if (unit.hp()>0) then marine_dead[g]=0;
+            if (unit.hp()>0 && marine_dead[g]!=true){
                 var head_role = unit.IsSpecialist();
                 var armour_data = unit.get_armour_data();
                 var is_dreadnought = false;
@@ -183,7 +185,7 @@ function scr_player_combat_weapon_stacks() {
                 }
 
                 var j=0,good=0,open=0;// Counts the number and types of marines within this object
-                for (j=1;j<=40;j++){
+                for (j=0;j<=40;j++){
                     if (dudes[j]=="") and (open==0){
                         open=j;// Determine if vehicle here
 
@@ -258,7 +260,7 @@ function scr_player_combat_weapon_stacks() {
                     if (weapon_check!=""){
                         weapon=gear_weapon_data("weapon",weapon_check,"all", false, "standard");
                         if (is_struct(weapon)){
-                            for (j=1;j<=40;j++){
+                            for (j=0;j<=40;j++){
                                 if (wep[j]==""||wep[j]==weapon.name){
                                     add_data_to_stack(j,weapon);
                                     break;

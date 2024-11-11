@@ -4,16 +4,27 @@ enemy_max=enemy_forces;
 
 instance_activate_object(obj_enunit);
 
-if (dropping=1){
-    repeat(10){
-        var mm=instance_nearest(5000,240,obj_pnunit);
-        if (!collision_point(mm.x+10,mm.y,obj_enunit,0,1)) then with(obj_pnunit){
-            x+=10;
+if (dropping){
+    var _player_front_row=get_rightmost();
+    if (_player_front_row!="none"){
+        if (!collision_point(_player_front_row.x+10,_player_front_row.y,obj_enunit,0,1)) then with(obj_pnunit){
+            var _enemy_front =  get_leftmost(obj_enunit, false);
+            if (_enemy_front!="none"){
+                _player_front_row.x = _enemy_front.x-10;
+            }
         }
     }
     repeat(10){
         with(obj_enunit){
-            if (!collision_point(x-10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then x-=10;
+            if (!flank){
+                if (!collision_point(x-10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)){
+                    move_unit_block("west");
+                }
+            } else {
+                if (!collision_point(x+10,y,obj_pnunit,0,1)) and (!collision_point(x+10,y,obj_enunit,0,1)){
+                    move_unit_block("east");
+                }
+            }
         }
     }
 }

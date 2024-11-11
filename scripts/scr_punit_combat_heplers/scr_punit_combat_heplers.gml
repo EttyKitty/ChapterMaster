@@ -45,10 +45,11 @@ function block_has_armour(target){
 	return target.veh+target.dreads;
 }
 
-function get_leftmost(block_type=obj_pnunit){
+function get_leftmost(block_type=obj_pnunit, include_flanking=true){
 	var left_most = "none";
 	if (instance_exists(block_type)){
 		with (block_type){
+			if (!include_flanking && flank) then continue;
 			if x<=0 then continue;
 			if (men+veh+dreads<=0){
 				x=-5000;

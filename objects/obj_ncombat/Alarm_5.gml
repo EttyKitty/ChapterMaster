@@ -9,11 +9,14 @@ alarm[8]=999999;
 // show_message("Final Deaths: "+string(final_deaths));
 
 
+if (turn_count >= 50){
+    part1 = "Your forces make a fighting retreat \n"
+}
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
 if (final_deaths+final_command_deaths>0){
-    part1=$"Marines Lost: {final_deaths+final_command_deaths}";
+    part1+=$"Marines Lost: {final_deaths+final_command_deaths}";
     if (units_saved > 0){
         part1+=$" ({roles[Role.APOTHECARY]}{apothecaries_alive>1?"s":""} prevented the death of {units_saved})";
     }
@@ -28,7 +31,10 @@ if (final_deaths+final_command_deaths>0){
     part2=string_delete(part2,string_length(part2)-1,2);
     part2+=".";i=0;
     
-    if (injured>0){newline=part8;scr_newtext();}
+    if (injured>0){
+        newline=part8;
+        scr_newtext();
+    }
     newline=part1;
     scr_newtext();
     newline=part2;
