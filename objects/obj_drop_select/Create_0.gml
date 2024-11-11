@@ -161,7 +161,6 @@ alarm[1]=1;
 
 }
 
-set_zoom_to_defualt();
 
 formation = new TextSwitchButton();
 target = new TextSwitchButton();
@@ -173,6 +172,8 @@ for (var i = 0; i < 8; i++) {
     var button = new ToggleButton();
     squad_buttons[i] = button;
     button.str1 = captions[i];
+    button.x1 = 553 + round((i % 4) * 96);
+    button.y1 = 555 + floor(i / 4) * 32;
     button.text_halign = fa_center;
     button.text_color = CM_GREEN_COLOR;
     button.button_color = CM_GREEN_COLOR;

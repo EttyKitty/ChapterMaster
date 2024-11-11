@@ -206,10 +206,13 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
 }
 
 function ToggleButton() constructor {
-    pos_x = 0;
-    pos_y = 0;
+    x1 = 0;
+    y1 = 0;
+	x2 = 0;
+	y2 = 0;
     str1 = "";
     width = 0;
+	height = 0;
     state_alpha = 1;
     hover_alpha = 1;
     active = true;
@@ -217,9 +220,19 @@ function ToggleButton() constructor {
     text_color = c_gray;
     button_color = c_gray;
 
+    update = function () {
+        if (width == 0) {
+            width = string_width(str1) + 4;
+        }
+        if (height == 0) {
+            height = string_height(str1) + 4;
+        }
+        x2 = x1 + width;
+        y2 = y1 + height;
+    };
+
     hover = function() {
-        var str1_h = string_height(str1);
-        return (mouse_x >= pos_x-2 && mouse_x <= pos_x+width+1 && mouse_y >= pos_y-4 && mouse_y <= pos_y+str1_h+1);
+        return (scr_hit(x1, y1, x2, y2));
     };
 
     clicked = function() {
@@ -236,12 +249,12 @@ function ToggleButton() constructor {
     draw = function() {
         var str1_h = string_height(str1);
         var text_padding = width * 0.03;
-        var text_x = pos_x + text_padding;
-        var text_y = pos_y + text_padding;
+        var text_x = x1 + text_padding;
+        var text_y = y1 + text_padding;
         var total_alpha;
 
         if (text_halign == fa_center) {
-            text_x = pos_x + (width / 2);
+            text_x = x1 + (width / 2);
         }
 
         if (!active){
@@ -257,7 +270,7 @@ function ToggleButton() constructor {
         }
 
         total_alpha = state_alpha * hover_alpha;
-        draw_rectangle_color_simple(pos_x, pos_y, pos_x + width, pos_y + str1_h, 1, button_color, total_alpha);
+        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
         draw_set_halign(text_halign);
         draw_set_valign(fa_top);
         draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
@@ -267,8 +280,8 @@ function ToggleButton() constructor {
 }
 
 function SwitchButton() constructor {
-    pos_x = 0;
-    pos_y = 0;
+    x1 = 0;
+    y1 = 0;
     str1 = "";
     alpha = 1;
     click_alpha = 1;
@@ -276,7 +289,7 @@ function SwitchButton() constructor {
     hover = function() {
         var str1_w = string_width(str1);
         var str1_h = string_height(str1);
-        return (mouse_x >= pos_x-2 && mouse_x <= pos_x+str1_w+1 && mouse_y >= pos_y-4 && mouse_y <= pos_y+str1_h+1);
+        return (mouse_x >= x1-2 && mouse_x <= x1+str1_w+1 && mouse_y >= y1-4 && mouse_y <= y1+str1_h+1);
     };
     clicked = function() {
         if (hover() && mouse_check_button_pressed(mb_left)) {
@@ -306,17 +319,17 @@ function SwitchButton() constructor {
         }
         draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
         draw_set_color(c_green);
-        draw_rectangle(pos_x-2, pos_y-4, pos_x+str1_w+1, pos_y+str1_h+1,1);
+        draw_rectangle(x1-2, y1-4, x1+str1_w+1, y1+str1_h+1,1);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
-        draw_text(pos_x, pos_y,str1);
+        draw_text(x1, y1,str1);
         draw_set_alpha(1);
     };
 }
 
 function TextSwitchButton() constructor {
-    pos_x = 0;
-    pos_y = 0;
+    x1 = 0;
+    y1 = 0;
     str1 = "";
     str2 = "";
     alpha = 1;
@@ -325,7 +338,7 @@ function TextSwitchButton() constructor {
     hover = function() {
         var str1_w = string_width(str1);
         var str2_w = string_width(str2);
-        return (mouse_x >= pos_x+str1_w+5 && mouse_x <= pos_x+str1_w+str2_w+7 && mouse_y >= pos_y-1 && mouse_y <= pos_y + string_height(str2)+1);
+        return (mouse_x >= x1+str1_w+5 && mouse_x <= x1+str1_w+str2_w+7 && mouse_y >= y1-1 && mouse_y <= y1 + string_height(str2)+1);
     };
     clicked = function() {
         if (hover() && mouse_check_button_pressed(mb_left)) {
@@ -343,7 +356,7 @@ function TextSwitchButton() constructor {
     draw = function() {
         var str1_w = string_width(str1);
         var str2_w = string_width(str2);
-        draw_text(pos_x, pos_y, str1);
+        draw_text(x1, y1, str1);
         if (hover()) {
             if (alpha > 0.8) alpha -= 0.02; // Decrease alpha when hovered
         } else {
@@ -351,8 +364,8 @@ function TextSwitchButton() constructor {
         }
         draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
         draw_set_color(c_green);
-        draw_rectangle(pos_x+str1_w+5, pos_y-1, pos_x+str1_w+str2_w+7, pos_y+string_height(str2)+1,1);
-        draw_text(pos_x+str1_w+6, pos_y,str2);
+        draw_rectangle(x1+str1_w+5, y1-1, x1+str1_w+str2_w+7, y1+string_height(str2)+1,1);
+        draw_text(x1+str1_w+6, y1,str2);
         draw_set_alpha(1);
     };
 }
