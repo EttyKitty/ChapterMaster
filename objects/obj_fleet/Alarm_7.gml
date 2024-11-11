@@ -26,7 +26,7 @@ yeehaw1.frigate_number=max(frigate,0);
 yeehaw1.escort_number=max(escort,0);
 yeehaw1.alarm[6]=1;// Check for low health ships
 
-var op,remove,ii,killer,killer_tg;op=0;remove=0;killer=0;killer_tg="";ii=-50;
+var op,ii,killer,killer_tg;op=0;killer=0;killer_tg=0;ii=-50;
 
 
 
@@ -111,18 +111,17 @@ if (killer>0){
     if (obj_controller.loyalty>=50) and (obj_controller.loyalty<70) then obj_controller.last_world_inspection-=20;
     if (obj_controller.loyalty<50) then scr_loyalty("Inquisitor Killer","+");
     
-    var msg="",msg2="",i=0,remove=0;
-    remove=killer_tg;
-    if (killer_tg>0){
+    var msg="",msg2="",i=0;
+    if (killer_tg > 0){
         var inquis_name = obj_controller.inquisitor[killer_tg];
         msg+=$"Inquisitor {inquis_name} has been killed!";
         msg2=$"Inquisitor {inquis_name}";
     }
-    if (obj_controller.inquisitor_type[remove]="Ordo Hereticus") then scr_loyalty("Inquisitor Killer","+");
+    if (obj_controller.inquisitor_type[killer_tg]=="Ordo Hereticus") then scr_loyalty("Inquisitor Killer","+");
     
-    array_delete(obj_controller.inquisitor_gender, remove,1);
-    array_delete(obj_controller.inquisitor_type, remove,1);
-    array_delete(obj_controller.inquisitor, remove,1);
+    array_delete(obj_controller.inquisitor_gender, killer_tg,1);
+    array_delete(obj_controller.inquisitor_type, killer_tg,1);
+    array_delete(obj_controller.inquisitor, killer_tg,1);
 
     array_push(obj_controller.inquisitor_gender, choose(0,0,0,1,1,1,1));
     array_push(obj_controller.inquisitor_type, choose("Ordo Malleus","Ordo Xenos","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus"));
