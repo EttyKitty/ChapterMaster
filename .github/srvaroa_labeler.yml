@@ -1,0 +1,22 @@
+version: 1
+appendOnly: true
+labels:
+- label: "PR: Feature"
+  title: "(feat|feature|new|add)"
+  body: "(feat|feature|new|add)"
+
+- label: "PR: Fix"
+  title: "(fix|repair)"
+  body: "(fix|repair)"
+
+- label: "PR: Refactor"
+  title: "(refactor|ref)"
+  body: "(refactor|ref)"
+
+- label: "PR: Performance"
+  title: "(perf|performance)"
+  body: "(perf|performance)"
+
+- label: "PR: Major Feat!"
+  size:
+    above: 800
