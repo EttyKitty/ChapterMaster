@@ -554,9 +554,6 @@ function scr_initialize_custom() {
 	man_size = 0;
 	psy_powers = obj_creation.discipline;
 
-	strin = string(obj_creation.adv[1]) + string(obj_creation.adv[2]) + string(obj_creation.adv[3]) + string(obj_creation.adv[4]);
-	strin2 = string(obj_creation.dis[1]) + string(obj_creation.dis[2]) + string(obj_creation.dis[3]) + string(obj_creation.dis[4]);
-
 	progenitor_disposition = obj_creation.disposition[1];
 	astartes_disposition = obj_creation.disposition[6];
 	imperium_disposition = obj_creation.disposition[2];
@@ -805,9 +802,6 @@ function scr_initialize_custom() {
 	eighths = 0;
 	ninths = 0;
 	tenths = 0;
-
-	strin = obj_creation.adv[1] + obj_creation.adv[2] + obj_creation.adv[3] + obj_creation.adv[4];
-	strin2 = obj_creation.dis[1] + obj_creation.dis[2] + obj_creation.dis[3] + obj_creation.dis[4];
 
 	preomnor = obj_creation.preomnor;
 	voice = obj_creation.voice;
@@ -2513,8 +2507,7 @@ function scr_initialize_custom() {
 	}
 	mobi[company, 1] = mobi[100, 2];
 	chapter_master.alter_equipment(chapter_master_equip, false, false, "master_crafted")
-	//TODO not sure why the strin method is ever used? will investigate and replace later
-	if (string_count("Paragon", strin) > 0) then chapter_master.add_trait("paragon")
+	if (scr_has_adv("Paragon")) then chapter_master.add_trait("paragon")
 	chapter_master.marine_assembling();
 
 	//TODO All heads of specialties data should be in chapter data
@@ -2910,7 +2903,7 @@ function scr_initialize_custom() {
 		spawn_unit = TTRPG[company][k]
 		spawn_unit.marine_assembling();
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 5] != "") then mobi[company][k] = mobi[101, 5];
 		if (armour[company][k] = "Terminator Armour") or(armour[company][k] = "Tartaros") {
@@ -2931,7 +2924,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = "Storm Bolter";
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 14]
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 14] != "") then mobi[company][k] = mobi[101, 14];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2950,7 +2943,7 @@ function scr_initialize_custom() {
 		wep2[company][k] = "";
 		armour[company][k] = "Terminator Armour";
 		gear[company][k] = gear[101, 15];
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 		if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2969,7 +2962,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = wep2[101, 15];
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 15];
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -2990,7 +2983,7 @@ function scr_initialize_custom() {
 			wep1[company][k] = wep1[101, 17];
 			wep2[company][k] = choose_weighted(weapon_weighted_lists.pistols);
 			armour[company][k] = "Terminator Armour";
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 			if (mobi[101, 15] != "") then mobi[company][k] = mobi[101, 15];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -3039,7 +3032,7 @@ function scr_initialize_custom() {
 			wep2[company][k] = "Storm Bolter";
 			armour[company][k] = "Terminator Armour";
 			gear[company][k] = gear[101, 16];
-			if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+			if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 			if (terminator <= 0) then armour[company][k] = "Artificer Armour";
 			if (mobi[101, 16] != "") then mobi[company][k] = mobi[101, 16];
 			if (armour[company][k] = "Terminator") or(armour[company][k] = "Tartaros") then man_size += 1;
@@ -3057,7 +3050,7 @@ function scr_initialize_custom() {
 		wep1[company][k] = "Company Standard";
 		wep2[company][k] = "Storm Bolter";
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (mobi[101, 5] != "") then mobi[company][k] = mobi[101, 5];
 		if (armour[company][k] = "Terminator Armour") or(armour[company][k] = "Tartaros") {
@@ -3077,7 +3070,7 @@ function scr_initialize_custom() {
 		wep2[company][k] = "Storm Bolter";
 		gear[company][k] = gear[101, 7];
 		armour[company][k] = "Terminator Armour";
-		if (string_count("Crafter", strin) > 0) then armour[company][k] = "Tartaros";
+		if (scr_has_adv("Crafters")) then armour[company][k] = "Tartaros";
 		if (terminator <= 0) then armour[company][k] = "MK6 Corvus";
 		if (global.chapter_name == "Dark Angels"){
 			wep1[company][k] = "Heavy Thunder Hammer";
@@ -4000,7 +3993,7 @@ function scr_initialize_custom() {
 			obj_ini.artifact_identified[last_artifact] = 0;
 			*/
 
-	if (string_count("Sieged", strin2) > 0) {
+	if (scr_has_disadv("Sieged")) {
 		scr_add_item("Narthecium", 4);
 		scr_add_item(wep1[101, 15], 4);
 		scr_add_item(wep2[101, 15], 4);
@@ -4029,7 +4022,7 @@ function scr_initialize_custom() {
 		scr_add_item("Power Weapon", 12);
 		scr_add_item("Rosarius", 4);
 	}
-	if (string_count("Sieged", strin2) = 0) {
+	if (!scr_has_disadv("Sieged")) {
 		scr_add_item("Dreadnought", 6);
 		scr_add_item("Close Combat Weapon", 6);
 	}
@@ -4043,13 +4036,13 @@ function scr_initialize_custom() {
 	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)>0) then equipment_number[1]=20;
 	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)=0) then equipment_number[2]=20;
 
-	if (string_count("Crafter", strin) > 0) and(string_count("Enthusi", strin) > 0) {
+	if (scr_has_adv("Crafters")) && (scr_has_adv("Melee Enthusiasts")) {
 		eqi += 1;
 		equipment[eqi] = "MK3 Iron Armour";
 		equipment_number[eqi] = round(random_range(2, 12));
 		equipment_type[eqi] = "armour";
 	}
-	if (string_count("Crafter", strin) > 0) and(string_count("Enthusi", strin) = 0) {
+	if (scr_has_adv("Crafters")) && (!scr_has_adv("Melee Enthusiasts")) {
 		eqi += 1;
 		equipment[eqi] = "MK4 Maximus";
 		equipment_number[eqi] = round(random_range(3, 18));

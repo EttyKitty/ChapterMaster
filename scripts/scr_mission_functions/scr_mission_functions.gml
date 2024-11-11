@@ -201,7 +201,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         }
         for (var i=0;i<array_length(_hunters);i++){
         	_unit = _hunters[i];
-			_unit_pass = _tester.standard_test(_unit, weapon_skill,10, "beast");
+			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, "beast");
 			if (_unit_pass[0]){
 				if (!_success) then _unit_pass=true;
 			}
@@ -209,7 +209,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 				_unit.add_trait("beast_slayer");
 				_unit_report_string += $"{_unit.name_role()} Has gained the trait {global.trait_list.beast_slayer.display_name}\n";
 			} else {
-				var _tough_check = _unit_pass = _tester.standard_test(_unit, constitution,unit.luck);
+				var _tough_check = _unit_pass = _tester.standard_test(_unit, "constitution",unit.luck);
 				if (!_tough_check[0]){
 					if (_tough_check[1]<-10){
 						_unit_report_string += $"{_unit.name_role()} Was mauled to death\n";
@@ -226,6 +226,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 					}
 				}
 			}
+			_unit.job="none"
         }
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."

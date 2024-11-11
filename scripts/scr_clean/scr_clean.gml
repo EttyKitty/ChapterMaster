@@ -123,11 +123,11 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     minus = round(minus * (1 - damage_resistance));
                 }
                 if (minus < 0 && hostile_weapon == "Fleshborer") minus = 1.5;
-                if (hostile_weapon == "Web Spinner") {
+                /* if (hostile_weapon == "Web Spinner") {
                     var webr = floor(random(100)) + 1;
                     var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
                     minus = (webr <= chunk) ? 5000 : 0;
-                }
+                } */
                 marine.add_or_sub_health(-minus);
 
                 // Check if marine is dead
