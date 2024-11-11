@@ -1,4 +1,6 @@
-
+//
+// I think this script is used to count local forces. l_ meaning local.
+//
 
 l_master=0;
 l_honor=0;
