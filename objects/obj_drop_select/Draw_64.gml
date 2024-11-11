@@ -5,7 +5,21 @@ if __b__ {
     if __b__ {
         __b__ = action_if_variable(purge, 0, 0);
         if __b__ {
-            draw_sprite(spr_popup_large, 1, 534, 201);
+            var _gui_width = camera_get_view_width(view_camera[0]);
+            var _gui_height = camera_get_view_height(view_camera[0]);
+        
+            w = 660;
+            h = 520;
+
+            // Calculate the center position
+            var _x_center = (_gui_width / 2) - (w / 2);
+            var _y_center = (_gui_height / 2) - (h / 2);
+        
+            x = _x_center
+            y = _y_center;
+
+            draw_sprite_stretched(spr_data_slate, 1, _x_center, _y_center, w, h);
+
             draw_set_halign(fa_center);
             draw_set_font(fnt_40k_30b);
 

@@ -665,6 +665,7 @@
     {"id":{"name":"spr_diplomacy_dae","path":"sprites/spr_diplomacy_dae/spr_diplomacy_dae.yy",},},
     {"id":{"name":"sprite267","path":"sprites/sprite267/sprite267.yy",},},
     {"id":{"name":"spr_mk4_left_arm","path":"sprites/spr_mk4_left_arm/spr_mk4_left_arm.yy",},},
+    {"id":{"name":"scr_sprite_functions","path":"scripts/scr_sprite_functions/scr_sprite_functions.yy",},},
     {"id":{"name":"spr_master_splash","path":"sprites/spr_master_splash/spr_master_splash.yy",},},
     {"id":{"name":"spr_saveload","path":"sprites/spr_saveload/spr_saveload.yy",},},
     {"id":{"name":"spr_sw_mk5_helm","path":"sprites/spr_sw_mk5_helm/spr_sw_mk5_helm.yy",},},
