@@ -6,6 +6,7 @@ changelog:
       - "PR: Docs"
       - "PR: Code Style"
       - "PR: Chore"
+      - "PR: CI"
   categories:
     - title: Possibly Breaking Changes
       labels:
