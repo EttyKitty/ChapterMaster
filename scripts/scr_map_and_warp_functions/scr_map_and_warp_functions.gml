@@ -137,8 +137,12 @@ function draw_warp_lanes(){
 			var hit_box = [route_coords[0]+dist_x-(warp_width/2),route_coords[1]+dist_y-(warp_height/2), route_coords[0]+dist_x+(warp_width/2) ,route_coords[1]+dist_y+(warp_height/2) ];
 			
 			var allow_tooltips = (!instance_exists(obj_star_select))
+
 			if (allow_tooltips && instance_exists(obj_fleet_select)){
-				allow_tooltips = !obj_fleet_select.currently_entered;
+
+				var mouse_consts = return_mouse_consts();
+
+				allow_tooltips = !obj_fleet_select.currently_entered || (mouse_consts[0] - __view_get( e__VW.XView, 0 ) > 300);
 			}
 			var warp_route_tooltip = "Major warp route to {0} (x4 travel speed for warp capable crafts)\n\nHold Shift and click Left Mouse Button to see destination.";
 			if (scr_hit(hit_box)){
