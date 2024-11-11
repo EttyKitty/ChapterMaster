@@ -54,7 +54,7 @@ if (arright=false) then formation_current=formation_possible[1];
 // show_message("Star: "+string(p_target.name)+", Planet: "+string(planet_number));
 
 var unit;
-for (var co = 1; co <= 10; co++) {
+for (var co = 0; co <= 10; co++) {
     for (var i = 0; i <= 300; i++) {
         if (i <= 100) {
             if (obj_ini.veh_loc[co][i] = p_target.name) && (obj_ini.veh_wid[co][i] = planet_number) && (attack = 1) {
