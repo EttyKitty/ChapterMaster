@@ -268,13 +268,13 @@ try {
     
     
     if (turn_count < 20){
-        if (defeat=0) and (threat>=4) then scr_recent("battle_victory",string(battle_loc)+" "+scr_roman(battle_id),enemy);
+        if (defeat=0) and (threat>=4) then scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}",enemy);
     
     
     
-        if (defeat=1) and (final_deaths+final_command_deaths>=10) then scr_recent("battle_defeat",string(enemy),final_deaths+final_command_deaths);
+        if (defeat=1) and (final_deaths+final_command_deaths>=10) then scr_recent("battle_defeat", $"{enemy}, {final_deaths+final_command_deaths}");
     } else {
-        scr_recent("battle_defeat",string(enemy),final_deaths+final_command_deaths);
+        scr_recent("battle_defeat",$"{enemy}, {final_deaths+final_command_deaths}");
     }
     
     
