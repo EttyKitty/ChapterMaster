@@ -386,5 +386,6 @@ function group_selection(group, selection_data){
 		}
 	} catch(_exception) {
 	handle_exception(_exception);
+	scr_toggle_manage();//handle and send player back to map
 	}
 }
