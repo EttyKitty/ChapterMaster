@@ -265,6 +265,7 @@ function calculate_action_speed(fleet = "none", selected = false) {
 		}
 	} catch (_exception) {
 		handle_exception(_exception);
+		return 200;
 	}
 }
 
