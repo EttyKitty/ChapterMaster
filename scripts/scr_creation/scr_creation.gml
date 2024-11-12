@@ -77,7 +77,7 @@ function scr_creation(argument0) {
 	                disposition[3]-=(6-cooperation);
 	                disposition[2]-=(6-cooperation)*2;
 	            }
-            
+            //TODO encode this logic into advantage/disadvantage structs to be more maintainable and less hardcoded
 	            var ahuh,k;ahuh=0;k=0;
 	            repeat(8){k+=1;if (adv[k]="Crafters") then ahuh=1;}
 	            if (ahuh=1) then disposition[3]+=2;ahuh=0;k=0;
