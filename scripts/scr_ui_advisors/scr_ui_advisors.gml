@@ -398,55 +398,55 @@ function scr_ui_advisors() {
 
         // draw_set_alpha(1);if (obj_controller.gene_seed<=0) or (obj_ini.zygote=1) then draw_set_alpha(0.5);
 
-        if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
-        draw_set_alpha(1);
-        draw_set_color(c_black);
-        draw_text(xx + 567, yy + 783, string_hash_to_newline("Schedule Event"));
+        // if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
+        // draw_set_color(c_gray);
+        // draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
+        // draw_set_alpha(1);
+        // draw_set_color(c_black);
+        // draw_text(xx + 567, yy + 783, string_hash_to_newline("Schedule Event"));
 
-        if (menu != 12.1) and(fest_sid + fest_wid = 0) and(mouse_x >= xx + 560) and(mouse_y >= yy + 780) and(mouse_x < xx + 682) and(mouse_y < yy + 805) {
-            draw_set_alpha(0.2);
-            draw_set_color(c_gray);
-            draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
+        // if (menu != 12.1) and(fest_sid + fest_wid = 0) and(mouse_x >= xx + 560) and(mouse_y >= yy + 780) and(mouse_x < xx + 682) and(mouse_y < yy + 805) {
+        //     draw_set_alpha(0.2);
+        //     draw_set_color(c_gray);
+        //     draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
 
-            if (mouse_left = 1) and(cooldown <= 0) {
-                menu = 12.1;
-                var dro = 0;
-                dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
-                dro.target = "event_type";
-                dro = instance_create(xx + 1100, yy + 183, obj_dropdown_sel);
-                dro.target = "event_loc";
-                dro.width = 186;
-                dro = instance_create(xx + 1088, yy + 264, obj_dropdown_sel);
-                dro.target = "event_lavish";
-                dro = instance_create(xx + 1041, yy + 377, obj_dropdown_sel);
-                dro.target = "event_display";
-                dro = instance_create(xx + 1041, yy + 433, obj_dropdown_sel);
-                dro.target = "event_repeat";
-                dro = instance_create(xx + 1325, yy + 433, obj_dropdown_sel);
-                dro.target = "event_honor";
+        //     if (mouse_left = 1) and(cooldown <= 0) {
+        //         menu = 12.1;
+        //         var dro = 0;
+        //         dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
+        //         dro.target = "event_type";
+        //         dro = instance_create(xx + 1100, yy + 183, obj_dropdown_sel);
+        //         dro.target = "event_loc";
+        //         dro.width = 186;
+        //         dro = instance_create(xx + 1088, yy + 264, obj_dropdown_sel);
+        //         dro.target = "event_lavish";
+        //         dro = instance_create(xx + 1041, yy + 377, obj_dropdown_sel);
+        //         dro.target = "event_display";
+        //         dro = instance_create(xx + 1041, yy + 433, obj_dropdown_sel);
+        //         dro.target = "event_repeat";
+        //         dro = instance_create(xx + 1325, yy + 433, obj_dropdown_sel);
+        //         dro.target = "event_honor";
 
-                dro = instance_create(xx + 1325, yy + 525, obj_dropdown_sel);
-                dro.target = "event_public";
+        //         dro = instance_create(xx + 1325, yy + 525, obj_dropdown_sel);
+        //         dro.target = "event_public";
 
-                fest_type = "Great Feast";
-                fest_star = "";
-                fest_sid = 0;
-                fest_wid = 0;
+        //         fest_type = "Great Feast";
+        //         fest_star = "";
+        //         fest_sid = 0;
+        //         fest_wid = 0;
 
-                fest_planet = (obj_ini.fleet_type == ePlayerBase.home_world) ? 1 : -1;
+        //         fest_planet = (obj_ini.fleet_type == ePlayerBase.home_world) ? 1 : -1;
 
-                fest_lav = 0;
-                fest_locals = 0;
-                fest_feature1 = 1;
-                fest_feature2 = 0;
-                fest_feature3 = 0;
-                fest_display = 0;
-                fest_repeats = 1;
+        //         fest_lav = 0;
+        //         fest_locals = 0;
+        //         fest_feature1 = 1;
+        //         fest_feature2 = 0;
+        //         fest_feature3 = 0;
+        //         fest_display = 0;
+        //         fest_repeats = 1;
 
-            }
-        }
+        //     }
+        // }
         draw_set_alpha(1);
         draw_set_font(fnt_40k_14);
 
