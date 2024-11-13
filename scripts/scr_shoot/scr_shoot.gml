@@ -139,37 +139,32 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
 				if (damage_per_weapon = 0) then damage_per_weapon = shots_fired * doom;
 
-				if (hit_number > 0) and(melee_or_ranged != "wall") and(instance_exists(target_object)) {
-					if (wep_owner[weapon_index_position] = "assorted") {
-						target_object.hostile_shooters = 999;
-					} else {
-						target_object.hostile_shooters = 1;
-					}
-					hostile_damage = damage_per_weapon / hit_number;
+				if (hit_number > 0 && instance_exists(target_object)) {
 					hostile_weapon = wep[weapon_index_position];
-					hostile_type = 0;
 					hostile_range = range[weapon_index_position];
 					hostile_splash = attack_count_mod;
-					if (hostile_splash = 1) then hostile_damage += attack_count_mod * 3;
+					hostile_damage = (hostile_splash == 1) ? attack_count_mod * 3 : 0;
+					hostile_damage += damage_per_weapon / hit_number;
+					if (melee_or_ranged == "wall") {
+						var dest = 0;
 
-					scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+						hostile_damage -= target_object.ac[1];
+						hostile_damage = max(0, hostile_damage);
+						hostile_damage = round(hostile_damage) * hit_number;
+						target_object.hp[1] -= hostile_damage;
+						if (target_object.hp[1] <= 0) dest = 1;
+						obj_nfort.hostile_weapons = hostile_weapon;
+						obj_nfort.hostile_shots = hit_number;
+						obj_nfort.hostile_damage = hostile_damage;
+
+						scr_flavor2(dest, "wall", hostile_range, hostile_weapon, hit_number, hostile_splash);
+					} else {
+						target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
+						hostile_type = 0;
+
+						scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+					}
 				}
-
-				if (hit_number > 0) and(melee_or_ranged = "wall") and(instance_exists(target_object)) {
-					var dam2, totes_dam, dest;
-					dest = 0;
-					dam2 = (damage_per_weapon / hit_number) - target_object.ac[1];
-					if (dam2 < 0) then dam2 = 0;
-					totes_dam = round(dam2) * hit_number;
-					target_object.hp[1] -= dam2;
-					hostile_weapon = wep[weapon_index_position];
-					hostile_range = range[weapon_index_position];
-					hostile_damage = dam2;
-
-					if (target_object.hp[1] <= 0) then dest = 1;
-					scr_flavor2(dest, "wall", hostile_range, hostile_weapon, hit_number, hostile_splash);
-				}
-
 			}
 		}
 
