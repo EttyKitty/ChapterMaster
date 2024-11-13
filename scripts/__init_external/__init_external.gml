@@ -18,7 +18,10 @@ function __init_external() {
     if (!directory_exists("logs")) {
         directory_create("logs");
     }
-    var _log_file = file_text_open_write($"logs/last_messages.log");
+
+    #macro PATH_last_messages $"logs/last_messages.log"
+
+    var _log_file = file_text_open_write(PATH_last_messages);
     file_text_close(_log_file);
 
     global.build_date = "unknown build";

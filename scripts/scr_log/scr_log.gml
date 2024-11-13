@@ -4,7 +4,7 @@
 function log_into_file(_message) {
     if (string_length(_message) > 0) {
         var _entry = string(_message);
-        var _date_time = $"{START_DATE_TIME_1}";
+        var _date_time = $"{DATE_TIME_1}";
         var _log_file = file_text_open_write("logs/" + $"{_date_time}_error.log");
     
         file_text_write_string(_log_file, _entry);
