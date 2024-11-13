@@ -37,7 +37,7 @@ if (loading=1){
         if (target.space_hulk=1) then exit;
     }
 }
-var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select)) and (!obj_controller.cooldown);
+var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
 if (click_accepted) {
     if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
@@ -103,7 +103,6 @@ if (click_accepted) {
                 obj_controller.sel_system_y=0;
                 obj_controller.selecting_planet=0;
                 obj_controller.popup=0;
-                obj_controller.cooldown=0;
                 instance_destroy();
             }
         }
@@ -393,8 +392,7 @@ if (obj_controller.selecting_planet!=0){
                     draw_set_color(0);
                     draw_set_alpha(0.2);
                     draw_rectangle(xx+481,yy+280,xx+716,yy+298,0);
-                    if (obj_controller.cooldown<=0) and (scr_click_left()) and (obj_controller.requisition>=improve_cost){
-                        obj_controller.cooldown=8000;
+                    if (scr_click_left()) and (obj_controller.requisition>=improve_cost){
                         obj_controller.requisition-=improve_cost;
                         target.p_fortified[current_planet]+=1;
                         
@@ -774,7 +772,6 @@ if (debug){
     
     if (!scr_hit([36,174,337,455]) && scr_click_left()){
         debug=0;
-        obj_controller.cooldown=8000;
         exit;
     }
 
