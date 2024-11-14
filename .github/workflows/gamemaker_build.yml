@@ -12,7 +12,7 @@ on:
         default: true
     outputs:
       suffix:
-        value: ${{ jobs.build.outputs.build_time }}
+        value: ${{ jobs.build.outputs.suffix }}
 jobs:
   build:
     name: Build
@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
+
       - name: Set date-time and version info
         id: version_info
         shell: pwsh
@@ -31,9 +32,16 @@ jobs:
           $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
   
           # Set the version number (this could be dynamic or hardcoded)
-          $Version = "1.0.0"  # You can change this version to be dynamic if needed
           $BuildDate = $date_time
           $CommitHash = git rev-parse --short HEAD
+
+          if ($env:INPUT_DEVELOPMENT -eq "true") {
+            $Version = "Development"
+          } else {
+            # Use the tag if development is false
+            $Tag = $(git describe --tags --abbrev=0) # Get the latest Git tag
+            $Version = $Tag
+          }
   
           # Create the version.json content
           $VersionJson = @{
