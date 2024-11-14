@@ -18,7 +18,7 @@ jobs:
     name: Build
     runs-on: windows-2022
     outputs:
-      suffix: ${{ steps.date_time.outputs.date_time }}
+      suffix: ${{ steps.version_info.outputs.suffix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,6 +40,7 @@ jobs:
 
           if ("${{ inputs.development }}" -eq "true") {
             $Version = "Development"
+            echo "::set-output name=suffix::$BuildDate"
           } else {
             # Ensure all tags are fetched
             git fetch --tags
@@ -47,6 +48,7 @@ jobs:
             try {
               $Tag = "${{ github.ref_name }}"
               $Version = $Tag
+              echo "::set-output name=suffix::$Version"
             } catch {
               # If no tags exist, use the commit hash as the version
               Write-Warning "No tags found, using commit hash as version."
