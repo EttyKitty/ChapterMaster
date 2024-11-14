@@ -38,7 +38,7 @@ jobs:
           $BuildDate = $date_time
           $CommitHash = git rev-parse --short HEAD
 
-          if ($env:INPUT_DEVELOPMENT -eq "true") {
+          if ("${{ inputs.development }}" -eq "true") {
             $Version = "Development"
           } else {
             # Ensure all tags are fetched
