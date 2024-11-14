@@ -41,9 +41,17 @@ jobs:
           if ($env:INPUT_DEVELOPMENT -eq "true") {
             $Version = "Development"
           } else {
-            # Use the tag if development is false
-            $Tag = $(git describe --tags --abbrev=0) # Get the latest Git tag
-            $Version = $Tag
+            # Ensure all tags are fetched
+            git fetch --tags
+            # Try to get the latest Git tag
+            try {
+              $Tag = git describe --tags --abbrev=0
+              $Version = $Tag
+            } catch {
+              # If no tags exist, use the commit hash as the version
+              Write-Warning "No tags found, using commit hash as version."
+              $Version = $CommitHash
+            }
           }
   
           # Create the version.json content
