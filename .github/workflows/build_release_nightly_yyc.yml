@@ -4,16 +4,15 @@ on:
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
-  build:
-    name: Build and Release a Nightly version
+  prepare_build:
+    name: Prepare to Build
     runs-on: windows-2022
-    outputs:
-      built_file: ${{ steps.gamemaker_build.outputs.built_file }}
     steps:
       # Check out the repository with the GameMaker project
       - uses: actions/checkout@v4
         with:
           lfs: true
+          
       # Update the version.json file with build date and other versioning information
       - name: Set date-time and version info
         shell: pwsh
@@ -36,16 +35,16 @@ jobs:
       
           # Write the version.json to disk
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
-          
-      - id: gamemaker_build
-        name: Build
-        uses: ./.github/workflows/gamemaker_build.yml
-        with:
-          suffix: ${{ env.date_time }}
+  gamemaker_build:
+    name: Build GameMaker Project
+    needs: prepare_build
+    uses: ./.github/workflows/gamemaker_build.yml
+    with:
+      suffix: ${{ env.date_time }}
   release:
     name: Release
     runs-on: windows-2022
-    needs: build
+    needs: gamemaker_build
     steps:
       - name: Check if a nightly release exists
         id: check_nightly
@@ -77,4 +76,4 @@ jobs:
           generate_release_notes: true
           make_latest: true
           files: |
-            ${{ needs.build.outputs.built_file }}/*
+            ${{ needs.gamemaker_build.outputs.built_file }}/*
