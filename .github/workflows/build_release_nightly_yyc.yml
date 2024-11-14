@@ -27,19 +27,15 @@ jobs:
           runtime-version: 2023.11.1.160
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.ACCESS_KEY }} # 📝 To generate your Access Key, check out the Access Key section of the GameMaker Manual's Building via Command Line page: https://manual.gamemaker.io/monthly/en/#t=Settings%2FBuilding_via_Command_Line.htm
-      #
-      - id: get_date_time
-        name: Get Current Date
-        shell: pwsh
-        run: |
-          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
-          echo "date_time=$date_time" >> $env:GITHUB_ENV
       # Update the version.json file with build date and other versioning information
       - name: Update version.json
         shell: pwsh  # Use PowerShell to run the script
         run: |
           # Set the version number (this could be dynamic or hardcoded)
-          $Version = "1.0.0"
+          $Version = "Development"
+
+          # Generate current date-time directly in the format you want
+          $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
           
           # Get the short commit hash
           $CommitHash = git rev-parse --short HEAD
@@ -47,15 +43,19 @@ jobs:
           # Create the version.json content
           $VersionJson = @{
             version     = $Version
-            build_date  = ${{ env.date_time }}
+            build_date  = $BuildDate
             commit_hash = $CommitHash
           } | ConvertTo-Json
 
           # Write the version.json to disk
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
-      - name: List files in datafiles/main
+      #
+      - id: get_date_time
+        name: Get Current Date
+        shell: pwsh
         run: |
-          ls -R datafiles
+          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+          echo "date_time=$date_time" >> $env:GITHUB_ENV
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
