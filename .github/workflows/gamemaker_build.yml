@@ -13,12 +13,15 @@ on:
     outputs:
       built_file:
         value: ${{ jobs.build.outputs.built_file }}
+      build_time:
+        value: ${{ jobs.build.outputs.build_time }}
 jobs:
   build:
     name: Build
     runs-on: windows-2022
     outputs:
       built_file: ${{ steps.igor_build.outputs.out-dir }}
+      build_time: ${{ steps.date_time.outputs.date_time }}
     steps:
       - uses: actions/checkout@v4
         with:
