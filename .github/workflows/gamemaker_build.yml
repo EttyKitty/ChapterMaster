@@ -24,7 +24,15 @@ jobs:
       - id: find_yyp
         name: Find The yyp File
         run: |
+          # Search for .yyp file recursively in the repository
           $yyp = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter *.yyp
+          
+          # Check if the file was found
+          if ($yyp.Count -eq 0) {
+          Write-Error "No .yyp file found in the repository"
+          exit 1
+          }
+          # If found, output the path of the .yyp file
           Write-Output "YYP file found at: $yyp"
           "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           
