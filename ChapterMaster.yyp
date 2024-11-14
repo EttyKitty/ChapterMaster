@@ -319,7 +319,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"star.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"tau.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"readme.md","CopyToMask":-1,"filePath":"datafiles/main",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"version.json","CopyToMask":-1,"filePath":"datafiles/main",},
   ],
   "isEcma": false,
   "LibraryEmitters": [],

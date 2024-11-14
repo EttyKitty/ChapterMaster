@@ -34,16 +34,25 @@ jobs:
         run: |
           $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
           echo "date_time=$date_time" >> $env:GITHUB_ENV
-      #
-      - id: bump_build_date
-        name: Bump Build Date
-        uses: jaywcjlove/github-action-modify-file-content@main
-        with:
-          path: datafiles/main/version.json
-          openDelimiter: "BS"
-          closeDelimiter: "BE"
-          body: "${{ env.date_time }}"
-          message: "chore: update build-date."
+      # Update the version.json file with build date and other versioning information
+      - name: Update version.json
+        shell: pwsh  # Use PowerShell to run the script
+        run: |
+          # Set the version number (this could be dynamic or hardcoded)
+          $Version = "1.0.0"
+          
+          # Get the short commit hash
+          $CommitHash = git rev-parse --short HEAD
+          
+          # Create the version.json content
+          $VersionJson = @{
+            version     = $Version
+            build_date  = ${{ env.date_time }}
+            commit_hash = $CommitHash
+          } | ConvertTo-Json
+
+          # Write the version.json to disk
+          Set-Content -Path datafiles/main/version.json -Value $VersionJson
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
