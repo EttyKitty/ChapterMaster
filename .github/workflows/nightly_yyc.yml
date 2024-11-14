@@ -1,11 +1,11 @@
-name: Nightly-for-Windows-YYC
+name: Nightly-Windows-YYC
 on: 
   # push: #Uncomment this line to run the workflow on push
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
   gamemaker_build:
-    name: Build GameMaker Project
+    name: Build
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
   release:
