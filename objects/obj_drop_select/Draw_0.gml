@@ -110,10 +110,10 @@ repeat(50){                                 // Ship Forces here
         draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);// 160
         draw_set_color(c_black);draw_text_transformed(x8+2,y8,string_hash_to_newline(string(ship[e])+" ("+string(ship_use[e])+"/"+string(ship_max[e])+")"),0.8,0.8,0);
         if (point_and_click([x8, y8, x8+160, y8+16])) {
-            var onceh;onceh=0;
-            if (onceh=0) and (ship_all[e]=0){onceh=1;scr_drop_fiddle(ship_ide[e],true,e,attack);}
-            if (onceh=0) and (ship_all[e]=1){onceh=1;scr_drop_fiddle(ship_ide[e],false,e,attack);}
-            if (onceh=1) then refresh_raid=1;
+            if (ship_all[e]>-1 && ship_all[e]<2){
+                 scr_drop_fiddle(ship_ide[e],!ship_all[e],e,attack);
+                 refresh_raid=true;
+            }
         }
         y8+=18;sip+=1;
         if (y8>=yy+299+180){y8=yy+299;x8+=168;}
