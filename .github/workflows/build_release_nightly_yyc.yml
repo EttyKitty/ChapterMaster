@@ -39,7 +39,7 @@ jobs:
         name: Build
         uses: ./.github/workflows/gamemaker_build.yml
         with:
-          suffix: ${{ needs.checkout.outputs.yyp-path }}
+          suffix: ${{ env.date_time }}
           
       - name: Check if a nightly release exists
         id: check_nightly
