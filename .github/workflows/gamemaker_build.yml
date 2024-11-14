@@ -18,6 +18,8 @@ jobs:
   build:
     name: Build
     runs-on: windows-2022
+    outputs:
+      built_file: ${{ steps.igor_build.outputs.out-dir }}
     steps:
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
