@@ -32,16 +32,27 @@ jobs:
         run: |
           # Generate current date-time directly in the format you want
           $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
-          
+  
           # Set the version number (this could be dynamic or hardcoded)
           $Version = "1.0.0"  # You can change this version to be dynamic if needed
           $BuildDate = $date_time
           $CommitHash = git rev-parse --short HEAD
+  
+          # Create the version.json content
+          $VersionJson = @{
+            version     = $Version
+            build_date  = $BuildDate
+            commit_hash = $CommitHash
+          } | ConvertTo-Json
+      
+          # Write the version.json to disk
+          Set-Content -Path datafiles/main/version.json -Value $VersionJson
           
           # Set outputs for version, build date, and commit hash
           echo "::set-output name=version::$Version"
           echo "::set-output name=build_date::$BuildDate"
           echo "::set-output name=commit_hash::$CommitHash"
+
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
         name: Find The yyp File
