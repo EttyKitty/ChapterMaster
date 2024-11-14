@@ -2,10 +2,6 @@ name: Build GameMaker Project
 on:
   workflow_call:
     inputs:
-      yyp-path:
-        required: false
-        type: string
-        default: 'default/path/to/project.yyp'
       yyc:
         required: false
         type: boolean
