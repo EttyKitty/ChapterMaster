@@ -53,6 +53,9 @@ jobs:
 
           # Write the version.json to disk
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
+      - name: List files in datafiles/main
+        run: |
+          ls -R datafiles
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - id: igor_build
         name: Build with Igor
