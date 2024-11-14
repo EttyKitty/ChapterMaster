@@ -11,8 +11,6 @@ on:
         type: boolean
         default: true
     outputs:
-      built_file:
-        value: ${{ jobs.build.outputs.built_file }}
       suffix:
         value: ${{ jobs.build.outputs.build_time }}
 jobs:
@@ -20,7 +18,6 @@ jobs:
     name: Build
     runs-on: windows-2022
     outputs:
-      built_file: ${{ steps.igor_build.outputs.out-dir }}
       suffix: ${{ steps.date_time.outputs.date_time }}
     steps:
       - uses: actions/checkout@v4
@@ -77,6 +74,7 @@ jobs:
           runtime-version: 2023.11.1.160
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.ACCESS_KEY }}
+          
       # Update the version.json file with build date and other versioning information
       - id: igor_build
         name: Build with Igor
@@ -86,3 +84,10 @@ jobs:
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
           name: ChapterMaster-${{ inputs.development && inputs.development == 'true' && steps.date_time.outputs.date_time || steps.date_time.outputs.version }}-Windows.zip
           yyc: ${{ inputs.yyc }}
+          
+      # Upload built file as an artifact
+      - name: Upload built file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-file
+          path: ${{ steps.igor_build.outputs.out-dir }}
