@@ -41,6 +41,7 @@ jobs:
     name: Build GameMaker Project
     needs: prepare_build
     uses: ./.github/workflows/gamemaker_build.yml
+    secrets: inherit
     with:
       suffix: ${{ needs.prepare_build.outputs.date_time }}
   release:
