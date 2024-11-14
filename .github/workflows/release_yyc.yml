@@ -1,4 +1,4 @@
-name: Build-and-Release-Windows-YYC
+name: Release-Windows-YYC
 on: 
   push:
     tags:        
