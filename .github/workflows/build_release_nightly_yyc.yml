@@ -61,7 +61,7 @@ jobs:
           yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
           user-dir: ${{ steps.igor_setup.outputs.user-dir }}
           name: ChapterMaster-${{ env.date_time }}-Windows.zip
-          yyc: true
+          yyc: false
       - name: Check if a nightly release exists
         id: check_nightly
         run: |
