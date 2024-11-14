@@ -4,46 +4,10 @@ on:
   workflow_dispatch: #This line allows you to run the workflow manually from the GitHub Actions page
   # workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
-  prepare_build:
-    name: Prepare to Build
-    runs-on: windows-2022
-    outputs:
-      date_time: ${{ steps.set_date_time.outputs.date_time }}
-    steps:
-      # Check out the repository with the GameMaker project
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
-          
-      # Update the version.json file with build date and other versioning information
-      - name: Set date-time and version info
-        shell: pwsh
-        run: |
-          # Generate current date-time directly in the format you want
-          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
-          echo "::set-output name=date_time::$date_time"
-          
-          # Set the version number (this could be dynamic or hardcoded)
-          $Version = "Development"
-          $BuildDate = $date_time
-          $CommitHash = git rev-parse --short HEAD
-      
-          # Create the version.json content
-          $VersionJson = @{
-            version     = $Version
-            build_date  = $BuildDate
-            commit_hash = $CommitHash
-          } | ConvertTo-Json
-      
-          # Write the version.json to disk
-          Set-Content -Path datafiles/main/version.json -Value $VersionJson
   gamemaker_build:
     name: Build GameMaker Project
-    needs: prepare_build
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
-    with:
-      suffix: ${{ needs.prepare_build.outputs.date_time }}
   release:
     name: Release
     runs-on: windows-2022
@@ -73,7 +37,7 @@ jobs:
         name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster ${{ needs.prepare_build.outputs.date_time }}
+          name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
           tag_name: nightly
           prerelease: true
           generate_release_notes: true
