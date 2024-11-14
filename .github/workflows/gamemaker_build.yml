@@ -9,7 +9,16 @@ on:
       suffix:
         required: true
         type: string
-
+      development:
+        required: true
+        type: boolean
+        default: true
+    outputs:
+      built_file:
+        value: ${{ jobs.example_job.outputs.output1 }}
+      secondword:
+        description: "The second output string"
+        value: ${{ jobs.build.outputs.built_file }}
 jobs:
   build:
     name: Build
@@ -20,6 +29,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
+      - name: Set date-time and version info
+        shell: pwsh
+        run: |
+          # Generate current date-time directly in the format you want
+          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+          echo "::set-output name=date_time::$date_time"
+          
+          # Set the version number (this could be dynamic or hardcoded)
+          $Version = "Development"
+          $BuildDate = $date_time
+          $CommitHash = git rev-parse --short HEAD
+      
+          # Create the version.json content
+          $VersionJson = @{
+            version     = $Version
+            build_date  = $BuildDate
+            commit_hash = $CommitHash
+          } | ConvertTo-Json
+      
+          # Write the version.json to disk
+          Set-Content -Path datafiles/main/version.json -Value $VersionJson
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
         name: Find The yyp File
