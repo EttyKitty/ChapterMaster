@@ -36,6 +36,11 @@ jobs:
           gh release delete nightly -y --cleanup-tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download built file artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: built-file
+          path: ./build_output
       - id: create_release
         name: Create a Pre-Release and Upload the build
         uses: softprops/action-gh-release@v2.0.9
@@ -46,4 +51,4 @@ jobs:
           generate_release_notes: true
           make_latest: true
           files: |
-            ${{ needs.gamemaker_build.outputs.built_file }}/*
+            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
