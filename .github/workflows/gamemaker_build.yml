@@ -45,7 +45,7 @@ jobs:
             git fetch --tags
             # Try to get the latest Git tag
             try {
-              $Tag = git describe --tags --abbrev=0
+              $Tag = "${{ github.ref_name }}"
               $Version = $Tag
             } catch {
               # If no tags exist, use the commit hash as the version
