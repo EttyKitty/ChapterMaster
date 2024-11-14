@@ -39,7 +39,7 @@ jobs:
           
       - id: gamemaker_build
         name: Build
-        uses: ./.github/actions/gamemaker_build/action.yml
+        uses: ./.github/workflows/gamemaker_build.yml
         with:
           suffix: ${{ env.date_time }}
   release:
