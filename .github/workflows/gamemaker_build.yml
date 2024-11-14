@@ -17,6 +17,9 @@ jobs:
     outputs:
       built_file: ${{ steps.igor_build.outputs.out-dir }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp
         name: Find The yyp File
