@@ -29,11 +29,7 @@ function __init_external() {
 
     if (_parsed_json != undefined) {
         var _build_date = _parsed_json[$ "build_date"];
-        _build_date = string_replace(_build_date, "BS", "");
-        _build_date = string_replace(_build_date, "BE", "");
         var _version = _parsed_json[$ "version"];
-        _version = string_replace(_version, "VSv", "");
-        _version = string_replace(_version, "VE", "");
         global.build_date = _build_date;
         global.game_version = _version;
     }
