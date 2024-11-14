@@ -5,7 +5,7 @@ on:
       - v*.*.*
 jobs:
   gamemaker_build:
-    name: Build GameMaker Project
+    name: Build
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
     with:
