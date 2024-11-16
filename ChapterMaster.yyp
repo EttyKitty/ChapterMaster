@@ -1252,6 +1252,7 @@
     {"id":{"name":"obj_restart_vars","path":"objects/obj_restart_vars/obj_restart_vars.yy",},},
     {"id":{"name":"obj_formation_bar","path":"objects/obj_formation_bar/obj_formation_bar.yy",},},
     {"id":{"name":"obj_dropdown_sel","path":"objects/obj_dropdown_sel/obj_dropdown_sel.yy",},},
+    {"id":{"name":"Adeptus_Dominus__Chapter_Master_Theme_","path":"sounds/Adeptus_Dominus__Chapter_Master_Theme_/Adeptus_Dominus__Chapter_Master_Theme_.yy",},},
     {"id":{"name":"spr_pack_brazier3","path":"sprites/spr_pack_brazier3/spr_pack_brazier3.yy",},},
     {"id":{"name":"obj_enemy_leftest","path":"objects/obj_enemy_leftest/obj_enemy_leftest.yy",},},
     {"id":{"name":"scr_distributions","path":"scripts/scr_distributions/scr_distributions.yy",},},
