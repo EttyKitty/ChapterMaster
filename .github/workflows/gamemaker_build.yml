@@ -33,27 +33,24 @@ jobs:
         run: |
           # Generate current date-time directly in the format you want
           $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+          git fetch --tags
   
           # Set the version number (this could be dynamic or hardcoded)
           $BuildDate = $date_time
           $CommitHash = git rev-parse --short HEAD
 
+          try {
+            $Version = "${{ github.ref_name }}"
+          } catch {
+            # If no tags exist, use the commit hash as the version
+            Write-Warning "No tags found, using commit hash as version."
+            $Version = $CommitHash
+          }
+
           if ("${{ inputs.development }}" -eq "true") {
-            $Version = "Development"
             echo "::set-output name=suffix::$BuildDate"
           } else {
-            # Ensure all tags are fetched
-            git fetch --tags
-            # Try to get the latest Git tag
-            try {
-              $Tag = "${{ github.ref_name }}"
-              $Version = $Tag
-              echo "::set-output name=suffix::$Version"
-            } catch {
-              # If no tags exist, use the commit hash as the version
-              Write-Warning "No tags found, using commit hash as version."
-              $Version = $CommitHash
-            }
+            echo "::set-output name=suffix::$Version"
           }
   
           # Create the version.json content
