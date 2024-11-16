@@ -37,6 +37,8 @@ jobs:
     secrets: inherit
     needs: build_needed
     if: needs.build_needed.outputs.needed == 'true'
+    with:
+      yyc: true
 
   release:
     name: Release
