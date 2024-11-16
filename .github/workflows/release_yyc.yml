@@ -10,6 +10,7 @@ jobs:
     secrets: inherit
     with:
       development: false
+      yyc: true
   release:
     name: Release
     runs-on: windows-2022
