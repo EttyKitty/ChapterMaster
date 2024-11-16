@@ -49,8 +49,10 @@ function handle_exception(_exception, custom_title = STR_error_message_head, cus
 
     _full_message = $"{_line_break}\n";
     _full_message += non_critical ? $"Caught an Exception!" : $"Unhandled Exception!";
-    _full_message += error_marker == "" ? $"\n" : $" ({error_marker})\n";
-    _full_message += $"Game Version: {global.game_version}; Build Date: {global.build_date};\n\n";
+    _full_message += error_marker == "" ? $"\n\n" : $" ({error_marker})\n\n";
+    _full_message += $"Game Version: {global.game_version}\n"; 
+    _full_message += $"Build Date: {global.build_date};\n";
+    _full_message += $"Commit Hash: {global.commit_hash};\n\n";
     _full_message += $"{_exception.longMessage}\n\n";
     _full_message += $"Stacktrace:\n";
     _full_message += $"{_formatted_stacktrace}\n";
