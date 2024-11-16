@@ -26,6 +26,7 @@ function __init_external() {
 
     global.build_date = "unknown build";
     global.game_version = "unknown version";
+    global.commit_hash = "unknown hash";
 
     var _version_file_path = working_directory + "\\main\\version.json";
     var _parsed_json = json_to_gamemaker(_version_file_path, json_parse);
@@ -33,7 +34,17 @@ function __init_external() {
     if (_parsed_json != undefined) {
         var _build_date = _parsed_json[$ "build_date"];
         var _version = _parsed_json[$ "version"];
+        var _commit_hash = _parsed_json[$ "commit_hash"];
         global.build_date = _build_date;
+        if (string_char_at(_version, 1) != "v") {
+            if (string_count("compile/", _version) > 0 || string_count("release/", _version) > 0) {
+                _version = string_delete(_version, 1, 8);
+            }
+            _version += $"/{_commit_hash}";
+        } else {
+            _version = string_delete(_version, 1, 1);
+        }
         global.game_version = _version;
+        global.commit_hash = _commit_hash;
     }
 }
