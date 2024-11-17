@@ -10,7 +10,7 @@
   "bitRate": 192,
   "compression": 3,
   "conversionMode": 0,
-  "duration": 30.280918,
+  "duration": 30.275917,
   "parent": {
     "name": "Themes",
     "path": "folders/Sounds/Themes.yy",
