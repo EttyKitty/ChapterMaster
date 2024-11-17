@@ -210,7 +210,7 @@ function scr_fleet_advisor(){
 
                         cn.temp[118] = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
                         cn.temp[119] = "";
-                        if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = scr_ship_occupants(i);
+                        if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = ship_occupants_list(i);
                     }
                     tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
                     if (_goto_button.click()) {
