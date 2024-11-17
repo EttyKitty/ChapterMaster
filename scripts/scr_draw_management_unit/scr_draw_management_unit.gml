@@ -259,7 +259,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	        		c = managing<=10 ? managing : 0;
 					var unit = display_unit[selected];
 	
-	                if (ma_lid[selected]>0) and (ma_wid[selected]==0){
+	                if (ma_lid[selected]>-1) and (ma_wid[selected]==0){
 	                    draw_sprite(
 	                        spr_loc_icon,
 	                        unit.is_boarder ? 2 : 1,
