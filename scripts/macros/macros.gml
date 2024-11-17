@@ -4,7 +4,8 @@ function macros() {
 #macro DEFAULT_LINE_GAP -1
 #macro LB_92 "############################################################################################"
 #macro DATE_TIME_1 $"{current_day}-{current_month}-{current_year}-{current_hour}{current_minute}{current_second}"
-#macro DATE_TIME_2 $"{current_day}-{current_month}-{current_year}--{current_hour}:{current_minute}:{current_second}"
+#macro DATE_TIME_2 $"{current_day}-{current_month}-{current_year}|{current_hour}:{current_minute}:{current_second}"
+#macro DATE_TIME_3 $"{current_day}-{current_month}-{current_year} {current_hour}:{current_minute}:{current_second}"
 #macro TIME_1 $"{current_hour}:{current_minute}:{current_second}"
 
 	enum luck {

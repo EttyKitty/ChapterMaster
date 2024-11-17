@@ -40,8 +40,6 @@ function handle_exception(_exception, custom_title = STR_error_message_head, cus
     var _player_message = _popup_header + _popup_message;
     if (non_critical) then _player_message += $"\n\n\n{MSG_error_message_ps}";
 
-    show_message(_player_message);
-
     var _formatted_stacktrace = array_to_string_list(_exception.stacktrace);
     var _line_break = LB_92;
     var _full_message = "";
@@ -50,6 +48,7 @@ function handle_exception(_exception, custom_title = STR_error_message_head, cus
     _full_message = $"{_line_break}\n";
     _full_message += non_critical ? $"Caught an Exception!" : $"Unhandled Exception!";
     _full_message += error_marker == "" ? $"\n\n" : $" ({error_marker})\n\n";
+    _full_message += $"Date-Time: {DATE_TIME_3}\n"; 
     _full_message += $"Game Version: {global.game_version}\n"; 
     _full_message += $"Build Date: {global.build_date};\n";
     _full_message += $"Commit Hash: {global.commit_hash};\n\n";
@@ -61,6 +60,7 @@ function handle_exception(_exception, custom_title = STR_error_message_head, cus
     log_into_file(_full_message);
     show_debug_message(_full_message);
     clipboard_set_text(_report_title + markdown_codeblock(_full_message));
+    show_message(_player_message);
 }
 
 exception_unhandled_handler(function(_exception) {
