@@ -660,8 +660,6 @@ if (obj_controller.selecting_planet!=0){
             if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Secret_Base)) then building.lair=1;
             if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Arsenal)) then building.arsenal=1;
             if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Gene_Vault)) then building.gene_vault=1;
-            
-            
             obj_controller.temp[104]=string(scr_master_loc());
             obj_controller.menu=60;
             with(obj_star_select){instance_destroy();}
@@ -770,7 +768,7 @@ if (target!=0){
 if (debug){
     var current_planet;
     
-    if (!scr_hit([36,174,337,455]) && scr_click_left()){
+    if (!scr_hit([36,174,337,455]) && scr_click_left()) {
         debug=0;
         exit;
     }

@@ -161,19 +161,35 @@ alarm[1]=1;
 
 }
 
+camera_width = camera_get_view_width(view_camera[0]);
+camera_height = camera_get_view_height(view_camera[0]);
 
-formation = new TextSwitchButton();
-target = new TextSwitchButton();
-btn_attack = new SwitchButton();
-btn_back = new SwitchButton();
+w = 0;
+h = 0;
+x1 = 0;
+y1 = 0;
+x2 = 0;
+y2 = 0;
+
+formation = new InteractiveButton();
+target = new InteractiveButton();
+
+btn_attack = new InteractiveButton();
+btn_attack.text_color = CM_GREEN_COLOR;
+btn_attack.button_color = CM_GREEN_COLOR;
+btn_attack.width = 90;
+btn_back = new InteractiveButton();
+btn_back.str1 = "BACK";
+btn_back.text_color = CM_GREEN_COLOR;
+btn_back.button_color = CM_GREEN_COLOR;
+btn_back.width = 90;
+
 var captions = ["Tactical", "Veteran", "Assault", "Devastator", "Scout", "Terminator", "Specialist", "Wounded"];
 squad_buttons = [];
 for (var i = 0; i < 8; i++) {
     var button = new ToggleButton();
     squad_buttons[i] = button;
     button.str1 = captions[i];
-    button.x1 = 553 + round((i % 4) * 96);
-    button.y1 = 555 + floor(i / 4) * 32;
     button.text_halign = fa_center;
     button.text_color = CM_GREEN_COLOR;
     button.button_color = CM_GREEN_COLOR;

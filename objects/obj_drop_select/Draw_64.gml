@@ -1,26 +1,20 @@
-var __b__;
-__b__ = action_if_number(obj_ncombat, 0, 0);
-if __b__ {
-    __b__ = action_if_number(obj_popup, 0, 0);
-    if __b__ {
-        __b__ = action_if_variable(purge, 0, 0);
-        if __b__ {
-            var _gui_width = camera_get_view_width(view_camera[0]);
-            var _gui_height = camera_get_view_height(view_camera[0]);
-        
+if (instance_number(obj_ncombat) == 0) {
+    if (instance_number(obj_popup) == 0) {
+        if (purge == 0) {
             w = 660;
             h = 520;
+            // Center of the screen
+            var _x_center = (camera_width / 2) - (w / 2);
+            var _y_center = (camera_height / 2) - (h / 2);
+            x1 = _x_center
+            y1 = _y_center;
+            x2 = x1 + w;
+            y2 = y1 + h;
+            x3 = (x1 + x2) / 2;
+            y3 = (y1 + y2) / 2;
 
-            // Calculate the center position
-            var _x_center = (_gui_width / 2) - (w / 2);
-            var _y_center = (_gui_height / 2) - (h / 2);
-        
-            x = _x_center
-            y = _y_center;
+            draw_sprite_stretched(spr_data_slate, 1, x1, y1, w, h);
 
-            draw_sprite_stretched(spr_data_slate, 1, _x_center, _y_center, w, h);
-
-            draw_set_halign(fa_center);
             draw_set_font(fnt_40k_30b);
 
             // var xx,yy;
@@ -28,24 +22,21 @@ if __b__ {
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             var attack_type = attack ? "Attacking" : "Raiding"
-            draw_text_transformed(545, 212, $"{attack_type} ({planet_numeral_name(planet_number, p_target)} )", 0.6, 0.6, 0);
+            draw_text_transformed(x1 + 40, y1 + 40, $"{attack_type} ({planet_numeral_name(planet_number, p_target)} )", 0.6, 0.6, 0);
 
-            draw_set_color(c_gray);
             draw_set_font(fnt_40k_14);
-            draw_set_halign(fa_left);
 
             // Planet icon here
             // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
             // Formation
-            formation.x1 = 550;
-            formation.y1 = 245;
-            formation.str1 = "Formation:";
-            formation.str2 = obj_controller.bat_formation[formation_possible[formation_current]];
+            formation.x1 = x1 + 400;
+            formation.y1 = y1 + 60;
+            formation.str1 = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+            formation.update();
             formation.draw();
-            if (obj_controller.cooldown <= 0) and(formation.clicked()) {
+            if (formation.clicked()) {
                 formation_current += 1;
-                obj_controller.cooldown = 8000;
                 if (formation_possible[formation_current] = 0) then formation_current = 1;
             }
 
@@ -71,12 +62,17 @@ if __b__ {
                 draw_set_color(c_gray);
                 draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0);
                 draw_set_color(c_black);
-                draw_text_transformed(x8 + 2, y8, "Local (" + string(ship_use[e] + "/" + string(ship_max[e]) + ")"), 0.8, 0.8, 0);
-                if (point_and_click([x8, y8, x8+160, y8+16])) {
-                    var onceh;onceh=0;
-                    refresh_raid=1;
-                    if (ship_all[e]=0){add_ground=1;}
-                    if (ship_all[e]=1){add_ground=-1;}
+                draw_text_transformed(x8 + 2, y8, $"Local ({ship_use[e]}/{ship_max[e]})", 0.8, 0.8, 0);
+                if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
+                    var onceh;
+                    onceh = 0;
+                    refresh_raid = 1;
+                    if (ship_all[e] = 0) {
+                        add_ground = 1;
+                    }
+                    if (ship_all[e] = 1) {
+                        add_ground = -1;
+                    }
                 }
                 y8 += 18;
                 sip += 1;
@@ -152,12 +148,18 @@ if __b__ {
             if (raiders = 1) then sel += "1 Land Raider, ";
             draw_text_ext(550, 438, string_hash_to_newline(string(sel)), -1, 590);
 
-            draw_text(550, 527, "Selected Squads:");
-            for (var i = 0; i < 8; i++) {
+            var _squads_box = {
+                text: "Selected Squads:",
+                x1: x1 + 40,
+                y1: y2 - 200
+            };
+            draw_text(_squads_box.x1, _squads_box.y1, _squads_box.text);
+            for (var i = 0; i < array_length(squad_buttons); i++) {
+                squad_buttons[i].x1 = (_squads_box.x1) + round((i % 4) * 96);
+                squad_buttons[i].y1 = (_squads_box.y1 - 90) + floor(i / 4) * 28;
                 squad_buttons[i].update();
                 squad_buttons[i].draw();
-                if (squad_buttons[i].clicked()) and(obj_controller.cooldown <= 0) {
-                    obj_controller.cooldown = 8000;
+                if (squad_buttons[i].clicked()) {
                     switch (i) {
                     case 0:
                         raid_tact = !raid_tact;
@@ -196,7 +198,7 @@ if __b__ {
             if (all_sel = 1) then yar = 3;
             draw_sprite(spr_creation_check, yar, 770, 270);
             yar = 0;
-            if (point_and_click([770, 270, 770+32, 270+32])) {
+            if (point_and_click([770, 270, 770 + 32, 270 + 32])) {
                 var onceh;
                 onceh = 0;
                 once = 0;
@@ -334,9 +336,8 @@ if __b__ {
             var q = 0;
             repeat(20) {
                 q += 1;
-                if (target.clicked() && force_present[q] != 0 && obj_controller.cooldown <= 0) {
+                if (target.clicked() && force_present[q] != 0) {
                     if (attacking != force_present[q] && force_present[q] > 0) {
-                        obj_controller.cooldown = 8000;
                         attacking = force_present[q];
                     }
                 }
@@ -346,28 +347,25 @@ if __b__ {
             // draw_text(xx+14,yy+352,"Selection: "+string(smin)+"/"+string(smax));
 
             // Back / Purge buttons
-            btn_back.x1 = 994;
-            btn_back.y1 = 594;
-            btn_back.str1 = "BACK";
+            btn_back.x1 = x3 - 80;
+            btn_back.y1 = y2 - 60;
+            btn_back.update();
             btn_back.draw();
-            if (btn_back.clicked() and(obj_controller.cooldown <= 0)) {
-                obj_controller.cooldown = 8000;
+            if (btn_back.clicked()) {
                 menu = 0;
                 purge = 0;
                 instance_destroy();
             }
 
             // Attack / Raid buttons
-            btn_attack.x1 = 1054;
-            btn_attack.y1 = 594;
+            btn_attack.x1 = btn_back.x1 + btn_attack.width + 10;
+            btn_attack.y1 = btn_back.y1;
             if (attack = 0) then btn_attack.str1 = "RAID!";
             if (attack = 1) then btn_attack.str1 = "ATTACK!";
+            btn_attack.active = (string_length(sel) > 0 && race_quantity > 0);
+            btn_attack.update();
             btn_attack.draw();
-
-            btn_attack.locked = (string_length(sel) <= 0) || (race_quantity = 0);
-
-            if (btn_attack.clicked()) and btn_attack.locked = false and!obj_controller.cooldown > 0 {
-                obj_controller.cooldown = 30;
+            if (btn_attack.clicked()) {
                 combating = 1; // Start battle here
 
                 if (attack = 1) then obj_controller.last_attack_form = formation_possible[formation_current];
@@ -468,7 +466,6 @@ if __b__ {
                         with(obj_ncombat) {
                             instance_destroy();
                         }
-                        obj_controller.cooldown = 8;
                         combating = 0;
                         instance_activate_all();
                         exit;
@@ -490,7 +487,6 @@ if __b__ {
                         with(obj_ncombat) {
                             instance_destroy();
                         }
-                        obj_controller.cooldown = 8;
                         combating = 0;
                         instance_activate_all();
                         exit;
@@ -539,16 +535,12 @@ if __b__ {
                     scr_battle_roster(p_target.name, planet_number, true);
                 }
             }
-
-            /* */
         }
     }
 }
-__b__ = action_if_number(obj_popup, 0, 0);
-if __b__ {
-    __b__ = action_if_number(obj_ncombat, 0, 0);
-    if __b__ {
 
+if (instance_number(obj_popup) == 0) {
+    if (instance_number(obj_ncombat) == 0) {
         if (menu = 0) and(purge = 1) {
             draw_sprite(spr_purge_panel, 0, 535, 200);
             draw_set_halign(fa_center);
@@ -558,13 +550,12 @@ if __b__ {
             draw_rectangle(740, 558, 860, 585, 0);
             draw_set_color(0);
             draw_text_transformed(800, 559, string_hash_to_newline("Cancel"), 0.75, 0.75, 0);
-            if (scr_hit(740, 558, 860, 585) = true) {
+            if (scr_hit(740, 558, 860, 585)) {
                 draw_set_alpha(0.2);
                 draw_set_color(0);
                 draw_rectangle(740, 558, 860, 585, 0);
                 draw_set_alpha(1);
-                if (mouse_left >= 1) {
-                    obj_controller.cooldown = 8000;
+                if (scr_click_left()) {
                     instance_destroy();
                 }
             }
@@ -598,12 +589,9 @@ if __b__ {
 
                 if (scr_hit(x5, y5 + ((iy - 1) * 73), x5 + 351, y5 + ((iy - 1) * 73) + 63) = true) {
                     r = 4;
-                    if (mouse_left >= 1) and(obj_controller.cooldown <= 0) {
-                        obj_controller.cooldown = 8000;
-
+                    if (scr_click_left()) {
                         if (iy = 1) and(purge_a > 0) {
                             purge = 2;
-                            obj_controller.cooldown = 8;
                             alarm[4] = 1;
                             purge_score = 0;
                             ships_selected = 0;
@@ -611,7 +599,6 @@ if __b__ {
                         }
                         if (iy = 2) and((purge_b > 0) or(purge_d != 0)) {
                             purge = 3;
-                            obj_controller.cooldown = 8;
                             alarm[2] = 1;
                             purge_score = 0;
                             ships_selected = 0;
@@ -619,7 +606,6 @@ if __b__ {
                         }
                         if (iy = 3) and((purge_c > 0) or(purge_d != 0)) {
                             purge = 4;
-                            obj_controller.cooldown = 8;
                             alarm[2] = 1;
                             purge_score = 0;
                             ships_selected = 0;
@@ -627,7 +613,6 @@ if __b__ {
                         }
                         if (iy = 4) and(purge_d + purge_b != 0) and(p_target.dispo[planet_number] >= 0) and(nup = false) {
                             purge = 5;
-                            obj_controller.cooldown = 8;
                             alarm[2] = 1;
                             purge_score = 0;
                             ships_selected = 0;
@@ -715,10 +700,9 @@ if __b__ {
                 draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0);
                 draw_set_color(c_black);
                 draw_text(x8 + 2, y8, string_hash_to_newline("Local (" + string(ship_use[e]) + "/" + string(ship_max[e]) + ")"))
-                if (obj_controller.cooldown <= 0) and(mouse_left >= 1) and(scr_hit(x8, y8, x8 + 160, y8 + 16) = true) {
+                if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
                     var onceh;
                     onceh = 0;
-                    obj_controller.cooldown = 8000;
                     if (ship_all[e] = 0) then add_ground = 1;
                     if (ship_all[e] = 1) then add_ground = -1;
                 }
@@ -736,18 +720,16 @@ if __b__ {
                         draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0); // 160
                         draw_set_color(c_black);
                         draw_text_transformed(x8 + 2, y8, string_hash_to_newline(string(ship[e]) + " (" + string(ship_size[e]) + ")"), 0.8, 0.8, 0);
-                        if (obj_controller.cooldown <= 0) and(mouse_left >= 1) and(scr_hit(x8, y8, x8 + 160, y8 + 16) = true) {
+                        if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
                             var onceh;
                             onceh = 0;
                             if (onceh = 0) and(ship_all[e] = 0) {
                                 onceh = 1;
-                                obj_controller.cooldown = 8000;
                                 ship_all[e] = 1;
                                 ships_selected += 1;
                             }
                             if (onceh = 0) and(ship_all[e] = 1) {
                                 onceh = 1;
-                                obj_controller.cooldown = 8000;
                                 ship_all[e] = 0;
                                 ships_selected -= 1;
                             }
@@ -773,17 +755,15 @@ if __b__ {
                         draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0); // 160
                         draw_set_color(c_black);
                         draw_text_transformed(x8 + 2, y8, string_hash_to_newline(string(ship[e]) + " (" + string(ship_use[e]) + "/" + string(ship_max[e]) + ")"), 0.8, 0.8, 0);
-                        if (obj_controller.cooldown <= 0) and(mouse_left >= 1) and(scr_hit(x8, y8, x8 + 160, y8 + 16) = true) {
+                        if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
                             var onceh;
                             onceh = 0;
                             if (onceh = 0) and(ship_all[e] = 0) {
                                 onceh = 1;
-                                obj_controller.cooldown = 8000;
                                 scr_drop_fiddle(ship_ide[e], true, e, attack);
                             }
                             if (onceh = 0) and(ship_all[e] = 1) {
                                 onceh = 1;
-                                obj_controller.cooldown = 8000;
                                 scr_drop_fiddle(ship_ide[e], false, e, attack);
                             }
                         }
@@ -817,8 +797,7 @@ if __b__ {
                 if (all_sel = 1) then yar = 3;
                 draw_sprite(spr_creation_check, yar, x2 + 233, y2 + 75);
                 yar = 0;
-                if (scr_hit(x2 + 233, y2 + 75, x2 + 233 + 32, y2 + 75 + 32) = true) and(obj_controller.cooldown <= 0) and(mouse_left >= 1) {
-                    obj_controller.cooldown = 8000;
+                if (point_and_click([x2 + 233, y2 + 75, x2 + 233 + 32, y2 + 75 + 32])) {
                     var onceh;
                     onceh = 0;
                     var onceh;
@@ -856,8 +835,7 @@ if __b__ {
                 if (all_sel = 1) then yar = 3;
                 draw_sprite(spr_creation_check, yar, x2 + 233, y2 + 75);
                 yar = 0;
-                if (scr_hit(x2 + 233, y2 + 75, x2 + 233 + 32, y2 + 75 + 32) = true) and(obj_controller.cooldown <= 0) and(mouse_left >= 1) {
-                    obj_controller.cooldown = 8000;
+                if (point_and_click([x2 + 233, y2 + 75, x2 + 233 + 32, y2 + 75 + 32])) {
                     var onceh;
                     onceh = 0;
                     var onceh;
@@ -994,8 +972,7 @@ if __b__ {
                 draw_set_alpha(0.2);
                 draw_rectangle(852, 556, 921, 579, 0);
                 draw_set_alpha(1);
-                if (mouse_left >= 1) and(obj_controller.cooldown <= 0) {
-                    obj_controller.cooldown = 8000;
+                if (scr_click_left()) {
                     purge = 1;
                 }
             }
@@ -1008,9 +985,7 @@ if __b__ {
                 draw_set_alpha(0.2);
                 draw_rectangle(954, 556, 1043, 579, 0);
                 draw_set_alpha(1);
-                if (mouse_left >= 1) and(obj_controller.cooldown <= 0) {
-                    obj_controller.cooldown = 30; // Start purge here
-
+                if (scr_click_left()) {
                     if (purge = 2) {
                         var i;
                         i = 0;

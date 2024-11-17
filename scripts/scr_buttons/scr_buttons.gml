@@ -236,12 +236,11 @@ function ToggleButton() constructor {
     };
 
     clicked = function() {
-        if (hover() && mouse_check_button_pressed(mb_left) && obj_controller.cooldown <= 0) {
-            active = !active; // Toggle the active state when clicked
-            audio_play_sound(snd_click_small, 10, false, 1);
-            return true;
-        }
-        else{
+        if (hover() && scr_click_left()) {
+			active = !active;
+			audio_play_sound(snd_click_small, 10, false, 1);
+			return true;
+        } else {
             return false;
         }
     };
@@ -279,93 +278,86 @@ function ToggleButton() constructor {
     };
 }
 
-function SwitchButton() constructor {
+function InteractiveButton() constructor {
     x1 = 0;
     y1 = 0;
+	x2 = 0;
+	y2 = 0;
     str1 = "";
-    alpha = 1;
-    click_alpha = 1;
-    locked = false;
-    hover = function() {
-        var str1_w = string_width(str1);
-        var str1_h = string_height(str1);
-        return (mouse_x >= x1-2 && mouse_x <= x1+str1_w+1 && mouse_y >= y1-4 && mouse_y <= y1+str1_h+1);
-    };
-    clicked = function() {
-        if (hover() && mouse_check_button_pressed(mb_left)) {
-            if (click_alpha > 0.8) click_alpha = 0.8; // Decrease click_alpha when clicked
-            if (locked=true){
-                audio_play_sound(snd_error, 10, false, 1);
-            }
-            else audio_play_sound(snd_click_small, 10, false, 1);
-            return true;
-        } else {
-            if (click_alpha < 1) click_alpha += 0.03; // Increase click_alpha when not clicked
-            return false;
-        }
-    };
-    draw = function() {
-        var str1_w = string_width(str1);
-        var str1_h = string_height(str1);
-        if (locked=true){
-            if (alpha > 0.5) alpha -= 0.03;
-        }
-        else{
-            if (hover()) {
-                if (alpha > 0.8) alpha -= 0.02; // Decrease alpha when hovered
-            } else {
-                if (alpha < 1) alpha += 0.03; // Increase alpha when not hovered
-            }
-        }
-        draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
-        draw_set_color(c_green);
-        draw_rectangle(x1-2, y1-4, x1+str1_w+1, y1+str1_h+1,1);
-        draw_set_halign(fa_left);
-        draw_set_valign(fa_top);
-        draw_text(x1, y1,str1);
-        draw_set_alpha(1);
-    };
-}
+    inactive_tooltip = "";
+    tooltip = "";
+    width = 0;
+	height = 0;
+    state_alpha = 1;
+    hover_alpha = 1;
+    active = true;
+    text_halign = fa_left;
+    text_color = c_gray;
+    button_color = c_gray;
 
-function TextSwitchButton() constructor {
-    x1 = 0;
-    y1 = 0;
-    str1 = "";
-    str2 = "";
-    alpha = 1;
-    click_alpha = 1;
-    locked = false;
-    hover = function() {
-        var str1_w = string_width(str1);
-        var str2_w = string_width(str2);
-        return (mouse_x >= x1+str1_w+5 && mouse_x <= x1+str1_w+str2_w+7 && mouse_y >= y1-1 && mouse_y <= y1 + string_height(str2)+1);
+    update = function () {
+        if (width == 0) {
+            width = string_width(str1) + 4;
+        }
+        if (height == 0) {
+            height = string_height(str1) + 4;
+        }
+        x2 = x1 + width;
+        y2 = y1 + height;
     };
+
+    hover = function() {
+        return (scr_hit(x1, y1, x2, y2));
+    };
+
     clicked = function() {
-        if (hover() && mouse_check_button_pressed(mb_left)) {
-            if (click_alpha > 0.8) click_alpha = 0.8; // Decrease click_alpha when clicked
-            if (locked=true){
+        if (hover() && scr_click_left()) {
+            if (!active){
                 audio_play_sound(snd_error, 10, false, 1);
+                return false;
+            } else {
+                audio_play_sound(snd_click_small, 10, false, 1);
+                return true;
             }
-            else audio_play_sound(snd_click_small, 10, false, 1);
-            return true;
         } else {
-            if (click_alpha < 1) click_alpha += 0.03; // Increase click_alpha when not clicked
             return false;
         }
     };
+
     draw = function() {
-        var str1_w = string_width(str1);
-        var str2_w = string_width(str2);
-        draw_text(x1, y1, str1);
-        if (hover()) {
-            if (alpha > 0.8) alpha -= 0.02; // Decrease alpha when hovered
-        } else {
-            if (alpha < 1) alpha += 0.03; // Increase alpha when not hovered
+        var str1_h = string_height(str1);
+        var text_padding = width * 0.03;
+        var text_x = x1 + text_padding;
+        var text_y = y1 + text_padding;
+        var total_alpha;
+
+        if (text_halign == fa_center) {
+            text_x = x1 + (width / 2);
         }
-        draw_set_alpha(alpha * click_alpha); // Multiply alpha and click_alpha to get the final alpha value
-        draw_set_color(c_green);
-        draw_rectangle(x1+str1_w+5, y1-1, x1+str1_w+str2_w+7, y1+string_height(str2)+1,1);
-        draw_text(x1+str1_w+6, y1,str2);
+
+        if (!active){
+            if (state_alpha > 0.5) state_alpha -= 0.05;
+            if (inactive_tooltip != "" && hover()) {
+                tooltip_draw(inactive_tooltip);
+            }
+        } else{
+            if (state_alpha < 1) state_alpha += 0.05;
+            if (hover()) {
+                if (hover_alpha > 0.8) hover_alpha -= 0.02; // Decrease state_alpha when hovered
+                if (tooltip != "") {
+                    tooltip_draw(tooltip);
+                }
+            } else {
+                if (hover_alpha < 1) hover_alpha += 0.03; // Increase state_alpha when not hovered
+            }
+        }
+
+        total_alpha = state_alpha * hover_alpha;
+        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+        draw_set_halign(text_halign);
+        draw_set_valign(fa_top);
+        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
         draw_set_alpha(1);
+        draw_set_halign(fa_left);
     };
 }
