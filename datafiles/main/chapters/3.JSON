@@ -1,0 +1,306 @@
+{
+    "chapter": {
+        "id": 3,
+        "name": "Space Wolves",
+        "flavor": "Brave sky warriors hailing from the icy deathworld of Fenris, the Space Wolves are a non-Codex compliant chapter, and deadly in close combat.  They fight on their own terms and damn any who wish otherwise.",
+        "origin": 1, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
+        "points": 150,
+        "founding": 0, // The id of the founding chapter, 0 for unknown or none
+        "splash": 3,
+        "icon": 3, // in \images\creation\creation_icons.png, the index from the left, 0 being blank square and 1 being dark angels etc
+        "icon_name": "sw", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
+        "strength": 10, // 1-10
+        "purity": 8, // 1-10
+        "stability": 5, // 1-10
+        "cooperation": 4, // 1-10
+        "homeworld_exists": 1, // 1 = true
+        "recruiting_exists": 0, // 1 = true
+        "homeworld_rule": 2, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
+        "homeworld": "Ice", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "homeworld_name": "Fenris",
+        "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "recruiting_name": "",
+        "discipline": "rune Magick", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "aspirant_trial": "EXPOSURE", // ? need to find the best way to do this
+        "advantages": [ //TODO something with these after rework of adv organisation
+            "",
+            "Assault Doctrine",
+            "Medicae Primacy",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "disadvantages": [
+            "",
+            "Black Rage",
+            "Suspicious",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "colors": {
+            "main": "Fenrisian Grey",
+            "secondary": "Fenrisian Grey",
+            "pauldron_r": "Dark Gold",
+            "pauldron_l": "Dark Gold",
+            "trim": "Dark Gold",
+            "lens": "Red",
+            "weapon": "Dark Gold",
+            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
+        },
+        "names": {
+            //Chapter Staff
+            "hchaplain": "Ulrik the Slayer",
+            "clibrarian": "Njal Stormcaller",
+            "fmaster": "Krom Dragongaze",
+            "hapothecary": "Ulstvan Morkaison",
+            //Company Captains 1 - 10
+            "honorcapt": "Bran Redmaw",
+            "watchmaster": "Engir Krakendoom",
+            "arsenalmaster": "Erik Morkai",
+            "admiral": "Gunnar Red Moon",
+            "marchmaster": "Harald Deathwolf",
+            "ritesmaster": "Bjorn Stormwolf",
+            "victualler": "Vorek Gnarlfist",
+            "lordexec": "Krom Dragongaze",
+            "relmaster": "Ragnar Blackmane",
+            "recruiter": "Sven Bloodhowl"
+        },
+        "battle_cry": "For Russ and the Allfather!",
+        "equal_specialists": 1,
+        "load_to_ships": {
+            "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
+            "split_scouts": 0, // 0 no, 1 yes
+            "split_vets": 0 // 0 no, 1 yes
+        },
+        "successors": 1, //total number of successor chapters
+        "mutations": {
+            "preomnor": 0,
+            "voice": 0,
+            "doomed": 0,
+            "lyman": 0,
+            "omophagea": 0,
+            "ossmodula": 0,
+            "membrane": 0,
+            "zygote": 0,
+            "betchers": 0,
+            "catalepsean": 0,
+            "secretions": 0,
+            "occulobe": 0,
+            "mucranoid": 0
+        },
+        "disposition": [ // todo maybe convert to struct
+            0, // nothing
+            0, // Progenitor faction
+            50, // Imperium
+            40, // Admech
+            15, //Inquisition
+            15, // Ecclesiarchy
+            40, // Astartes
+            0 // nothing
+        ],
+        "chapter_master": {
+            "name": "Logan Grimnar",
+            "specialty": 2, //1 Leader, 2 Champion, 3 Psyker,
+            "melee": 6, // 1 twin power fists ... 8 force staff
+            "ranged": 1, // 1 boltstorm gauntlets ... 7 storm shield
+            // All chapter masters have the trait `Lead by Example` by default
+            "traits": [
+                "ancient",
+                "melee_enthusiast",
+                "feet_floor"
+            ],
+            "gear": "",
+            "mobi": "",
+            "armour": "Terminator Armour"
+        },
+        "artifact": {
+            "name": "Axe of Morkai",
+            "description": "Once a Khornate axe of great power it was reforged in the image of the death wolf Morkai",
+            "base_weapon_type": "Executioner Power Axe"
+        },
+        "company_titles": [
+            "",
+            "The Bloodmaws",
+            "The Seawolves",
+            "The Sons of Morkai",
+            "The Red Moons",
+            "The Deathwolves",
+            "The Stormwolves",
+            "The Ironwolves",
+            "The Drakeslayers",
+            "The Blackmanes",
+            ""
+        ],
+        "flagship_name": "",
+        /**
+        * * Default fleet composition
+        * * Homeworld 
+        * - 2 Battle Barges, 8 Strike cruisers, 7 Gladius, 3 Hunters
+        * * Fleet based and Penitent 
+        * - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
+        * 
+        * use negative numbers to subtract ships
+        */
+        "extra_ships": {
+            "battle_barges": 0,
+            "gladius": 0,
+            "strike_cruisers": 0,
+            "hunters": 0
+        },
+        /**
+        * * Default HQ Layout (Does not include company specialists)
+        * - 8 Chaplains, 8 Techmarines, 8 Apothecary, 2 Epistolary (librarian), 
+        * - 2 Codiciery, 4 Lexicanum
+        * * Default Company specialists (divided based on `load_to_ships.split_vets` setting)
+        * - 20 Terminators, 85 Veterans, 20 Devastators, 20 Assault
+        * Use negative numbers to subtract
+        * Stacks with advantages/disadvantages
+        */
+        "extra_specialists": {
+            "chaplains": -20,
+            "techmarines": 0,
+            "apothecary": 4,
+            "apothecary_per_company": 0,
+            "epistolary": 0,
+            "codiciery": 0,
+            "lexicanum": 0,
+            "terminator": 0,
+            "assault": 0,
+            "veteran": 40,
+            "devastator": 0
+        },
+        /**
+        * * Default Marine strength
+        * - 100 marines per company
+        * use negative numbers to subtract
+        * Stacks with strength for non-founding chapters
+        */
+        // * Not working yet
+        "extra_marines": {
+            "second": 40,
+            "third": 40,
+            "fourth": 40,
+            "fifth": 40,
+            "sixth": 40,
+            "seventh": 40,
+            "eighth": 40,
+            "ninth": 40,
+            "tenth": 60
+        },
+        // * Not working yet
+        "extra_vehicles": {
+            "rhino": 0,
+            "whirlwind": 0,
+            "predator": 0,
+            "land_raider": 0,
+            "land_speeder": 0
+        },
+        /** Add extra starting items ["Item Name", Number to add] */
+        "extra_equipment": [
+            // [
+            //     "Bolter",
+            //     20
+            // ]
+        ],
+        /** 
+        * Provide a place to change the default name and equipment preferences of roles for this chapter
+        * `custom_roles` should be used for specialist/leadership type roles, 
+        * for combat roles, `custom_squads` should probably? be used instead 
+        */
+        "custom_roles": {
+            "honour_guard": {
+                "name": "Wolf Guard",
+                "wep1": "Power Axe",
+                "wep2": "Bolter",
+                "armour": "Power Armour"
+            },
+            "veteran": {
+                "name": "Veteran",
+                "wep1": "Chainaxe"
+            },
+            "captain": {
+                "name": "Wolf Lord",
+                "wep1": "Power Sword"
+            },
+            "tactical": {
+                "name": "Grey Hunter"
+            },
+            "devastator": {
+                "name": "Long Fang"
+            },
+            "assault": {
+                "name": "Blood Claw",
+                "wep1": "Chainaxe"
+            },
+            "scout": {
+                "name": "Wolf Scout",
+                "wep1": "Sniper Rifle",
+                "wep2": "Chainaxe"
+            },
+            "chaplain": {
+                "name": "Wolf Priest",
+                "wep1": "Power Axe"
+            },
+            "techmarine": {
+                "name": "Iron Priest",
+                "wep1": "Power Axe"
+            },
+            "apothecary": {
+                "name": "Wolf Priest",
+                "wep1": "Power Axe"
+            },
+            "librarian": {
+                "name": "Rune Priest",
+                "wep1": "Force Staff"
+            },
+            "sergeant": {
+                "name": "Pack Leader",
+                "wep1": "Chainaxe"
+            },
+            "veteran_sergeant": {
+                "name": "Wolf Guard Pack Leader",
+                "wep1": "Chainaxe"
+            }
+        },
+        /**
+        * * Custom squad roles, loadouts and formations
+        * When companies are made, squads are formed based on these rules: 
+        * - squad name: one of captain, terminator, terminator_assault, sternguard_veteran,
+                vanguard_veteran, devastator, tactical, assault, scout, scout_sniper
+        * - squad array layout [Role, Role, ...Role, type_data]
+        * - each element of the array is a default Role, and their settings.
+            - if you changed the role using `custom_roles` you need to reference the role with this new name
+            - for non-leader roles it is better to change the name of the role in the squad layout instead
+        * - unit layout [Role Name, Settings Struct]
+        * - settings struct: 
+        *   - max: The most amount of this unit is allowed per squad
+        *   - min: The squad can't be formed unless at least 1 of this unit is in it
+        *   - role: The name of the unit when it is a member of the squad. This is where you rename roles e.g. 
+                "Terminator" > "Deathwing Terminator" 
+        **  - loadout: Struct containing Required and Optional weaponry this unit can equip 
+                a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
+				so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
+        *       option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
+				for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
+					[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
+						of all required loadout options
+                - wep1: right hand weapon
+                - wep2: left hand weapon
+                - mobi: Mobility item, e.g. Jump Packs. 
+                - armour: required armour 
+                - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
+        *   - type_data: names the squad, allows certain formations ? idk what that does yet
+        */
+        "squad_name": "Pack",
+        "custom_squads": {}
+    }
+}

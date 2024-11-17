@@ -16,10 +16,10 @@ scr_colors_initialize();
 
 main_color=8;
 secondary_color=6;
-pauldron_color=6;
+right_pauldron=6;
 lens_color=7;
-trim_color=15;
-pauldron2_color=6;
+main_trim=15;
+left_pauldron=6;
 weapon_color=6;
 col_special=0;
 trim=1;firing=0;

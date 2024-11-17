@@ -174,7 +174,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 			artifact_location = obj_ini.home_name;
 			ship_id = 2;
 		} else {
-			artifact_location = obj_ini.ship[1];
+			artifact_location = obj_ini.ship[0];
 			ship_id = 501;
 		}
 	}

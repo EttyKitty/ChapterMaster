@@ -193,7 +193,7 @@ function navy_attack_player_world(){
 	    if (instance_exists(orbiting)){
 	        var tar=0;
 			var i=0;
-	        for (var i=1;i<=orniting.planets;i++){
+	        for (i = 1; i <= orbiting.planets; i++) {
 	            if (orbiting.p_owner[i]=eFACTION.Player) 
 					and (planet_feature_bool(orbiting.p_feature[i],P_features.Monastery)==0) 
 					and (orbiting.p_guardsmen[i]=0) 
@@ -320,7 +320,7 @@ function scr_navy_unload_guard(planet){
 
 function scr_navy_planet_action(){
 	if (action=="") and (is_orbiting()) and (!guardsmen_unloaded){// Unload if problem sector, otherwise patrol
-	    var p=0,selected_planet=0,highest=0,popu=0,popu_large=false;
+	    var selected_planet=0,highest=0,popu=0,popu_large=false;
     
 	    for (var p=1;p<=orbiting.planets;p++){
 	    	var planet_enemies = planet_imperial_base_enemies(p, orbiting);

@@ -6,6 +6,36 @@ enum ePlayerBase {
 	fleet_based = 2,
 	penitent = 3,
 }
+function init_player_fleet_arrays(){
+	ship=[];
+	ship_uid=[];
+	ship_owner=[];
+	ship_class=[];
+	ship_size=[];
+	ship_leadership=[];
+	ship_hp=[];
+	ship_maxhp=[];
+
+	ship_location=[];
+	ship_shields=[];
+	ship_conditions=[];
+	ship_speed=[];
+	ship_turning=[];
+
+	ship_front_armour=[];
+	ship_other_armour=[];
+	ship_weapons=[];
+
+	ship_wep = array_create(6, "");
+	ship_wep_facing=array_create(6, "");
+	ship_wep_condition=array_create(6, "");
+
+	ship_capacity=[];
+	ship_carrying=[];
+	ship_contents=[];
+	ship_turrets=[];
+	ship_lost = [];	
+}
 function fleet_has_roles(fleet="none", roles){
 	var all_ships = fleet_full_ship_array(fleet);
 	var unit;
@@ -115,10 +145,10 @@ function set_new_player_fleet_course(target_array){
 
 function move_ship_between_player_fleets(out_fleet, in_fleet, class, index){
 	if (class=="capital"){
-		array_insert(in_fleet.capital, 1,out_fleet.capital[index]);
-		array_insert(in_fleet.capital_num, 1,out_fleet.capital_num[index])
-		array_insert(in_fleet.capital_uid, 1,out_fleet.capital_uid[index]);
-		array_insert(in_fleet.capital_sel, 1,out_fleet.capital_sel[index]);
+		array_insert(in_fleet.capital, 0,out_fleet.capital[index]);
+		array_insert(in_fleet.capital_num, 0,out_fleet.capital_num[index])
+		array_insert(in_fleet.capital_uid, 0,out_fleet.capital_uid[index]);
+		array_insert(in_fleet.capital_sel, 0,out_fleet.capital_sel[index]);
 
 		in_fleet.capital_number++;
 		array_delete(out_fleet.capital, index, 1);
@@ -129,10 +159,10 @@ function move_ship_between_player_fleets(out_fleet, in_fleet, class, index){
 		out_fleet.capital_number--;
 
 	} else if (class=="frigate"){
-		array_insert(in_fleet.frigate, 1,out_fleet.frigate[index]);
-		array_insert(in_fleet.frigate_num, 1,out_fleet.frigate_num[index])
-		array_insert(in_fleet.frigate_uid, 1,out_fleet.frigate_uid[index]);
-		array_insert(in_fleet.frigate_sel, 1,out_fleet.frigate_sel[index]);
+		array_insert(in_fleet.frigate, 0,out_fleet.frigate[index]);
+		array_insert(in_fleet.frigate_num, 0,out_fleet.frigate_num[index])
+		array_insert(in_fleet.frigate_uid, 0,out_fleet.frigate_uid[index]);
+		array_insert(in_fleet.frigate_sel, 0,out_fleet.frigate_sel[index]);
 		in_fleet.frigate_number++;
 		array_delete(out_fleet.frigate, index, 1);
 		array_delete(out_fleet.frigate_num, index, 1);
@@ -140,16 +170,42 @@ function move_ship_between_player_fleets(out_fleet, in_fleet, class, index){
 		array_delete(out_fleet.frigate_sel, index, 1);
 		out_fleet.frigate_number--;
 	}else if (class=="escort"){
-		array_insert(in_fleet.escort, 1,out_fleet.escort[index]);
-		array_insert(in_fleet.escort_num, 1,out_fleet.escort_num[index])
-		array_insert(in_fleet.escort_uid, 1,out_fleet.escort_uid[index]);
-		array_insert(in_fleet.escort_sel, 1,out_fleet.escort_uid[index]);
+		array_insert(in_fleet.escort, 0,out_fleet.escort[index]);
+		array_insert(in_fleet.escort_num, 0,out_fleet.escort_num[index])
+		array_insert(in_fleet.escort_uid, 0,out_fleet.escort_uid[index]);
+		array_insert(in_fleet.escort_sel, 0,out_fleet.escort_uid[index]);
 		in_fleet.escort_number++;
 		array_delete(out_fleet.escort, index, 1);
 		array_delete(out_fleet.escort_num, index, 1);
 		array_delete(out_fleet.escort_uid, index, 1);
 		array_delete(out_fleet.escort_sel, index, 1);
 		out_fleet.escort_number--;
+	}
+}
+function delete_ship_from_fleet(index, fleet){
+	var _ship_class = player_ships_class(index);
+	if (_ship_class=="capital"){
+		var _delete_index = array_get_index(capital_num, index);
+		array_delete(fleet.capital, _delete_index, 1);
+		array_delete(fleet.capital_num, _delete_index, 1);
+		array_delete(fleet.capital_uid, _delete_index, 1);
+		array_delete(fleet.capital_sel, _delete_index, 1);
+
+		fleet.capital_number--;
+	} else if (_ship_class=="frigate"){
+		var _delete_index = array_get_index(frigate_num, index);
+		array_delete(fleet.frigate, _delete_index, 1);
+		array_delete(fleet.frigate_num, _delete_index, 1);
+		array_delete(fleet.frigate_uid, _delete_index, 1);
+		array_delete(fleet.frigate_sel, _delete_index, 1);
+		fleet.frigate_number--;
+	}else if (_ship_class=="escort"){
+		var _delete_index = array_get_index(escort_num, index);
+		array_delete(fleet.escort, _delete_index, 1);
+		array_delete(fleet.escort_num, _delete_index, 1);
+		array_delete(fleet.escort_uid, _delete_index, 1);
+		array_delete(fleet.escort_sel, _delete_index, 1);
+		fleet.escort_number--;
 	}
 }
 function set_player_fleet_image(){
@@ -161,29 +217,89 @@ function set_player_fleet_image(){
     image_index=min(ii,9);	
 }
 
+function find_ships_fleet(index){
+	var _chosen_fleet = "none";
+	with (obj_p_fleet){
+		if ((array_contains(capital_num, index)) ||
+			(array_contains(frigate_num, index)) ||
+			(array_contains(escort_num, index))){
+			_chosen_fleet = self;
+		}
+	}
+	return _chosen_fleet;
+
+}
+
+function player_ships_class (index){
+	var _escorts = ["Escort", "Hunter", "Gladius"];
+	var _capitals = ["Gloriana", "Battle Barge", "Capital"];
+	var _frigates = ["Strike Cruiser", "Frigate"];	
+	var _ship_name_class = obj_ini.ship_class[index];
+	if (array_contains(_escorts, _ship_name_class)){
+		return "escort";
+	} else if (array_contains(_capitals, _ship_name_class)){
+		return "capital";
+	}else if (array_contains(_frigates, _ship_name_class)){
+		return "frigate";
+	}
+	return _ship_name_class;
+}
+
+function add_ship_to_fleet(index, fleet="none"){
+	var _escorts = ["Escort", "Hunter", "Gladius"];
+	var _capitals = ["Gloriana", "Battle Barge"];
+	var _frigates = ["Strike Cruiser"];	
+
+	if (fleet=="none"){
+		if (array_contains(_capitals, obj_ini.ship_class[index])){
+			array_push(capital, obj_ini.ship[index]);
+			array_push(capital_num, index);
+			array_push(capital_sel, 0);
+			array_push(capital_uid, obj_ini.ship_uid[index]);
+			capital_number++;
+		} else if (array_contains(_frigates, obj_ini.ship_class[index])){
+			array_push(frigate, obj_ini.ship[index]);
+			array_push(frigate_num, index);
+			array_push(frigate_sel, 0);
+			array_push(frigate_uid, obj_ini.ship_uid[index]);
+			frigate_number++;
+		} else if (array_contains(_escorts, obj_ini.ship_class[index])){
+			array_push(escort, obj_ini.ship[index]);
+			array_push(escort_num, index);
+			array_push(escort_sel, 0);
+			array_push(escort_uid, obj_ini.ship_uid[index]);
+			escort_number++;
+		}
+	} else {
+		with (fleet){
+			add_ship_to_fleet(index);
+		}
+	}
+}
+
 function fleet_full_ship_array(fleet="none", exclude_capitals=false, exclude_frigates = false, exclude_escorts = false){
 	var all_ships = [];
 	var i;
 	if (fleet=="none"){
 		if (!exclude_capitals){
-			for (i=0; i<=capital_number;i++){
-				if (i>=0 && i < array_length(capital_num)){
-					array_push(all_ships, capital_num[i]);
-				}
+			for (i=0; i<array_length(capital_num);i++){
+
+				array_push(all_ships, capital_num[i]);
+
 			}
 		}
 		if (!exclude_frigates){
-			for (i=0; i<=frigate_number;i++){
-				if (i>=0 && i < array_length(frigate_num)){
-					array_push(all_ships, frigate_num[i]);
-				}
+			for (i=0; i<array_length(frigate_num);i++){
+
+				array_push(all_ships, frigate_num[i]);
+
 			}
 		}
 		if (!exclude_escorts){
-			for (i=0; i<=escort_number;i++){
-				if (i>=0 && i < array_length(escort_num)){
-					array_push(all_ships, escort_num[i]);
-				}
+			for (i=0; i<array_length(escort_num);i++){
+
+				array_push(all_ships, escort_num[i]);
+
 			}
 		}			
 	} else {
@@ -279,23 +395,48 @@ function player_fleet_selected_count(fleet="none"){
 	return ship_count;			
 }
 
-
+function new_player_ship_defualts(){
+	with (obj_ini){
+		array_push(ship, "");
+		array_push(ship_uid,0);
+		array_push(ship_owner,0);
+		array_push(ship_class, "");
+		array_push(ship_size,0);
+		array_push(ship_leadership,0);
+		array_push(ship_hp,0);
+		array_push(ship_maxhp,0);
+		array_push(ship_location, "");
+		array_push(ship_shields,0);
+		array_push(ship_conditions, "");
+		array_push(ship_speed,0);
+		array_push(ship_turning,0);
+		array_push(ship_front_armour,0);
+		array_push(ship_other_armour,0);
+		array_push(ship_weapons,0);
+		array_push(ship_wep, array_create(6,""));
+		array_push(ship_wep_facing, array_create(6,""));
+		array_push(ship_wep_condition, array_create(6,""));
+		array_push(ship_capacity,0);
+		array_push(ship_carrying,0);
+		array_push(ship_contents, "");
+		array_push(ship_turrets,0);
+	}
+	return array_length(obj_ini.ship)-1;
+}
 
 
 function new_player_ship(type, start_loc="home"){
     var ship_names="",new_name="",index=0;
-    for(var k=1; k<array_length(obj_ini.ship); k++){
-        if (index==0) and (obj_ini.ship[k]=="") then index=k;
-    }
+    var index = new_player_ship_defualts();
     
-    for(var k=1; k<=200; k++){
+    for(var k=0; k<=200; k++){
         if (new_name==""){
             new_name=global.name_generator.generate_imperial_ship_name();
             if (array_contains(obj_ini.ship,new_name)) then new_name="";
         } else {break};
     }
     if (start_loc == "home") then start_loc = obj_ini.home_name;
-   obj_ini.ship[index]=new_name;
+    obj_ini.ship[index]=new_name;
     obj_ini.ship_uid[index]=floor(random(99999999))+1;
     obj_ini.ship_owner[index]=1; //TODO: determine if this means the player or not
     obj_ini.ship_size[index]=1;

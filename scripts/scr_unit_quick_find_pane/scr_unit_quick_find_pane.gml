@@ -14,10 +14,11 @@ function UnitQuickFindPanel() constructor{
 		for (var i = 0;i<=200; i++){
 			obj_ini.ship_carrying[i]=0
 		};
-		var u, unit, unit_location, group;
+		var unit, unit_location, group;
 	    garrison_log = {};
 	    for (var co=0;co<11;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
+				/// @type {Struct.TTRPG_stats}
 	    		unit = fetch_unit([co, u]);
 	    		if (unit.name() == "") then continue;
 	    		unit_location = unit.marine_location();
@@ -63,7 +64,7 @@ function UnitQuickFindPanel() constructor{
 		    				array_push(garrison_log[$ unit_location].units, unit);
 		    				garrison_log[$ unit_location].vehicles++;
 		    			}
-		    		} else if (obj_ini.veh_lid[co][u]>0){
+		    		} else if (obj_ini.veh_lid[co][u]>-1){
 		    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
 		    		}
 		    	}
@@ -454,7 +455,7 @@ function toggle_selection_borders(){
         	if (is_struct(display_unit[p])){
                 var unit=display_unit[p];
                 var mar_id = unit.marine_number;
-                if (unit.ship_location>0) and (obj_ini.loc[unit.company][mar_id]!="Mechanicus Vessel"){
+                if (unit.ship_location>-1) and (obj_ini.loc[unit.company][mar_id]!="Mechanicus Vessel"){
                 	unit.is_boarder = !unit.is_boarder;
                 }
             }
@@ -805,7 +806,7 @@ function planet_selection_action(){
 					        
 					        // STC Grab
 					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STC_Fragment) == 1) and (recon=0){
-					            var frag,tch,mch;frag=0;tch=0;mch=0;
+					            var tch,mch;frag=0;tch=0;mch=0;
 					            for (var frag=0;frag<array_length(obj_controller.display_unit);frag++){
 					                if (obj_controller.man[frag]!="") and (obj_controller.man_sel[frag]==1){
 					                    if (obj_controller.ma_role[frag]=obj_ini.role[100][16]) or ((obj_controller.ma_role[frag]="Forge Master")){

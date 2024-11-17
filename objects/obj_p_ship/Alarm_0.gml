@@ -81,8 +81,8 @@ if (obj_controller.stc_bonus[6]=2){armour_front=round(armour_front*1.1);armour_o
 
 var i=0, unit, b=0;
 
-for (var co=0;co<=10;co++){
-    for (i=1;i<500;i++){
+for (var co=0;co<=obj_ini.companies;co++){
+    for (i=0;i<array_length(obj_ini.name[co]);i++){
         if (obj_ini.name[co][i]=="") then continue;
         unit=fetch_unit([co,i]);
         if (unit.ship_location==ship_id){

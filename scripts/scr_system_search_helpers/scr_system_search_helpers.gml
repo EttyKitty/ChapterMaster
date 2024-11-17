@@ -113,10 +113,17 @@ function scr_star_has_planet_with_owner(star, owner){
 	return scr_get_planet_with_owner(star,owner) != -1;
 }
 
-function scr_get_stars(shuffled=false) {
+function scr_get_stars(shuffled=false, ownership=[]) {
 	var stars = [];
+	var _owner_sort = array_length(ownership);
 	with(obj_star){
-		array_push(stars,id);
+		if (!_owner_sort){
+			array_push(stars,id);
+		} else {
+			if (array_contains(ownership,owner)){
+				array_push(stars,id);
+			}
+		}
 	}
 	if (shuffled){
 		stars = array_shuffle(stars);
@@ -216,7 +223,7 @@ function find_population_doners(doner_to=0){
     var pop_doner_options = [];
 	with(obj_star){
 		if (obj_star.id == doner_to) then continue;
-	   for (r=1;r<=planets;r++){
+	   for (var r=1;r<=planets;r++){
 	        if ((p_owner[r]=eFACTION.Imperium) and (p_type[r]=="Hive") and (p_population[r]>0) and (p_large[r])){
                 array_push(pop_doner_options, [id, r]);
             };
@@ -257,7 +264,7 @@ function nearest_from_array(xx,yy,list){
 function is_dead_star(star="none"){
 	var dead_star=true;
 	if (star=="none"){
-		for (i=1;i<=planets;i++){
+		for (var i=1;i<=planets;i++){
 			if (p_type[i] !="dead"){
 				dead_star=false;
 				break;
@@ -306,7 +313,7 @@ function scr_faction_string_name(faction){
 
 function scr_planet_image_numbers(p_type){
 	var image =0;
-	image_map = ["lava","lava", "Desert","Forge","Hive","Death","Agri","Feudal","Temperate","Ice","Dead","Daemon","Craftworld","","Space Hulk", "", "Shrine"];
+	image_map = ["","lava","lava", "Desert","Forge","Hive","Death","Agri","Feudal","Temperate","Ice","Dead","Daemon","Craftworld","","Space Hulk", "", "Shrine"];
 	for (var i=0;i<array_length(image_map);i++){
 		if (image_map[i] == p_type) then return i;
 	}

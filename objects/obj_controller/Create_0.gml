@@ -537,7 +537,8 @@ command_set[8]=1;
 command_set[9]=1;
 command_set[20]=1;
 command_set[24]=1;
-blandify=0;
+modest_livery=0;
+progenitor_visuals=0;
 
 // ** Default menu items **
 selecting_planet=0;
@@ -577,6 +578,7 @@ production_research = {
     plasma : [0,{}],
     psi : [0,{}],
     melta : [0,{}],
+    grav : [0,{}],
     chasis : [0,{}],
     chain :[0,{}],
     power_fields:[1,{}],
@@ -596,6 +598,7 @@ production_research_pathways ={
     plasma : [[ "Plasma Coil Magnetization"],{}],
     psi : [["Psionic Resonance Valves"],{}],
     melta : [["Atomic Chamber Construction"],{}],
+    grav : [["Gravitic Reaction Principle"],{}],
     chasis : [[],{}],
     chain :[["Adamantine Links"],{}],
     power_fields:[["Power Field Cooling", "Mono-molecular Edge Sheathing"],{}],
@@ -931,7 +934,12 @@ trade_mnum[4]=0;
 // ** Sets up starting requisition **
 requisition=500;
 if (instance_exists(obj_ini)){
-    if (obj_ini.progenitor==0) /*and (obj_creation.custom=0)*/ and (global.chapter_name!="Doom Benefactors") then requisition=2000;
+    if (
+        (obj_ini.progenitor == ePROGENITOR.NONE) &&
+        (global.chapter_name != "Doom Benefactors")
+    ) {
+        requisition=2000;
+    }
 }
 if (is_test_map==true) then requisition=50000;
 // ** Sets income **
@@ -1263,9 +1271,9 @@ recruiting_type="";
 // ** Sets up chapter colors **
 main_color=0;
 secondary_color=0;
-trim_color=0;
-pauldron2_color=0;
-pauldron_color=0;
+main_trim=0;
+left_pauldron=0;
+right_pauldron=0;
 lens_color=0;
 weapon_color=0;
 col_special=0;
@@ -1273,7 +1281,7 @@ trim=0;
 // ** Sets up names, progenitor, successors and mutations ** 
 adept_name="";
 recruiter_name="";
-progenitor="";
+progenitor=ePROGENITOR.NONE;
 successor_chapters=0;
 mutation="";
 
@@ -1316,7 +1324,9 @@ if (instance_exists(obj_ini)){
             stc_bonus[3]=3;
         }
         if (global.chapter_name=="Blood Ravens"){
-            for(var i=0; i<3; i++){scr_add_artifact("random_nodemon","",0,obj_ini.ship[1],501);}
+            for(var i=0; i<3; i++){
+                scr_add_artifact("random_nodemon","",0,obj_ini.ship[0],501);
+            }
         }
         // TODO should add special bonus to different chapters based on lore
         adept_name=global.name_generator.generate_space_marine_name();
@@ -1326,9 +1336,9 @@ if (instance_exists(obj_ini)){
         mutation="";
         main_color=obj_ini.main_color;
         secondary_color=obj_ini.secondary_color;
-        trim_color=obj_ini.trim_color;
-        pauldron2_color=obj_ini.pauldron2_color;
-        pauldron_color=obj_ini.pauldron_color;
+        main_trim=obj_ini.main_trim;
+        left_pauldron=obj_ini.left_pauldron;
+        right_pauldron=obj_ini.right_pauldron;
         lens_color=obj_ini.lens_color;
         weapon_color=obj_ini.weapon_color;
         col_special=obj_ini.col_special;
@@ -1445,6 +1455,7 @@ loyalty_hidden=100;// Updated when inquisitors do an inspection
 // ** Sets up gene seed **
 gene_seed=20;
 if (scr_has_disadv("Sieged")) then gene_seed = floor(random_range(250, 400));
+if scr_has_disadv("Obliterated") then gene_seed=floor(random_range(50,200));
 if (global.chapter_name=="Lamenters") then gene_seed=30;
 if (global.chapter_name=="Soul Drinkers") then gene_seed=60;
 
@@ -1634,7 +1645,7 @@ temp[62]="##Your fleet contains ";
 var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
 codex[0]="";codex_discovered[0]=0;
-for(var mm=0; mm<=30; mm++){
+for(var mm=0; mm<array_length(obj_ini.ship); mm++){
     if (obj_ini.ship[mm]!=""){
         ships++;
         if (obj_ini.ship_class[mm] == "Battle Barge") {
@@ -1657,10 +1668,11 @@ for(var mm=0; mm<=30; mm++){
     codex[mm]="";
     codex_discovered[mm]=0;
 }
+
 temp[62]+=string(ships)+$" {string_plural("warship")}-\n";
 
 if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
-    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[1]}.";
+    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
     temp[62] += "\n";
     bb--;
 }

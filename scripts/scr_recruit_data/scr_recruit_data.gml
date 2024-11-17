@@ -181,7 +181,7 @@ function scr_trial_data(wanted=-1){
 
 				}
 			},		
-			long_description :$"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[Role.TECHMARINE]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
+			long_description :$"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.Techmarine]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
 		},
 		{
 			name : "Hunting the Hunter",
@@ -249,7 +249,7 @@ function scr_trial_data(wanted=-1){
 			recruit_count_modifier : {
 				base : 1.0,
 			},
-			long_description :$"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[Role.APOTHECARY]}s, judged worthy of becoming a Neophyte.",						
+			long_description :$"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[eROLE.Apothecary]}s, judged worthy of becoming a Neophyte.",						
 		},
 		{
 			name : "Knowledge of self",
@@ -281,7 +281,7 @@ function scr_trial_data(wanted=-1){
 			exp_bonus : {
 				base: [10,20,0.2],
 			},
-			long_description :$"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[Role.APOTHECARY]} and allowed to progress to the rank of Neophyte.",				
+			long_description :$"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.Apothecary]} and allowed to progress to the rank of Neophyte.",				
 		},
 		{
 			name : "Apprenticeship",
@@ -306,7 +306,7 @@ function scr_trial_data(wanted=-1){
 
 				}
 			},
-			long_description :$"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[Role.APOTHECARY]}s and {role_data[Role.CHAPLAIN]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",									
+			long_description :$"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.Apothecary]}s and {role_data[eROLE.Chaplain]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",									
 		},						
 	]
 	if (wanted>-1){

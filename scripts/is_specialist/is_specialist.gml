@@ -78,12 +78,12 @@ function role_groups(group){
 			break;
 		case "captain_candidates":
 			role_list = [
-				roles[Role.SERGEANT], //sergeant
-				roles[Role.VETERAN_SERGEANT],
-				roles[Role.CHAMPION],				
-				roles[Role.CAPTAIN],								
-				roles[Role.TERMINATOR],				
-				roles[Role.VETERAN],
+				roles[eROLE.Sergeant], //sergeant
+				roles[eROLE.VeteranSergeant],
+				roles[eROLE.Champion],				
+				roles[eROLE.Captain],								
+				roles[eROLE.Terminator],				
+				roles[eROLE.Veteran],
 				 obj_ini.role[100][11],			
 			];
 			break;
@@ -224,7 +224,7 @@ function collect_role_group(group="standard", location="", opposite=false, searc
 				if (_wanted_companies != com) then continue;
 			}
 		}
-	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=0;i<array_length(obj_ini.TTRPG[com]);i++){
 	    	if (_max_count>0){
 	    		if (array_length(_units)>=_max_count){
 	    			break;
@@ -287,7 +287,7 @@ function stat_valuator(search_params, unit){
 function collect_by_religeon(religion, sub_cult="", location=""){
 	var _units = [], unit, count=0, _add=false;
 	for (var com=0;com<=10;com++){
-	    for (i=1;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (var i=1;i<array_length(obj_ini.TTRPG[com]);i++){
 	    	_add=false;
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue; 	

@@ -2,10 +2,10 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_weapon_hand_flamer",
-  "bbox_bottom": 184,
+  "bbox_bottom": 178,
   "bbox_left": 10,
-  "bbox_right": 156,
-  "bbox_top": 106,
+  "bbox_right": 59,
+  "bbox_top": 100,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1d11b11a-02d6-47f8-87c7-87206d0c9588",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a3f0b9f3-e415-442e-8e9c-74beff52199d",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -49,8 +48,8 @@
   },
   "origin": 0,
   "parent": {
-    "name": "weapons",
-    "path": "folders/Sprites/Marine Viewer/weapons.yy",
+    "name": "ranged",
+    "path": "folders/Sprites/Marine Viewer/weapons/ranged.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -67,7 +66,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -79,7 +78,6 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1d11b11a-02d6-47f8-87c7-87206d0c9588","path":"sprites/spr_weapon_hand_flamer/spr_weapon_hand_flamer.yy",},},},"Disabled":false,"id":"b33db15d-4ea7-4f57-85fd-d001d7688cfa","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a3f0b9f3-e415-442e-8e9c-74beff52199d","path":"sprites/spr_weapon_hand_flamer/spr_weapon_hand_flamer.yy",},},},"Disabled":false,"id":"47f5fe4d-02a6-4cd3-a030-b1f7f5588900","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

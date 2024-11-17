@@ -9,3 +9,6 @@
 
 # Gamemaker stuff
 ChapterMaster.resource_order
+
+tmp/
+stitch.config.json

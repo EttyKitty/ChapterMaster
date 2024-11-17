@@ -1,26 +1,29 @@
+/// @mixin obj_creation
 function scr_chapter_random(argument0) {
 
-
+	// argument0 = 0 = create custom 
+	// argument0 = 1 = create random
 
 	// if argument0=0 then it just gives a name
 	var i;i=-1;
-	repeat(21){i+=1;
-	    world[i]="";
-	    world_type[i]="";
-	    world_feature[i]="";
-	}
+	world = array_create(21, "");
+	world_type = array_create(21, "");
+	world_feature = array_create(21, "");
+	company_title = array_create(11, "");
+	adv = array_create(9, "");
+	dis = array_create(9, "");
+	adv_num = array_create(9, 0);
+	dis_num = array_create(9, 0);
 
-	company_title[0]="";var i;i=0;repeat(40){i+=1;company_title[i]="";}
 
 	var ran1, ran2, phrase1, phrase2, main, secondary, lens, weapon, found_secret;
 	phrase1="";phrase2="";
 
-	chapter="Unnamed";chapter_string="Unnamed";
+	chapter_name="Unnamed";chapter_string="Unnamed";
 	icon=1;icon_name="da";
 	founding=1;found_secret=0;
 	points=0;maxpoints=100;
 	fleet_type=1;strength=5;cooperation=5;purity=5;stability=5;
-	var i;i=-1;repeat(6){i+=1;adv[i]="";adv_num[i]=0;dis[i]="";dis_num[i]=0;}
 	homeworld="Temperate";homeworld_name=global.name_generator.generate_star_name();
 	recruiting="Death";recruiting_name=global.name_generator.generate_star_name();
 	flagship_name=global.name_generator.generate_imperial_ship_name();
@@ -28,8 +31,8 @@ function scr_chapter_random(argument0) {
 	homeworld_rule=1;aspirant_trial=eTrials.BLOODDUEL;
 	discipline="default";battle_cry="For the Emperor";
 
-	main_color=1;secondary_color=1;trim_color=1;
-	pauldron2_color=1;pauldron_color=1;// Left/Right pauldron
+	main_color=1;secondary_color=1;main_trim=1;
+	left_pauldron=1;right_pauldron=1;// Left/Right pauldron
 	lens_color=1;weapon_color=1;col_special=choose(0,0,0,0,0,1,2,3);
 
 	color_to_main="";
@@ -40,22 +43,27 @@ function scr_chapter_random(argument0) {
 	color_to_lens="";
 	color_to_weapon="";
 
-	hapothecary=global.name_generator.generate_space_marine_name();hchaplain=global.name_generator.generate_space_marine_name();clibrarian=global.name_generator.generate_space_marine_name();
-	fmaster=global.name_generator.generate_space_marine_name();recruiter=global.name_generator.generate_space_marine_name();admiral=global.name_generator.generate_space_marine_name();
+	hapothecary=global.name_generator.generate_space_marine_name();
+	hchaplain=global.name_generator.generate_space_marine_name();
+	clibrarian=global.name_generator.generate_space_marine_name();
+	fmaster=global.name_generator.generate_space_marine_name();
+	recruiter=global.name_generator.generate_space_marine_name();
+	admiral=global.name_generator.generate_space_marine_name();
 
 	equal_specialists=0;load_to_ships=[2,0,0];successors=0;
 
 	mutations=0;mutations_selected=0;
 	preomnor=0;voice=0;doomed=0;lyman=0;omophagea=0;ossmodula=0;membrane=0;
 	zygote=0;betchers=0;catalepsean=0;secretions=0;occulobe=0;mucranoid=0;
-	disposition[0]=0;
-	disposition[1]=0;// Prog
-	disposition[2]=0;// Imp
-	disposition[3]=0;// Mech
-	disposition[4]=0;// Inq
-	disposition[5]=0;// Ecclesiarchy
-	disposition[6]=0;// Astartes
-	disposition[7]=0;// Reserved
+	disposition = array_create(8, 0);
+	// disposition[0]=0;
+	// disposition[1]=0;// Prog
+	// disposition[2]=0;// Imp
+	// disposition[3]=0;// Mech
+	// disposition[4]=0;// Inq
+	// disposition[5]=0;// Ecclesiarchy
+	// disposition[6]=0;// Astartes
+	// disposition[7]=0;// Reserved
 	chapter_master_name=global.name_generator.generate_space_marine_name();
 	chapter_master_melee=1;
 	chapter_master_ranged=1;
@@ -69,13 +77,13 @@ function scr_chapter_random(argument0) {
 
 
 
-
+	// create random
 	if (argument0=1){
 	    strength=choose(2,3,4,5,6,7,8);
 	    purity=choose(2,3,4,5,6,7,8);if (strength<5) then purity+=2;
 	    stability=choose(2,3,4,5,6,7,8);if (purity<5) then stability+=2;
 	    cooperation=choose(2,3,4,5,6,7,8);if (stability<5) then cooperation+=2;
-	    founding=10;found_secret=floor(random(20))+1;
+	    founding=10;found_secret=floor(random(10))+1;
     
 	    custom=1;points=100;maxpoints=100;
 	    battle_cry="For the Emperor";
@@ -90,6 +98,7 @@ function scr_chapter_random(argument0) {
 	ran2=floor(random(95))+1;
 	ran3=floor(random(9))+1;
 
+	//create random
 	if (argument0=1){
 	    mutations=0;mutations_selected=0;mutation="";
 	    preomnor=0;voice=0;doomed=0;lyman=0;omophagea=0;ossmodula=0;membrane=0;
@@ -98,9 +107,9 @@ function scr_chapter_random(argument0) {
     
 	    if (found_secret=1){adv[1]="Enemy: Fallen";dis[1]="Never Forgive";}
 	    if (found_secret=2) then adv[1]="Lightning Warriors";
-	    if (found_secret=3){adv[1]="Melee Enthusiasts";dis[1]="Suspicious";}
+	    if (found_secret=3){adv[1]="Assault Doctrine";dis[1]="Suspicious";}
 	    if (found_secret=4){adv[1]="Bolter Drilling";betchers=1;membrane=1;mutations_selected+=2;mutations+=2;mutat=2;}
-	    if (found_secret=5){adv[1]="Melee Enthusiasts";dis[1]="Black Rage";disadvantage1=1;}
+	    if (found_secret=5){adv[1]="Assault Doctrine";dis[1]="Black Rage";disadvantage1=1;}
 	    if (found_secret=6){adv[1]="Tech-Brothers";dis[1]="Psyker Intolerant";}
 	    // if (found_secret=7) then founding="Ultramarines";
 	    if (found_secret=8){adv[1]="Crafters";dis[1]="Tolerant";secretions=1;mutations+=1;mutations_selected+=1;mutat+=1;}
@@ -338,13 +347,68 @@ function scr_chapter_random(argument0) {
 	color_to_weapon=col_weapon;
 	trim=choose(0,1);
 
-	chapter=string(phrase1)+" "+string(phrase2);chapter_string=chapter;
+    if (color_to_main!=""){
+        main_color = max(array_find_value(col,color_to_main),0);
+        color_to_main = "";
+    }
+    if (color_to_secondary!=""){
+        secondary_color = max(array_find_value(col,color_to_secondary),0);
+        color_to_secondary = "";
+    }
+    if (color_to_trim!=""){
+        main_trim = max(array_find_value(col,color_to_trim),0);
+        color_to_trim = "";
+    }
+    if (color_to_pauldron!=""){
+        right_pauldron = max(array_find_value(col,color_to_pauldron),0);
+        color_to_pauldron = "";  
+    }
+    if (color_to_pauldron2!=""){
+        left_pauldron = max(array_find_value(col,color_to_pauldron2),0);
+        color_to_pauldron2 = "";
+    }
+    if (color_to_lens!=""){
+        lens_color = max(array_find_value(col,color_to_lens),0);
+        color_to_lens = ""; 
+    }
+    if (color_to_weapon!=""){
+        weapon_color = max(array_find_value(col,color_to_weapon),0);
+        color_to_weapon = "";
+    }
 
+    //TODO add some funcky stuff for custom random complex livery
+    var struct_cols = {
+        main_color :main_color,
+        secondary_color:secondary_color,
+        main_trim:main_trim,
+        right_pauldron:right_pauldron,
+        left_pauldron:left_pauldron,
+        lens_color:lens_color,
+        weapon_color:weapon_color
+    }
+    obj_creation.livery_picker = new ColourItem(100,230);
+    obj_creation.livery_picker.scr_unit_draw_data();
+    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special);
+    obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
+    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
 
+    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
+
+    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
+
+    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
+    obj_creation.livery_picker.scr_unit_draw_data();
+    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special); 			
+
+	obj_creation.livery_picker.map_colour = full_liveries[0];
+	obj_creation.livery_picker.role_set = 0; 
+	chapter_name=string(phrase1)+" "+string(phrase2);chapter_string=chapter_name;
+
+	monastery_name = "";
 	if (argument0=1){
 	    homeworld_rule=choose(1,1,1,2,2,3,3);
-	    chapter=string(phrase1)+" "+string(phrase2);
-	    chapter_string=chapter;
+	    chapter_name=string(phrase1)+" "+string(phrase2);
+	    chapter_string=chapter_name;
 	    fleet_type=choose(1,2,3);
     
 	    // if (fleet_type=2) then monastery_name=string(phrase1)+" Hold";
@@ -363,6 +427,7 @@ function scr_chapter_random(argument0) {
 	if (argument0=1) then other1=founding;
 	if (argument0=0) then fleet_type=choose(1,2);
 
+	
 	cooldown=8000;
 
 

@@ -52,11 +52,11 @@ function CompanyStruct(comp) constructor{
 		for (var i=0;i<array_length(company_units);i++){
 			if (is_struct(company_units[i])){
 				unit = company_units[i];
-				if (unit.role() == role_set[Role.CAPTAIN]){
+				if (unit.role() == role_set[eROLE.Captain]){
 					captain = unit;
-				} else if (unit.role() == role_set[Role.ANCIENT]){
+				} else if (unit.role() == role_set[eROLE.Ancient]){
 					ancient = unit;
-				} else if (unit.role() == role_set[Role.CHAMPION]){
+				} else if (unit.role() == role_set[eROLE.Champion]){
 					champion = unit;
 				}
 			}

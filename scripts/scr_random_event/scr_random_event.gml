@@ -353,13 +353,13 @@ function scr_random_event(execute_now) {
         
 		//this bit should be improved, idk what duke was checking for here
 		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (string_count("Shit",obj_ini.strin2)>0) {
+        if (scr_has_disadv("Shitty Luck")) {
 			craft_roll+=20;
 		}
-        if (string_count("Tech-Heresy",obj_ini.strin2)>0) {
+        if (scr_has_disadv("Tech-Heresy")) {
 			craft_roll+=20;
 		}
-		if (string_count("Crafter",obj_ini.strin)>0) {
+		if (scr_has_adv("Crafter")) {
             if (craft_roll>80) {
 				craft_roll-=10;
 			}
@@ -1353,7 +1353,7 @@ function scr_random_event(execute_now) {
 		var ship_index = -1;
 		var ship_type="";
 	    var ship_count = fleet.capital_number + fleet.frigate_number + fleet.escort_number;
-	    var ship_roll=irandom_range(1,ship_count);
+	    var ship_roll=irandom_range(0,ship_count-1);
 	    if (ship_roll <= fleet.capital_number){
 			ship_index=ship_roll;
 			ship_type="capital";
@@ -1371,28 +1371,26 @@ function scr_random_event(execute_now) {
 		var chosen_ship = -1;
 		var text="The ";
 		var ship_name = "";
+
+
 		switch(ship_type) {
 			case "capital":
-				ship_name = fleet.capital[ship_index];
-				text += "Battle Barge '" + string(ship_name) + "'";
 				chosen_ship = fleet.capital_num[ship_index];
 				break;
 			case "frigate":
-				ship_name = fleet.frigate[ship_index];
-				text += "Strike Cruiser '" + string(ship_name) + "'";
 				chosen_ship = fleet.frigate_num[ship_index];
 				break;
 			case "escort":
-				ship_name = fleet.escort[ship_index];
-				text += "Escort Frigate '" + string(ship_name) + "'";
 				chosen_ship = fleet.escort_num[ship_index];
 				break;
 			default:	
 				debugl("RE: Ship Lost, couldn't identify ship type");
 				exit;
 		}
+		ship_name = obj_ini.ship[chosen_ship];
+		var _ship_class = obj_ini.ship_class[chosen_ship];
+		text += $"{_ship_class} '{ship_name}' has been lost to the miasma of the warp."		
 		
-		text+=" has been lost to the miasma of the warp."
 		var marine_count = scr_count_marines_on_ship(chosen_ship);				
 		if (marine_count>0) {
 			text += "  " + string(marine_count) + " Battle Brothers were onboard.";
@@ -1401,33 +1399,8 @@ function scr_random_event(execute_now) {
 
 		var lost_ship_fleet = instance_create(-500,-500,obj_p_fleet);
 		lost_ship_fleet.owner = eFACTION.Player;
-		
-		switch(ship_type) {
-			case "capital":
-			    lost_ship_fleet.capital_number=1;
-				lost_ship_fleet.capital[1] = ship_name;
-				lost_ship_fleet.capital_num[1] = chosen_ship;
-				array_delete(fleet.capital,ship_index,1);
-				array_delete(fleet.capital_num,ship_index,1);
-				fleet.capital_number -= 1;
-				break;
-			case "frigate": 
-			    lost_ship_fleet.frigate_number=1;
-				lost_ship_fleet.frigate[1]=ship_name;
-				lost_ship_fleet.frigate_num[1]=chosen_ship;
-				array_delete(fleet.frigate,ship_index,1);
-			    array_delete(fleet.frigate_num,ship_index,1);
-				fleet.frigate_number-=1;
-				break;
-			case "escort":
-			    lost_ship_fleet.escort_number=1;
-				lost_ship_fleet.escort[1] = ship_name;
-				lost_ship_fleet.escort_num[1] = chosen_ship;
-			    array_delete(fleet.escort,ship_index,1);
-			    array_delete(fleet.escort_num,ship_index,1);
-				fleet.escort_number-=1;
-				break;
-		}
+		add_ship_to_fleet(ship_index, lost_ship_fleet);
+		move_ship_between_player_fleets(fleet, lost_ship_fleet,ship_type,ship_index);
 		var unit;
 		for(var company = 0; company <= 10; company++){
 			for(var marine = 1; marine <= 300; marine++){

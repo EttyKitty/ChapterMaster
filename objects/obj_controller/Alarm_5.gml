@@ -480,13 +480,13 @@ if (training_techmarine>0){
                 unit.update_role(novice_type);
 
                 // Remove from ship
-                if (unit.ship_location>0){
+                if (unit.ship_location>-1){
                     var man_size=scr_unit_size(obj_ini.armour[0][g1],obj_ini.role[0][g1],true);
                     obj_ini.ship_carrying[unit.ship_location]-=man_size;
                 }
                 obj_ini.loc[0][g1]="Terra";
                 unit.planet_location=4;
-                unit.ship_location=0;
+                unit.ship_location=-1;
                 if (unit.weapon_one()!="Power Weapon"){
                     unit.update_weapon_one("");
                 }
@@ -574,7 +574,7 @@ if (turn=240) and (global.chapter_name="Lamenters"){
 }
 */
 // ** Battlefield Loot **
-if (array_contains(obj_ini.adv,"Scavengers")){
+if (array_contains(obj_ini.adv,"Tech-Scavengers")){
     var lroll1,lroll2,loot="";
     lroll1=floor(random(100))+1;
     lroll2=floor(random(100))+1;
@@ -1061,36 +1061,12 @@ for(var i=1; i<=99; i++){
                 }
                 if (array_length(active_forges)>0){
                     var ship_spawn = active_forges[irandom(array_length(active_forges)-1)];
-                    var new_defense_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
+                    var _new_player_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
 
                     // Creates the ship
-
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
 
-                    if (obj_ini.ship_class[last_ship] =="Battle Barge"){
-                        new_defense_fleet.capital[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.capital_number=1;
-                        new_defense_fleet.capital_num[1]=last_ship;
-                        new_defense_fleet.capital_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Strike Cruiser"){
-                        new_defense_fleet.frigate[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.frigate_number=1;
-                        new_defense_fleet.frigate_num[1]=last_ship;
-                        new_defense_fleet.frigate_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Gladius"){
-                        new_defense_fleet.escort[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.escort_number=1;
-                        new_defense_fleet.escort_num[1]=last_ship;
-                        new_defense_fleet.escort_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Hunter"){
-                        new_defense_fleet.escort[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.escort_number=1;
-                        new_defense_fleet.escort_num[1]=last_ship;
-                        new_defense_fleet.escort_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
+                    add_ship_to_fleet(last_ship, _new_player_fleet)
 
                     // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
 
@@ -1292,8 +1268,8 @@ if (fest_scheduled>0) and (fest_repeats>0){
 // }
 
 //research and forge related actions
+
 research_end();
-apothecary_simple();
 
 //complex route plotting for player fleets
 with (obj_p_fleet){

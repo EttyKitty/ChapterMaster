@@ -1,5 +1,6 @@
 // // Global singletons
 // global.NameGenerator = new NameGenerator();
+show_debug_message("Creating obj_ini");
 
 // // normal stuff
 use_custom_icon=0;
@@ -14,7 +15,7 @@ strin="";
 strin2="";
 tolerant=0;
 companies=10;
-progenitor=0;
+progenitor=ePROGENITOR.NONE;
 aspirant_trial = 0;
 
 load_to_ships=[2,0,0];
@@ -47,38 +48,11 @@ repeat(200){i+=1;
 }
 
 var i=-1;
-repeat(210){i+=1;
-    ship[i]="";
-    ship_uid[i]=0;
-    ship_owner[i]=0;
-    ship_class[i]="";
-    ship_size[i]=0;
-    ship_uid[i]=0;
-    ship_leadership[i]=0;
-    ship_hp[i]=0;
-    ship_maxhp[i]=0;
-    ship_location[i]="";
-    ship_shields[i]=0;
-    ship_conditions[i]="";
-    ship_speed[i]=0;
-    ship_turning[i]=0;
-    ship_front_armour[i]=0;
-    ship_other_armour[i]=0;
-    ship_weapons[i]=0;
-    ship_shields[i]=0;
-    for (var s=0;s<6;s++){
-         ship_wep[i,s]="";
-         ship_wep_facing[i,s]="";
-         ship_wep_condition[i,s]="";
-    }
-    ship_capacity[i]=0;
-    ship_carrying[i]=0;
-    ship_contents[i]="";
-    ship_turrets[i]=0;
-}
+init_player_fleet_arrays();
+ship_id = [];
 
-var company,v;
-company=-1;
+var v;
+var company=-1;
 repeat(11){
     company+=1;v=-1;// show_message("v company: "+string(company));
     repeat(205){v+=1;// show_message(string(company)+"."+string(v));
@@ -94,7 +68,7 @@ repeat(11){
         veh_hp[company,v]=100;
         veh_chaos[company,v]=0;
         veh_pilots[company,v]=0;
-        veh_lid[company,v]=0;
+        veh_lid[company,v]=-1;
         veh_wid[company,v]=2;
         veh_uid[company,v]=0;
     }

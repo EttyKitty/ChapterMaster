@@ -380,7 +380,18 @@ if (refresh=true) and (obj_controller.settings>0){
     
     refresh=false;
     
-    if (tab>0) then scr_weapons_equip();
+    if (tab > 0) {
+		item_name = [];
+		var is_hand_slot = (tab == 1 || tab == 2);
+		scr_get_item_names(
+			item_name,
+			obj_controller.settings, // eROLE
+			tab, // slot
+			is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
+			true, // include company standard
+			false, // show all regardless of inventory
+		 );
+	}
     
     good1=0;
 	good2=0;

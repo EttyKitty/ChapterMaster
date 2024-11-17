@@ -1,4 +1,16 @@
 
+// should end up a struct of arrays, 
+// e.g. 
+/* 
+img_cache: {
+    "creation/chapters": [somesprite1, somesprite2, ...];
+}
+ */
+show_debug_message("obj_img spawned");
+
+image_cache = {};
+
+
 var i;i=-1;
 repeat(301){i+=1;
     creation[i]=0;creation_exists[i]=-1;

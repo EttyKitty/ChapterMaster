@@ -411,8 +411,10 @@ if (menu==0) and (repair_ships>0) and (instance_number(obj_turn_end)==0) and (in
         if (frigate_health<100) and (frigate_number>0) then acted=2;
         if (escort_health<100) and (escort_number>0) then acted=2;
     }
-    for(var i=1; i<=30; i++){
-        if (obj_ini.ship_location[i]!="Warp") and (obj_ini.ship_location[i]!="Lost"){obj_ini.ship_hp[i]=obj_ini.ship_maxhp[i];}
+    for(var i=1; i<array_length(obj_ini.ship); i++){
+        if (obj_ini.ship_location[i]!="Warp") and (obj_ini.ship_location[i]!="Lost"){
+            obj_ini.ship_hp[i]=obj_ini.ship_maxhp[i];
+        }
     }
     // TODO need something here to veryify that the ships are within a friendly star system
 }
@@ -431,7 +433,7 @@ if (unload>0){
             unit_id = unit.marine_number;
             company = unit.company;
             obj_ini.loc[company][unit_id]=obj_ini.ship_location[b];
-            unit.ship_location=0;
+            unit.ship_location=-1;
             unit.planet_location=unload;
             obj_ini.uid[company][unit_id]=0;
             
@@ -444,7 +446,7 @@ if (unload>0){
             var unit_id = display_unit[q][1];
             var company = display_unit[q][0]
             obj_ini.veh_loc[company][unit_id]=obj_ini.ship_location[b];
-            obj_ini.veh_lid[company][unit_id]=0;
+            obj_ini.veh_lid[company][unit_id]=-1;
             obj_ini.veh_wid[company][unit_id]=unload;
             obj_ini.veh_uid[company][unit_id]=0;
             

@@ -18,7 +18,7 @@ var ground_mission = (instance_exists(obj_ground_mission));
 if (final_deaths+final_command_deaths>0){
     part1+=$"Marines Lost: {final_deaths+final_command_deaths}";
     if (units_saved > 0){
-        part1+=$" ({roles[Role.APOTHECARY]}{apothecaries_alive>1?"s":""} prevented the death of {units_saved})";
+        part1+=$" ({roles[eROLE.Apothecary]}{apothecaries_alive>1?"s":""} prevented the death of {units_saved})";
     }
     if (injured>0) then part8=$"Marines Critically Injured: {injured}";
     
@@ -61,7 +61,7 @@ if (string_count("Doom",obj_ini.strin2)>0) &&  (!apothecaries_alive){
     newline=" ";
     scr_newtext();
 }else if (!apothecaries_alive) and (string_count("Doom",obj_ini.strin2)=0){
-    part3=$"No able-bodied {roles[Role.APOTHECARY]}.  {seed_max} Gene-Seed lost.";
+    part3=$"No able-bodied {roles[eROLE.Apothecary]}.  {seed_max} Gene-Seed lost.";
     newline=part3;scr_newtext();
     newline=" ";scr_newtext();
 }else if (apothecaries_alive>0) and (final_deaths+final_command_deaths>0) and (string_count("Doom",obj_ini.strin2)=0){

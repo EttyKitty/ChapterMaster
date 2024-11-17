@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_pa_arms",
-  "bbox_bottom": 107,
+  "bbox_bottom": 126,
   "bbox_left": 17,
   "bbox_right": 47,
   "bbox_top": 74,
@@ -21,6 +21,7 @@
   "height": 232,
   "HTile": false,
   "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"c8c30d86-b0e9-40f1-b1db-6ac4f9a54b8f","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"85d5740a-9be1-4a8b-9e97-c5301a94b6c3","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,

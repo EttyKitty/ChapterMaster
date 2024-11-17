@@ -2,10 +2,10 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_weapon_boltpis",
-  "bbox_bottom": 160,
-  "bbox_left": 8,
-  "bbox_right": 162,
-  "bbox_top": 100,
+  "bbox_bottom": 157,
+  "bbox_left": 10,
+  "bbox_right": 57,
+  "bbox_top": 97,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"dd687c2e-3025-40e4-a63d-1de5355c1cb7",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2fbe55b8-f37f-4d3b-b5a4-50db1f726aef",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -26,8 +25,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "weapons",
-    "path": "folders/Sprites/Marine Viewer/weapons.yy",
+    "name": "ranged",
+    "path": "folders/Sprites/Marine Viewer/weapons/ranged.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -44,7 +43,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -56,7 +55,6 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dd687c2e-3025-40e4-a63d-1de5355c1cb7","path":"sprites/spr_weapon_boltpis/spr_weapon_boltpis.yy",},},},"Disabled":false,"id":"0c722af6-a209-4472-8eb0-1060349ba7d3","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2fbe55b8-f37f-4d3b-b5a4-50db1f726aef","path":"sprites/spr_weapon_boltpis/spr_weapon_boltpis.yy",},},},"Disabled":false,"id":"d4c844cf-5d71-4523-8aa0-4d5d9ea706f5","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

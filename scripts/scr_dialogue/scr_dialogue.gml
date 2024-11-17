@@ -315,7 +315,7 @@ function scr_dialogue(diplo_keyphrase) {
     
 	    // Casket, Chalice, Tome
 	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.ship[1],501);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.ship[0],501);
 	}
 	if (string_count("cs_meeting_battle",diplo_keyphrase)>0){
 	    current_eventing=diplo_keyphrase;combating=1;
@@ -1028,8 +1028,8 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rando==2) then diplo_text="[[The flesh is weak. "+string(faction_leader[eFACTION.Mechanicus])+" believes in this part of the iron creed above all others, forcing all those under him to mirror his dedication. All meaty parts of his body have been removed, leaving only the most vital parts of his brain. His retinue display their rank by showing how little of their body remains.]]";
 	        diplo_text+="###";
 	        if (disposition[3]>30) and (disposition[3]<60) then tempd="Greetings. I wish to see you bring the light of civilization to this sector, Chapter Master.";
-	        if (disposition[3]<=30) or (string_count("Tech-Heresy",obj_ini.strin2)>0) then tempd="You are impure, illogical and irritating. Keep your army of techno barbarians away from my territory.";
-	        if (disposition[3]>=60) or (string_count("Tech-Brothers",obj_ini.strin)>0) then tempd="Hail, Chapter Master. Were it not a logical fallacy, I would wish you luck in your coming endeavors.";
+	        if (disposition[3]<=30) or (scr_has_disadv("Tech-Heresy")) then tempd="You are impure, illogical and irritating. Keep your army of techno barbarians away from my territory.";
+	        if (disposition[3]>=60) or (scr_has_adv("Tech-Brothers")) then tempd="Hail, Chapter Master. Were it not a logical fallacy, I would wish you luck in your coming endeavors.";
 	        diplo_text+=tempd;
 	    }
 	    if (diplo_keyphrase=="hello"){

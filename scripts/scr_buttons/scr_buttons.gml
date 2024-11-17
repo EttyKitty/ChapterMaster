@@ -167,3 +167,40 @@ function TextBarArea(XX,YY,Max_width = 400) constructor{
 		return string_area;
 	}
 }
+
+
+function drop_down(selection, draw_x, draw_y, options,open_marker){
+	if (selection!=""){
+		var drop_down_area = draw_unit_buttons([draw_x, draw_y],selection,[1,1],c_green);
+		draw_set_color(c_red);
+		if (array_length(options)>1){
+			if (scr_hit(drop_down_area)){
+                current_target=true;
+				var roll_down_offset=4+string_height(selection);
+				for (var col = 0;col<array_length(options);col++){
+					if (options[col]==selection) then continue;
+					var cur_option = draw_unit_buttons([draw_x , draw_y+roll_down_offset],options[col],[1,1],c_red,,,,true);
+					if (point_and_click(cur_option)){
+						selection = options[col];
+						open_marker = false;
+					}
+					roll_down_offset += string_height(options[col])+4;
+
+				}
+				if (!scr_hit(
+						draw_x,
+						draw_y,
+						draw_x + 5 +string_width(selection),
+						draw_y+roll_down_offset,
+					)
+				){
+					open_marker = false;
+                    if (current_target) then current_target=false;
+				}
+			} else {
+                current_target=false;
+            }
+		}
+	}
+    return [selection,open_marker];
+}

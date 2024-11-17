@@ -9,7 +9,7 @@ function explode_script(argument0, argument1) {
 	  explode[0]=0;
 	  explode[1]=0;
 	}
-	for (i=0; i<string_count(argument1,argument0); i+=1)
+	for (var i=0; i<string_count(argument1,argument0); i++)
 	{
 	  pos=string_pos(argument1,string1);
 	  explode[i]=string_copy(string1,0,pos-1);

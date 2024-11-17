@@ -136,6 +136,7 @@ function scr_fleet_advisor(){
         draw_set_halign(fa_left);
 
         for (var i = ship_current; i < ship_current + 34; i++) {
+            if (i>= array_length(obj_ini.ship)) then continue;
             if (obj_ini.ship[i] != "") {
                 var _row_y = yy + _header_offset + (i * (_row_height + _row_gap));
                 draw_rectangle(xx + 950, _row_y, xx + 1546, _row_y + _row_height, 1);

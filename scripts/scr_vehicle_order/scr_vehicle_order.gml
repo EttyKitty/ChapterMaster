@@ -14,7 +14,7 @@ function reset_vehicle_variable_arrays(company_number,i){
     veh_acc[company_number][i] = "";
     veh_hp[company_number][i] = 100;
     veh_chaos[company_number][i] = 0;
-    veh_uid[company_number][i] = 0;
+    veh_uid[company_number][i] = -1;
 }
 function scr_vehicle_order(company_number) {
     // Once it's actually fucking working it should probably join the scr_company_order script in the Interface folder

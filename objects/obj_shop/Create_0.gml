@@ -315,14 +315,47 @@ if (shop = "equipment") {
     item_cost[i] = 80;
     if (research.bolt[0]>0){
         forge_cost[i] = 200;
-    }  
+    } 
     i += 1;
     x_mod[i] = 9;
     item[i] = "Combiflamer";
     item_stocked[i] = scr_item_count(item[i]);
     forge_cost[i] = 200;
-    if (research.bolt[0]<1) then forge_cost[i] = 0;
+    if (research.bolt[0]<1 || research.flame[0]<1) then forge_cost[i] = 0;
     item_cost[i] = 35;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Combiplasma";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 450;
+    if (research.bolt[0]<1 || research.plasma[0]<1) then forge_cost[i] = 0;
+    item_cost[i] = 110;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Combimelta";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 350;
+    if (research.bolt[0]<1 || research.melta[0]<1) then forge_cost[i] = 0;
+    item_cost[i] = 40;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Combigrav";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 450;
+    if (research.bolt[0]<1 || research.grav[0]<1) then forge_cost[i] = 0;
+    item_cost[i] = 110;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
@@ -346,6 +379,12 @@ if (shop = "equipment") {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+    i += 1;
+    item[i] = "Hand Flamer";
+    forge_cost[i] = 75;
+    if (research.flame[0]<1) then forge_cost[i] = 0;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 12;
     i += 1;
     item[i] = "Flamer";
     forge_cost[i] = 150;
@@ -416,7 +455,37 @@ if (shop = "equipment") {
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-    }    
+    }
+    i += 1;
+    item[i] = "Grav-Pistol";
+    forge_cost[i] = 250;
+     if (research.grav[0]<1) then forge_cost[i] = 0;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 60;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
+    item[i] = "Grav-Gun";
+    forge_cost[i] = 350;
+    if (research.grav[0]<1) then forge_cost[i] = 0;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 100;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
+    item[i] = "Grav-Cannon";
+    forge_cost[i] = 600;
+    if (research.grav[0]<1) then forge_cost[i] = 0;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 300;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
     i += 1;
     x_mod[i] = 9;
     item[i] = "Archeotech Laspistol";
@@ -1235,6 +1304,13 @@ if (shop == "production"){
         item_stocked[i] = 0;
         forge_cost[i] = 3000;
         tooltip_overide[i] = "Allows basic Melta weaponry construction";
+    }
+    if (research.grav[0] == 0){
+        i++;
+        item[i] = ["research", research_pathways.grav[0][research.grav[0]], ["grav"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 3000;
+        tooltip_overide[i] = "Allows Grav weapon Construction";
     }
     if (research.armour[0]>0){
         if (research.armour[1].stealth[0] == 0){

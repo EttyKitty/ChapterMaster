@@ -476,24 +476,27 @@ try {
     
     
     if (enemy=1) and (on_ship=true) and (defeat=0){
-        var diceh;diceh=floor(random(100))+1;
+        var diceh=floor(random(100))+1;
         
         if(scr_has_disadv("Shitty Luck")) then diceh-=15;
         
         if (diceh<=15){
-            var ship,ship_hp,i;i=-1;
-            repeat(51){i+=1;
-                ship[i]=obj_ini.ship[i];ship_hp[i]=obj_ini.ship_hp[i];
-                if (i=battle_id){obj_ini.ship_hp[i]=-50;scr_recent("ship_destroyed",obj_ini.ship[i],i);}
+            var ship,ship_hp,i=-1;
+            for (var i=0;i<array_length(obj_ini.ship);i++){
+                ship[i]=obj_ini.ship[i];
+                ship_hp[i]=obj_ini.ship_hp[i];
+                if (i=battle_id){
+                    obj_ini.ship_hp[i]=-50;
+                    scr_recent("ship_destroyed",obj_ini.ship[i],i);
+                }
             }
-            var pop;pop=instance_create(0,0,obj_popup);
+            var pop=instance_create(0,0,obj_popup);
             pop.image="";
             pop.title="Ship Destroyed";
             pop.text="A handful of loyalist "+string(global.chapter_name)+" make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
             scr_event_log("red","A handful of loyalist "+string(global.chapter_name)+" overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             pop.mission="loyalist_destroy_ship";
-            
-            with(obj_fleet){repeat(2){scr_dead_marines(2);}}
+
             with(obj_ini){scr_ini_ship_cleanup();}
         }
     }
@@ -587,7 +590,6 @@ try {
             pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
             scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             
-            with(obj_fleet){repeat(2){scr_dead_marines(2);}}
             with(obj_ini){scr_ini_ship_cleanup();}
         }
     }

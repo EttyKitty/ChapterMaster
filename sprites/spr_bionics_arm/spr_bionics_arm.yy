@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_bionics_arm",
-  "bbox_bottom": 105,
+  "bbox_bottom": 125,
   "bbox_left": 17,
   "bbox_right": 47,
   "bbox_top": 74,
@@ -23,6 +23,7 @@
   "height": 232,
   "HTile": false,
   "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"54b9c784-108c-4807-834f-2b0291f26540","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"9b0962d1-9e03-4c2d-a749-3e90ee6c8cf2","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,

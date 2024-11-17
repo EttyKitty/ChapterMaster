@@ -195,27 +195,8 @@ if (did==1){
     fleet.owner  = eFACTION.Player;
     fleet.alarm[5]=5;
     
-    for(var f=1; f<=40; f++){
-        switch (obj_ini.ship_size[f]) {
-            case 1:
-                fleet.escort_number+=1;
-                fleet.escort[fleet.escort_number]=obj_ini.ship[f];
-                fleet.escort_num[fleet.escort_number]=f;
-                fleet.escort_uid[fleet.escort_number]=obj_ini.ship_uid[fleet.escort_num[fleet.escort_number]];
-                break;
-            case 2:
-                fleet.frigate_number+=1;
-                fleet.frigate[fleet.frigate_number]=obj_ini.ship[f];
-                fleet.frigate_num[fleet.frigate_number]=f;
-                fleet.frigate_uid[fleet.frigate_number]=obj_ini.ship_uid[fleet.frigate_num[fleet.frigate_number]];
-                break;
-            case 3:
-                fleet.capital_number+=1;
-                fleet.capital[fleet.capital_number]=obj_ini.ship[f];
-                fleet.capital_num[fleet.capital_number]=f;
-                fleet.capital_uid[fleet.capital_number]=obj_ini.ship_uid[fleet.capital_num[fleet.capital_number]];
-                break;
-        }
+    for(var f=0; f<array_length(obj_ini.ship); f++){
+        add_ship_to_fleet(f, fleet);
     }
     
     var ii=0;
@@ -694,26 +675,26 @@ obj_crusade.placing=1;scr_zoom();*/
 
 // scr_add_artifact("Weapon","",4,obj_ini.home_name,1);
 
-/*scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);*/
+/*scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);*/
 
 // scr_add_item("Cyclonic Torpedo",5);
 // scr_add_item("Exterminatus",5);
     
 if (is_test_map==true){
     // scr_add_item("Exterminatus",5);
-    /*scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);*/
+    /*scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);*/
 }
 
 with(obj_temp7){instance_destroy();}

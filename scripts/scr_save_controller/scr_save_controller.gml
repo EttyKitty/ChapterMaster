@@ -196,7 +196,8 @@ function scr_save_controller(save_id){
     repeat(30){g+=1;
         ini_write_real("Controller","command"+string(g),obj_controller.command_set[g]);
     }
-    ini_write_real("Controller","blandify",obj_controller.blandify);
+    ini_write_real("Controller","modest_livery",obj_controller.modest_livery);
+    ini_write_real("Controller","progenitor_visuals",obj_controller.progenitor_visuals);
 
     ini_encode_and_json("Recruit", "data",{
     	names :obj_controller.recruit_name,

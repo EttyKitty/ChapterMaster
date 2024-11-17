@@ -83,7 +83,7 @@ if (audien[1]=0) or (current_audience>audiences){
                 if (obj_ini.name[0][iii] == "") then continue;
                 unit = fetch_unit([0,iii])
                 if (unit.role()=="Chapter Master"){
-                    if (unit.ship_location>0){
+                    if (unit.ship_location>-1){
                         if (obj_ini.ship_location[unit.ship_location]=="Lost"){
                             obj_controller.alarm[7]=70;
                             if (global.defeat<=1) then global.defeat=1;

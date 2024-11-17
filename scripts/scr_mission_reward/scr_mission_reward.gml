@@ -42,7 +42,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	                if (roll2>=80) and (roll2<88) then found_requisition+=100;
 	                if (roll2>=88) and (roll2<96){
 	                    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
 	                    found_artifact+=1;
 	                }
 	                if (roll2>=96){
@@ -109,9 +109,16 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	                repeat(100){i+=1;
 	                    if (obj_ini.veh_role[com][i]="Land Raider") and (obj_ini.veh_loc[com][i]=argument1.name) and (obj_ini.veh_wid[com][i]=argument2){
 	                        onceh=1;
-	                        obj_ini.veh_race[com][i]=0;obj_ini.veh_loc[com][i]="";obj_ini.veh_name[com][i]="";obj_ini.veh_role[com][i]="";
-	                        obj_ini.veh_lid[com][i]=0;obj_ini.veh_wid[com][i]=0;obj_ini.veh_wep1[com][i]="";obj_ini.veh_wep2[com][i]="";obj_ini.veh_wep3[com][i]="";
-	                        obj_ini.veh_upgrade[com][i]="";obj_ini.veh_acc[com][i]="";obj_ini.veh_hp[com][i]=0;obj_ini.veh_chaos[com][i]=0;
+	                        obj_ini.veh_race[com][i]=0;
+	                        obj_ini.veh_loc[com][i]="";obj_ini.veh_name[com][i]="";obj_ini.veh_role[com][i]="";
+	                        obj_ini.veh_lid[com][i]=-1;
+	                        obj_ini.veh_wid[com][i]=0;
+	                        obj_ini.veh_wep1[com][i]="";
+	                        obj_ini.veh_wep2[com][i]="";
+	                        obj_ini.veh_wep3[com][i]="";
+	                        obj_ini.veh_upgrade[com][i]="";
+	                        obj_ini.veh_acc[com][i]="";
+	                        obj_ini.veh_hp[com][i]=0;obj_ini.veh_chaos[com][i]=0;
 	                        obj_ini.veh_uid[com][i]=0;cleanup[com]=1;
 	                        argument1.p_player[argument2]-=20;
 	                    }
@@ -192,7 +199,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	        scr_popup("Mechanicus Mission Completed","The Adeptus Mechanicus have finished experimenting on your marines.  All of your astartes have survived, though they refuse to speak of the experience.  200 Requisition has been provided by the Mechanicus as a reward.","mechanicus","");
 	        obj_controller.disposition[3]+=1;
 	        obj_controller.requisition+=200;
-	        var found=0,com=-1,i=0,unit;
+	        var found=0,i=0,unit;
 	        for (var com=0;com<=10;com++){
 	            if (found<10){
 	                for (i=0;i<=array_length(obj_ini.TTRPG[com]);i++){

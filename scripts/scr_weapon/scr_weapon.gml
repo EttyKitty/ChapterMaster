@@ -9,7 +9,7 @@ global.weapons = {
 		},
 		"ranged_hands": 2,
 		"range": 25,
-		"tags": ["las", "rifle", "precision"],
+		"tags": ["las", "energy", "rifle", "precision"],
 	},
 	"Choppa": {
 		"abbreviation": "Chop",
@@ -83,7 +83,7 @@ global.weapons = {
 			"artifact": 6
 		},
 		"melee_hands": 0.9,
-		"tags": ["shield"],
+		"tags": ["shield","boarding"],
 		"hp_mod": {
 			"standard": 15,
 			"master_crafted": 17.5,
@@ -136,7 +136,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 0,
 		"arp": 0,
-		"tags": ["pistol", "ancient", "las"],
+		"tags": ["pistol", "ancient", "las", "energy"],
 	},
 	"Laspistol": {
 		"attack": {
@@ -152,7 +152,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 0,
 		"arp": 0,
-		"tags": ["pistol", "las"],
+		"tags": ["pistol", "las", "energy"],
 	},
 	"Combat Knife": {
 		"abbreviation": "CbKnf",
@@ -321,7 +321,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["power", "chain", "fist", "dual", "siege"],
+		"tags": ["power","boarding", "chain", "fist", "dual", "siege"],
 	},
 	"Lascutter": {
 		"abbreviation": "Lasct",
@@ -334,7 +334,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"range": 1,
 		"arp": 1,
-		"tags": ["laser", "siege"],
+		"tags": ["las","boarding", "siege"],
 	},
 	"Eldar Power Sword": {
 		"abbreviation": "EldPwrSwrd",
@@ -713,6 +713,54 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["immobolise"]
 	},
+	"Grav-Pistol": {
+		"abbreviation": "GrvPstl",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 110,
+			"artifact": 120
+		},
+		"description": "A smaller version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 4,
+		"range": 2.1,
+		"spli": 1,
+		"arp": 1,
+		"tags": ["grav", "pistol"]
+	},
+	"Grav-Gun": {
+		"abbreviation": "GrvGn",
+		"attack": {
+			"standard": 450,
+			"master_crafted": 475,
+			"artifact": 500
+		},
+		"description": "A medium-sized weapon which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 4,
+		"range": 4,
+		"spli": 3,
+		"arp": 1,
+		"tags": ["grav"]
+	},
+	"Grav-Cannon": {
+		"abbreviation": "GrvCan",
+		"attack": {
+			"standard": 800,
+			"master_crafted": 850,
+			"artifact": 900
+		},
+		"description": "A bigger version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 8,
+		"range": 8,
+		"spli": 6,
+		"arp": 1,
+		"tags": ["grav", "heavy_weapon"]
+	},
 	"Underslung Bolter": {
 		"abbreviation": "UndBltr",
 		"attack": {
@@ -791,7 +839,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 5,
 		"arp": -1,
-		"tags": ["dreadnought", "flame"]
+		"tags": ["dreadnought","heavy_ranged", "flame"]
 	},
 	"Dreadnought Power Claw": {
 		"abbreviation": "PwrClw",
@@ -819,7 +867,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 10,
 		"arp": 1,
-		"tags": ["vehicle", "dreadnought", "flame", "fist"]
+		"tags": ["vehicle", "dreadnought", "fist"]
 	},
 	"Inferno Cannon": {
 		"abbreviation": "InfCann",
@@ -835,7 +883,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 20,
 		"arp": -1,
-		"tags": ["vehicle", "flame", "dreadnought"]
+		"tags": ["vehicle","heavy_ranged", "flame", "dreadnought"]
 	},
 	"Meltagun": {
 		"abbreviation": "Mltgn",
@@ -851,7 +899,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["melta"]
+		"tags": ["melta","boarding"]
 	},
 	"Multi-Melta": {
 		"abbreviation": "MltMelt",
@@ -883,7 +931,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["plasma", "pistol"]
+		"tags": ["plasma", "energy", "pistol"]
 	},
 	"Plasma Cutter": { // Basically a dual-linked plasma pistol
 		"abbreviation": "PlsmCt",
@@ -899,7 +947,7 @@ global.weapons = {
 		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["plasma", "pistol"]
+		"tags": ["plasma", "energy", "pistol"]
 	},
 	"Infernus Pistol": {
 		"abbreviation": "InfPstl",
@@ -915,7 +963,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "pistol"]
+		"tags": ["melta", "pistol"]
 	},
 	"Plasma Gun": {
 		"abbreviation": "PlsmGn",
@@ -931,7 +979,7 @@ global.weapons = {
 		"range": 12,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["plasma"]
+		"tags": ["plasma", "energy"]
 	},
 	"Plasma Cannon": {
 		"abbreviation": "PlsmCan",
@@ -947,7 +995,7 @@ global.weapons = {
 		"range": 14,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["plasma", "heavy_weapon", "dreadnought"]
+		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
 	"Sniper Rifle": {
 		"abbreviation": "SnprRfl",
@@ -1027,7 +1075,7 @@ global.weapons = {
 		"range": 24,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["heavy_ranged", "las"]
+		"tags": ["heavy_ranged", "las", "energy"]
 	},
 	"Conversion Beam Projector": {
 		"abbreviation": "CnvBmPrj",
@@ -1091,7 +1139,7 @@ global.weapons = {
 		"range": 24,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["las", "heavy_ranged", "vehicle", "dreadnought"]
+		"tags": ["las", "energy", "heavy_ranged", "vehicle", "dreadnought"]
 	},
 	"Heavy Bolter": {
 		"abbreviation": "HvyBltr",
@@ -1123,7 +1171,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 25,
 		"arp": 1,
-		"tags": ["vehicle", "indirect"]
+		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
 		"abbreviation": "HKMssl",
@@ -1160,7 +1208,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["las", "vehicle", "heavy_ranged", "dreadnought"]
+		"tags": ["las", "energy", "vehicle", "heavy_ranged", "dreadnought"]
 	},
 	"Twin Linked Assault Cannon Mount": {
 		"attack": {
@@ -1176,7 +1224,7 @@ global.weapons = {
 		"range": 12,
 		"spli": 30,
 		"arp": 1,
-		"tags": ["vehicle", "pintle", "dreadnought"]
+		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
 		"attack": {
@@ -1192,7 +1240,7 @@ global.weapons = {
 		"range": 15,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["vehicle", "pintle"]
+		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
 		"attack": {
@@ -1208,7 +1256,7 @@ global.weapons = {
 		"range": 16,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["bolt", "vehicle", "sponson"]
+		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Lascannon Sponsons": {
 		"attack": {
@@ -1224,7 +1272,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["las", "vehicle", "sponson", "twin_linked"]
+		"tags": ["las", "energy", "vehicle", "heavy_ranged", "sponson", "twin_linked"]
 	},
 	"Lascannon Sponsons": {
 		"attack": {
@@ -1240,7 +1288,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["las", "vehicle", "sponson"]
+		"tags": ["las", "energy","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Hurricane Bolter Sponsons": {
 		"attack": {
@@ -1256,7 +1304,7 @@ global.weapons = {
 		"range": 10,
 		"spli": 60,
 		"arp": 0,
-		"tags": ["bolt", "vehicle", "sponson"]
+		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Flamestorm Cannon Sponsons": {
 		"attack": {
@@ -1272,7 +1320,7 @@ global.weapons = {
 		"range": 2,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "vehicle", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Heavy Flamer Sponsons": {
 		"attack": {
@@ -1288,7 +1336,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 8,
 		"arp": -1,
-		"tags": ["flame", "vehicle", "dreadnought", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "dreadnought", "sponson"]
 	},
 	"Twin Linked Bolters": {
 		"attack": {
@@ -1320,7 +1368,7 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "Sponson", "melta"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"]
 	},
 	"Twin Linked Volkite Culverin Sponsons": {
 		"abbreviation": "TwnVlkCulvs",
@@ -1336,7 +1384,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 9,
 		"arp": 0,
-		"tags": ["vehicle", "Sponson", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Heavy Bolter Sponsons": {
 		"abbreviation": "HvyBltrs",
@@ -1369,7 +1417,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 4,
 		"arp": -1,
-		"tags": ["flame", "vehicle", "sponson"]
+		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Volkite Culverin Sponsons": {
 		"abbreviation": "VlkClvs",
@@ -1385,7 +1433,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 5,
 		"arp": 1,
-		"tags": ["vehicle", "Sponson", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Autocannon Turret": {
 		"abbreviation": "Autocnn",
@@ -1401,7 +1449,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 15,
 		"arp": 0,
-		"tags": ["vehicle", "turrent"]
+		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Storm Bolter": {
 		"abbreviation": "StrmBltr",
@@ -1419,6 +1467,22 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["bolt"]
 	},
+	"Hand Flamer": {
+		"abbreviation": "HndFlmr",
+		"attack": {
+			"standard": 125,
+			"master_crafted": 190,
+			"artifact": 210
+		},
+		"description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 2,
+		"range": 1.1,
+		"spli": 2,
+		"arp": -1,
+		"tags": ["pistol", "flame"]
+	},
 	"Flamer": {
 		"abbreviation": "Flmr",
 		"attack": {
@@ -1433,10 +1497,10 @@ global.weapons = {
 		},
 		"description": "Blackened at the tip, this weapon unleashes a torrent of burning promethium - all the better to cleanse sin and impurity with.",
 		"melee_hands": 1,
-		"ranged_hands": 1,
+		"ranged_hands": 2,
 		"ammo": 4,
 		"range": 2.1,
-		"spli": 3,
+		"spli": 4,
 		"arp": -1,
 		"tags": ["flame"]
 	},
@@ -1463,14 +1527,65 @@ global.weapons = {
 			"master_crafted": 130,
 			"artifact": 160
 		},
-		"description": "A standard Bolter with an underbarrel flamer for expanded tactical utility.",
+		"description": "A standard Bolter with an underbarrel Flamer for expanded tactical utility.",
 		"melee_hands": 1,
-		"ranged_hands": 1.5,
+		"ranged_hands": 2,
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
 		"arp": 0,
 		"second_profiles": ["Flamer"],
+		"tags": ["combi", "bolt"]
+	},
+	"Combiplasma": {
+		"abbreviation": "CmbPlsm",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 130,
+			"artifact": 160
+		},
+		"description": "A standard Bolter with an underbarrel Plasma Gun for expanded tactical utility.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 15,
+		"range": 10,
+		"spli": 3,
+		"arp": 0,
+		"second_profiles": ["Plasma Gun"],
+		"tags": ["combi", "bolt"]
+	},
+	"Combigrav": {
+		"abbreviation": "CmbGrv",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 130,
+			"artifact": 160
+		},
+		"description": "A standard Bolter with an underbarrel Grav-Gun for expanded tactical utility.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 15,
+		"range": 10,
+		"spli": 3,
+		"arp": 0,
+		"second_profiles": ["Grav-Gun"],
+		"tags": ["combi", "bolt"]
+	},
+	"Combimelta": {
+		"abbreviation": "CmbMlt",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 130,
+			"artifact": 160
+		},
+		"description": "A standard Bolter with an underbarrel Meltagun for expanded tactical utility.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 15,
+		"range": 10,
+		"spli": 3,
+		"arp": 0,
+		"second_profiles": ["Meltagun"],
 		"tags": ["combi", "bolt"]
 	},
 	"Incinerator": {
@@ -1567,7 +1682,7 @@ global.weapons = {
 		"range": 24,
 		"ammo": 5,
 		"spli": 2,
-		"tags": ["las", "twin_linked", "vehicle", "turret"]
+		"tags": ["las", "energy", "twin_linked","heavy_ranged", "vehicle", "turret"]
 	},
 	"Twin Linked Assault Cannon Turret": {
 		"abbreviation": "TwnAssCnn",
@@ -1599,7 +1714,7 @@ global.weapons = {
 		"range": 2,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["flame", "vehicle", "turret"]
+		"tags": ["flame","heavy_ranged", "vehicle", "turret"]
 	},
 	"Magna-Melta Turret": {
 		"abbreviation": "MgnMlt",
@@ -1615,7 +1730,7 @@ global.weapons = {
 		"range": 5.1,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "turret", "melta"]
+		"tags": ["vehicle","heavy_ranged", "turret", "melta"]
 	},
 	"Plasma Destroyer Turret": {
 		"abbreviation": "PlsmDestr",
@@ -1631,7 +1746,7 @@ global.weapons = {
 		"range": 14,
 		"spli": 3,
 		"arp": 1,
-		"tags": ["plasma", "vehicle", "turret"]
+		"tags": ["plasma", "energy","heavy_ranged", "vehicle", "turret"]
 	},
 	"Heavy Conversion Beam Projector": {
 		"abbreviation": "HvyCnvBmr",
@@ -1647,7 +1762,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["vehicle", "dreadnought", "turret", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "dreadnought", "turret", "ancient"]
 	},
 	"Neutron Blaster Turret": {
 		"abbreviation": "NtrnBlstr",
@@ -1663,7 +1778,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["vehicle", "turret"]
+		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Volkite Saker Turret": {
 		"abbreviation": "VlkSkr",
@@ -1679,7 +1794,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 30,
 		"arp": 0,
-		"tags": ["vehicle", "turret", "volkite", "ancient"]
+		"tags": ["vehicle","heavy_ranged", "turret", "volkite", "ancient"]
 	},
 }
 global.gear = {
@@ -2561,7 +2676,7 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
     gear_areas =  ["gear","armour","mobility"];
     if (search_area=="any"){
         data_found=false;
-        for (i=0;i<3;i++){
+        for (var i=0;i<3;i++){
            if (struct_exists(global.gear[$ gear_areas[i]],item)){
                 equip_area=global.gear;
                 item_data_set=global.gear[$ gear_areas[i]][$item];

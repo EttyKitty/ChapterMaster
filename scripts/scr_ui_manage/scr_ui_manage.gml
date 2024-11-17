@@ -53,7 +53,7 @@ function scr_ui_manage() {
 	        selecting_planet=0;
 	        man_size=0;
 		}	
-		var unit,i,x1,x2,y1,y2, var_text;
+		var unit,x1,x2,y1,y2, var_text;
 		var romanNumerals=scr_roman_numerals();	
 		var tooltip_text="",bionic_tooltip="",tooltip_drawing=[];
 			var invalid_locations = ["Mechanicus Vessel", "Terra"];
@@ -1121,7 +1121,7 @@ function scr_ui_manage() {
 			}
 		}
 	    var tip, coords;
-		for (i=0;i < array_length(tooltip_drawing); i++){
+		for (var i=0;i < array_length(tooltip_drawing); i++){
 			tip = tooltip_drawing[i];
 			coords=tip[1];
 			if (point_in_rectangle(mouse_x, mouse_y, coords[0],coords[1],coords[2],coords[3])){
@@ -1183,7 +1183,7 @@ function scr_ui_manage() {
 
         draw_text(xx + 800, yy + 74, $"{global.chapter_name} {fx}");
 
-        if (managing >= 0) {
+        if (managing >= 0 && managing <= 10) {
             if (obj_ini.company_title[managing] != "") {
                 draw_set_font(fnt_fancy);
                 draw_text(xx + 800, yy + 110, string_hash_to_newline($"''{obj_ini.company_title[managing]}''"));

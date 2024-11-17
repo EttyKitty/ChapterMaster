@@ -16,8 +16,7 @@ function scr_trade(argument0) {
 
 
 
-	var i=0;
-	repeat(4){i+=1;
+    for (var i = 1; i < 5; i++) {
 	    if (trade_give[i]="Requisition") and (trade_mnum[i]>0) then my_worth+=trade_mnum[i];
     
 	    if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
@@ -188,13 +187,13 @@ function scr_trade(argument0) {
     
 	    // show_message("A: "+string(liscensing));
     
-	    i=0;var goods;goods="";
+	    ;var goods;goods="";
 	   
     
     
 	    // Temporary work around
-	    if (lisc>0){var i;i=0;
-	        repeat(4){i+=1;
+	    if (lisc>0){
+            for (var i = 1; i <= 4; i += 1) {
 	            if (trade_give[i]="Requisition") then requisition-=trade_mnum[i];
 	            if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
 	                gene_seed-=trade_mnum[i];
@@ -204,14 +203,21 @@ function scr_trade(argument0) {
 	            }
 	            if (trade_give[i]="Info Chip") and (trade_mnum[i]>0) then info_chips-=trade_mnum[i];
 	            if (trade_give[i]="STC Fragment") and (trade_mnum[i]>0){
-	                var remov,p;remov=0;p=0;
-	                repeat(100){
-	                    if (remov=0){p=choose(1,2,3);
-	                        if (p=1) and (stc_wargear_un>0){stc_wargear_un-=1;remov=1;}
-	                        if (p=2) and (stc_vehicles_un>0){stc_vehicles_un-=1;remov=1;}
-	                        if (p=3) and (stc_ships_un>0){stc_ships_un-=1;remov=1;}
-	                    }
-	                }
+                    for (var j = 0; j < 100; j += 1) {
+                        var p = choose(1, 2, 3);
+                        if (p == 1 && stc_wargear_un > 0) {
+                            stc_wargear_un -= 1;
+                            break;
+                        }
+                        if (p == 2 && stc_vehicles_un > 0) {
+                            stc_vehicles_un -= 1;
+                            break;
+                        }
+                        if (p == 3 && stc_ships_un > 0) {
+                            stc_ships_un -= 1;
+                            break;
+                        }
+                    }
 	            }
 	        }
         
@@ -272,7 +278,7 @@ function scr_trade(argument0) {
 	        // show_message("TG2:"+string(instance_number(obj_temp2))+", TG3:"+string(instance_number(obj_temp3))+", TG4:"+string(instance_number(obj_ground_mission)));
         
         
-	        var targ, flit, i,chasing;chasing=0;targ=0;// Set target, chase
+	        var targ, flit, chasing;chasing=0;targ=0;// Set target, chase
         
 	        // if (obj_ini.fleet_type != ePlayerBase.home_world){
 	            if (instance_exists(obj_temp2)) then targ=instance_nearest(obj_temp2.x,obj_temp2.y,obj_temp3);

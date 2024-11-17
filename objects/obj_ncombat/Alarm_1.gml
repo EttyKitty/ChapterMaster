@@ -469,7 +469,7 @@ if (temp>=100) and (threat>1) and (big_mofo>0) and (big_mofo<10) and (dropping=0
         newline=p4;scr_newtext();
         newline=p5;scr_newtext();
     }
-	if (global.chapter_name="Carcharodons"){standard_cry=1;
+	if (obj_ini.battle_cry == "..."){standard_cry=1;
         var rand;rand=choose(1,2,3);
         if (rand=1) and (big_mofo!=1){p2="remains silent as the Chapter forms for battle-";}if (rand=1) and (big_mofo=1){p2="remain silent as the Chapter forms for battle-";}
         if (rand=2) and (big_mofo!=1){p2="remains silent and issues orders to the Chapter for battle-";}if (rand=2) and (big_mofo=1){p2="remain silent and issues orders to the Chapter for battle-";}

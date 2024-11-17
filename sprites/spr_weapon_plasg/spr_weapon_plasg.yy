@@ -4,7 +4,7 @@
   "name": "spr_weapon_plasg",
   "bbox_bottom": 195,
   "bbox_left": 22,
-  "bbox_right": 144,
+  "bbox_right": 65,
   "bbox_top": 86,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8fe8f87d-cc4c-49b1-a8c7-5b595d9a9e9d",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a4883e21-05cf-4d8f-bed5-d89946e80145",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -26,8 +25,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "weapons",
-    "path": "folders/Sprites/Marine Viewer/weapons.yy",
+    "name": "ranged",
+    "path": "folders/Sprites/Marine Viewer/weapons/ranged.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -44,7 +43,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -56,7 +55,6 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8fe8f87d-cc4c-49b1-a8c7-5b595d9a9e9d","path":"sprites/spr_weapon_plasg/spr_weapon_plasg.yy",},},},"Disabled":false,"id":"e8b5a45b-814c-49dc-9fc4-16d6bf9347bd","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a4883e21-05cf-4d8f-bed5-d89946e80145","path":"sprites/spr_weapon_plasg/spr_weapon_plasg.yy",},},},"Disabled":false,"id":"b9d35f28-492c-48ce-bc59-00dd43378397","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

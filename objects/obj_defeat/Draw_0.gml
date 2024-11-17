@@ -7,19 +7,13 @@ var xx,yy,cus;
 xx=331;yy=93;
 cus=false;
 
-if (string_count("custom",global.icon_name)>0) then cus=true;
-if (cus=true){
-    var cusl;cusl=string_replace(global.icon_name,"custom","");cusl=real(cusl);
-    if (obj_cuicons.spr_custom[cusl]>0) and (obj_cuicons.spr_custom_icon[cusl]!=-1){
-        draw_sprite_stretched(obj_cuicons.spr_custom_icon[cusl],0,728,83,135,135);
-    }
-}
-if (cus=false){
-    // if (global.icon<=20) then draw_sprite_stretched(spr_icon,global.icon,728,83,135,135);
-    if (global.icon<=20) then scr_image("creation",global.icon,728,83,135,135);
-    if (global.icon>20) then draw_sprite_stretched(spr_icon_chapters,global.icon-19,728,83,135,135);
-}
-// 728,103
+var sprx = 728,
+    spry = 83,
+    sprw = 135,
+    sprh = 135
+
+draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+
 
 draw_set_color(c_black);
 draw_set_alpha(fade/faded);

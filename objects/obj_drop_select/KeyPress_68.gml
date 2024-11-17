@@ -9,7 +9,7 @@ if (global.cheat_debug) {
         }
         if (good=1){
             unit = fetch_unit([comp, i]);
-            if (unit.ship_location>0) and (via[unit.ship_location]!=1) then chick=0;
+            if (unit.ship_location>-1) and (via[unit.ship_location]!=1) then chick=0;
         }
         
         if (good=1){

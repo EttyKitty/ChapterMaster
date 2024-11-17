@@ -11,12 +11,12 @@ if (refresh_raid!=0){
         for (i=0;i<array_length(obj_ini.TTRPG[comp]);i++){
             chick=1;
             unit = fetch_unit([comp,i]);
-            if (good=1){if (unit.ship_location>0) and (via[unit.ship_location]<=0) then chick=0;}
+            if (good=1){if (unit.ship_location>-1) and (via[unit.ship_location]<=0) then chick=0;}
             
             remove=0;
             
             // just added the ship part
-            if (good=1) and ((unit.ship_location>0) or ((attack=1) and (unit.planet_location=obj_controller.selecting_planet) and (obj_ini.loc[comp][i]=p_target.name) and (remove_local!=0))){
+            if (good=1) and ((unit.ship_location>-1) or ((attack=1) and (unit.planet_location=obj_controller.selecting_planet) and (obj_ini.loc[comp][i]=p_target.name) and (remove_local!=0))){
                 
                 if (attack=1) and (unit.planet_location=obj_controller.selecting_planet) and (remove_local=1) then remove=1;
             

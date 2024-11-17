@@ -27,7 +27,6 @@ if (instance_exists(obj_en_ship)){
 }
 
 if (hp<=0) and (x>-5000){
-    // obj_fleet.fighting[self.ship_id]=-5;
     if (class="Battle Barge") or (class="Slaughtersong"){
         obj_fleet.capital-=1;
         obj_fleet.capital_lost+=1;

@@ -58,7 +58,7 @@ if (mission="bad"){
 }
 
 
-if (scr_has_adv("Scavengers")){
+if (scr_has_adv("Tech-Scavengers")){
     var ex1,ex1_num,ex2,ex2_num,ex3,ex3_num;
     ex1="";ex1_num=0;ex2="";ex2_num=0;ex3="";ex3_num=0;
     

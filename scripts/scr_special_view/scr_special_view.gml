@@ -1,8 +1,7 @@
 function scr_special_view(command_group) {
 
 	// Works as COMPANY VIEW but for the subsections of HQ
-
-	var v, i; 
+ 
 	var mans=0, onceh, company=0, bad=0, oth=0, unit;
 	gogogo=0;
 	vehicles=0;
@@ -11,11 +10,11 @@ function scr_special_view(command_group) {
 
 	var squads=0, squad_typ="", squad_loc=0, squad_members=0;
 
-	for (i=0;i<20;i++){
+	for (var i=0;i<20;i++){
 		sel_uni[i]="";
 		sel_veh[i]="";
 	}
-	for (i=0;i<501;i++){
+	for (var i=0;i<501;i++){
 
 	    if (i<=50){
 	    	penit_co[i]=0;
@@ -27,8 +26,6 @@ function scr_special_view(command_group) {
 
 	mans=0;
 	vehicles=0;
-	v=0;
-	i=0;
 	b=0;
 
 	// v: check number
@@ -36,7 +33,7 @@ function scr_special_view(command_group) {
 
 	b=0;
 	if (command_group==11) or (command_group==0){				//HQ units
-		for (v = 0;v<array_length(obj_ini.TTRPG[0]);v++){
+		for (var v = 0;v<array_length(obj_ini.TTRPG[0]);v++){
 			bad=0;
 			if (obj_ini.name[0][v]== ""){continue;}
 			if (obj_ini.TTRPG[0][v].ship_location>0){
@@ -98,10 +95,9 @@ function scr_special_view(command_group) {
 
 	// b=last_man;
 	last_man=b;
-	i=0;
 	last_vehicle=0;
 
-	for (i=1;i<101;i++){// 100
+	for (var i=1;i<101;i++){// 100
 	    if (obj_ini.veh_race[company,i]!=0){
 	    	add_vehicle_to_manage_arrays([company,i]);
 	    }
@@ -109,10 +105,9 @@ function scr_special_view(command_group) {
 
 
 
-	i=0;
 	squads=0;
 	//TODO unify this data with other_manage_data() method
-	for (i=1;i<array_length(display_unit);i++){
+	for (var i=1;i<array_length(display_unit);i++){
 		onceh=0;
 	    var ahuh=0;
 	    if (man[i]="man"){if (ma_role[i]!="") then ahuh=1;}

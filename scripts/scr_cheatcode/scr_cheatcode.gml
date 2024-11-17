@@ -65,10 +65,10 @@ function scr_cheatcode(argument0) {
 					break;
 				case "artifact":
 					if (cheat_arguments[0] == "1") {
-						scr_add_artifact("random", "", 6, obj_ini.ship[1], 501);
+						scr_add_artifact("random", "", 6, obj_ini.ship[0], 501);
 					} else {
 						repeat(real(cheat_arguments[1])){
-							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[1], 501);
+							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[0], 501);
 						}
 					}
 					break;
@@ -113,11 +113,11 @@ function scr_cheatcode(argument0) {
 					break;
 				case "inquisarti":
 					scr_quest(0, "artifact_loan", 4, 10);
-					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[1], 501);
+					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
 					break;
 				case "govmission":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							var existing_problem = false; //has_any_problem_planet(i);
 							if (!existing_problem) {
 								if (p_owner[i] == eFACTION.Imperium) {
@@ -130,14 +130,14 @@ function scr_cheatcode(argument0) {
 					break;
 				case "artifactpopulate":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Artifact));
 						}
 					}
 					break;
 				case "ruinspopulate":
 					with (obj_star) {
-						for (i = 1; i <= planets; i++) {
+						for (var i = 1; i <= planets; i++) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
 						}
 					}

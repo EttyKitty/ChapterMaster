@@ -1,5 +1,5 @@
 /**
- * @arg {String} advantage advantage name e.g. "Scavengers"
+ * @arg {String} advantage advantage name e.g. "Tech-Scavengers"
  * @return {Bool}
  */
 function scr_has_adv(advantage){

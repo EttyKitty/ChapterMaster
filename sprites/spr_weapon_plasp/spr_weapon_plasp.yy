@@ -2,10 +2,10 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_weapon_plasp",
-  "bbox_bottom": 173,
-  "bbox_left": 23,
-  "bbox_right": 143,
-  "bbox_top": 102,
+  "bbox_bottom": 172,
+  "bbox_left": 22,
+  "bbox_right": 51,
+  "bbox_top": 101,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8fe8f87d-cc4c-49b1-a8c7-5b595d9a9e9d",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e9b93f86-ee4d-46dd-85b8-6a469057430e",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -26,8 +25,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "weapons",
-    "path": "folders/Sprites/Marine Viewer/weapons.yy",
+    "name": "ranged",
+    "path": "folders/Sprites/Marine Viewer/weapons/ranged.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -44,7 +43,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -56,7 +55,6 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8fe8f87d-cc4c-49b1-a8c7-5b595d9a9e9d","path":"sprites/spr_weapon_plasp/spr_weapon_plasp.yy",},},},"Disabled":false,"id":"8333a6b3-f6e7-4458-ad54-3d025c953fdb","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e9b93f86-ee4d-46dd-85b8-6a469057430e","path":"sprites/spr_weapon_plasp/spr_weapon_plasp.yy",},},},"Disabled":false,"id":"10cd094d-1c40-4cc9-a2e0-88563ed7917a","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

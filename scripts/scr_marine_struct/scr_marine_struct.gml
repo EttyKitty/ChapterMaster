@@ -54,7 +54,8 @@ global.trait_list = {
 	},
 	"slow_and_purposeful":{
 		constitution:6,
-		dexterity : -6,
+		dexterity : -3,
+		weapon_skill : -3,
 		strength : 2,
 		flavour_text : "Implacable, advancing in combat with methodical reason",
 		display_name : "Slow and Purposeful",
@@ -62,6 +63,7 @@ global.trait_list = {
 	},
 	"melee_enthusiast":{
 		weapon_skill : 5,
+		ballistic_skill: -5,
 		strength : 3,		
 		flavour_text : "Nothing can keep them from the fury of melee combat",	
 		display_name : "Melee Enthusiast",
@@ -408,7 +410,7 @@ global.trait_list = {
 		weapon_skill : [2,2],
 		display_name : "Duelist",
 		flavour_text:"a superlative duelist favoring traditional dueling weaponry",
-		effect:"Bonus to using swords and advantages in duels",
+		effect:"Bonus to using powered weapons and advantages in duels",
 
 	},
 	"siege_master" : {
@@ -1002,7 +1004,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	};
 	body = {
-		"left_leg":{}, 
+		"left_leg":{
+			leg_variants: irandom(100),
+		}, 
 		"right_leg":{}, 
 		"torso":{
 			cloth:{
@@ -1010,15 +1014,23 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			},
 			armour_choice:irandom(1),
 			variation:irandom(10),
-			backpack_variation:irandom(10),
+			backpack_variation:irandom(100),
+			thorax_variation : irandom(100),
+			chest_variation : irandom(100),
 		}, 
-		"left_arm":{},
-		"right_arm":{}, 
+		"left_arm":{
+			trim_variation : irandom(100),
+		},
+		"right_arm":{
+			trim_variation : irandom(100),
+		}, 
 		"left_eye":{}, 
 		"right_eye":{},
 		"throat":{}, 
-		"jaw":{},
-		"head":{variation:irandom(10)}
+		"jaw":{
+			mouth_variants: irandom(100),
+		},
+		"head":{variation:irandom(100)}
 	}; //body parts list can be extended as much as people want
 
 	static alter_body = function(body_slot, body_item_key, new_body_data, overwrite=true){//overwrite means it will replace any existing data
@@ -1027,7 +1039,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				body[$ body_slot][$ body_item_key] = new_body_data;
 			}
 		} else {
-			return "invalid body area"
+			return "invalid body area";
 		}
 	}
 
@@ -1198,7 +1210,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					"technophobe", 
 					[99,98],
 					{
-						"progenitor":[6,[1000,999]],
+						"progenitor":[ePROGENITOR.IRON_HANDS,[1000,999]],
 						recruit_world_type : [
 							["Ice", -5],
 							["Death", -2],
@@ -1244,10 +1256,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					"slow_and_purposeful",
 					[99,98],
 					{
-						"advantage":["Slow and Purposeful",[3,1]]
+						"advantage":["Devastator Doctrine",[3,1]]
 					}
 				],
-				["melee_enthusiast",[99,98],{"advantage":["Melee Enthusiasts",[3,1]]}],
+				[
+					"melee_enthusiast",
+					[99,98],
+					{
+						"advantage":[
+							"Assault Doctrine",[3,1]
+						]
+					}
+				],
 				[
 					"lightning_warriors",
 					[99,98],
@@ -1272,7 +1292,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				],
 				["flesh_is_weak",[1000,999],{
 						chapter_name:["Iron Hands",[1000,600],"required"],
-						progenitor:[6,[1000,800],"required"],
+						progenitor:[ePROGENITOR.IRON_HANDS,[1000,800],"required"],
 						recruit_world_type: [
 							["Forge", -300],
 							["Lava", -15],
@@ -1406,11 +1426,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 
 
-			if (global.chapter_name=="Space Wolves") or (obj_ini.progenitor=3) {
+			if (global.chapter_name=="Space Wolves") or (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
 				religion_sub_cult = "The Allfather";
-			} else if(global.chapter_name=="Salamanders") or (obj_ini.progenitor==8){
+			} else if(global.chapter_name=="Salamanders") or (obj_ini.progenitor == ePROGENITOR.SALAMANDERS) {
 				religion_sub_cult = "The Promethean Cult";
-			} else if (global.chapter_name=="Iron Hands") or (obj_ini.progenitor=6){
+			} else if (global.chapter_name=="Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
 				religion_sub_cult = "The Cult of Iron";
 			} 
 
@@ -1421,7 +1441,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 						body[$"head"].hood = 1;
 					}
 				}
-			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor==1){
+			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
 				body[$"torso"].robes = choose(0,0,0,1,2);
 				if (body[$"torso"].robes == 0 && irandom(1) == 0){
 					body[$"head"].hood = 1;
@@ -1606,7 +1626,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	}
 
 	weapon_one_data={quality:"standard"};
-  weapon_one_quality = "standard";
+  	weapon_one_quality = "standard";
 
 	static weapon_viable = function(new_weapon,quality){
 		viable = true;
@@ -1806,9 +1826,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			//calculate chapter specific bonus
 			if (allegiance==global.chapter_name){//calculate player specific bonuses
 				if (primary_weapon.has_tag("bolt")){
-					if (array_contains(obj_ini.adv, "Bolter Drilling") && base_group=="astartes"){
+					if (scr_has_adv("Bolter Drilling") && base_group=="astartes"){
 						range_multiplyer+=0.15;
 						explanation_string+=$"Bolter Drilling:X1.15#"
+					}
+				}
+				if (primary_weapon.has_tag("energy")){
+					if (scr_has_adv("Ryzan Patronage") && base_group=="astartes"){
+						range_multiplyer+=0.15;
+						explanation_string+=$"Ryzan Craftsmanship:X1.15#"
+					}
+				}
+				if (primary_weapon.has_tag("heavy_ranged")){
+					if (scr_has_adv("Devastator Doctrine") && base_group=="astartes"){
+						range_multiplyer+=0.15;
+						explanation_string+=$"Devastator Doctrine:X1.15#"
 					}
 				}
 			}
@@ -1995,7 +2027,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					melee_att*=1.1;
 					explanation_string+=$"{global.trait_list.brawler.display_name}: x1.1#";
 				}
-				if (primary_weapon.has_tag("sword") && has_trait("duelist")){
+				if (primary_weapon.has_tag("power") && has_trait("duelist")){
 					melee_att*=1.3;
 					explanation_string+=$"{global.trait_list.duelist.display_name}: x1.3#";
 				}				
@@ -2182,7 +2214,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	    }*/
     	if (homestar!="none"){
-	        for (i=1;i<=homestar.planets;i++){
+	        for (var i=1;i<=homestar.planets;i++){
 	        	if (homestar.p_owner[i]==eFACTION.Player||
 	        		(obj_controller.faction_status[eFACTION.Imperium]!="War" && 
 	        		array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))){
@@ -2322,29 +2354,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			// case "Forge Master":
 			// case "Master of Sanctity":
 			// case "Master of the Apothecarion":
-			// case obj_ini.role[100][Role.HONOUR_GUARD]:
+			// case obj_ini.role[100][eROLE.HonourGuard]:
 			// case "Codiciery":
 			// case "Lexicanum":
 			// 1st company only
-			// case obj_ini.role[100][Role.VETERAN]:
-			// case obj_ini.role[100][Role.TERMINATOR]:
-			// case obj_ini.role[100][Role.VETERAN_SERGEANT]:
+			// case obj_ini.role[100][eROLE.Veteran]:
+			// case obj_ini.role[100][eROLE.Terminator]:
+			// case obj_ini.role[100][eROLE.VeteranSergeant]:
 			// Command Squads
-			// case obj_ini.role[100][Role.CAPTAIN]:
-			// case obj_ini.role[100][Role.CHAMPION]:
-			// case obj_ini.role[100][Role.ANCIENT]:
+			// case obj_ini.role[100][eROLE.Captain]:
+			// case obj_ini.role[100][eROLE.Champion]:
+			// case obj_ini.role[100][eROLE.Ancient]:
 			// Command Squads and HQ
-			// case obj_ini.role[100][Role.CHAPLAIN]:
-			// case obj_ini.role[100][Role.APOTHECARY]:
-			// case obj_ini.role[100][Role.TECHMARINE]:
-			// case obj_ini.role[100][Role.LIBRARIAN]:
+			// case obj_ini.role[100][eROLE.Chaplain]:
+			// case obj_ini.role[100][eROLE.Apothecary]:
+			// case obj_ini.role[100][eROLE.Techmarine]:
+			// case obj_ini.role[100][eROLE.Librarian]:
 			// Company marines
-			// case obj_ini.role[100][Role.DREADNOUGHT]:
-			// case obj_ini.role[100][Role.TACTICAL]:
-			// case obj_ini.role[100][Role.DEVASTATOR]:
-			// case obj_ini.role[100][Role.ASSAULT]:
-			// case obj_ini.role[100][Role.SERGEANT]:
-			// case obj_ini.role[100][Role.SCOUT]:
+			// case obj_ini.role[100][eROLE.Dreadnought]:
+			// case obj_ini.role[100][eROLE.Tactical]:
+			// case obj_ini.role[100][eROLE.Devastator]:
+			// case obj_ini.role[100][eROLE.Assault]:
+			// case obj_ini.role[100][eROLE.Sergeant]:
+			// case obj_ini.role[100][eROLE.Scout]:
 			// 	break;
 		// }
 
@@ -2504,6 +2536,8 @@ function jsonify_marine_struct(company, marine){
 	return json_stringify(new_marine);
 }
 
+/// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
+/// @returns {Struct.TTRPG_stats} unit
 function fetch_unit(unit){
 	return obj_ini.TTRPG[unit[0]][unit[1]];
 }

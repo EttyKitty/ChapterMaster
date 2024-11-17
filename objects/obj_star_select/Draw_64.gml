@@ -326,7 +326,7 @@ if (obj_controller.selecting_planet!=0){
         
         var planet_type = target.p_type[current_planet];
         // draw_sprite(spr_planet_splash,temp1,xx+349,yy+194);
-        scr_image("planet",scr_planet_image_numbers(planet_type),xx+349,yy+194,128,128);
+        scr_image("ui/planet",scr_planet_image_numbers(planet_type),xx+349,yy+194,128,128);
         draw_rectangle(xx+349,yy+194,xx+477,yy+322,1);
         draw_set_font(fnt_40k_14);
         
@@ -753,7 +753,7 @@ if (target!=0){
         repeat(7){i+=1;
             if (en_fleet[i]>0){
                 // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
-                scr_image("force",en_fleet[i],x3-16,y3-16,32,32);
+                scr_image("ui/force",en_fleet[i],x3-16,y3-16,32,32);
                 x3+=64;
             }
         }

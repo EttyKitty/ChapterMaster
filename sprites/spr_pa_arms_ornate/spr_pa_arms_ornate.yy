@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_pa_arms_ornate",
-  "bbox_bottom": 107,
+  "bbox_bottom": 126,
   "bbox_left": 17,
   "bbox_right": 47,
   "bbox_top": 74,
@@ -21,6 +21,7 @@
   "height": 232,
   "HTile": false,
   "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"635383c3-d034-4bca-9f8d-4d20b553a6fb","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"5e950c83-9788-452d-917a-6cb6e2063b71","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,

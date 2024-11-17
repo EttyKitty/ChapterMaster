@@ -10,10 +10,10 @@ xx=375;yy=10;
 tooltip="";tooltip2="";
 draw_set_alpha(1);
 // draw_sprite(spr_creation_slate,0,xx,yy);
-scr_image("slate",0,xx,yy,850,860);
+scr_image("creation/slate",1,xx,yy,850,860);
 draw_set_alpha(1-(slate1/30));
 // draw_sprite(spr_creation_slate,1,xx,yy);
-scr_image("slate",1,xx,yy,850,860);
+scr_image("creation/slate",2,xx,yy,850,860);
 
 draw_set_color(5998382);
 if (slate2>0){
@@ -27,7 +27,7 @@ if (slate3>0){
     draw_line(xx+30,yy+70+(slate3*36),xx+790,yy+70+(slate3*36));
 }
 
-var allow_colour_click = (cooldown<=0)   and (mouse_left>=1) and (custom>1) and (!instance_exists(obj_creation_popup));
+allow_colour_click = (cooldown<=0)   and (mouse_left>=1) and (custom>1) and (!instance_exists(obj_creation_popup));
 
 draw_set_alpha(slate4/30);
 if (slate4>0){
@@ -39,128 +39,211 @@ if (slate4>0){
         
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_left);
-        draw_text_transformed(440,133,"Founding Chapters",0.75,0.75,0);
-        draw_text_transformed(440,363,"Existing Chapters",0.75,0.75,0);
-        draw_text_transformed(440,593,string_hash_to_newline("Other"),0.75,0.75,0);
-		draw_text_transformed(440,463,string_hash_to_newline("Custom Chapters"),0.75,0.75,0);
+        icon_gap_y = 34;
+        icon_gap_x = 53;
+        founding_y = 133;
+        successor_y = 250;
+        custom_y = 463;
+        other_y = 593
+
+        draw_text_transformed(440,founding_y,"Founding Chapters",0.75,0.75,0);
+        draw_text_transformed(440,successor_y,"Existing Chapters",0.75,0.75,0);
+		draw_text_transformed(440,custom_y,string_hash_to_newline("Custom Chapters"),0.75,0.75,0);
+        draw_text_transformed(440,other_y,string_hash_to_newline("Other"),0.75,0.75,0);
+
+
         
+
+        /** * Founding Chapters */
         var x2,y2,i,new_hover,tool;
-        x2=441;y2=167;i=1;new_hover=highlight;tool=0;
-        
-        repeat(9){
+        x2=441;y2=founding_y + icon_gap_y;i=1;new_hover=highlight;tool=0;
+        for(var c = 0; c < array_length(founding_chapters); c++){
+            var chap = founding_chapters[c]
+            i = chap.id;
             
             draw_sprite(spr_creation_icon,0,x2,167);
-            scr_image("creation",i,x2,167,48,48);
+            scr_image("creation/chapters/icons", chap.icon,x2,y2,48,48);
             // draw_sprite_stretched(spr_icon,i,x2,167,48,48);
-            
-            if (mouse_x>=x2) and (mouse_y>=167) and (mouse_x<x2+48) and (mouse_y<167+48) and (slate4>=30){
+            if(scr_hit(x2,y2, x2+48, y2+48) && slate4>=30){
+            // if (mouse_x>=x2) and (mouse_y>=y2) and (mouse_x<x2+48) and (mouse_y<y2+48) and (slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
                 draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,167,x2+48,167+48,0);
+                draw_rectangle(x2,y2,x2+48,y2+48,0);
                 draw_set_alpha(slate4/30);
-                if (mouse_left>=1) and (cooldown<=0) and (change_slide<=0) and (premades){
-                    cooldown=8000;chapter=chapter_id[i];scr_chapter_new(chapter);
-                    if (chapter!="nopw_nopw"){icon=i;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter;}
+                if (point_and_click([x2,y2,x2+48,y2+48])){
+                    cooldown=8000;
+                    chapter_name=chap.name;
+                    if (!chap.disabled){
+                        if(scr_chapter_new(chapter_name)){
+                            global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][chap.icon];
+                            global.chapter_icon_frame = 0;
+                            global.chapter_icon_path = $"creation/chapters/icons";
+                            global.chapter_icon_filename = chap.icon;
+
+                            icon=i;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter_name;
+                        } else {
+                            // Chapter is borked
+                        }
+
+                    }
                 }
             }
-            i+=1;x2+=53;
+            x2+=icon_gap_x;
         }
         
-        x2=441;y2=397;i=10;new_hover=highlight;
-        repeat(7){
-        
-            draw_sprite(spr_creation_icon,0,x2,397);
+        /** * Successor Chapters */
+        x2=441;y2=successor_y + icon_gap_y;new_hover=highlight;
+        for(var c = 0; c < array_length(successor_chapters); c++){
+            var chap = successor_chapters[c]
+            i = chap.id;
+                    
+            draw_sprite(spr_creation_icon,0,x2,y2);
             // draw_sprite_stretched(spr_icon,i,x2,397,48,48);
-            scr_image("creation",i,x2,397,48,48);
+            scr_image("creation/chapters/icons",chap.icon,x2,y2,48,48);
+
             
-            if (mouse_x>=x2) and (mouse_y>=397) and (mouse_x<x2+48) and (mouse_y<397+48) and (slate4>=30){
+            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
                 draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,397,x2+48,397+48,0);
+                draw_rectangle(x2,y2,x2+48,y2+48,0);
                 draw_set_alpha(slate4/30);
-                if (mouse_left>=1) and (cooldown<=0) and (change_slide<=0) and (premades){
-                    cooldown=8000;chapter=chapter_id[i];scr_chapter_new(chapter);
-                    if (chapter!="nopw_nopw"){icon=i;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter;}
+                //Click
+                if (point_and_click([x2, y2, x2+48, y2+48])){
+                    cooldown=8000;
+                    chapter_name=chap.name;
+                    if (!chap.disabled){
+                        if(scr_chapter_new(chapter_name)){
+                            global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][chap.icon];
+                            global.chapter_icon_frame = 0;
+                            global.chapter_icon_path = $"creation/chapters/icons";
+                            global.chapter_icon_filename = chap.icon;
+
+                            icon=chap.icon;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter_name;
+                        } else {
+                            // borked
+                        }
+                    }
                 }
             }
-            i+=1;x2+=53;
+            x2+=icon_gap_x;
         }
         
-		x2=441;y2=497;i=21;new_hover=highlight;
-		
-  repeat(1){
-            draw_sprite(spr_creation_icon,0,x2,497);
-            // draw_sprite_stretched(spr_icon,i,x2,397,48,48);
-			if(file_exists("chaptersave#1.ini")){
-			ini_open("chaptersave#1.ini")
-			icon21=ini_read_real("Save","icon",1);
-			ini_close();
-			}
-			else{ icon21=1
-			}
-            scr_image("creation",icon21,x2,497,48,48);
+        /** * Saved Custom Chapters */
+		x2=441;y2=custom_y + icon_gap_y;new_hover=highlight;
+        for(var c = 0; c < array_length(custom_chapters); c++){
+            var chap = custom_chapters[c];
+            i = chap.id;
             
-            if (mouse_x>=x2) and (mouse_y>=497) and (mouse_x<x2+48) and (mouse_y<497+48) and (slate4>=30){
-				
-                if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
-                if (goto_slide!=2){highlight=i;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,497,x2+48,497+48,0);
-                draw_set_alpha(slate4/30);
-                if (mouse_left>=1) and (cooldown<=0) and (change_slide<=0){
-					if(chapter_made=1){
-					
-					cooldown=8000;chapter = chapter_id[21];
-					change_slide=1;goto_slide=2;
-					scr_chapter_new(chapter21)};
-					
-					if (chapter_made = 0 ){
-						cooldown=8000;
-						change_slide=1;goto_slide=2;
-						custom=2;scr_chapter_random(0);}
-                   
+            
+            draw_sprite(spr_creation_icon,0,x2,y2);
+            if(chap.loaded == false){
+                // should be the icon that says 'custom'
+                draw_sprite_stretched(spr_icon_chapters, 31, x2,y2,48,48); 
+            } else {
+                if(chap.icon > global.normal_icons_count){
+                    draw_sprite_stretched(spr_icon_chapters, chap.icon - global.normal_icons_count, x2,y2,48,48);
+                } else {
+                    scr_image("creation/chapters/icons", chap.icon, x2,y2,48,48);
                 }
             }
-            i+=1;x2+=53;
-  }
-		
-        x2=441;y2=627;i=17;new_hover=highlight;
-        repeat(4){
+            
+            
+            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
+                if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
+                if (goto_slide!=2){highlight=chap.id;tool=1;}
+                draw_set_alpha(0.1);draw_set_color(c_white);
+                draw_rectangle(x2,y2,x2+48,y2+48,0);
+                draw_set_alpha(slate4/30);
+                if (point_and_click([x2, y2, x2+48, y2+48])){
+					if(chap.loaded == true && chap.disabled == false){
+                        if(chap.icon > global.normal_icons_count){
+                            global.chapter_icon_sprite = spr_icon_chapters;
+                            global.chapter_icon_frame = chap.icon - global.normal_icons_count;
+                        } else {
+                            global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][chap.icon];
+                            global.chapter_icon_frame = 0;
+                            global.chapter_icon_path = $"creation/chapters/icons";
+                            global.chapter_icon_filename = chap.icon;
+                        }
+                        cooldown=8000;
+                        chapter_name = chap.name;
+                        global.chapter_id = chap.id;
+                        change_slide=1;
+                        goto_slide=2;
+                        scr_chapter_new(chap.id);
+                    } else {
+                        global.chapter_id = chap.id;
+                        cooldown=8000;
+                        change_slide=1;
+                        goto_slide=2;
+                        custom=2;
+                        scr_chapter_random(0);
+                    }
+                }
+            }
+            x2+=icon_gap_x;
+        }
+
+        /** * Other Chapters */
+        x2=441;y2=other_y + icon_gap_y;new_hover=highlight;
+        for(var c = 0; c < array_length(other_chapters); c++){
+            var chap = other_chapters[c];
+            i = chap.id;
         
             draw_sprite(spr_creation_icon,0,x2,y2);
             // draw_sprite_stretched(spr_icon,i,x2,y2,48,48);
-            scr_image("creation",i,x2,y2,48,48);
+            scr_image("creation/chapters/icons",chap.icon,x2,y2,48,48);
+
             
-            if (mouse_x>=x2) and (mouse_y>=y2) and (mouse_x<x2+48) and (mouse_y<y2+48) and (slate4>=30){
+            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
                 draw_set_alpha(0.1);draw_set_color(c_white);
                 draw_rectangle(x2,y2,x2+48,y2+48,0);
                 draw_set_alpha(slate4/30);
-                if (mouse_left>=1) and (cooldown<=0) and (change_slide<=0) and (premades){
-                    cooldown=8000;chapter=chapter_id[i];scr_chapter_new(chapter);
-                    if (chapter!="nopw_nopw"){icon=i;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter;}
+                //Click
+                if (point_and_click([x2, y2, x2+48, y2+48])){
+                    cooldown=8000;
+                    chapter_name=chap.name;
+                    if (!chap.disabled){
+                        if(scr_chapter_new(chapter_name)){
+                            global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][chap.icon];
+                            global.chapter_icon_frame = 0;
+                            global.chapter_icon_path = $"creation/chapters/icons";
+                            global.chapter_icon_filename = chap.icon;
+                            global.chapter_id = chap.id;
+
+                            icon=i;custom=0;change_slide=1;goto_slide=2;chapter_string=chapter_name;
+                        } else {
+                            // borked
+                        }
+                    }
                 }
             }
-            i+=1;x2+=53;
+            x2+=icon_gap_x;
         }
         
-        x2+=53;i=1001;
+        /* Custom + Random*/
+        x2+=53;
+        i=1001;
         repeat(2){
-        
             draw_sprite(spr_creation_icon,0,x2,y2);
             draw_sprite_stretched(spr_icon_chapters,i-1001,x2,y2,48,48);
             
-            if (mouse_x>=x2) and (mouse_y>=y2) and (mouse_x<x2+48) and (mouse_y<y2+48) and (slate4>=30){
+            if (scr_hit(x2, y2, x2+48, y2+48) && (slate4>=30)){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
                 draw_set_alpha(0.1);draw_set_color(c_white);
                 draw_rectangle(x2,y2,x2+48,y2+48,0);
                 draw_set_alpha(slate4/30);
-                if (mouse_left>=1) and (cooldown<=0) and (change_slide<=0){
-                    cooldown=8000;icon=1;icon_name="da";change_slide=1;goto_slide=2;
+                if (point_and_click([x2, y2, x2+48, y2+48])){
+                    cooldown=8000;
+                    icon=1;
+                    icon_name="da";
+                    change_slide=1;
+                    goto_slide=2;
                     if (i=1001){custom=2;scr_chapter_random(0);}
                     if (i=1002){custom=1;scr_chapter_random(1);}
                 }
@@ -176,29 +259,14 @@ if (slate4>0){
             draw_set_alpha(min(slate4/30,highlighting/30));
             if (change_slide>0) then draw_set_alpha(1);
             
-            
-            if (highlight<=9) then scr_image("main_splash",highlight-1,0,68,374,713);
-            if (highlight>9) and (highlight<=16) and (highlight!=15) then scr_image("existing_splash",highlight-10,0,68,374,713);
-            if (highlight=15) then scr_image("other_splash",6,0,68,374,713);
-            if (highlight=17) then scr_image("other_splash",0,0,68,374,713);
-            if (highlight=18) then scr_image("other_splash",6,0,68,374,713);
-            if (highlight=19) then scr_image("other_splash",2,0,68,374,713);
-            if (highlight=20) then scr_image("other_splash",6,0,68,374,713);
-            
-            if (highlight=1001) then scr_image("other_splash",4,0,68,374,713);
-            if (highlight=1002) then scr_image("other_splash",5,0,68,374,713);
-            
-            /*if (highlight<=9) then draw_sprite(spr_creation_founding,highlight-1,0,68);
-            if (highlight>9) and (highlight<=16) and (highlight!=15) then draw_sprite(spr_creation_existing,highlight-10,0,68);
-            if (highlight=15) then draw_sprite(spr_creation_nosplash,0,0,68);
-            if (highlight=17) then draw_sprite(spr_creation_other,0,0,68);
-            if (highlight=18) then draw_sprite(spr_creation_nosplash,0,0,68);
-            if (highlight=19) then draw_sprite(spr_creation_other,2,0,68);
-            if (highlight=20) then draw_sprite(spr_creation_nosplash,0,0,68);
-            
-            if (highlight=1001) then draw_sprite(spr_creation_other,4,0,68);
-            if (highlight=1002) then draw_sprite(spr_creation_other,5,0,68);*/
-            
+            if (highlight=1001) then scr_image("creation/chapters/splash",97,0,68,374,713);
+            if (highlight=1002) then scr_image("creation/chapters/splash",98,0,68,374,713);
+            if( highlight <= array_length(all_chapters)){
+                var splash_chapter = all_chapters[highlight];
+                //show_debug_message($"highlight {highlight} splash chapter {splash_chapter.id} splash icon {splash_chapter.splash}");
+                scr_image("creation/chapters/splash", splash_chapter.splash,0,68,374,713);
+            }
+
             draw_set_alpha(slate4/30);
             draw_set_color(38144);
             draw_rectangle(0,68,374,781,1);
@@ -216,18 +284,17 @@ if (slate4>0){
             draw_set_color(0);
             draw_set_halign(fa_left);
             
-            if (highlight<=25){
-                tooltip=chapter_id[highlight];
-                tooltip2=chapter_tooltip[highlight];
+            if (highlight<=array_length(all_chapters)){
+                var chap = all_chapters[highlight];
+                tooltip=chap.name;
+                if(chap.progenitor != 0 && chap.progenitor <10) {tooltip += "  - Progenitor: " + all_chapters[chap.progenitor].name};
+                tooltip2=chap.tooltip;
             }
             if (highlight=1001) then tooltip="Custom";
             if (highlight=1002) then tooltip="Randomize";
             if (highlight=1001) then tooltip2="Create your own customized Chapter, deciding the origins, strength, and weaknesses.  Custom Chapters are weaker than Founding Chapters.";
             if (highlight=1002) then tooltip2="Randomly generate a Chapter to play.  The origins, strength, and weaknesses are all random.  Random Chapters are normally weaker than Founding Chapters. ";
         }
-        
-        
-        
     }
 }
 
@@ -240,13 +307,6 @@ if (slide>=2){
     tooltip="";tooltip2="";
     
     if (goto_slide!=1){
-        if (icon<=9) then draw_sprite(spr_creation_founding,icon-1,0,68);
-        if (icon>9) and (icon<=16) and (icon!=15) then draw_sprite(spr_creation_existing,icon-10,0,68);
-        if (icon=15) then draw_sprite(spr_creation_nosplash,0,0,68);
-        if (icon=17) then draw_sprite(spr_creation_other,0,0,68);
-        if (icon=18) then draw_sprite(spr_creation_nosplash,0,0,68);
-        if (icon=19) then draw_sprite(spr_creation_other,2,0,68);
-        if (icon=20) then draw_sprite(spr_creation_nosplash,0,0,68);
         
         if (custom=2) then draw_sprite(spr_creation_other,4,0,68);
         if (custom=1) then draw_sprite(spr_creation_other,5,0,68);
@@ -258,9 +318,14 @@ if (slide>=2){
     draw_set_color(0);
     // draw_rectangle(436,74,436+128,74+128,0);
     // if (icon<=20) then draw_sprite_stretched(spr_icon,icon,436,74,128,128);
-    if (icon<=20) then scr_image("creation",icon,436,74,128,128);
-    if (icon>20) then draw_sprite_stretched(spr_icon_chapters,icon-19,436,74,128,128);
     
+    var sprx = 436,
+    spry =74,
+    sprw = 128,
+    sprh = 128;
+
+    draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+       
     obj_cursor.image_index=0;
     if (scr_hit(436,74,436+128,74+128)) and (popup=""){obj_cursor.image_index=1;
         tooltip="Chapter Icon";tooltip2="Your Chapter's icon.  Click to edit.";
@@ -301,7 +366,7 @@ if (slide>=2){
         
             draw_set_alpha(0.33);
             // if (founding<10) then draw_sprite_stretched(spr_icon,founding,1164-128,74,128,128);
-            if (founding<10) then scr_image("creation",founding,1164-128,74,128,128);
+            if (founding<10) then scr_image("creation/chapters/icons",founding,1164-128,74,128,128);
             if (founding=10) then draw_sprite_stretched(spr_icon_chapters,0,1164-128,74,128,128);
             draw_set_alpha(1);
             
@@ -340,15 +405,15 @@ if (slide=2){
     obj_cursor.image_index=0;
     
     if (name_bad=1) then draw_set_color(c_red);
-    if (text_selected!="chapter") or (custom!=2) then draw_text(800,80,string_hash_to_newline(string(chapter)));
+    if (text_selected!="chapter") or (custom!=2) then draw_text(800,80,string_hash_to_newline(string(chapter_name)));
     if (custom=2){
-        if (text_selected="chapter") and (text_bar>30) then draw_text(800,80,string_hash_to_newline(string(chapter)));
-        if (text_selected="chapter") and (text_bar<=30) then draw_text(805,80,string_hash_to_newline(string(chapter)+"|"));
-        if (scr_text_hit(800,80,true,chapter)){
+        if (text_selected="chapter") and (text_bar>30) then draw_text(800,80,string_hash_to_newline(string(chapter_name)));
+        if (text_selected="chapter") and (text_bar<=30) then draw_text(805,80,string_hash_to_newline(string(chapter_name)+"|"));
+        if (scr_text_hit(800,80,true,chapter_name)){
             obj_cursor.image_index=2;
-            if (cooldown<=0) and (mouse_left>=1){text_selected="chapter";cooldown=8000;keyboard_string=chapter;}
+            if (cooldown<=0) and (mouse_left>=1){text_selected="chapter";cooldown=8000;keyboard_string=chapter_name;}
         }
-        if (text_selected="chapter") then chapter=keyboard_string;
+        if (text_selected="chapter") then chapter_name=keyboard_string;
         draw_set_alpha(0.75);draw_rectangle(580,80,1020,118,1);draw_set_alpha(1);
     }
     
@@ -412,10 +477,10 @@ if (slide=2){
         draw_text_transformed(800,301,string_hash_to_newline("Chapter Stats"),0.6,0.6,0);
         draw_set_halign(fa_right);
         
-        draw_text_transformed(617,332,string_hash_to_newline("Strength ("+string(strength)+")"),0.5,0.5,0);
-        draw_text_transformed(617,387,string_hash_to_newline("Cooperation ("+string(cooperation)+")"),0.5,0.5,0);
-        draw_text_transformed(617,442,string_hash_to_newline("GeneSeed Purity ("+string(purity)+")"),0.5,0.5,0);
-        draw_text_transformed(617,497,string_hash_to_newline("GeneSeed Stability ("+string(stability)+")"),0.5,0.5,0);
+        draw_text_transformed(617,332,$"Strength ({strength})",0.5,0.5,0);
+        draw_text_transformed(617,387,$"Cooperation ({cooperation})",0.5,0.5,0);
+        draw_text_transformed(617,442,$"GeneSeed Purity ({purity})",0.5,0.5,0);
+        draw_text_transformed(617,497,$"GeneSeed Stability ({stability})",0.5,0.5,0);
         var arrow_buttons_controls = [strength, cooperation, purity, stability]
         for (var i=0;i<4;i++){
             if (custom=2) then draw_sprite_stretched(spr_arrow,0,625,325+(i*55),32,32);
@@ -451,9 +516,7 @@ if (slide=2){
     }
     
     if (popup!="icons"){
-        draw_line(445,551,1125,551);
-        draw_line(445,552,1125,552);
-        draw_line(445,553,1125,553);
+        draw_rectangle(445, 551, 1125, 553, 0);
     }
     
     if (popup!="") or (custom<2) then draw_set_alpha(0.5);
@@ -463,7 +526,8 @@ if (slide=2){
         var advantage_click = (mouse_left>=1  && cooldown<=0  &&  custom>1);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
-        draw_text_transformed(436,564,"Chapter Advantages",0.5,0.5,0);draw_set_font(fnt_40k_14);
+        draw_text_transformed(436,564,"Chapter Advantages",0.5,0.5,0);
+        draw_set_font(fnt_40k_14);
         var adv_txt = {
             x1: 436,
             y1: 570,
@@ -477,17 +541,19 @@ if (slide=2){
             var draw_string = adv_num[i]==0?"[+]":"[-] "+adv[i];
             draw_text(adv_txt.x1,adv_txt.y1+(i*adv_txt.h), draw_string);
             if (scr_hit(adv_txt.x1,adv_txt.y1+(i*adv_txt.h),adv_txt.x2,adv_txt.y2+(i*adv_txt.h))){
-                if (points+20>maxpoints) and (adv_num[i]=0) and (popup=""){
+
+                if (points>=maxpoints) and (adv_num[i]=0) and (popup="") and (custom>1){
                     tooltip="Insufficient Points";
                     tooltip2="Add disadvantages or decrease Chapter Stats";
                 }
                 
                 if (adv_num[i]!=0){
-                    tooltip=advantage[adv_num[i]];
-                    tooltip2=advantage_tooltip[adv_num[i]];
+                    var cur_adv = obj_creation.all_advantages[adv_num[i]];
+                    tooltip=$"{cur_adv.name} ({cur_adv.points} Points)";
+                    tooltip2=cur_adv.description;
                 }
                 if (advantage_click){
-                    if (points+20<=maxpoints) and (adv_num[i]=0) and (popup=""){
+                    if (points<maxpoints) and (adv_num[i]=0) and (popup=""){
                         popup="advantages";
                         cooldown=8000;
                         temp=i;
@@ -499,9 +565,10 @@ if (slide=2){
                         removable=true;
                     }
                     if  (mouse_x<=456) and (removable){
-                        points-=20;
-                        adv[i]="";
-                        adv_num[i]=0;
+
+                        var cur_ad = obj_creation.all_advantages[adv_num[i]]
+                        cur_ad.remove(i);
+
                         cooldown=8000;
                     }
                 }              
@@ -520,30 +587,32 @@ if (slide=2){
         dis_txt.x2 = dis_txt.x1 + dis_txt.w;
         dis_txt.y2 = dis_txt.y1 + dis_txt.h;
         var max_disadvantage_count = 8;
-        for (i=1;i<=max_disadvantage_count;i++){
-            var draw_string = dis_num[i]==0?"[+]":"[-] "+dis[i];
-            draw_text(dis_txt.x1,dis_txt.y1+(i*dis_txt.h), draw_string);
-            if (scr_hit(dis_txt.x1,dis_txt.y1+(i*dis_txt.h),dis_txt.x2,dis_txt.y2+(i*dis_txt.h))){
-                if (dis_num[i]!=0){
-                    tooltip=disadvantage[dis_num[i]];
-                    tooltip2=dis_tooltip[dis_num[i]];
+        for (var slot =1;slot<=max_disadvantage_count;slot++){
+            var draw_string = dis_num[slot]==0?"[+]":"[-] "+dis[slot];
+            draw_text(dis_txt.x1,dis_txt.y1+(slot*dis_txt.h), draw_string);
+            if (scr_hit(dis_txt.x1,dis_txt.y1+(slot*dis_txt.h),dis_txt.x2,dis_txt.y2+(slot*dis_txt.h))){
+                if (dis_num[slot]!=0){
+                    tooltip=obj_creation.all_disadvantages[dis_num[slot]].name;
+                    tooltip2=obj_creation.all_disadvantages[dis_num[slot]].description;
                 }
                 if (advantage_click){
-                    if ((dis_num[i]=0) and (popup="")){
+                    if ((dis_num[slot]=0) and (popup="")){
                         popup="disadvantages";
                         cooldown=8000;
-                        temp=i;
+                        temp=slot;
                     }
                     var removable=false;
-                    if (i==max_disadvantage_count && dis_num[i]>0){
+                    if (slot==max_disadvantage_count && dis_num[slot]>0){
                         removable=true;
-                    } else if (dis_num[i]>0 && dis_num[i+1]==0){
+                    } else if (dis_num[slot]>0 && dis_num[slot+1]==0){
                         removable=true;
-                    }                    
-                    if  (mouse_x<=830) and (removable) and (points+20<=maxpoints) {
-                        points+=20;
-                        dis[i]="";
-                        dis_num[i]=0;
+
+                    }
+                    var cur_dis = obj_creation.all_disadvantages[dis_num[slot]];                    
+                    if  (mouse_x<=830) and (removable) and (points+cur_dis.points<=maxpoints) {
+                        var cur_dis = obj_creation.all_disadvantages[dis_num[slot]];
+                        cur_dis.remove(slot);
+
                         cooldown=8000;
                     }   
                 }             
@@ -552,11 +621,11 @@ if (slide=2){
         draw_set_alpha(1);
         if (scr_hit(436,564,631,583)){
             tooltip="Chapter Advantages";
-            tooltip2="Advantages cost 20 points, and improve the performance of your chapter in a specific domain.";
+            tooltip2="Advantages cost points, and improve the performance of your chapter in a specific domain. You can only have 1 trait of the same category, shown in brackets.";
         }
         if (scr_hit(810,564,1030,583)){
             tooltip="Chapter Disadvantages";
-            tooltip2="Disadvantages Grant 20 additional points, and penalize the performance of your chapter.";
+            tooltip2="Disadvantages grant additional points, and penalize the performance of your chapter. You can only have 1 trait of the same category, shown in brackets.";
         }
     }else if (popup="icons"){
         draw_set_alpha(1);
@@ -574,8 +643,8 @@ if (slide=2){
         draw_text_transformed(800,687,"Cancel",0.6,0.6,0);
         
         var cw,ch;
-        cw=string_width(string_hash_to_newline("Cancel"))*0.6;
-        ch=string_height(string_hash_to_newline("Cancel"))*0.6;
+        cw=string_width("Cancel")*0.6;
+        ch=string_height("Cancel")*0.6;
         
         if (scr_hit(800,687,800+cw,687+ch)){
             draw_set_color(c_white);
@@ -605,32 +674,62 @@ if (slide=2){
             }
             
             x3+=110;
-            
-            if (ic<=(76+global.custom_icons)){
-                // if (ic=21) then ic=23;
-                
-                // draw_rectangle(x3,y3,x3+96,y3+96,0);
-                // if (ic<=20) then draw_sprite_stretched(spr_icon,ic,x3,y3,96,96);
-                if (ic<=20) then scr_image("creation",ic,x3,y3,96,96);
-                if (ic>20) and (ic<=76) then draw_sprite_stretched(spr_icon_chapters,ic-19,x3,y3,96,96);
-                if (ic>76) and (obj_cuicons.spr_custom[ic-76]>0) and (obj_cuicons.spr_custom_icon[ic-76]!=-1){
-                    draw_sprite_stretched(obj_cuicons.spr_custom_icon[ic-76],0,x3,y3,96,96);
+            var builtin_icons = array_length(sprite_get_info(spr_icon_chapters).frames);
+            var normal_and_builtin = global.normal_icons_count + builtin_icons;
+            var total_icons = global.normal_icons_count + builtin_icons + global.custom_icons;
+            if (ic<=(total_icons)){
+                //ic starts at 1, normal icons = 22
+                if (ic<global.normal_icons_count) {
+                    scr_image("creation/chapters/icons",ic,x3,y3,96,96);
+                } 
+                if (ic>=global.normal_icons_count) and (ic<normal_and_builtin) {
+                    draw_sprite_stretched(spr_icon_chapters,ic-global.normal_icons_count,x3,y3,96,96);
+                } 
+                if (ic>=normal_and_builtin) and (obj_cuicons.spr_custom[ic-normal_and_builtin]>0) and (obj_cuicons.spr_custom_icon[ic-normal_and_builtin]!=-1){
+                    draw_sprite_stretched(obj_cuicons.spr_custom_icon[ic-normal_and_builtin],0,x3,y3,96,96);
                 }
                 
+                // highlight on hover
                 if (scr_hit(x3,y3,x3+96,y3+96)){
-                    draw_set_blend_mode(bm_add);draw_set_alpha(0.25);draw_set_color(16119285);
+                    draw_set_blend_mode(bm_add);
+                    draw_set_alpha(0.25);
+                    draw_set_color(16119285);
                     // if (ic<=20) then draw_sprite_stretched(spr_icon,ic,x3,y3,96,96);
-                    if (ic<=20) then scr_image("creation",ic,x3,y3,96,96);
-                    if (ic>20) and (ic<=76) then draw_sprite_stretched(spr_icon_chapters,ic-19,x3,y3,96,96);
-                    if (ic>76) and (obj_cuicons.spr_custom[ic-76]>0) and (obj_cuicons.spr_custom_icon[ic-76]!=-1){
-                        draw_sprite_stretched(obj_cuicons.spr_custom_icon[ic-76],0,x3,y3,96,96);
+                    if (ic<global.normal_icons_count) {
+                        scr_image("creation/chapters/icons",ic,x3,y3,96,96);
+                    } 
+                    if (ic>=global.normal_icons_count) and (ic<normal_and_builtin) {
+                        draw_sprite_stretched(spr_icon_chapters,ic-global.normal_icons_count,x3,y3,96,96);
+                    } 
+                    if (ic>=normal_and_builtin) and (obj_cuicons.spr_custom[ic-normal_and_builtin]>0) and (obj_cuicons.spr_custom_icon[ic-normal_and_builtin]!=-1){
+                        draw_sprite_stretched(obj_cuicons.spr_custom_icon[ic-normal_and_builtin],0,x3,y3,96,96);
                     }
                     draw_set_blend_mode(bm_normal);
-                    draw_set_alpha(1);draw_set_color(38144);
+                    draw_set_alpha(1);
+                    draw_set_color(38144);
                     
                     if (mouse_left=1) and (cooldown<=0){
-                        cooldown=8000;popup="";icon=ic;icon_name="";scr_icon("");
-                        if (ic>76) then custom_icon=ic-76;
+                        cooldown=8000;
+                        popup="";
+                        icon=ic;
+                        icon_name="";
+                        scr_icon("");
+                        if (ic <= global.normal_icons_count){
+                            global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][ic];
+                            global.chapter_icon_frame = 0;
+                            global.chapter_icon_path = $"creation/chapters/icons";
+                            global.chapter_icon_filename = ic;
+                        }
+                        if (ic>normal_and_builtin) {
+                            global.chapter_icon_sprite = obj_cuicons.spr_custom_icon[ic-normal_and_builtin];
+                            global.chapter_icon_frame = 0;
+                        }
+                        if (ic>global.normal_icons_count && ic <=normal_and_builtin) {
+                            global.chapter_icon_sprite = spr_icon_chapters;
+                            global.chapter_icon_frame = ic-global.normal_icons_count;
+                            custom_icon=ic-global.normal_icons_count;
+                        }
+                        // show_debug_message($"ic {ic} custom_icon {custom_icon} icon {icon}")
                         // show_message(string(icon_name));
                     }
                     
@@ -640,7 +739,6 @@ if (slide=2){
                 // draw_text(x3+48,y3+64,string(ic));
                 draw_set_color(38144);
             }
-            
         }
         
         
@@ -684,11 +782,14 @@ if (slide=2){
     
     
     if (popup="advantages"){
-        draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
-        draw_text_transformed(800,211,string_hash_to_newline("Select an Advantage"),0.6,0.6,0);
-        draw_set_font(fnt_40k_14b);draw_set_halign(fa_left);
+        draw_set_font(fnt_40k_30b);
+        draw_set_halign(fa_center);
+        draw_text_transformed(800,211,"Select an Advantage",0.6,0.6,0);
+        draw_set_font(fnt_40k_14b);
+        draw_set_halign(fa_left);
         
-        for(var i = 0; i < array_length(advantage); i++){
+        for(var slot = 0; slot < array_length(obj_creation.all_advantages); slot++){
+            var advantage_local_var = obj_creation.all_advantages[slot];
             var column = {
                 x1: 436,
                 y1: 250,
@@ -698,46 +799,64 @@ if (slide=2){
             column.x2 = column.x1 + column.w;
             column.y2 = column.y1 + column.h;
             var disable = 0;
-            if (advantage[i]!=""){
-                var adv_name = advantage[i];
+            if (advantage_local_var.name != ""){
+                var adv_name = advantage_local_var.name;
                 //columns of 14, shift the left boarder across
-                if(i >= 15 && i <29) {column.x1 = 670; column.x2 = column.x1 + column.w;};
-                if(i >= 29 && i <42) {column.x1 = 904; column.x2 = column.x1 + column.w;};
-                draw_set_color(38144);draw_set_alpha(1);
-                if (array_contains(adv, adv_name)) then draw_set_alpha(0.5);
-                if (adv_name="Psyker Abundance" && array_contains(dis, "Psyker Intolerant")){disable=1;draw_set_alpha(0.5);} 
-                if (adv_name="Reverent Guardians"&& array_contains(dis, "Suspicious")){disable=1;draw_set_alpha(0.5);} 
-                if (adv_name="Tech-Brothers" && array_contains(dis, "Tech-Heresy")){disable=1;draw_set_alpha(0.5);}
+
+                if(slot >= 15 && slot <29) {
+                    column.x1 = 670;
+                    column.x2 = column.x1 + column.w;
+                };
+                if(slot >= 29 && slot <42) {
+                    column.x1 = 904;
+                    column.x2 = column.x1 + column.w;
+                };
+                draw_set_color(38144);
+                draw_set_alpha(1);
+                disable = array_contains(adv, adv_name);
+                if (!disable){
+                    disable = advantage_local_var.disable();
+                }
+                if (disable) then draw_set_alpha(0.5);
                 
-                var gap = (((i-1)%14) * column.h);
-                draw_text(column.x1,column.y1+gap,string_hash_to_newline(adv_name));
+
+                var gap = (((slot-1)%14) * column.h);
+                var adv_width = string_width(adv_name);
+                draw_text(column.x1,column.y1+gap,adv_name);
                 
                 // Cancel button
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(adv_name)),column.y1+column.h+gap)) and (cooldown<=0) and (mouse_left>=1) and (adv_name="Cancel"){
-                    cooldown=8000;popup="";
+                var coords = [column.x1,column.y1+gap,column.x1+adv_width,column.y1+column.h+gap];
+                if (point_and_click(coords)) and (cooldown<=0) and (adv_name="Cancel"){
+                    cooldown=8000;
+                    popup="";
                 }
                 // Tooltips
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(adv_name)),column.y1+column.h+gap)){
-                    tooltip=adv_name;tooltip2=advantage_tooltip[i];draw_set_color(c_white);draw_set_alpha(0.2);
-                    draw_text(column.x1,column.y1+gap,string_hash_to_newline(adv_name));
+                if (scr_hit(coords)){
+                    tooltip=$"{adv_name} ({advantage_local_var.points})";
+                    tooltip2=$"{advantage_local_var.description} \nCategories: {advantage_local_var.print_meta()}";
+                    draw_set_color(c_white);
+                    draw_set_alpha(0.2);
+                    draw_text(column.x1,column.y1+gap,adv_name);
                 }
                 //Click on advantage
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(adv_name)),column.y1+column.h+gap)) and (cooldown<=0) and (mouse_left>=1) and (array_contains(adv, adv_name) == false){
+                if (point_and_click(coords)) and (cooldown<=0)  and (array_contains(adv, adv_name) == false){
                     if (disable=0){
                         cooldown=8000;
-                        adv[temp]=adv_name;
-                        adv_num[temp]=i;
+                        advantage_local_var.add(temp);
                         popup="";
-                        points+=20;
                     }
-            }}
-        }}
+                }
+            }
+        }
+    }
         
-    if (popup="disadvantages"){
-        draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
-        draw_text_transformed(800,211,string_hash_to_newline("Select a Disadvantage"),0.6,0.6,0);
+    else if (popup="disadvantages"){
+        draw_set_font(fnt_40k_30b);
+        draw_set_halign(fa_center);
+        draw_text_transformed(800,211,"Select a Disadvantage",0.6,0.6,0);
         draw_set_font(fnt_40k_14b);draw_set_halign(fa_left);
-        for(var i = 0; i < array_length(disadvantage); i++){
+        for(var slot = 0; slot < array_length(obj_creation.all_disadvantages); slot++){
+            var disadvantage_local_var = obj_creation.all_disadvantages[slot];
             var column = {
                 x1: 436,
                 y1: 250,
@@ -747,46 +866,70 @@ if (slide=2){
             column.x2 = column.x1 + column.w;
             column.y2 = column.y1 + column.h;
             var disable = 0;
-            if (disadvantage[i]!=""){
-                var dis_name = disadvantage[i];
+            if (disadvantage_local_var.name!=""){
+                var dis_name = disadvantage_local_var.name;
                 //columns of 14, shift the left boarder across and leave a gap at the top on cols 2 & 3
-                if(i >= 15 && i <29) {column.x1 = 670; column.x2 = column.x1 + column.w;};
-                if(i >= 29 && i <42) {column.x1 = 904; column.x2 = column.x1 + column.w;};
-                draw_set_color(38144);draw_set_alpha(1);
-                if (array_contains(dis, dis_name)) then draw_set_alpha(0.5);
-                
-                if (dis_name="Psyker Intolerant") and (array_contains(adv, "Psyker Abundance")){disable=1;draw_set_alpha(0.5);}
-                if (dis_name="Suspicious") and (array_contains(adv, "Reverent Guardians")){disable=1;draw_set_alpha(0.5);}
-                if (dis_name="Tech-Heresy") and (array_contains(adv, "Tech-Brothers")){disable=1;draw_set_alpha(0.5);}
-                if (dis_name="Blood Debt") and (fleet_type=3){disable=1;draw_set_alpha(0.5);}
-                
-                var gap = (((i-1)%14) * column.h);
+                if(slot >= 15 && slot <29) {
+                    column.x1 = 670;
+                    column.x2 = column.x1 + column.w;
+                };
+                if(slot >= 29 && slot <42) {
+                    column.x1 = 904;
+                    column.x2 = column.x1 + column.w;
+                };
+                draw_set_color(38144);
 
-                draw_text(column.x1,column.y1+gap,string_hash_to_newline(dis_name));
                 
+
+                disable = (disadvantage_local_var.disable() || array_contains(dis, dis_name));
+
+                if (!disable){
+                    disable = (dis_name=="Blood Debt" && fleet_type==3);
+                }
+
+                draw_set_alpha(disable?0.5:1);
+
+
+                
+                var gap = (((slot-1)%14) * column.h);
+
+                draw_text(column.x1,column.y1+gap,dis_name);
+                
+                var dis_width = string_width(dis_name);
                 // Cancel button
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(dis_name)),column.y1+column.h+gap)) and (cooldown<=0) and (mouse_left>=1) and (dis_name="Cancel"){
-                    cooldown=8000;popup="";
+                var coords = [column.x1,column.y1+gap,column.x1+dis_width,column.y1+column.h+gap];
+
+                if (point_and_click(coords)) and (cooldown<=0) and (dis_name="Cancel"){
+                    cooldown=8000;
+                    popup="";
                 }
                 //Tooltip
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(dis_name)),column.y1+column.h+gap)){tooltip=dis_name;tooltip2=dis_tooltip[i];draw_set_color(c_white);draw_set_alpha(0.2);draw_text(column.x1,column.y1+gap,string_hash_to_newline(dis_name));}
+                if (scr_hit(coords)){
+                    tooltip=$"{dis_name} ({disadvantage_local_var.points})";
+                    tooltip2=$"{disadvantage_local_var.description} \nCategories: {disadvantage_local_var.print_meta()}";
+                    draw_set_color(c_white);
+                    draw_set_alpha(0.2);
+                    draw_text(column.x1,column.y1+gap,dis_name);
+                }
                 //Click on disadvantage
-                if (scr_hit(column.x1,column.y1+gap,column.x1+string_width(string_hash_to_newline(dis_name)),column.y1+column.h+gap)) and (cooldown<=0) and (mouse_left>=1) and (array_contains(dis, dis_name) == false){
-                    if (disable=0){
+                if (point_and_click(coords)) and (cooldown<=0)  and (array_contains(dis, dis_name) == false){
+                    if (disable==false){
                         cooldown=8000;
-                        dis[temp]=dis_name;
-                        dis_num[temp]=i;
                         popup="";
-                        points-=20;
+                        disadvantage_local_var.add(temp);
                     }
-        }}}
+                }
+            }
+        }
     }
     if (popup!="") and ((mouse_left>=1) or (mouse_right=1)) and (cooldown<=0){
         if ((mouse_x<445) or (mouse_x>1125) or (mouse_y<200) or (mouse_y>552)) and (popup!="icons"){
-            cooldown=8000;popup="";
+            cooldown=8000;
+            popup="";
         }
         if ((mouse_x<445) or (mouse_x>1125) or (mouse_y<200) or (mouse_y>719)) and (popup="icons"){
-            cooldown=8000;popup="";
+            cooldown=8000;
+            popup="";
         }
     }
     
@@ -794,17 +937,18 @@ if (slide=2){
 
 /* Homeworld, Flagship, Psychic discipline, Aspirant Trial */
 
-var yar;yar=0;
+var yar=0;
 
 if (slide=3){
     draw_set_color(38144);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     
-    tooltip="";tooltip2="";
+    tooltip="";
+    tooltip2="";
     obj_cursor.image_index=0;
     
-    draw_text(800,80,string_hash_to_newline(string(chapter)));
+    draw_text(800,80,string_hash_to_newline(string(chapter_name)));
     
     draw_set_color(38144);
     draw_line(445,200,1125,200);
@@ -814,26 +958,26 @@ if (slide=3){
     
     
     
-    var fleet_type_text = fleet_type==1?"Homeworld":"Flagship";
+    var fleet_type_text = fleet_type==eFLEET_TYPES.HOMEWORLD ? "Homeworld" : "Flagship";
     draw_text_transformed(644,218,fleet_type_text,0.6,0.6,0);
 
     var eh,eh2;eh=0;eh2=0;name_bad=0;
     
-    if (homeworld="Lava") then eh=0;
-    if (homeworld="Desert") then eh=2;
-    if (homeworld="Forge") then eh=3;
-    if (homeworld="Hive") then eh=4;
-    if (homeworld="Death") then eh=5;
-    if (homeworld="Agri") then eh=6;
-    if (homeworld="Feudal") then eh=7;
-    if (homeworld="Temperate") then eh=8;
-    if (homeworld="Ice") then eh=9;
-    if (homeworld="Dead") then eh=10;
-    if (homeworld="Shrine") then eh=16;
-    if (fleet_type!=1) then eh=15;
+    if (homeworld="Lava") then eh=2;
+    if (homeworld="Desert") then eh=3;
+    if (homeworld="Forge") then eh=4;
+    if (homeworld="Hive") then eh=5;
+    if (homeworld="Death") then eh=6;
+    if (homeworld="Agri") then eh=7;
+    if (homeworld="Feudal") then eh=8;
+    if (homeworld="Temperate") then eh=9;
+    if (homeworld="Ice") then eh=10;
+    if (homeworld="Dead") then eh=11;
+    if (homeworld="Shrine") then eh=17;
+    if (fleet_type!=1) then eh=16;
     
-    if (fleet_type=1){
-        scr_image("planet",eh,580,244,128,128);
+    if (fleet_type == eFLEET_TYPES.HOMEWORLD){
+        scr_image("ui/planet",eh,580,244,128,128);
         // draw_sprite(spr_planet_splash,eh,580,244);
         
         draw_text_transformed(644,378,string_hash_to_newline(string(homeworld)),0.5,0.5,0);
@@ -876,9 +1020,9 @@ if (slide=3){
             }
         }
     }
-    if (fleet_type!=1){
+    if (fleet_type != eFLEET_TYPES.HOMEWORLD){
         // draw_sprite(spr_planet_splash,eh,580,244);
-        scr_image("planet",eh,580,244,128,128);
+        scr_image("ui/planet",eh,580,244,128,128);
         
         draw_text_transformed(644,378,string_hash_to_newline("Battle Barge"),0.5,0.5,0);
         // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
@@ -903,7 +1047,7 @@ if (slide=3){
     
     
     
-    if (fleet_type!=3){
+    if (fleet_type!=eFLEET_TYPES.PENITENCE){
         if (fleet_type!=1) or (custom<2) then draw_set_alpha(0.5);
         yar=0;if (recruiting_exists=1) then yar=1;draw_sprite(spr_creation_check,yar,858,221);yar=0;
         if (scr_hit(858,221,858+32,221+32)) and (cooldown<=0) and (mouse_left>=1) and (custom>1) and (fleet_type=1){cooldown=8000;var onceh;onceh=0;
@@ -913,17 +1057,17 @@ if (slide=3){
         draw_set_alpha(1);draw_text_transformed(644+333,218,string_hash_to_newline("Recruiting World"),0.6,0.6,0);
         
         if (recruiting_exists=1){
-            if (recruiting="Lava") then eh2=0;
-            if (recruiting="Desert") then eh2=2;
-            if (recruiting="Forge") then eh2=3;
-            if (recruiting="Hive") then eh2=4;
-            if (recruiting="Death") then eh2=5;
-            if (recruiting="Agri") then eh2=6;
-            if (recruiting="Feudal") then eh2=7;
-            if (recruiting="Temperate") then eh2=8;
-            if (recruiting="Ice") then eh2=9;
-            if (recruiting="Dead") then eh2=10;
-            if (recruiting="Shrine") then eh2=16;
+            if (recruiting="Lava") then eh2=2;
+            if (recruiting="Desert") then eh2=3;
+            if (recruiting="Forge") then eh2=4;
+            if (recruiting="Hive") then eh2=5;
+            if (recruiting="Death") then eh2=6;
+            if (recruiting="Agri") then eh2=7;
+            if (recruiting="Feudal") then eh2=8;
+            if (recruiting="Temperate") then eh2=9;
+            if (recruiting="Ice") then eh2=10;
+            if (recruiting="Dead") then eh2=11;
+            if (recruiting="Shrine") then eh2=17;
             
             if (custom>1) then draw_sprite_stretched(spr_creation_arrow,0,865,285,32,32);// Left Arrow
             if (scr_hit(865,285,865+32,285+32)) and (mouse_left>=1) and (cooldown<=0) and (custom>1){
@@ -957,7 +1101,7 @@ if (slide=3){
             }
             
             // draw_sprite(spr_planet_splash,eh2,580+333,244);
-            scr_image("planet",eh2,580+333,244,128,128);
+            scr_image("ui/planet",eh2,580+333,244,128,128);
             
             draw_text_transformed(644+333,378,string_hash_to_newline(string(recruiting)),0.5,0.5,0);
             // draw_text_transformed(644+333,398,string(recruiting_name),0.5,0.5,0);
@@ -979,9 +1123,9 @@ if (slide=3){
         }
     }
     
-    if (recruiting_exists=0) and (homeworld_exists=1){
+    if (recruiting_exists==0 && homeworld_exists==1){
         // draw_sprite(spr_planet_splash,eh,580+333,244);
-        scr_image("planet",eh,580+333,244,128,128);
+        scr_image("ui/planet",eh,580+333,244,128,128);
         
         draw_set_alpha(0.5);
         draw_text_transformed(644+333,378,string_hash_to_newline(string(homeworld)),0.5,0.5,0);
@@ -991,8 +1135,8 @@ if (slide=3){
     
     
     if (scr_hit(575,216,710,242)){
-        if (fleet_type!=1){tooltip="Battle Barge";tooltip2="The name of your Flagship Battle Barge.";}
-        if (fleet_type=1){tooltip="Homeworld";tooltip2="The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.";}
+        if (fleet_type!=eFLEET_TYPES.HOMEWORLD){tooltip="Battle Barge";tooltip2="The name of your Flagship Battle Barge.";}
+        if (fleet_type==eFLEET_TYPES.HOMEWORLD){tooltip="Homeworld";tooltip2="The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.";}
     }
     if (scr_hit(895,216,1075,242)){
         tooltip="Recruiting World";tooltip2="The world that your Chapter selects recruits from.  More harsh worlds provide recruits with more grit and warrior mentality.  If you are a homeworld-based Chapter, you may uncheck 'Recruiting World' to recruit from your homeworld instead.";
@@ -1007,7 +1151,7 @@ if (slide=3){
     
     draw_set_halign(fa_left);
     
-    if (fleet_type=1){
+    if (fleet_type == eFLEET_TYPES.HOMEWORLD){
         if (custom<2) then draw_set_alpha(0.5);
         draw_text_transformed(445,480,"Homeworld Rule",0.6,0.6,0);
         draw_text_transformed(485,512,"Planetary Governer",0.5,0.5,0);
@@ -1034,7 +1178,7 @@ if (slide=3){
         draw_sprite(spr_creation_check,yar,445,576);
         if (point_and_click([445,576,445+32,576+32])) and (custom>1) and (homeworld_rule!=3){cooldown=8000;homeworld_rule=3;}
         if (scr_hit(445,576,670,576+32)){
-            tooltip="Planetary Governer";
+            tooltip="Personal Rule";
             tooltip2="You personally take the rule of the Planetary Governer, ruling over your homeworld with an iron fist.  Your every word and directive, be they good or bad, are absolute law.";
         }
     }
@@ -1126,690 +1270,7 @@ if (slide=3){
 
 
 if (slide=4){
-    draw_set_font(fnt_40k_30b);
-    draw_set_halign(fa_center);
-    draw_set_alpha(1);
-    draw_set_color(38144);
-
-    
-    tooltip="";tooltip2="";
-    obj_cursor.image_index=0;
-
-    draw_text_color_simple(800,80,string_hash_to_newline(string(chapter)),38144);
-    var draw_sprites = [spr_mk7_colors, spr_mk4_colors,spr_mk5_colors,spr_beakie_colors,spr_mk8_colors,spr_mk3_colors, spr_terminator3_colors];
-    var draw_hem = [spr_generic_sgt_mk7, spr_generic_sgt_mk4,spr_generic_sgt_mk5,spr_generic_sgt_mk6,spr_generic_sgt_mk8,spr_generic_sgt_mk3, spr_generic_terminator_sgt];
-    
-    var preview_box = {
-        x1: 444,
-        y1: 252,
-        w: 167,
-        h: 232,
-    }
-    preview_box.x2 = preview_box.x1 + preview_box.w;
-    preview_box.y2 = preview_box.y1 + preview_box.h;
-
-	draw_sprite_stretched(spr_creation_arrow,0,preview_box.x1,preview_box.y1,32,32);// Left Arrow
-    draw_sprite_stretched(spr_creation_arrow,1,preview_box.x2-32,preview_box.y1,32,32);// Right Arrow 
-    if (point_and_click([preview_box.x1,preview_box.y1,preview_box.x1+32,preview_box.y1+32])){
-        test_sprite++;
-        if (test_sprite==array_length(draw_sprites)) then test_sprite=0;
-    }   
-    if (point_and_click([preview_box.x2-32,preview_box.y1,preview_box.x2, preview_box.y1+32])){
-        test_sprite--;
-        if (test_sprite<0) then test_sprite=(array_length(draw_sprites)-1);
-    }
-    draw_rectangle_color_simple(preview_box.x1,preview_box.y1,preview_box.x2,preview_box.y2,1,38144);
-    if( shader_is_compiled(sReplaceColor)){
-        shader_set(sReplaceColor);
-        
-        shader_set_uniform_f_array(colour_to_find1, body_colour_find );       
-        shader_set_uniform_f_array(colour_to_set1, body_colour_replace );
-        shader_set_uniform_f_array(colour_to_find2, secondary_colour_find );       
-        shader_set_uniform_f_array(colour_to_set2, secondary_colour_replace );
-        shader_set_uniform_f_array(colour_to_find3, pauldron_colour_find );       
-        shader_set_uniform_f_array(colour_to_set3, pauldron_colour_replace );
-        shader_set_uniform_f_array(colour_to_find4, lens_colour_find );       
-        shader_set_uniform_f_array(colour_to_set4, lens_colour_replace );
-        shader_set_uniform_f_array(colour_to_find5, trim_colour_find );
-        shader_set_uniform_f_array(colour_to_set5, trim_colour_replace );
-        shader_set_uniform_f_array(colour_to_find6, pauldron2_colour_find );
-        shader_set_uniform_f_array(colour_to_set6, pauldron2_colour_replace );
-        shader_set_uniform_f_array(colour_to_find7, weapon_colour_find );
-        shader_set_uniform_f_array(colour_to_set7, weapon_colour_replace );
-        
-        //Rejoice!
-        tester_sprite = draw_sprites[test_sprite];
-        tester_helm = draw_hem[test_sprite];
-        if (col_special=0) then draw_sprite(tester_sprite,10,preview_box.x1,preview_box.y1 + 8);
-        if (col_special=1) then draw_sprite(tester_sprite,11,preview_box.x1,preview_box.y1 + 8);
-        if (col_special>=2) then draw_sprite(tester_sprite,12,preview_box.x1,preview_box.y1 + 8);
-        
-        draw_sprite(tester_sprite,col_special,preview_box.x1,preview_box.y1 + 8);
-        if (col_special<=1){
-            draw_sprite(tester_sprite,6,preview_box.x1,preview_box.y1 + 8);
-            draw_sprite(tester_sprite,8,preview_box.x1,preview_box.y1 + 8);
-        }
-        if (col_special>=2){
-            draw_sprite(tester_sprite,6,preview_box.x1,preview_box.y1 + 8);
-            draw_sprite(tester_sprite,9,preview_box.x1,preview_box.y1 + 8);
-        }
-        if (trim=0) and (col_special<=1) then draw_sprite(tester_sprite,4,preview_box.x1,preview_box.y1 + 8);
-        if (trim=0) and (col_special>=2) then draw_sprite(tester_sprite,5,preview_box.x1,preview_box.y1 + 8);
-        //TODO this can be imprved but for now it's fit for purpose
-        if (complex_selection=="Sergeant Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.sgt.helm_primary;
-            var sgt_col_2 = complex_livery_data.sgt.helm_secondary;
-            var lens_col = complex_livery_data.sgt.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }
-        else if (complex_selection=="Veteran Sergeant Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.vet_sgt.helm_primary;
-            var sgt_col_2 = complex_livery_data.vet_sgt.helm_secondary;
-            var lens_col = complex_livery_data.vet_sgt.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }
-        else if (complex_selection=="Captain Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.captain.helm_primary;
-            var sgt_col_2 = complex_livery_data.captain.helm_secondary;
-            var lens_col = complex_livery_data.captain.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        } else if (complex_selection=="Veteran Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.veteran.helm_primary;
-            var sgt_col_2 = complex_livery_data.veteran.helm_secondary;
-            var lens_col = complex_livery_data.veteran.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }                 
-        shader_set_uniform_f_array(colour_to_find1, body_colour_find );       
-        shader_set_uniform_f_array(colour_to_set1, body_colour_replace );
-        shader_set_uniform_f_array(colour_to_find2, secondary_colour_find );       
-        shader_set_uniform_f_array(colour_to_set2, secondary_colour_replace ); 
-        shader_set_uniform_f_array(colour_to_set4, lens_colour_replace );
-		if(tester_sprite == spr_terminator3_colors){
-			draw_sprite(spr_weapon_colors,0,444 - 12,252 + 5);
-		} else {
-			draw_sprite(spr_weapon_colors,0,444,252);	
-		}
-        shader_reset();
-        
-    }else{
-        draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
-    }
-    
-    draw_set_color(38144);draw_set_halign(fa_left);
-    draw_text_transformed(580,118,string_hash_to_newline("Battle Cry:"),0.6,0.6,0);draw_set_font(fnt_40k_14b);
-    if (text_selected!="battle_cry") or (custom<2) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"!"),-1,580);
-    if (custom>1){
-        if (text_selected="battle_cry") and (text_bar>30) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"!"),-1,580);
-        if (text_selected="battle_cry") and (text_bar<=30) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"|!"),-1,580);
-        var str_width=max(580,string_width_ext(string_hash_to_newline(battle_cry),-1,580));
-        var hei=string_height_ext(string_hash_to_newline(battle_cry),-1,580);
-        if (scr_hit(580-2,144-2,582+str_width,146+hei)){obj_cursor.image_index=2;
-            if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="battle_cry";cooldown=8000;keyboard_string=battle_cry;}
-        }
-        if (text_selected="battle_cry") then battle_cry=keyboard_string;
-        draw_rectangle(580-2,144-2,582+580,146+hei,1);
-    }
-    
-    
-    
-    
-    draw_line(445,200,1125,200);
-    draw_line(445,201,1125,201);
-    draw_line(445,202,1125,202);
-    
-    draw_set_font(fnt_40k_30b);
-    draw_text_transformed(444,215,string_hash_to_newline("Livelry"),0.6,0.6,0);
-    var button_alpha = custom < 2 ? 0.5 : 1;
-    var livery_swap_button = draw_unit_buttons([544,215], complex_livery? "Simple Livery":"Complex Livery",[1,1], 38144,, fnt_40k_14b, button_alpha);
-    if (point_and_click(livery_swap_button) && custom >= 2){
-        complex_livery=!complex_livery;
-    }
-    var str,str_width,hei,x8,y8;x8=0;y8=0;
-    //Dont ask why the pauldron colours are switched i guess duke got confused between left and right at some point
-    //TODO extract this function somewhere
-    /*function draw_checkbox (cords, text, main_alpha, checked){
-            draw_set_alpha(main_alpha);
-            yar = col_special==(i+1) ?1:0;
-            if (custom<2) then draw_set_alpha(0.5);
-            draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                    cooldown=8000;
-                    var onceh=0;
-                    if (col_special=i+1) and (onceh=0){col_special=0;onceh=1;}
-                    if (col_special!=i+1) and (onceh=0){col_special=i+1;onceh=1;}
-             }
-             draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
-    }*/
-    if (!complex_livery){
-        var button_data = [
-            {
-                text : $"Primary : {col[main_color]}",
-                tooltip:"Primary",
-                tooltip2:"The main color of your Astartes and their vehicles.",
-                cords : [620, 252],
-            },
-            {
-                text : $"Secondary: {col[secondary_color]}",
-                tooltip:"Secondary",
-                tooltip2:"The secondary color of your Astartes and their vehicles.",
-                cords : [620, 287],
-            },
-            {
-                text : $"Pauldron 1: {col[pauldron2_color]}",
-                tooltip:"First Pauldron",
-                tooltip2:"The color of your Astartes' right Pauldron.  Normally this Pauldron displays their rank and designation.",
-                cords : [620, 322],
-            },
-            {
-                text : $"Pauldron 2: {col[pauldron_color]}",
-                tooltip:"Second Pauldron",
-                tooltip2:"The color of your Astartes' left Pauldron.  Normally this Pauldron contains the Chapter Insignia.",
-                cords : [620, 357],
-            },
-            {
-                text : $"Trim: {col[trim_color]}",
-                tooltip:"Trim",
-                tooltip2:"The trim color that appears on the Pauldrons, armour plating, and any decorations.",
-                cords : [620, 392],                
-            },
-            {
-                text : $"Lens: {col[lens_color]}",
-                tooltip:"Lens",
-                tooltip2:"The color of your Astartes' lenss.  Most of the time this will be the visor color.",
-                cords : [620, 427],                
-            },
-            {
-                text : $"Weapon: {col[weapon_color]}",
-                tooltip:"Weapon",
-                tooltip2:"The primary color of your Astartes' weapons.",
-                cords : [620, 462],                
-            }             
-        ]
-        var button_cords, cur_button;
-        for (var i=0;i<array_length(button_data);i++){
-            cur_button = button_data[i];
-            var button_alpha = custom < 2 ? 0.5 : 1;
-            button_cords = draw_unit_buttons(cur_button.cords, cur_button.text,[0.5,0.5], 38144,, fnt_40k_30b, button_alpha);
-            if (scr_hit(button_cords[0],button_cords[1],button_cords[2],button_cords[3])){
-                tooltip=cur_button.tooltip;
-                tooltip2=cur_button.tooltip2;
-            }
-            if (point_and_click(button_cords) && custom >= 2){
-                cooldown=8000;
-                instance_destroy(obj_creation_popup);
-                var pp=instance_create(0,0,obj_creation_popup);
-                pp.type=i+1;
-            }
-        }
-        draw_set_color(38144);
-        var livery_type_options = [
-            {
-                cords : [437,500],   
-                text : $"Breastplate",             
-            },
-            {
-                cords : [554,500],   
-                text : $"Vertical",             
-            },
-            {
-                cords : [662,500],   
-                text : $"Quadrant",             
-            },
-            {
-                cords : [770,500],   
-                text : $"Trim",             
-            }                                    
-        ]
-        var yar;
-        for (var i=0;i<array_length(livery_type_options);i++){
-            cur_button = livery_type_options[i];
-            draw_set_alpha(1);
-            yar = col_special==(i+1) ?1:0;
-            if (cur_button.text=="Trim") then yar = trim;
-            if (custom<2) then draw_set_alpha(0.5);
-            draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                cooldown=8000;
-                var onceh=0;
-                if (cur_button.text!="Trim"){
-                    if (col_special=i+1) and (onceh=0){col_special=0;onceh=1;}
-                    if (col_special!=i+1) and (onceh=0){col_special=i+1;onceh=1;}
-                } else {
-                    trim=!trim;
-                }
-             }
-             draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
-        }
-    } else {
-        var button_data=[];
-        if (complex_selection=="Sergeant Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.sgt.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of sgt.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "sgt",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.sgt.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of sgt.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "sgt",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.sgt.helm_lens]}",
-                    tooltip:"Secondary",
-                    tooltip2:"helm lens colour of sgt.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "sgt",
-                },                
-            ];
-            if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.sgt.helm_pattern;
-            } else {complex_livery_data.sgt.helm_pattern=complex_depth_selection;}
-
-        } else if (complex_selection=="Veteran Sergeant Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.vet_sgt.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of sgt.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "vet_sgt",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.vet_sgt.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of sgt.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "vet_sgt",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.vet_sgt.helm_lens]}",
-                    tooltip:"Secondary",
-                    tooltip2:"helm lens colour of sgt.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "vet_sgt",
-                },                
-            ];
-            if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.vet_sgt.helm_pattern;
-            } else {complex_livery_data.vet_sgt.helm_pattern=complex_depth_selection;}
-
-        }else if (complex_selection=="Captain Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.captain.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of captain.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "captain",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.captain.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of captain.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "captain",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.captain.helm_lens]}",
-                    tooltip:"lens",
-                    tooltip2:"helm lens colour of captain.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "captain",
-                },                
-            ];
-             if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.captain.helm_pattern;
-            } else {complex_livery_data.captain.helm_pattern=complex_depth_selection;}
-        } else if (complex_selection=="Veteran Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.veteran.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of Veterans.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "veteran",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.veteran.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of Veterans.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "veteran",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.veteran.helm_lens]}",
-                    tooltip:"lens",
-                    tooltip2:"helm lens colour of Veterans.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "veteran",
-                },                
-            ];
-             if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.veteran.helm_pattern;
-            } else {complex_livery_data.veteran.helm_pattern=complex_depth_selection;}
-        }
-        turn_selection_change = false;
-        var button_cords, cur_button;
-        for (var i=0;i<array_length(button_data);i++){
-            cur_button = button_data[i];
-            button_cords = draw_unit_buttons(cur_button.cords, cur_button.text,[0.5,0.5], 38144,, fnt_40k_30b, 1);
-            if (scr_hit(button_cords[0],button_cords[1],button_cords[2],button_cords[3])){
-                 tooltip=cur_button.tooltip;
-                 tooltip2=cur_button.tooltip2;
-            }
-            if (point_and_click(button_cords)){
-                cooldown=8000;
-                instance_destroy(obj_creation_popup);
-                var pp=instance_create(0,0,obj_creation_popup);
-                pp.type=cur_button.type;
-                pp.role = cur_button.role
-            }
-        }
-        draw_set_color(38144);
-        var livery_type_options = [
-            {
-                cords : [437,500],   
-                text : $"Single Colour",             
-            },
-            {
-                cords : [554,500],   
-                text : $"Stripe",             
-            },
-            {
-                cords : [662,500],   
-                text : $"Muzzle",             
-            },
-            {
-                cords : [770,500],   
-                text : $"Pattern",
-            }                               
-        ]  
-        var yar;
-        for (var i=0;i<array_length(livery_type_options);i++){
-            cur_button = livery_type_options[i];
-            draw_set_alpha(1);
-            yar = complex_depth_selection==(i) ? 1 : 0;
-            if (custom<2) then draw_set_alpha(0.5);
-            draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                    cooldown=8000;
-                    var onceh=0;
-                    if (complex_depth_selection=i) and (onceh=0){complex_depth_selection=0;onceh=1;}
-                    else if (complex_depth_selection!=i) and (onceh=0){complex_depth_selection=i;onceh=1;}
-             }
-             draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
-        }                                           
-    }
-    draw_set_alpha(1);
-    
-    draw_line(844,204,844,740);
-    draw_line(845,204,845,740);
-    draw_line(846,204,846,740);
-    draw_text_transformed(862,215,string_hash_to_newline("Astartes Role Settings"),0.6,0.6,0);
-    draw_set_font(fnt_40k_14b);var c,role_id,spacing;c=100;spacing=30;
-    draw_set_halign(fa_left);var xxx,yyy;xxx=862;yyy=255-spacing;
-    
-    
-    if (!complex_livery){
-        var role_slot;
-        role_slot=0;
-        
-        repeat(13){role_slot+=1;
-            if (role_slot=1) then role_id=15;
-            if (role_slot=2) then role_id=14;
-            if (role_slot=3) then role_id=17;
-            if (role_slot=4) then role_id=16;
-            if (role_slot=5) then role_id=5;
-            if (role_slot=6) then role_id=2;
-            if (role_slot=7) then role_id=4;
-            if (role_slot=8) then role_id=3;
-            if (role_slot=9) then role_id=6;
-            if (role_slot=10) then role_id=8;
-            if (role_slot=11) then role_id=9;
-            if (role_slot=12) then role_id=10;
-            if (role_slot=13) then role_id=12;
-            
-            draw_set_alpha(1);
-            if (race[c,role_id]!=0){
-                if (custom<2) then draw_set_alpha(0.5);
-                yyy+=spacing;draw_set_color(38144);draw_rectangle(xxx,yyy,1150,yyy+20,1);
-                draw_set_color(38144);draw_text(xxx,yyy,string_hash_to_newline(role[c,role_id]));
-                if (scr_hit(xxx,yyy,1150,yyy+20)) and ((!instance_exists(obj_creation_popup)) || ((instance_exists(obj_creation_popup) and obj_creation_popup.target_gear=0))) {
-                    if (custom=2) then draw_set_alpha(0.2);
-                    if (custom<2) then draw_set_alpha(0.1);
-                    draw_set_color(c_white);
-                    draw_rectangle(xxx,yyy,1150,yyy+20,0);
-                    draw_set_alpha(1);tooltip=string(role[c,role_id])+" Settings";
-                    tooltip2="Click to open the settings for this unit.";
-                    if (mouse_left>=1) and (custom>0) and (cooldown<=0) and (custom=2){
-                        instance_destroy(obj_creation_popup);
-                        var pp=instance_create(0,0,obj_creation_popup);
-                        pp.type=role_id+100;
-                        cooldown=8000;
-                    }
-                }
-            }
-        }
-    } else {
-        var complex_livery_options = ["Sergeant Markers","Veteran Sergeant Markers", "Captain Markers", "Veteran Markers"];
-        for (var i=0;i<array_length(complex_livery_options);i++){
-            yyy+=spacing;
-            if (point_and_click(draw_unit_buttons([xxx,yyy], complex_livery_options[i],[0.5,0.5], 38144,, fnt_40k_30b, 1))){
-                complex_selection=complex_livery_options[i];
-                turn_selection_change=true;
-            }
-        }
-    }
-    
-    
-    
-    
-    draw_set_color(38144);draw_set_alpha(1);draw_set_font(fnt_40k_30b);
-    
-    if (custom<2) then draw_set_alpha(0.5);
-    yar=0;if (equal_specialists=1) then yar=1;draw_sprite(spr_creation_check,yar,860,645);yar=0;
-    if (scr_hit(860,650,1150,650+32)) and (!instance_exists(obj_creation_popup)){tooltip="Specialist Distribution";tooltip2="Check if you wish for your Companies to be uniform and each contain "+string(role[100][10])+"s and "+string(role[100][9])+"s.";}
-    if (scr_hit(860,650,860+32,650+32) and allow_colour_click){
-        cooldown=8000;var onceh;onceh=0;
-        if (equal_specialists=1) and (onceh=0){equal_specialists=0;onceh=1;}
-        if (equal_specialists!=1) and (onceh=0){equal_specialists=1;onceh=1;}
-    }draw_text_transformed(860+30,650+4,string_hash_to_newline("Equal Specialist Distribution"),0.4,0.4,0);
-    draw_set_alpha(1);
-    
-    yar=0;if (load_to_ships[0]=1) then yar=1;draw_sprite(spr_creation_check,yar,860,645+40);yar=0;
-    if (scr_hit(860,645+40,1005,645+32+40) and !instance_exists(obj_creation_popup)){tooltip="Load to Ships";tooltip2="Check to have your Astartes automatically loaded into ships when the game starts.";}
-    if (scr_hit(860,645+40,860+32,645+32+40) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup))){
-        cooldown=8000;var onceh;onceh=0;
-        if (load_to_ships[0]=1) and (onceh=0){load_to_ships[0]=0;onceh=1;}
-        if (load_to_ships[0]!=1) and (onceh=0){load_to_ships[0]=1;onceh=1;}
-    }draw_text_transformed(860+30,645+4+40,string_hash_to_newline("Load to Ships"),0.4,0.4,0);
-    
-    yar=0;if (load_to_ships[0]=2) then yar=1;draw_sprite(spr_creation_check,yar,1010,645+40);yar=0;
-    if (scr_hit(1010,645+40,1150,645+32+40)) and (!instance_exists(obj_creation_popup)){tooltip="Load (Sans Escorts)";tooltip2="Check to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.";}
-    if (scr_hit(1010,645+40,1020+32,645+32+40)) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup)){
-        cooldown=8000;var onceh;onceh=0;
-        if (load_to_ships[0]=2) and (onceh=0){load_to_ships[0]=0;onceh=1;}
-        if (load_to_ships[0]!=2) and (onceh=0){load_to_ships[0]=2;onceh=1;}
-    }draw_text_transformed(1010+30,645+4+40,string_hash_to_newline("Load (Sans Escorts)"),0.4,0.4,0);
-	
-	yar=0;
-	if (load_to_ships[0] > 0){
-		if (load_to_ships[1] == 1){
-			yar=1;
-		}
-		draw_sprite(spr_creation_check,yar,860,645+80);yar=0;
-    	if (scr_hit(860,645+80,1005,645+32+80)) and (!instance_exists(obj_creation_popup)){tooltip="Distribute Scouts";tooltip2="Check to have your Scouts split across ships in the fleet.";}
-    	if (scr_hit(860,645+80,860+32,645+32+80)) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup)){
-    		 cooldown=8000;
-             var onceh;onceh=0;
-             load_to_ships[1] = !load_to_ships[1];  		 
-    	}
-    	draw_text_transformed(860+30,645+4+80,string_hash_to_newline("Distribute Scouts"),0.4,0.4,0);	
-	
-		yar=0;
-		if (load_to_ships[2] == 1){
-			yar=1;
-		}
-		draw_sprite(spr_creation_check,yar,1010,645+80);yar=0;
-    	if (scr_hit(1010,645+80,1150,645+32+80)) and (!instance_exists(obj_creation_popup)){tooltip="Distribute Veterans";tooltip2="Check to have your Veterans split across the fleet.";}
-    	if (scr_hit(1010,645+80,1020+32,645+32+80)) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup)){
-    		 cooldown=8000;var onceh;onceh=0;
-    		 if (load_to_ships[2]=0) and (onceh=0){load_to_ships[2]=1;onceh=1;}
-     		 if (load_to_ships[2]=1) and (onceh=0){load_to_ships[2]=0;onceh=1;}   		 
-    	}
-    	draw_text_transformed(1010+30,645+4+80,string_hash_to_newline("Distribute Veterans"),0.4,0.4,0);	
-	}	
-    
-    
-    
-    
-    draw_line(433,535,844,535);
-    draw_line(433,536,844,536);
-    draw_line(433,537,844,537);
-    
-    if (!instance_exists(obj_creation_popup)){
-    
-        if (scr_hit(540,547,800,725)){tooltip="Advisor Names";tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";}
-    
-        draw_text_transformed(444,550,string_hash_to_newline("Advisor Names"),0.6,0.6,0);
-        draw_set_font(fnt_40k_14b);
-        draw_set_halign(fa_right);
-        if (race[100,15]!=0) then draw_text(594,575,string_hash_to_newline("Chief Apothecary: "));
-        if (race[100,14]!=0) then draw_text(594,597,string_hash_to_newline("High Chaplain: "));
-        if (race[100,17]!=0) then draw_text(594,619,string_hash_to_newline("Chief Librarian: "));
-        if (race[100,16]!=0) then draw_text(594,641,string_hash_to_newline("Forge Master: "));
-        draw_text(594,663,string_hash_to_newline("Master of Recruits: "));
-        draw_text(594,685,string_hash_to_newline("Master of the Fleet: "));
-        draw_set_halign(fa_left);
-        
-        if (race[100,15]!=0){
-            draw_set_color(38144);if (hapothecary="") then draw_set_color(c_red);
-            if (text_selected!="apoth") or (custom<2) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
-            if (custom>1){
-                if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
-                if (text_selected="capoth") and (text_bar<=30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)+"|"),-1,580);
-                var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hapothecary),-2,580);
-                if (scr_hit(600,575,785,575+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="capoth";cooldown=8000;keyboard_string=hapothecary;}
-                }
-                if (text_selected="capoth") then hapothecary=keyboard_string;
-                draw_rectangle(600-1,575-1,785,575+hei,1);
-            }
-        }
-        
-        if (race[100,14]!=0){
-            draw_set_color(38144);if (hchaplain="") then draw_set_color(c_red);
-            if (text_selected!="chap") or (custom<2) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
-            if (custom>1){
-                if (text_selected="chap") and (text_bar>30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
-                if (text_selected="chap") and (text_bar<=30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)+"|"),-1,580);
-                var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hchaplain),-2,580);
-                if (scr_hit(600,597,785,597+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="chap";cooldown=8000;keyboard_string=hchaplain;}
-                }
-                if (text_selected="chap") then hchaplain=keyboard_string;
-                draw_rectangle(600-1,597-1,785,597+hei,1);
-            }
-        }
-        
-        if (race[100,17]!=0){
-            draw_set_color(38144);if (clibrarian="") then draw_set_color(c_red);
-            if (text_selected!="libra") or (custom<2) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
-            if (custom>1){
-                if (text_selected="libra") and (text_bar>30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
-                if (text_selected="libra") and (text_bar<=30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)+"|"),-1,580);
-                var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(clibrarian),-2,580);
-                if (scr_hit(600,619,785,619+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="libra";cooldown=8000;keyboard_string=clibrarian;}
-                }
-                if (text_selected="libra") then clibrarian=keyboard_string;
-                draw_rectangle(600-1,619-1,785,619+hei,1);
-            }
-        }
-        
-        if (race[100,16]!=0){
-            draw_set_color(38144);if (fmaster="") then draw_set_color(c_red);
-            if (text_selected!="forge") or (custom<2) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
-            if (custom>1){
-                if (text_selected="forge") and (text_bar>30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
-                if (text_selected="forge") and (text_bar<=30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)+"|"),-1,580);
-                var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(fmaster),-2,580);
-                if (scr_hit(600,641,785,641+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="forge";cooldown=8000;keyboard_string=fmaster;}
-                }
-                if (text_selected="forge") then fmaster=keyboard_string;
-                draw_rectangle(600-1,641-1,785,641+hei,1);
-            }
-        }
-        
-        draw_set_color(38144);if (recruiter="") then draw_set_color(c_red);
-        if (text_selected!="recr") or (custom<2) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
-        if (custom>1){
-            if (text_selected="recr") and (text_bar>30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
-            if (text_selected="recr") and (text_bar<=30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)+"|"),-1,580);
-            var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(recruiter),-2,580);
-            if (scr_hit(600,663,785,663+hei)){obj_cursor.image_index=2;
-                if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="recr";cooldown=8000;keyboard_string=recruiter;}
-            }
-            if (text_selected="recr") then recruiter=keyboard_string;
-            draw_rectangle(600-1,663-1,785,663+hei,1);
-        }
-        
-        draw_set_color(38144);if (admiral="") then draw_set_color(c_red);
-        if (text_selected!="admi") or (custom<2) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
-        if (custom>1){
-            if (text_selected="admi") and (text_bar>30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
-            if (text_selected="admi") and (text_bar<=30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)+"|"),-1,580);
-            var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(admiral),-2,580);
-            if (scr_hit(600,685,785,685+hei)){obj_cursor.image_index=2;
-                if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="admi";cooldown=8000;keyboard_string=admiral;}
-            }
-            if (text_selected="admi") then admiral=keyboard_string;
-            draw_rectangle(600-1,685-1,785,685+hei,1);
-        }
-        
-        
-    
-    }
-    
-    
+   scr_livery_setup();
 }
 
 /* Gene Seed Mutations, Disposition */
@@ -1824,7 +1285,7 @@ if (slide=5){
     tooltip="";tooltip2="";
     obj_cursor.image_index=0;
     
-    draw_text(800,80,string_hash_to_newline(string(chapter)));
+    draw_text(800,80,string_hash_to_newline(string(chapter_name)));
 
 
     draw_set_color(38144);draw_set_halign(fa_left);
@@ -2151,30 +1612,21 @@ if (slide=6){
     }
     
     
-    //adds "Save Chapter" button if custom chapter
+    //adds "Save Chapter" button if custom chapter in a save slot
 
-    if(custom>0){
-	
-	draw_rectangle(1000,135,1180,170,1)
-	draw_text_transformed(1090,140,string("Save Chapter"),0.6,0.6,0);draw_set_font(fnt_40k_14b);
-	if (scr_hit(1000,135,1180,170)) {
-		tooltip2="Click to save your chapter";
-		tooltip= "Do you want to save your chapter?"
-	
-		if (mouse_left>=1){
-			savechapter();
-			
-			
-			tooltip2="Chapter Saved!";
-		tooltip= "Do you want to save your chapter?"}
+    if(custom>0 && global.chapter_id != eCHAPTERS.UNKNOWN){
+        draw_rectangle(1000,135,1180,170,1)
+        draw_text_transformed(1090,140,string("Save Chapter"),0.6,0.6,0);draw_set_font(fnt_40k_14b);
+	    if (scr_hit(1000,135,1180,170)) {
+            tooltip= "Do you want to save your chapter?"
+            tooltip2="Click to save your chapter";
+	        if (mouse_left>=1){
+                scr_save_chapter(global.chapter_id);
+
+                tooltip= "Do you want to save your chapter?"
+                tooltip2="Chapter Saved!";
+            }
 		}
-		
-               
-		
-					
-					
-		
-	
 	}
 	
     
@@ -2254,22 +1706,25 @@ if (slide>=2) or (goto_slide>=2){
     draw_sprite(spr_creation_arrow,1,927,761);
     if (slide=1) then draw_sprite(spr_creation_arrow,2,607,761);
     
-    
+    // skip to end >> button
     if (slide>=2) and (slide<6) and (custom!=2){
         draw_set_alpha(0.8);
         if (popup="") and ((change_slide>=70) or (change_slide<=0)) and (scr_hit(927+64+12,761+12,927+128-12,761+64-12)) then draw_set_alpha(1);
         draw_sprite(spr_creation_arrow,4,927+64,761);
         if (popup="") and ((change_slide>=70) or (change_slide<=0)) and (cooldown<=0) and (mouse_left>=1){
             if (scr_hit(927+64+12,761+12,927+128-12,761+64-12)){
-                scr_creation(2);scr_creation(3.5);scr_creation(4);
-                scr_creation(5);scr_creation(6);
+                scr_creation(2);
+                scr_creation(3.5);
+                scr_creation(4);
+                scr_creation(5);
+                scr_creation(6);
             }
         }
     }
     draw_set_alpha(1);
     
     
-    var q,x3,y3;q=1;x3=(room_width/2)-65;y3=790;
+    var q=1,x3=(room_width/2)-65,y3=790;
     draw_set_color(38144);
     repeat(6){
         draw_circle(x3,y3,10,1);
@@ -2278,7 +1733,8 @@ if (slide>=2) or (goto_slide>=2){
         
         if (slide_show=q) then draw_circle(x3,y3,8.5,0);
         if (slide_show!=q) then draw_circle(x3,y3,8.5,1);
-        x3+=25;q+=1;
+        x3+=25;
+        q+=1;
     }
     
     
@@ -2289,8 +1745,11 @@ if (slide>=2) or (goto_slide>=2){
         }
         
         
-        if (mouse_x>604) and (mouse_y>756) and (mouse_x<675) and (mouse_y<824) and (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){// Previous slide
-            cooldown=8000;change_slide=1;goto_slide=slide-1;popup="";
+        if (point_and_click([604,756,675,824])) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){// Previous slide
+            cooldown=8000;
+            change_slide=1;
+            goto_slide=slide-1;
+            popup="";
             if (goto_slide=1){
                 highlight=0;highlighting=0;old_highlight=0;
             }
@@ -2302,14 +1761,23 @@ if (slide>=2) or (goto_slide>=2){
 
 
 
-if (tooltip!="") and (tooltip2!="") and (change_slide<=0){
+if (tooltip!="" && tooltip2!="" && change_slide<=0){
     draw_set_alpha(1);
-    draw_set_font(fnt_40k_14);draw_set_halign(fa_left);draw_set_color(0);
-    draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+string_width_ext(string_hash_to_newline(tooltip2),-1,500)+24,mouse_y+44+string_height_ext(string_hash_to_newline(tooltip2),-1,500),0);
+    draw_set_color(0);
+    draw_set_halign(fa_left);
+    draw_set_font(fnt_40k_14b);
+    var _width1 = string_width_ext(string_hash_to_newline(tooltip),-1,500);
+    draw_set_font(fnt_40k_14);
+    var _width2 = string_width_ext(string_hash_to_newline(tooltip2),-1,500);
+    var _height = string_height_ext(string_hash_to_newline(tooltip2),-1,500);
+   
+    draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+max(_width1, _width2)+24,mouse_y+44+_height,0);
     draw_set_color(38144);
-    draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+string_width_ext(string_hash_to_newline(tooltip2),-1,500)+24,mouse_y+44+string_height_ext(string_hash_to_newline(tooltip2),-1,500),1);
-    draw_set_font(fnt_40k_14b);draw_text(mouse_x+22,mouse_y+22,string_hash_to_newline(string(tooltip)));
-    draw_set_font(fnt_40k_14);draw_text_ext(mouse_x+22,mouse_y+42,string_hash_to_newline(string(tooltip2)),-1,500);
+    draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+max(_width1, _width2)+24,mouse_y+44+_height,1);
+    draw_set_font(fnt_40k_14b);
+    draw_text(mouse_x+22,mouse_y+22,string_hash_to_newline(string(tooltip)));
+    draw_set_font(fnt_40k_14);
+    draw_text_ext(mouse_x+22,mouse_y+42,string_hash_to_newline(string(tooltip2)),-1,500);
 }
 
 

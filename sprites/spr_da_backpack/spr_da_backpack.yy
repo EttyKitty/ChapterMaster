@@ -26,8 +26,8 @@
   "nineSlice": null,
   "origin": 9,
   "parent": {
-    "name": "dark_angels_specials",
-    "path": "folders/Sprites/Marine Viewer/body_types/specialist/dark_angels_specials.yy",
+    "name": "packs",
+    "path": "folders/Sprites/Marine Viewer/packs.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

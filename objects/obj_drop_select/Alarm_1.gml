@@ -134,7 +134,8 @@ if (sh_target!=-50){
     
     var tump;tump=0;
     
-    var i, q, b;i=0;q=0;b=0;
+    var i=-1;
+    var b=-1;
     repeat(sh_target.capital_number){
         b+=1;
         if (sh_target.capital[b]!="") and (obj_ini.ship_carrying[sh_target.capital_num[b]]>0){
@@ -147,7 +148,7 @@ if (sh_target!=-50){
             ship_ide[i]=tump;
         }
     }
-    q=0;
+    var q=-1;
     repeat(sh_target.frigate_number){
         q+=1;
         if (sh_target.frigate[q]!="") and (obj_ini.ship_carrying[sh_target.frigate_num[q]]>0){
@@ -160,7 +161,7 @@ if (sh_target!=-50){
             ship_ide[i]=tump;
         }
     }
-    q=0;
+    q=-1;
     repeat(sh_target.escort_number){
         q+=1;
         if (sh_target.escort[q]!="") and (obj_ini.ship_carrying[sh_target.escort_num[q]]>0){
@@ -239,7 +240,7 @@ if (sh_target!=-50){
     
     var tump;tump=0;
     
-    var i, q, b;i=0;q=0;b=0;
+    var i, q, b;i=-1;q=-1;b=-1;
     repeat(sh_target.capital_number){
         b+=1;
         if (sh_target.capital[b]!=""){
@@ -257,7 +258,7 @@ if (sh_target!=-50){
             purge_b+=ship_max[i];purge_c+=ship_max[i];purge_d+=ship_max[i];
         }
     }
-    q=0;
+    q=-1;
     repeat(sh_target.frigate_number){
         q+=1;
         if (sh_target.frigate[q]!=""){
@@ -275,7 +276,7 @@ if (sh_target!=-50){
             purge_b+=ship_max[i];purge_c+=ship_max[i];purge_d+=ship_max[i];
         }
     }
-    q=0;
+    q=-1;
     repeat(sh_target.escort_number){
         q+=1;
         if (sh_target.escort[q]!="") and (obj_ini.ship_carrying[sh_target.escort_num[q]]>0){

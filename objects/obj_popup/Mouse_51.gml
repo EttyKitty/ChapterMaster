@@ -84,7 +84,9 @@ if (instance_exists(obj_controller)){
                 }
             
             }
-            scr_dead_marines(1);
+            with (obj_ini){
+                scr_ini_ship_cleanup();
+            }
         }
         
         obj_p_fleet.selected=0;

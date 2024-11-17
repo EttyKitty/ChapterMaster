@@ -17,7 +17,6 @@ function scr_recent(recent_type="", keyword="", numerical_data=0) {
 
 	// Squish the array when asked to
 	if (string(recent_type)="") and (string(keyword)="") and (real(numerical_data)=0){
-	    var i=0;
 	    obj_controller.recent_happenings-=1;
 	    delete_positions = [];    
 	    for (var i=0;i<array_length(obj_controller.recent_type);i++){
@@ -26,7 +25,7 @@ function scr_recent(recent_type="", keyword="", numerical_data=0) {
 	        }
 	    }
 	    var del_pos;
-	    for (i=0;i<array_length(delete_positions);i++){
+	    for (var i=0;i<array_length(delete_positions);i++){
 	    	del_pos = delete_positions[i]
 	    	array_delete(obj_controller.recent_type, del_pos, 1);
 	    	array_delete(obj_controller.recent_keyword, del_pos, 1);

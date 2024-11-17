@@ -1,14 +1,15 @@
 
-function apothecary_simple(){
-	var company, v, unit, mar_loc, array_slot, is_healer, is_tech, key_val,veh_location;
+
+
+function calculate_full_chapter_spread(turn_end=true){
+ 	obj_controller.command=0;
+ 	obj_controller.marines=0;	
+	var mar_loc,is_healer,is_tech,key_val,veh_location,array_slot,unit;
 	var tech_spread = {};
 	var apoth_spread = {};
 	var unit_spread = {};
- 	obj_controller.command=0;
- 	obj_controller.marines=0;
-    marines-=1;
-    for(company=0;company<11;company++){
-    	for (v=1;v<500;v++){
+    for(var company=0;company<11;company++){
+    	for (var v=1;v<500;v++){
     		key_val = "";
     		if (obj_ini.name[company][v]=="") then continue;
     		unit = fetch_unit([company, v]);
@@ -61,7 +62,7 @@ function apothecary_simple(){
 			key_val="";
             if (v<array_length(obj_ini.veh_hp[company]) && company>0){
             	if (obj_ini.veh_race[company][v]!=0){
-            		if(obj_ini.veh_lid[company][v]>0){
+            		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
 	            		if (obj_ini.ship_location[veh_location] == "warp"){
 			  	    		if instance_exists(obj_p_fleet){
@@ -99,46 +100,61 @@ function apothecary_simple(){
             }			
 	    }
 	}
+	return [tech_spread,apoth_spread,unit_spread]	
+}
+
+
+function apothecary_simple(turn_end=true){
+	var  unit;
+	var spreads = calculate_full_chapter_spread();
+	var tech_spread = spreads[0];
+	var apoth_spread = spreads[1];
+	var unit_spread = spreads[2];
+    marines-=1;
+
 	var locations = struct_get_names(unit_spread);
 	with (obj_star){
-		for (i=0;i<array_length(locations);i++){
+		for (var i=0;i<array_length(locations);i++){
 			if (locations[i] == name){
 				array_push(unit_spread[$ locations[i]], self)
 			}
 		}
 	}
 	var cur_units, cur_apoths, cur_techs, total_heal_points, total_tech_points, veh_health, points_spent, cur_system, features;
-	var p, i, a;
 	var total_bionics = scr_item_count("Bionics");
-	for (i=0;i<array_length(locations);i++){
+	var tech_points_used = 0;
+	for (var i=0;i<array_length(locations);i++){
 		cur_system="";
 		if (array_length(unit_spread[$locations[i]]) == 6){
 			cur_system = unit_spread[$locations[i]][5];
 		}		
-		for (p=0;p<5;p++){
+		for (var p=0;p<5;p++){
 			total_heal_points=0;
 			total_tech_points=0;
 			if (array_length(unit_spread[$locations[i]][p]) == 0) then continue;
 			cur_units = unit_spread[$locations[i]][p];
 			cur_apoths = apoth_spread[$locations[i]][p];
 			cur_techs = tech_spread[$locations[i]][p];
-			for (a=0;a<array_length(cur_apoths);a++){
+			for (var a=0;a<array_length(cur_apoths);a++){
 				unit = cur_apoths[a];
 				total_heal_points+=((unit.technology/2)+(unit.wisdom/2)+unit.intelligence)/8;
 			}
-			for (a=0;a<array_length(cur_techs);a++){
+			for (var a=0;a<array_length(cur_techs);a++){
 				unit = cur_techs[a];
 				total_tech_points += unit.forge_point_generation()[0];
 			}
-			for (a=0;a<array_length(cur_units);a++){
+			for (var a=0;a<array_length(cur_units);a++){
 				points_spent = 0;
 				unit = cur_units[a];
 				if (is_array(unit) && total_tech_points>0){
 					if (array_length(unit)>1){
 						while (points_spent<10 && obj_ini.veh_hp[unit[0]][unit[1]]<100 && total_tech_points>0){
 							points_spent++;
-							obj_ini.veh_hp[unit[0]][unit[1]]++;
+							if (turn_end){
+								obj_ini.veh_hp[unit[0]][unit[1]]++;
+							}
 							total_tech_points--;
+							tech_points_used++;
 						}
 					}
 				} else if (is_struct(unit)){
@@ -146,32 +162,40 @@ function apothecary_simple(){
 						if (unit.armour() != "Dreadnought"){
 							if (unit.hp()>0){
 			        			if (total_heal_points >0){
-			        				unit.healing(true);
+			        				if (turn_end){
+			        					unit.healing(true);
+			        				}
 			        				total_heal_points--;
 			        			} else {
-			        				unit.healing(false);
+			        				if (turn_end){
+			        					unit.healing(false);
+			        				}
 			        			}	
 							} else if (total_heal_points>0 && total_tech_points>=3 && unit.bionics<10){
 								unit.add_bionics();
 								total_heal_points--;
 								total_tech_points-=3;
+								tech_points_used+=tech_points_used
 							}			
 						} else {
 							if (total_heal_points>0 && total_tech_points>=3 && unit.hp()>0){
-								unit.healing(true);
+		        				if (turn_end){
+		        					unit.healing(true);
+		        				}
 								total_heal_points--;
-								total_tech_points-=3;							
+								total_tech_points-=3;
+								tech_points_used+=3							
 							}
 						}
 					}
 				}
 			}
-			if (cur_system!="" && p>0){
+			if (cur_system!="" && p>0 && turn_end){
 				with (cur_system){
 		 			if (array_length(p_feature[p])!=0){
 			        	var engineer_count=array_length(cur_techs);
 						if (planet_feature_bool(p_feature[p],P_features.Starship)==1 && engineer_count>0){
-		
+							//TODO allow total tech point usage here
 			                var starship = p_feature[p][search_planet_features(p_feature[p],P_features.Starship)[0]];
 			                var engineer_score_start = starship.engineer_score;
 		                	if (starship.engineer_score<2000){
@@ -192,18 +216,19 @@ function apothecary_simple(){
 			                    scr_alert("green","owner",$"{requisition_spend} Requision spent on Ancient Ship repairs in materials and outfitting (outfitting {(starship.funds_spent/target_spend)*100}%)",x,y);
 			                }
 			                if (starship.funds_spent>=target_spend) and(starship.engineer_score>=2000){// u2=tar;
+			                	//TODO refactor into general new ship logic
 			                    delete_features(cur_system.p_feature[p],P_features.Starship);
 		                    
 			                    var locy=$"{name} {scr_roman_numerals()[p-1]}";
 		                    
-			                    var flit=instance_create(cur_system.x+24,cur_system.y-24,obj_p_fleet);
+			                    var flit=instance_create(cur_system.x,cur_system.y,obj_p_fleet);
 			                    var s=0,ship_names="",new_name="",last_ship=0;
 			                    for(s=1;s<=40;s++){
 			                        if (last_ship=0) and (obj_ini.ship[s]="") then last_ship=s;
 			                    };
 		                    
 			                    new_name="Slaughtersong";
-		                    
+		                    	//TODO extract ot it's own area
 			                    obj_ini.ship[last_ship]=new_name;
 			                    obj_ini.ship_uid[last_ship]=floor(random(99999999))+1;
 			                    obj_ini.ship_owner[last_ship]=1;
@@ -253,6 +278,7 @@ function apothecary_simple(){
 		    }		
 		}
 	}
+	return tech_points_used;
 }
 
 
