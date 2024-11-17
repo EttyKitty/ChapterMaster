@@ -1529,7 +1529,7 @@ function scr_dialogue(diplo_keyphrase) {
 			disposition[3]-=15;
 			disposition[4]-=20;
 			disposition[5]-=20;
-	        diplo_text="Your arrogant, blatant disregard for proper Imperial conduct can no longer go unanswered, /Astartes/.  Time and time again you have ignored the Imperium's call to arms, refusing to strike out at the enemies of man when it was most needed, and callously ignored the Inquisition's wants.  It has become clear that you are not in line with the High Lords of Terra and His will.  This heresy must be cut from your Chapter like the festering blight it is.  You may either atone for your Chapter's crimes, in penitence, or see it ground to dust around you.";
+	        diplo_text="Your arrogant, blatant disregard for proper Imperial conduct can no longer go unanswered, Astartes.  Time and time again you have ignored the Imperium's call to arms, refusing to strike out at the enemies of man when it was most needed, and callously ignored the Inquisition's wants.  It has become clear that you are not in line with the High Lords of Terra and His will.  This heresy must be cut from your Chapter like the festering blight it is.  You may either atone for your Chapter's crimes, in penitence, or see it ground to dust around you.";
 	        // Speak your next words carefully, Chapter Master, for they may damn all the souls of your men to oblivion.
         
 	        diplo_option[1]="You are right in that we must account for our sins.  Let our Penitence begin.";
