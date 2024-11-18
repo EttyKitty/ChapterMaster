@@ -1103,6 +1103,7 @@
     {"id":{"name":"spr_ws_mk4_monovisor","path":"sprites/spr_ws_mk4_monovisor/spr_ws_mk4_monovisor.yy",},},
     {"id":{"name":"scr_chapter_new","path":"scripts/scr_chapter_new/scr_chapter_new.yy",},},
     {"id":{"name":"scr_chapter_random","path":"scripts/scr_chapter_random/scr_chapter_random.yy",},},
+    {"id":{"name":"spr_gear_librarian","path":"sprites/spr_gear_librarian/spr_gear_librarian.yy",},},
     {"id":{"name":"scr_vehicle_order","path":"scripts/scr_vehicle_order/scr_vehicle_order.yy",},},
     {"id":{"name":"scr_icon","path":"scripts/scr_icon/scr_icon.yy",},},
     {"id":{"name":"scr_initialize_custom","path":"scripts/scr_initialize_custom/scr_initialize_custom.yy",},},
