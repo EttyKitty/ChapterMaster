@@ -70,7 +70,8 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         set_pieces.left_arm = spr_mk5_left_arm;
         set_pieces.right_arm = spr_mk5_right_arm;
         set_pieces.left_trim = spr_mk7_left_trim;
-        set_pieces.right_trim = spr_mk7_right_trim;        
+        set_pieces.right_trim = spr_mk7_right_trim;
+		set_pieces.head = spr_mk5_head_variants;
     }else if (set == eARMOUR_SET.MK4){
         set_pieces.chest_variants = spr_mk4_chest_variants;
         set_pieces.armour = spr_mk4_complex;

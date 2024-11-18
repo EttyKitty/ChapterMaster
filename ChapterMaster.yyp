@@ -1272,6 +1272,7 @@
     {"id":{"name":"obj_defeat","path":"objects/obj_defeat/obj_defeat.yy",},},
     {"id":{"name":"spr_marine_head","path":"sprites/spr_marine_head/spr_marine_head.yy",},},
     {"id":{"name":"scr_player_fleet_combat_functions","path":"scripts/scr_player_fleet_combat_functions/scr_player_fleet_combat_functions.yy",},},
+    {"id":{"name":"spr_mk5_head_variants","path":"sprites/spr_mk5_head_variants/spr_mk5_head_variants.yy",},},
     {"id":{"name":"obj_ini","path":"objects/obj_ini/obj_ini.yy",},},
     {"id":{"name":"spr_weapon_hthhammer","path":"sprites/spr_weapon_hthhammer/spr_weapon_hthhammer.yy",},},
     {"id":{"name":"obj_controller","path":"objects/obj_controller/obj_controller.yy",},},
