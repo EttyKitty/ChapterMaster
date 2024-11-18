@@ -1373,13 +1373,11 @@ function scr_draw_unit_image(_background=false){
 
                 //Chaplain head and Terminator version
                 if (skull_mask>0){
-                    if (unit_armour!="Terminator"){
-                      //if (_armour_type==ArType.Tart || _armour_type==ArType.Term) then draw_sprite(spr_terminator_chap,1,0-2,0-11);
-                    }
-                    shader_reset();
-                    if (armour_type == ArmourType.Normal || unit_armour=="Terminator Armour") then draw_sprite(spr_chaplain_skull_helm,0,x_surface_offset,y_surface_offset);
-                    if (unit_armour=="Tartaros") then draw_sprite(spr_chaplain_skull_helm,0,x_surface_offset,y_surface_offset);
-                    shader_set(sReplaceColor);
+                    if (armour_type == ArmourType.Normal) {
+						draw_sprite(spr_chaplain_skull_helm,0,x_surface_offset,y_surface_offset);
+					} else if (armour_type == ArmourType.Terminator) {
+						draw_sprite(spr_chaplain_skull_helm,1,x_surface_offset,y_surface_offset);
+					}
                 }
             }
             //purity seals/decorations
