@@ -671,7 +671,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			loyalty = 100;
 			var _astartes_trait_dist = global.astartes_trait_dist;
 
-			distribute_traits(astartes_trait_dist);
+			distribute_traits(_astartes_trait_dist);
 
 			alter_body("torso","black_carapace",true);
 			if (class=="scout" &&  global.chapter_name!="Space Wolves"){

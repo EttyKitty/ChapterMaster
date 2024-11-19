@@ -416,284 +416,284 @@ global.trait_list = {
 }
 
 global.astartes_trait_dist = [
-		[
-			"beast_slayer", 
-			[500,499],
-			{
-				recruit_world_type: [
-					["Ice", -2],
-					["Lava", -1],
-					["Death", -10],
-					["Forge",1],
-					["Shrine",2]					
-				]	
-			}				
-
-		],
-		[	
-			"very_hard_to_kill", 
-			[149,148],
-			{
-				recruit_world_type: [
-					["Ice", -1],
-					["Lava", -4],
-					["Death", -4],
-				],
-				recruit_trial : [
-					[eTrials.EXPOSURE, -3],
-					[eTrials.SURVIVAL, -1]
-				]
-			}					
-		],
-		[
-			"harshborn",
-			[149,147],
-			{
-				recruit_world_type: [
-					["Ice", -2],
-					["Lava", -1],
-					["Death", -3],
-					["Forge",1],
-					["Shrine",2]					
-				]
-			}				
-		],
-		[
-			"scholar", 
-			[150,148],
-			{
-				recruit_world_type: [
-					["Feudal", -1],
-					["Shrine", -4],
-				],
-				recruit_trial : [
-					[eTrials.KNOWLEDGE, -2],
-					[eTrials.APPRENTICESHIP, -1]
-				]
-			}					
-		],
-		[
-			"feral", 
-			[299,296],
-			{
-				recruit_world_type: [
-					["Ice", -2],
-					["Lava", -1],
-					["Death", -3],
-					["Forge",50],
-					["Shrine",2]					
-				]
-			}
-		],
-		["brawler", [99,98],{
-				chapter_name:["Space Wolves",[20,19]]
-			}
-		],
-		[
-			"brute", 
-			[99,98],
-			{
-				recruit_world_type: [
-					["Ice", -1],
-					["Lava", -1],
-					["Death", -1],				
-				]
-			}					
-		],
-		[
-			"charismatic", 
-			[99,98],
-			{
-				recruit_world_type: [
-					["Shrine", -3],
-					["Temperate", -2],
-					["Agri", -2]
-				]
-			}
-		],
-		["skeptic", [99,98]],
-		["blunt", [99,98]],
-		["nimble", [99,98]],
-		["recluse", [99,98]],
-		[	
-			"perfectionist", 
-			[99,98],
-			{
-				recruit_trial : [
-					[eTrials.KNOWLEDGE, -3],
-				]	
-			}				
-		],
-		["observant", [99,98]],
-		[
-			"cunning", 
-			[99,98],
-			{
-				recruit_world_type: [
-					["Hive", -4],				
-				],
-				recruit_trial : [
-					[eTrials.HUNTING, -3],
-				]						
-			}					
-		],
-		["guardian", [99,98]],
-		["observant", [99,98]],
-		[
-			"technophobe", 
-			[99,98],
-			{
-				"progenitor":[ePROGENITOR.IRON_HANDS,[1000,999]],
-				recruit_world_type : [
-					["Ice", -5],
-					["Death", -2],
-					["Forge",50],
-				]
-			}
-		],
-		["jaded", [99,98]],
-		["strong", [99,98]],
-		[
-			"fast_learner", 
-			[149,148]
-		],
-		["feet_floor", 
-			[199,198],
-			{
-				chapter_name:[
-					"Space Wolves",[100,70]
-				]
-			}
-		],
-		["paragon", [999,998]],
-		["warp_touched",[299,298]],
-		["shitty_luck",
-			[99,98],
-			{
-				"disadvantage":[
-					"Shitty Luck",[3,2]
-				]
-			}
-		],
-		["lucky",[99,98]],
-		["natural_leader",
-			[199,198],
-			{
-				recruit_world_type: [
-					["Temperate", -2],
-					["Shrine", -4],
-				]						
-			}
-		],
-		[
-			"slow_and_purposeful",
-			[99,98],
-			{
-				"advantage":[
-					"Devastator Doctrine",[300,100]
-				]
-			}
-		],
-		[
-			"melee_enthusiast",
-			[99,98],
-			{
-				"advantage":[
-					"Assault Doctrine",[300,100]
-				]
-			}
-		],
-		[
-			"lightning_warriors",
-			[99,98],
-			{
-				"advantage":[
-					"Lightning Warriors",[300,100]
-				]
-			}
-		],
-		[
-			"zealous_faith",
-			[99,98],
-			{
-				"chapter_name":[
-					"Black Templars",
-					[300,200]
-				],
-				recruit_world_type: [
-					["Shrine", -15]
-				]						
-			}
-		],
-		["flesh_is_weak",[1000,999],{
-				chapter_name:["Iron Hands",[1000,600],"required"],
-				progenitor:[ePROGENITOR.IRON_HANDS,[1000,800],"required"],
-				recruit_world_type: [
-					["Forge", -300],
-					["Lava", -15],
-				],						
-			}
-		],
-		[
-			"tinkerer",
-			[199,198],
-			{
-				chapter_name:["Iron Hands",[49,47]],
-				recruit_world_type: [
-					["Forge", -15],
-					["Hive", -7],
-				],
-			}
-		],
-		[
-			"crafter",
-			[299,298],
-			{
-				advantage:["Crafters",[299,297]],
-				recruit_world_type: [
-					["Forge", -2],
-					["Lava", -2],
-				],
-				recruit_trial : [
-					[eTrials.APPRENTICESHIP, -1],
-				]												
-			}					
-		],
-		[
-			"honorable",
-			[299,298],
-			{
-				recruit_world_type: [
-					["Feudal", -9],
-					["Temperate", -3],
-					["Desert", -9],
-				]						
-			}
-		],
-		[
-			"duelist",
-			[299,298],
-			{
-				chapter_name:[
-					"Black Templars",[199,197]
-				],
-				recruit_world_type: [
-					["Feudal", -9],
-				]						
-			}
-		],	
+	[
+		"beast_slayer", 
+		[500,499],
 		{
-			"siege_master",
-			[299,297],
-			{
-				recruit_world_type: [
-					["Feudal", -6],
-					["hive", -2],
-					["ice", 1],
-				]
-			}
-		}			
-	];
+			recruit_world_type: [
+				["Ice", -2],
+				["Lava", -1],
+				["Death", -10],
+				["Forge",1],
+				["Shrine",2]					
+			]	
+		}				
+
+	],
+	[	
+		"very_hard_to_kill", 
+		[149,148],
+		{
+			recruit_world_type: [
+				["Ice", -1],
+				["Lava", -4],
+				["Death", -4],
+			],
+			recruit_trial : [
+				[eTrials.EXPOSURE, -3],
+				[eTrials.SURVIVAL, -1]
+			]
+		}					
+	],
+	[
+		"harshborn",
+		[149,147],
+		{
+			recruit_world_type: [
+				["Ice", -2],
+				["Lava", -1],
+				["Death", -3],
+				["Forge",1],
+				["Shrine",2]					
+			]
+		}				
+	],
+	[
+		"scholar", 
+		[150,148],
+		{
+			recruit_world_type: [
+				["Feudal", -1],
+				["Shrine", -4],
+			],
+			recruit_trial : [
+				[eTrials.KNOWLEDGE, -2],
+				[eTrials.APPRENTICESHIP, -1]
+			]
+		}					
+	],
+	[
+		"feral", 
+		[299,296],
+		{
+			recruit_world_type: [
+				["Ice", -2],
+				["Lava", -1],
+				["Death", -3],
+				["Forge",50],
+				["Shrine",2]					
+			]
+		}
+	],
+	["brawler", [99,98],{
+			chapter_name:["Space Wolves",[20,19]]
+		}
+	],
+	[
+		"brute", 
+		[99,98],
+		{
+			recruit_world_type: [
+				["Ice", -1],
+				["Lava", -1],
+				["Death", -1],				
+			]
+		}					
+	],
+	[
+		"charismatic", 
+		[99,98],
+		{
+			recruit_world_type: [
+				["Shrine", -3],
+				["Temperate", -2],
+				["Agri", -2]
+			]
+		}
+	],
+	["skeptic", [99,98]],
+	["blunt", [99,98]],
+	["nimble", [99,98]],
+	["recluse", [99,98]],
+	[	
+		"perfectionist", 
+		[99,98],
+		{
+			recruit_trial : [
+				[eTrials.KNOWLEDGE, -3],
+			]	
+		}				
+	],
+	["observant", [99,98]],
+	[
+		"cunning", 
+		[99,98],
+		{
+			recruit_world_type: [
+				["Hive", -4],				
+			],
+			recruit_trial : [
+				[eTrials.HUNTING, -3],
+			]						
+		}					
+	],
+	["guardian", [99,98]],
+	["observant", [99,98]],
+	[
+		"technophobe", 
+		[99,98],
+		{
+			"progenitor":[ePROGENITOR.IRON_HANDS,[1000,999]],
+			recruit_world_type : [
+				["Ice", -5],
+				["Death", -2],
+				["Forge",50],
+			]
+		}
+	],
+	["jaded", [99,98]],
+	["strong", [99,98]],
+	[
+		"fast_learner", 
+		[149,148]
+	],
+	["feet_floor", 
+		[199,198],
+		{
+			chapter_name:[
+				"Space Wolves",[100,70]
+			]
+		}
+	],
+	["paragon", [999,998]],
+	["warp_touched",[299,298]],
+	["shitty_luck",
+		[99,98],
+		{
+			"disadvantage":[
+				"Shitty Luck",[3,2]
+			]
+		}
+	],
+	["lucky",[99,98]],
+	["natural_leader",
+		[199,198],
+		{
+			recruit_world_type: [
+				["Temperate", -2],
+				["Shrine", -4],
+			]						
+		}
+	],
+	[
+		"slow_and_purposeful",
+		[99,98],
+		{
+			"advantage":[
+				"Devastator Doctrine",[300,100]
+			]
+		}
+	],
+	[
+		"melee_enthusiast",
+		[99,98],
+		{
+			"advantage":[
+				"Assault Doctrine",[300,100]
+			]
+		}
+	],
+	[
+		"lightning_warriors",
+		[99,98],
+		{
+			"advantage":[
+				"Lightning Warriors",[300,100]
+			]
+		}
+	],
+	[
+		"zealous_faith",
+		[99,98],
+		{
+			"chapter_name":[
+				"Black Templars",
+				[300,200]
+			],
+			recruit_world_type: [
+				["Shrine", -15]
+			]						
+		}
+	],
+	["flesh_is_weak",[1000,999],{
+			chapter_name:["Iron Hands",[1000,600],"required"],
+			progenitor:[ePROGENITOR.IRON_HANDS,[1000,800],"required"],
+			recruit_world_type: [
+				["Forge", -300],
+				["Lava", -15],
+			],						
+		}
+	],
+	[
+		"tinkerer",
+		[199,198],
+		{
+			chapter_name:["Iron Hands",[49,47]],
+			recruit_world_type: [
+				["Forge", -15],
+				["Hive", -7],
+			],
+		}
+	],
+	[
+		"crafter",
+		[299,298],
+		{
+			advantage:["Crafters",[299,297]],
+			recruit_world_type: [
+				["Forge", -2],
+				["Lava", -2],
+			],
+			recruit_trial : [
+				[eTrials.APPRENTICESHIP, -1],
+			]												
+		}					
+	],
+	[
+		"honorable",
+		[299,298],
+		{
+			recruit_world_type: [
+				["Feudal", -9],
+				["Temperate", -3],
+				["Desert", -9],
+			]						
+		}
+	],
+	[
+		"duelist",
+		[299,298],
+		{
+			chapter_name:[
+				"Black Templars",[199,197]
+			],
+			recruit_world_type: [
+				["Feudal", -9],
+			]						
+		}
+	],	
+	[
+		"siege_master",
+		[299,297],
+		{
+			recruit_world_type: [
+				["Feudal", -6],
+				["hive", -2],
+				["ice", 1],
+			]
+		}
+	]			
+];
 
 
 
@@ -745,7 +745,7 @@ function scr_marine_trait_spawning(distribution_set){
 					dist_rate=[0,0];
 				}
 			}
-			if (struct_exists(spawn_data, "recruit_data")){
+			if (struct_exists(dist_modifiers, "recruit_data")){
 				var recruit_world_data = spawn_data.recruit_data;
 				if (struct_exists(dist_modifiers, "recruit_world_type")){
 					var type_data = dist_modifiers.recruit_world_type;
