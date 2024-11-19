@@ -100,7 +100,6 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Multi-Melta":spr_weapon_mmelta,
             "Heavy Flamer":spr_weapon_hflamer,
 			"Plasma Cannon":spr_weapon_plasc,
-			"Autocannon":spr_weapon_autocannon,
             "Grav-Cannon":spr_weapon_grav_cannon,
         }
         var heavy_ranged_names=struct_get_names(heavy_ranged);
@@ -190,6 +189,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
     if (!sprite_found){
         var special_ranged ={
             "Sniper Rifle":spr_weapon_sniper,
+            "Autocannon":spr_weapon_autocannon2,
         }
         var special_ranged_names=struct_get_names(special_ranged);
         for (var i=0;i<array_length(special_ranged_names);i++){
@@ -320,17 +320,17 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         hand_on_top[2]=true;
     }
 
-    if (array_contains(["Power Mace", "Mace of Absolution"], equiped_weapon)) {
+    if (array_contains(["Power Mace", "Mace of Absolution", "Power Axe", "Shock Maul", "Chain Axe"], equiped_weapon)) {
         hand_variant[left_or_right] = 3;
     }
 
-    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer"], equiped_weapon)) {
+    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword"], equiped_weapon)) {
         hand_variant[left_or_right] = 2;
         hand_on_top[left_or_right] = true;
     }
 
     // New weapon draw method
-    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword"], equiped_weapon)) {
+    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chain Axe"], equiped_weapon)) {
         new_weapon_draw[left_or_right] = true;
     }
 
