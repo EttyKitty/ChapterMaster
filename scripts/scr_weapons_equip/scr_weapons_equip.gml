@@ -119,10 +119,11 @@ function scr_weapons_equip() {
 				i+=1;item_name[i]="Lightning Claw";
 				i+=1;item_name[i]="Force Staff";
 				i+=1;item_name[i]="Thunder Hammer";
+                                i+=1;item_name[i]="Crozius Arcanum";
 				i+=1;item_name[i]="Boarding Shield";
 				i+=1;item_name[i]="Storm Shield";
 				i+=1;item_name[i]="Bolt Pistol";
-				i+=1;item_name[i]="Bolter";				
+				i+=1;item_name[i]="Bolter";
 			}
 		}
 	}
