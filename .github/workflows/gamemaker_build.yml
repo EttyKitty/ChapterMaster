@@ -52,7 +52,7 @@ jobs:
           } else {
             $suffix = $Version
           }
-          echo "suffix=$suffix" >> $GITHUB_OUTPUT
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "suffix=$suffix"
           Write-Output "Suffix: $suffix"
   
           # Create the version.json content
@@ -66,9 +66,9 @@ jobs:
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
           
           # Set outputs for version, build date, and commit hash
-          # echo "version=$Version" >> $GITHUB_OUTPUT
-          # echo "build_date=$BuildDate" >> $GITHUB_OUTPUT
-          # echo "commit_hash=$CommitHash" >> $GITHUB_OUTPUT
+          # echo "version=$Version" >> $GITHUB_ENV
+          # echo "build_date=$BuildDate" >> $GITHUB_ENV
+          # echo "commit_hash=$CommitHash" >> $GITHUB_ENV
 
       - name: Check suffix
         shell: pwsh
