@@ -9,3 +9,12 @@
 "PR: JSON":
 - changed-files:
   - all-globs-to-all-files: ['**/*.json']
+
+"PR: Audio":
+- changed-files:
+  - any-glob-to-any-files: ['**/snd_*', '**/*.ogg', '**/*.wav']
+
+"PR: Sprites":
+- changed-files:
+  - any-glob-to-any-files: ['**/*.png', '**/spr_*']
+  
