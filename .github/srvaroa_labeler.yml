@@ -1,9 +1,9 @@
 version: 1
 appendOnly: true
 labels:
-- label: "PR: Breaking!"
+- label: "PR: Breaking\!"
   title: "\!"
-- label: "PR: Breaking!"
+- label: "PR: Breaking\!"
   body: "(?i)\[breaking\]"
 
 - label: "PR: Chore"
