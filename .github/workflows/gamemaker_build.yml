@@ -64,11 +64,6 @@ jobs:
       
           # Write the version.json to disk
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
-          
-          # Set outputs for version, build date, and commit hash
-          # echo "version=$Version" >> $GITHUB_ENV
-          # echo "build_date=$BuildDate" >> $GITHUB_ENV
-          # echo "commit_hash=$CommitHash" >> $GITHUB_ENV
 
       - name: Check suffix
         shell: pwsh
