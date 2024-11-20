@@ -75,7 +75,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
             draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("Apothecarium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of the Apothecarion " + string(obj_ini.name[0, 4])), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of the Apothecarion " + string(obj_ini.name[0, 3])), 0.6, 0.6, 0);
             draw_set_font(fnt_40k_14);
         }
         if (menu_adept = 1) {
@@ -208,7 +208,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
             draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("Reclusium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of Sanctity " + string(obj_ini.name[0, 3])), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of Sanctity " + string(obj_ini.name[0, 2])), 0.6, 0.6, 0);
         }
         if (menu_adept = 1) {
             // draw_sprite(spr_advisors,0,xx+16,yy+43);

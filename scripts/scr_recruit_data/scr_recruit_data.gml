@@ -486,7 +486,7 @@ function scr_draw_recruit_advisor(){
         draw_set_font(fnt_40k_14);
     }
 
-    if (menu_adept = 0) then blurp = "Hail " + string(obj_ini.name[0, 1]) + "!  You asked for a report?\n\n";
+    if (menu_adept = 0) then blurp = "Hail " + string(obj_ini.name[0, 0]) + "!  You asked for a report?\n\n";
 
     if (obj_ini.doomed = 0) {
         if (recruits <= 0) and(marines >= 1000) then blurp += "Our Chapter currently has no Neophytes- we are at maximum strength and do not require more marines.  ";
