@@ -65,12 +65,12 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 			}
 			if (wep[weapon_index_position] = "Web Spinner") then damage_type = "status";
 
-			var attack_count_mod = splash[weapon_index_position];
+			var attack_count_mod = max(1, splash[weapon_index_position]);
 
 			if (damage_type = "status") and(stop = 0) and(shots_fired > 0) {
 				var damage_per_weapon = 0,
 					hit_number = shots_fired;
-				if (attack_count_mod > 1) and(melee_or_ranged != "wall") {
+				if (melee_or_ranged != "wall") {
 					shots_fired *= attack_count_mod;
 				}
 				if (hit_number > 0) and(melee_or_ranged != "wall") and(instance_exists(target_object)) {
@@ -101,7 +101,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 					damage_per_weapon = floor((doom * damage_per_weapon));
 					hit_number = floor(hit_number * doom);
 				}
-				if (attack_count_mod > 1) and(melee_or_ranged != "wall") {
+				if (melee_or_ranged != "wall") {
 					shots_fired *= attack_count_mod;
 				}
 
@@ -133,7 +133,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 					damage_per_weapon = floor((doom * damage_per_weapon));
 					hit_number = floor(hit_number * doom);
 				}
-				if (attack_count_mod > 1) and(melee_or_ranged != "wall") {
+				if (melee_or_ranged != "wall") {
 					shots_fired *= attack_count_mod;
 				}
 
@@ -143,8 +143,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 					hostile_weapon = wep[weapon_index_position];
 					hostile_range = range[weapon_index_position];
 					hostile_splash = attack_count_mod;
-					hostile_damage = (hostile_splash == 1) ? attack_count_mod * 3 : 0;
-					hostile_damage += damage_per_weapon / hit_number;
+					hostile_damage = damage_per_weapon / hit_number;
+					if (hostile_splash > 1) then hostile_damage += attack_count_mod * 3;
 					if (melee_or_ranged == "wall") {
 						var dest = 0;
 
@@ -234,7 +234,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 						target_armour_value = 0,
 						ap = 0,
 						wii = "";
-					attack_count_mod = 0;
+						attack_count_mod = 0;
 
 					if (weapon_index_position >= 0) {
 						damage_per_weapon = (aggregate_damage / wep_num[weapon_index_position]);
@@ -271,7 +271,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 						if (armour_pierce = -1) then target_armour_value = target_armour_value * 6;
 					}
 
-					attack_count_mod = splash[weapon_index_position] < 1 ? 1 : splash[weapon_index_position];
+					attack_count_mod = max(1, splash[weapon_index_position]);
 
 					final_hit_damage_value = damage_per_weapon - (target_armour_value * attack_count_mod); //damage armour reduction
 

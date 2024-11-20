@@ -2293,27 +2293,52 @@ global.gear = {
 }
 
 function EquipmentStruct(item_data, core_type,quality="none") constructor{ 
-    //This could be done with 2d arrays [[],[]]
-    var names = ["hp_mod", "description","damage_resistance_mod", "ranged_mod", "melee_mod","armour_value" ,"attack","melee_hands","ranged_hands","ammo","range","spli","arp","special_description", "special_properties", "abbreviation","tags","name","second_profiles","req_exp"];
-    var defaults = [0,"",0,0,0,0,0,0,0,0,0,0,0,"",[],"",[],"",[],0];
-    type = core_type;
-    for (var i=0;i<array_length(names);i++){
-        if (struct_exists(item_data,names[i])){
-            self[$names[i]] = item_data[$names[i]];
-            if (quality!="none"){
-                if (is_struct(self[$names[i]])){
-                    if (struct_exists(self[$names[i]],quality)){
-                        self[$names[i]]=self[$names[i]][$quality];
-                    } else {
-                        self[$names[i]]=self[$names[i]].standard;
-                    }
-                }
-            }            
-        } else {
-            self[$names[i]]=defaults[i];
-        }
-    }
-    variable_struct_set(self, "quality", quality=="none"?"standard":quality);
+	type = core_type;
+
+	var properties = [
+		["hp_mod", 0],
+		["description", ""],
+		["damage_resistance_mod", 0],
+		["ranged_mod", 0],
+		["melee_mod", 0],
+		["armour_value", 0],
+		["attack", 0],
+		["melee_hands", 0],
+		["ranged_hands", 0],
+		["ammo", 0],
+		["range", 0],
+		["spli", 0],
+		["arp", 0],
+		["special_description", ""],
+		["special_properties", []],
+		["abbreviation", ""],
+		["tags", []],
+		["name", ""],
+		["second_profiles", []],
+		["req_exp", 0]
+	];
+
+	for (var i = 0; i < array_length(properties); i++) {
+		var name = properties[i][0];
+		var default_value = properties[i][1];
+
+		if (struct_exists(item_data, name)) {
+			self[$ name] = item_data[$ name];
+			if (quality != "none") {
+				if (is_struct(self[$ name])) {
+					if (struct_exists(self[$ name], quality)) {
+						self[$ name] = self[$ name][$ quality];
+					} else {
+						self[$ name] = self[$ name].standard;
+					}
+				}
+			}
+		} else {
+			self[$ name] = default_value;
+		}
+	}
+
+	variable_struct_set(self, "quality", quality == "none" ? "standard" : quality);
 
     static item_tooltip_desc_gen = function(){
         item_desc_tooltip = "";
@@ -2385,9 +2410,9 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                     }
                     break;
                 case "spli":
-                    if (spli>0){
-                        item_desc_tooltip += $"Max Kills: {spli}#"
-                    }
+					if item_type = "weapon"{
+						item_desc_tooltip += $"Max Kills: {max(1, spli)}#"
+					}
                     break;
                 case "ranged_mod":
                     if (ranged_mod!=0){
