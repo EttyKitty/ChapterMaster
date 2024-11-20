@@ -48,7 +48,7 @@ jobs:
           }
 
           if ("${{ inputs.development }}" -eq "true") {
-            $suffix = $Version-$BuildDate
+            $suffix = "$Version-$BuildDate"
           } else {
             $suffix = $Version
           }
