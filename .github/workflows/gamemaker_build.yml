@@ -40,7 +40,7 @@ jobs:
           $CommitHash = git rev-parse --short HEAD
 
           try {
-            $Version = "${{ github.ref_name }}"
+            $Version = "${{ github.ref_name }}".Replace("/", "-")
           } catch {
             # If no tags exist, use the commit hash as the version
             Write-Warning "No tags found, using commit hash as version."
