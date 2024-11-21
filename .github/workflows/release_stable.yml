@@ -1,4 +1,4 @@
-name: Stable-Build
+name: Release-Stable
 on: 
   push:
     tags:        
