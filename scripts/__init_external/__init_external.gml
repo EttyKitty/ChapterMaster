@@ -37,7 +37,7 @@ function __init_external() {
         var _commit_hash = _parsed_json[$ "commit_hash"];
         global.build_date = _build_date;
         if (string_char_at(_version, 1) != "v") {
-            if (string_count("compile/", _version) > 0 || string_count("release/", _version) > 0) {
+            if (string_count("compile-", _version) > 0 || string_count("release-", _version) > 0) {
                 _version = string_delete(_version, 1, 8);
             }
             _version += $"/{_commit_hash}";
