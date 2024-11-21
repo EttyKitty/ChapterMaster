@@ -1,4 +1,4 @@
-name: Development-Build
+name: Release-Development
 on: 
   workflow_dispatch:
     inputs:
