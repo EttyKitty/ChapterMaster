@@ -30,8 +30,8 @@ if (instance_number(obj_ncombat) == 0) {
             // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
             // Formation
-            formation.x1 = x1 + 400;
-            formation.y1 = y1 + 60;
+            formation.x1 = x1 + 420;
+            formation.y1 = y1 + 80;
             formation.str1 = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
             formation.update();
             formation.draw();
@@ -42,7 +42,7 @@ if (instance_number(obj_ncombat) == 0) {
 
             // Ships Are Up, Fuck Me
             draw_set_color(c_gray);
-            draw_text(550, 273, string_hash_to_newline("Available Forces:"));
+            draw_text(x1 + 40, 273, string_hash_to_newline("Available Forces:"));
 
             var column, row, e, x8, y8, sigh, sip;
             e = 0;
@@ -146,17 +146,17 @@ if (instance_number(obj_ncombat) == 0) {
             if (predators = 1) then sel += "1 Predator, ";
             if (raiders > 1) then sel += string(raiders) + " Land Raider, ";
             if (raiders = 1) then sel += "1 Land Raider, ";
-            draw_text_ext(550, 438, string_hash_to_newline(string(sel)), -1, 590);
+            draw_text_ext(x1 + 40, 438, string_hash_to_newline(string(sel)), -1, 590);
 
             var _squads_box = {
-                text: "Selected Squads:",
+                header: "Selected Squads:",
                 x1: x1 + 40,
-                y1: y2 - 200
+                y1: y2 - 180
             };
-            draw_text(_squads_box.x1, _squads_box.y1, _squads_box.text);
+            draw_text(_squads_box.x1, _squads_box.y1, _squads_box.header);
             for (var i = 0; i < array_length(squad_buttons); i++) {
                 squad_buttons[i].x1 = (_squads_box.x1) + round((i % 4) * 96);
-                squad_buttons[i].y1 = (_squads_box.y1 - 90) + floor(i / 4) * 28;
+                squad_buttons[i].y1 = (_squads_box.y1 + string_height(_squads_box.header) + 10) + floor(i / 4) * 28;
                 squad_buttons[i].update();
                 squad_buttons[i].draw();
                 if (squad_buttons[i].clicked()) {
@@ -323,16 +323,17 @@ if (instance_number(obj_ncombat) == 0) {
             } else if (race_quantity >= 6) {
                 target_threat = threat_levels[6];
             }
-            target.x1 = 883;
-            target.y1 = 216;
-            target.str1 = "Target:";
+            target.x1 = formation.x1;
+            target.y1 = formation.y2 + 10;
+            target.str1 = "Target: ";
             if (race_quantity != 0) {
-                target.str2 = target_race + " (" + string(target_threat) + " Threat)";
+                target.str1 += target_race + " (" + string(target_threat) + " Threat)";
             } else {
-                target.str2 = "None";
+                target.str1 += "None";
             }
+            target.update();
             target.draw();
-            draw_sprite(spr_faction_icons, attacking, 1084, 245);
+            draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 40);
             var q = 0;
             repeat(20) {
                 q += 1;
@@ -347,7 +348,7 @@ if (instance_number(obj_ncombat) == 0) {
             // draw_text(xx+14,yy+352,"Selection: "+string(smin)+"/"+string(smax));
 
             // Back / Purge buttons
-            btn_back.x1 = x3 - 80;
+            btn_back.x1 = x3 - 100;
             btn_back.y1 = y2 - 60;
             btn_back.update();
             btn_back.draw();
