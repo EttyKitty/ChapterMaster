@@ -68,8 +68,9 @@ repeat(61){
     ship_all[i]=0;
     ship_use[i]=0;
     ship_max[i]=0;
-    ship_ide[i]=0;
+    ship_ide[i]=-1;
 }
+
 i=500;
 ship[i]="Local";
 ship_size[i]=0;

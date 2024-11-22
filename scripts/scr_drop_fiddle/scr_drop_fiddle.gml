@@ -13,7 +13,7 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 
 	if (attacking=0) then vgood=0;
 
-	if (argument0 > 0 && argument1 == true) { // Adding marines to the drop roster
+	if (argument0 > -1 && argument1 == true) { // Adding marines to the drop roster
 		ship_all[argument2] = 1;
 		var unit;
 		for (var i = 0; i <= 3500; i++) {
@@ -82,7 +82,7 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 		}
 	}
 	
-	if (argument0 > 0 && argument1 == false) { // Removing marines from the drop roster
+	if (argument0 > -1 && argument1 == false) { // Removing marines from the drop roster
 		ship_all[argument2] = 0;
 	
 		for (var i = 0; i <= 3500; i++) {

@@ -54,19 +54,16 @@ if (instance_number(obj_ncombat) == 0) {
             y8 = 299;
             e = 500;
 
-            var add_ground;
-            add_ground = 0; // Local Forces here
+            var add_ground = 0;
 
             // Local force button;
-            if (ship_max[500] > 0) and (attack = 1) {
+/*             if (ship_max[500] > 0) and (attack = 1) {
                 if (ship_all[e] = 0) then draw_set_alpha(0.35);
                 draw_set_color(c_gray);
                 draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0);
                 draw_set_color(c_black);
                 draw_text_transformed(x8 + 2, y8, $"Local ({ship_use[e]}/{ship_max[e]})", 0.8, 0.8, 0);
                 if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
-                    var onceh;
-                    onceh = 0;
                     refresh_raid = 1;
                     if (ship_all[e] = 0) {
                         add_ground = 1;
@@ -78,10 +75,10 @@ if (instance_number(obj_ncombat) == 0) {
                 y8 += 18;
                 sip += 1;
                 
-            }
-            e = 1;
+            } */
 
             // Ship buttons;
+            e = 0;
             repeat(50) {
                 if (ship[e] != "") and(ship_max[e] > 0) {
                     draw_set_alpha(1);
@@ -89,10 +86,10 @@ if (instance_number(obj_ncombat) == 0) {
                     draw_set_color(c_gray);
                     draw_rectangle(x8, y8, x8 + 160, y8 + 16, 0); // 160
                     draw_set_color(c_black);
-                    draw_text_transformed(x8 + 2, y8, string_hash_to_newline(string(ship[e]) + " (" + string(ship_use[e]) + "/" + string(ship_max[e]) + ")"), 0.8, 0.8, 0);
-                    if (point_and_click([x8, y8, x8+160, y8+16])) {
+                    draw_text_transformed(x8 + 2, y8, $"{ship[e]} ({ship_use[e]})", 0.8, 0.8, 0);
+                    if (point_and_click([x8, y8, x8 + 160, y8 + 16])) {
                         if (ship_all[e]>-1 && ship_all[e]<2){
-                            scr_drop_fiddle(ship_ide[e],!ship_all[e],e,attack);
+                            scr_drop_fiddle(ship_ide[e], !ship_all[e], e, attack);
                             refresh_raid=true;
                         }
                     }
@@ -191,7 +188,6 @@ if (instance_number(obj_ncombat) == 0) {
                         obj_controller.select_wounded = raid_wounded
                         break;
                     }
-                    onceh = 1;
                     refresh_raid = 1;
                 }
             }
@@ -199,50 +195,26 @@ if (instance_number(obj_ncombat) == 0) {
             // Select all button;
             draw_set_color(c_gray);
             draw_set_alpha(1);
-            yar = 2;
+/*             yar = 2;
             if (all_sel = 1) then yar = 3;
             draw_sprite(spr_creation_check, yar, 770, 270);
             yar = 0;
             if (point_and_click([770, 270, 770 + 32, 270 + 32])) {
-                var onceh;
-                onceh = 0;
-                once = 0;
-                i = 0;
-                if (all_sel = 0) and(onceh = 0) {
-                    repeat(60) {
-                        i += 1;
-                        if (ship[i] != "") and(ship_all[i] = 0) {
-                            ship_all[i] = 1;
-                            scr_drop_fiddle(ship_ide[i], true, i, attack);
-                        }
-                        if (attack = 1) {
-                            if (ship_all[500] = 0) then add_ground = 1;
-                            if (ship_all[500] = 1) then add_ground = -1;
-                        }
+                for (var i = 0; i <= 50; i++) {
+                    if (ship[i] != "") {
+                        ship_all[i] = !ship_all[i];
+                        scr_drop_fiddle(ship_ide[i], true, i, attack);
                     }
-                    onceh = 1;
-                    all_sel = 1;
-                    refresh_raid = 1;
-                }
-                if (all_sel = 1) and(onceh = 0) {
-                    repeat(60) {
-                        i += 1;
-                        if (ship[i] != "") and(ship_all[i] = 1) {
-                            ship_all[i] = 0;
-                            scr_drop_fiddle(ship_ide[i], false, i, attack);
-                        }
-                        if (attack = 1) {
-                            if (ship_all[500] = 0) then add_ground = 1;
-                            if (ship_all[500] = 1) then add_ground = -1;
-                        }
+                    if (attack == 1) {
+                        if (ship_all[500] = 0) then add_ground = 1;
+                        else if (ship_all[500] = 1) then add_ground = -1;
                     }
-                    onceh = 1;
-                    all_sel = 0;
-                    refresh_raid = 1;
                 }
+                all_sel = !all_sel;
+                refresh_raid = 1;
             }
             draw_set_halign(fa_left);
-            draw_text_transformed(770 + 30, 270 + 4, string_hash_to_newline("Select All"), 1, 1, 0);
+            draw_text_transformed(770 + 30, 270 + 4, string_hash_to_newline("Select All"), 1, 1, 0); */
 
             var smin, smax;
             var w;
@@ -252,6 +224,7 @@ if (instance_number(obj_ncombat) == 0) {
 
             // if (purge=2){repeat(61){w+=1;if (ship[w]!="") and (ship_size[w]>1){smax+=1;if (ship_all[w]>0) then smin+=1;}}}
 
+            // Add units to the pool
             if (add_ground = 1) {
                 ships_selected += 1;
                 remove_local = -1;
@@ -272,8 +245,7 @@ if (instance_number(obj_ncombat) == 0) {
                 refresh_raid = 1;
                 ship_all[500] = 1;
                 ship_use[500] = ship_max[500];
-            }
-            if (add_ground = -1) {
+            } else if (add_ground = -1) { // Remove units from the pool
                 ships_selected -= 1;
                 remove_local = 1;
                 /*master-=l_master;honor-=l_honor;
@@ -298,17 +270,21 @@ if (instance_number(obj_ncombat) == 0) {
             }
             add_ground = 0;
 
+            w = 0;
             repeat(61) {
-                w += 1;
                 if (ship[w] != "") {
                     smax += ship_max[w];
                     if (ship_all[w] > 0) then smin += ship_use[w];
                 }
+                w += 1;
             }
+
             if (ship_max[500] > 0) and(ship_all[500] > 0) {
                 smax += ship_max[500];
                 smin += ship_max[500];
             }
+
+            // draw_text(x2 + 14, y2 + 352, string_hash_to_newline("Selection: " + string(smin) + "/" + string(smax)));
 
             // Target
             var target_race = "",
@@ -349,8 +325,6 @@ if (instance_number(obj_ncombat) == 0) {
                 }
             }
             target.locked = (force_present[q] == 0);
-
-            // draw_text(xx+14,yy+352,"Selection: "+string(smin)+"/"+string(smax));
 
             // Back / Purge buttons
             btn_back.x1 = x3 - 100;

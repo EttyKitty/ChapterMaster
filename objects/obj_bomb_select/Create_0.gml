@@ -20,7 +20,7 @@ for(var i=0; i<31; i++){
     ship_all[i]=0;
     ship_use[i]=0;
     ship_max[i]=0;
-    ship_ide[i]=0;
+    ship_ide[i]=-1;
 }
 
 menu=0;
