@@ -29,3 +29,4 @@ jobs:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       with:
         config_path: .github/srvaroa_labeler.yml
+        fail_on_error: true
