@@ -992,7 +992,7 @@ if (instance_number(obj_popup) == 0) {
                         repeat(50) {
                             i += 1;
                             if (ship[i] != "") and(ship_all[i] > 0) {
-                                if (obj_ini.ship_class[ship_ide[i]] = "Slaughtersong") then purge_score += 3;
+                                if (obj_ini.ship_class[ship_ide[i]] = "Gloriana") then purge_score += 4;
                                 if (obj_ini.ship_class[ship_ide[i]] = "Battle Barge") then purge_score += 3;
                                 if (obj_ini.ship_class[ship_ide[i]] = "Strike Cruiser") then purge_score += 1;
                             }
