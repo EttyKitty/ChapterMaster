@@ -348,9 +348,11 @@ function scr_ui_manage() {
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
-	        for (var part = 0; part<array_length(global.body_parts);part++){
-				if (struct_exists(selected_unit.body[$ global.body_parts[part]], "bionic")){
-					var part_display = global.body_parts_display[part];
+			var _body_parts = ARR_body_parts;
+			var _body_parts_display = ARR_body_parts_display;
+	        for (var part = 0; part<array_length(_body_parts);part++){
+				if (struct_exists(selected_unit.body[$ _body_parts[part]], "bionic")){
+					var part_display = _body_parts_display[part];
 					bionic_tooltip += $"Bionic {part_display}";
 					switch (part_display) {
 						case "Left Leg":

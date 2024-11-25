@@ -1253,11 +1253,12 @@ function scr_draw_unit_image(_background=false){
                 surface_reset_target();
                 var bionic_surface = surface_create(512,512);             
                 surface_set_target(bionic_surface);
+                var _body_parts = ARR_body_parts;
 
-                for (var part = 0; part < array_length(global.body_parts); part++) {
-                    if (struct_exists(body[$ global.body_parts[part]], "bionic")) {
+                for (var part = 0; part < array_length(_body_parts); part++) {
+                    if (struct_exists(body[$ _body_parts[part]], "bionic")) {
                         if (armour_type == ArmourType.Normal || unit_armour=="Terminator Armour") {
-                            var body_part = global.body_parts[part];
+                            var body_part = _body_parts[part];
                             var bionic = body[$ body_part][$ "bionic"];
                             switch (body_part) {
                                 case "left_eye":

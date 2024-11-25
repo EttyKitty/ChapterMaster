@@ -90,7 +90,7 @@ function PenAndPaperSim() constructor{
 global.character_tester = new PenAndPaperSim();
 
 function compare_stats(stat_one, stat_two){
-	var _stat_names = global.stat_list;
+	var _stat_names = ARR_stat_list;
 	var stat_diff = {};
 	for (var i=0;i<array_length(_stat_names);i++){
 		stat_diff[$_stat_names[i]] = stat_one[$_stat_names[i]] - stat_two[$_stat_names[i]]
@@ -100,7 +100,7 @@ function compare_stats(stat_one, stat_two){
 
 function print_stat_diffs(diffs){
 	var _diff_string = "";
-	var _stat_names = global.stat_list;
+	var _stat_names = ARR_stat_list;
 	var _stat_short = global.stat_shorts;
 	for (var i=0;i<array_length(_stat_names);i++){
 		if (diffs[$_stat_names[i]] != 0 ){

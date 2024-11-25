@@ -28,7 +28,7 @@ function scr_update_unit_armour(new_armour, from_armoury=true, to_armoury=true, 
 	  	if (_new_power_armour){
 	  		require_carpace=true;
 	  		if (new_armour=="Power Armour"){
-	  			armour_list = global.power_armour;
+	  			armour_list = ARR_power_armour;
 	  		}
 	  	} else if (new_armour="Terminator Armour"){
 	  		require_carpace=true;
