@@ -16,7 +16,7 @@ if (instance_exists(wop)) and (y>0) and (x>0){
     }
 }
 
-
+point_breakdown = single_loc_point_data();
 image_xscale=1.25;
 image_yscale=1.25;
 

@@ -114,13 +114,16 @@ function calculate_full_chapter_spread(){
 	}
 	return [_tech_spread,_apoth_spread,_unit_spread]	
 }
-function system_point_data_spawn(){
-	var _single_point_pos = {
+function single_loc_point_data(){
+	return {
 		heal_points_use : 0,
 		heal_points : 0,
 		forge_points_use : 0,
 		forge_points : 0,					
-	},
+	};
+}
+function system_point_data_spawn(){
+	var _single_point_pos = single_loc_point_data();
  	return [
 				DeepCloneStruct(_single_point_pos),
 				DeepCloneStruct(_single_point_pos),
@@ -165,13 +168,15 @@ function apothecary_simple(){
 	var cur_units, cur_techs, _loc_heal_points, veh_health, points_spent, cur_system, features;
 	var total_bionics = scr_item_count("Bionics");
 	for (i=0;i<array_length(_locations);i++){
+		_cur_loc = _locations[i];
 		cur_system="";
-		if (array_length(_unit_spread[$_locations[i]]) == 6){
-			cur_system = _unit_spread[$_locations[i]][5];
+		if (array_length(_unit_spread[$_cur_loc]) == 6){
+			cur_system = _unit_spread[$_cur_loc][5];
 		}
 		if (cur_system!=""){
 			point_breakdown.systems[$ cur_system.name] = system_point_data_spawn();
 		}
+
 		var _loc_forge_points = 0;	
 		var _point_breakdown = {};	
 		for (var p=0; p<5; p++){
@@ -185,10 +190,10 @@ function apothecary_simple(){
 			_loc_heal_points=0;
 			_loc_forge_points=0;
 
-			if (array_length(_unit_spread[$_locations[i]][p]) == 0) then continue;
-			cur_units = _unit_spread[$_locations[i]][p];
-			cur_apoths = _apoth_spread[$_locations[i]][p];
-			cur_techs = _tech_spread[$_locations[i]][p];
+			if (array_length(_unit_spread[$_cur_loc][p]) == 0) then continue;
+			cur_units = _unit_spread[$_cur_loc][p];
+			cur_apoths = _apoth_spread[$_cur_loc][p];
+			cur_techs = _tech_spread[$_cur_loc][p];
 			for (var a=0;a<array_length(cur_apoths);a++){
 				_unit = cur_apoths[a];
 				_loc_heal_points+=_unit.apothecary_point_generation(turn_end)[0];
@@ -265,7 +270,11 @@ function apothecary_simple(){
 			_point_breakdown.forge_points_use = _point_breakdown.forge_points - _loc_forge_points;	
 			if (cur_system!=""){
 				point_breakdown.systems[$ cur_system.name][p] = DeepCloneStruct(_point_breakdown);
-			}		
+			} else if (p==0){
+				if (instance_exists(real(_cur_loc))){
+					_cur_loc.point_breakdown = DeepCloneStruct(_point_breakdown);
+				}
+			}	
 			
 			if (cur_system!="" && p>0 && turn_end){
 				with (cur_system){
