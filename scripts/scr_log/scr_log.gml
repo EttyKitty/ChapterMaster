@@ -20,14 +20,16 @@ function create_error_file(_message) {
 /// @param {string} _message - Detailed message for the error.
 /// @param {string} _stacktrace - Optional.
 /// @param {string} _critical - Optional.
-function handle_error(_header, _message, _stacktrace="", _critical = false) {
+/// @param {string} _report_title - Optional. Preset title for the bug report.
+function handle_error(_header, _message, _stacktrace="", _critical = false, _report_title="") {
     var _full_message = "";
     _full_message += $"{LB_92}\n";
     _full_message += $"{_header}\n\n";
     _full_message += $"Date-Time: {DATE_TIME_3}\n"; 
-    _full_message += $"Game Version: {global.game_version}\n"; 
+    var _format_version = string_split(global.game_version, "/");
+    _full_message += $"Game Version: {_format_version[0]}\n"; 
     _full_message += $"Build Date: {global.build_date}\n";
-    _full_message += $"Commit Hash: {global.commit_hash}\n\n";
+    _full_message += $"Commit Hash: https://github.com/EttyKitty/ChapterMaster/commit/{global.commit_hash}\n\n";
     _full_message += $"Details:\n";
     _full_message += $"{_message}\n";
     _full_message += $"Stacktrace:\n";
@@ -39,8 +41,12 @@ function handle_error(_header, _message, _stacktrace="", _critical = false) {
     _player_message += $"{STR_error_message}";
     _player_message += _critical ? "" : $"\n\n{STR_error_message_ps}";
 
+    if (_report_title != "") {
+        _report_title += "\n";
+    }
+
     create_error_file(_full_message);
-    clipboard_set_text($"{_header}\n{markdown_codeblock(_full_message)}");
+    clipboard_set_text($"{_report_title}{markdown_codeblock(_full_message)}");
     show_debug_message(_full_message);
     show_message(_player_message);
 }
@@ -55,7 +61,8 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
     var _header = critical ? STR_error_message_head2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
-    handle_error(_header, _message, _stacktrace, critical);
+    var _report_title = $"[{global.game_version}] {_exception.stacktrace[0]}";
+    handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 
 /// @description Attempts to run a function and reports any errors caught.
