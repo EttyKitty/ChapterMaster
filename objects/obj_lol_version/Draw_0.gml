@@ -11,6 +11,10 @@ if (obj_main_menu.stage>2){
     draw_text(1598, 878, _build_date_line);
     draw_set_halign(fa_left);
     draw_set_alpha(1);
+    if (point_and_click([1400, 830, 1600, 900])) {
+        clipboard_set_text($"{_build_date_line}\n{_version_line}");
+        audio_play_sound(snd_click_small, 0, false);
+    }
 }
 
 
