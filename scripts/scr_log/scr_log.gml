@@ -29,7 +29,7 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
     var _format_version = string_split(global.game_version, "/");
     _full_message += $"Game Version: {_format_version[0]}\n"; 
     _full_message += $"Build Date: {global.build_date}\n";
-    _full_message += $"Commit Hash: https://github.com/EttyKitty/ChapterMaster/commit/{global.commit_hash}\n\n";
+    _full_message += $"Commit Hash: https://github.com/EttyKitty/ChapterMaster/commits/{global.commit_hash}\n\n";
     _full_message += $"Details:\n";
     _full_message += $"{_message}\n";
     _full_message += $"Stacktrace:\n";
