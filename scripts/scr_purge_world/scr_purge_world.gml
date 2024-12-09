@@ -11,10 +11,43 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        pop.image="chaos_symbol";
 	        pop.title="Concealed Heresy";
 	        pop.text=$"Your astartes set out and begin to cleanse {planet_numeral_name(planet, star)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
-	        exit;exit;    
+	        exit;   
 	    }
 	    if (planet_feature_bool(star.p_feature[planet],P_features.Warlord10) == 1) and (obj_controller.known[10]>=2) and (obj_controller.faction_gender[10]=1) then with(obj_drop_select){
-	        alarm[6]=1;
+
+			attacking=10;
+			obj_controller.cooldown=30;combating=1;// Start battle here
+
+			instance_deactivate_all(true);
+			instance_activate_object(obj_controller);
+			instance_activate_object(obj_ini);
+			instance_activate_object(obj_drop_select);
+
+			instance_create(0,0,obj_ncombat);
+			obj_ncombat.battle_object=p_target;
+			obj_ncombat.battle_loc=p_target.name;
+			obj_ncombat.battle_id=obj_controller.selecting_planet;
+			obj_ncombat.dropping=0;
+			obj_ncombat.attacking=10;
+			obj_ncombat.enemy=10;
+			obj_ncombat.formation_set=1;
+
+			/*
+			obj_ncombat.battle_object=p_target;
+			obj_ncombat.battle_loc=p_target.name;
+			obj_ncombat.battle_id=obj_controller.selecting_planet;
+			obj_ncombat.dropping=1-attack;
+			obj_ncombat.attacking=attack;
+			obj_ncombat.enemy=attacking;
+			obj_ncombat.formation_set=formation_possible[formation_current];
+			*/
+
+			obj_ncombat.leader=1;
+			obj_ncombat.threat=5;
+			obj_ncombat.battle_special="WL10_later";
+            scr_battle_allies();
+            setup_battle_formations();
+            roster.add_to_battle();
 	    }
 	}
 

@@ -319,49 +319,41 @@ function drop_select_draw(){
                 if (obj_ncombat.threat < 1) then obj_ncombat.threat = 1;
                 if (obj_ncombat.enemy = 10) and(obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] = "Daemon") then obj_ncombat.threat = 7;
 
-                if ((attacking = 0) or (attacking = 10) or(attacking = 11)) and(obj_ncombat.battle_object.p_traitors[obj_ncombat.battle_id] = 0) and(obj_ncombat.battle_object.p_chaos[obj_ncombat.battle_id] = 0) {
-                    if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.Warlord10) == 1) and(obj_controller.known[eFACTION.Chaos] = 0) and(obj_controller.faction_gender[10] = 1) and(obj_controller.turn >= obj_controller.chaos_turn) {
-                        var pop;
-                        pop = instance_create(0, 0, obj_popup);
-                        pop.image = "chaos_symbol";
-                        pop.title = "Concealed Heresy";
-                        pop.text = "Your astartes set out and begin to cleanse " + string(obj_ncombat.battle_object.name) + " " + scr_roman(obj_ncombat.battle_id) + " of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
-                        with(obj_pnunit) {
-                            instance_destroy();
+                var _battle_place = obj_ncombat.battle_object;
+                var _battle_sub_loc = obj_ncombat.battle_id;
+                var _chaos_lord_jump_possible = (attacking = 0|| attacking = 10|| attacking = 11);
+                var _no_know_chaos = (_battle_place.p_traitors[_battle_sub_loc] == 0 && _battle_place.p_chaos[_battle_sub_loc] == 0);
+
+                var _chaos_warlord_present = planet_feature_bool(_battle_place.p_feature[obj_ncombat.battle_id], P_features.Warlord10);
+
+                var _chaos_popup_turn_reached = obj_controller.turn >= obj_controller.chaos_turn;
+
+                var _chaos_unknown = (obj_controller.known[eFACTION.Chaos] == 0) and (obj_controller.faction_gender[10] = 1);
+
+                if (_chaos_lord_jump_possible && _no_know_chaos) {
+                    if (_chaos_popup_turn_reached && _chaos_warlord_present){
+                        if (_chaos_unknown) {
+                            var pop;
+                            pop = instance_create(0, 0, obj_popup);
+                            pop.image = "chaos_symbol";
+                            pop.title = "Concealed Heresy";
+                            pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(_battle_sub_loc,_battle_place)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
+                            cancel_combat();
+                            combating = 0;
+                            instance_activate_all();
+                            exit;
                         }
-                        with(obj_enunit) {
-                            instance_destroy();
+                        if (obj_controller.known[eFACTION.Chaos] >= 2 && obj_controller.faction_gender[10] = 1){
+                            with(obj_drop_select) {
+                                obj_ncombat.enemy = 11;
+                                obj_ncombat.threat = 0;
+                                cancel_combat();
+                                combating = 0;
+                                instance_destroy();
+                                instance_activate_all();
+                                exit;
+                            }
                         }
-                        with(obj_nfort) {
-                            instance_destroy();
-                        }
-                        with(obj_ncombat) {
-                            instance_destroy();
-                        }
-                        combating = 0;
-                        instance_activate_all();
-                        exit;
-                        exit;
-                    }
-                    if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.Warlord10) == 1) and(obj_controller.known[eFACTION.Chaos] >= 2) and(obj_controller.faction_gender[10] = 1) and(obj_controller.turn >= obj_controller.chaos_turn) then with(obj_drop_select) {
-                        obj_ncombat.enemy = 11;
-                        obj_ncombat.threat = 0;
-                        alarm[6] = 1;
-                        with(obj_pnunit) {
-                            instance_destroy();
-                        }
-                        with(obj_enunit) {
-                            instance_destroy();
-                        }
-                        with(obj_nfort) {
-                            instance_destroy();
-                        }
-                        with(obj_ncombat) {
-                            instance_destroy();
-                        }
-                        combating = 0;
-                        instance_activate_all();
-                        exit;
                     }
                 }
 

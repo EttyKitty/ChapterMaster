@@ -52,7 +52,13 @@ function Roster() constructor{
             selected_roster[$role] = 1;
         }
     }
-
+    static is_roster_unit_local = function(unit){
+        if (is_struct(unit)){
+            return (unit.ship_location==-1);
+        } else {
+            return obj_ini.veh_lid[unit[0]][unit[1]];
+        }
+    }
     static update_roster = function(){
     	selected_roster = {};
     	for (var i=0;i<array_length(selected_units);i++){
@@ -317,7 +323,7 @@ function Roster() constructor{
             if (is_struct(selected_units[i])){
                 add_unit_to_battle(selected_units[i], meeting);
             } else {
-                add_vehicle_to_battle(selected_units[i][0], selected_units[i][1]);
+                add_vehicle_to_battle(selected_units[i][0], selected_units[i][1], is_roster_unit_local(selected_units[i]));
             }
         }
     }
@@ -411,11 +417,12 @@ function setup_battle_formations(){
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];  
 }
 
-function add_unit_to_battle(unit,meeting){
+function add_unit_to_battle(unit,meeting, is_local){
     var new_combat = obj_ncombat;
      var man_size = 1;
 
     //Same as co/company and v, but with extra comprovations in case of a meeting (meeting?) 
+    var _role = obj_ini.role[100];
     var cooh, va;
     cooh = 0;
     va = 0;
@@ -430,6 +437,8 @@ function add_unit_to_battle(unit,meeting){
             va = obj_temp_meeting.ide[v];
         }
     }
+    var _armour_data = unit.get_armour_data();
+    var _wearing_armour = is_struct(_armour_data);
     obj_drop_select.fighting[company][v] = true;
 
     var col = 0,targ = 0,moov = 0;
@@ -440,24 +449,24 @@ function add_unit_to_battle(unit,meeting){
     if (_unit_role = obj_ini.role[100][18]) {
         col = obj_controller.bat_tactical_column;                   //sergeants
         new_combat.sgts++;
-    }else if (_unit_role = obj_ini.role[100, 19]){
+    }else if (_unit_role = _role[19]){
         col = obj_controller.bat_veteran_column;
         new_combat.vet_sgts++;                        
     }
-    if (_unit_role = obj_ini.role[100, 12]) {              //scouts
+    if (_unit_role = _role[12]) {              //scouts
         col = obj_controller.bat_scout_column;
         new_combat.scouts++;
 
-    }else if (array_contains( [obj_ini.role[100][8], $"{obj_ini.role[100, 15]} Aspirant", $"{obj_ini.role[100, 14]} Aspirant"] , _unit_role)) {
+    }else if (array_contains( [obj_ini.role[100][8], $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"] , _unit_role)) {
         col = obj_controller.bat_tactical_column;                   //tactical_marines
         new_combat.tacticals++;
-    }else if (_unit_role = obj_ini.role[100, 3]){          //veterans and veteran sergeants
+    }else if (_unit_role = _role[3]){          //veterans and veteran sergeants
         col = obj_controller.bat_veteran_column;
         new_combat.veterans++;
-    }else if (_unit_role = obj_ini.role[100, 9]) {         //devastators
+    }else if (_unit_role = _role[9]) {         //devastators
         col = obj_controller.bat_devastator_column;
         new_combat.devastators++;
-    }else if(_unit_role = obj_ini.role[100, 10]){          //assualt marines
+    }else if(_unit_role = _role[10]){          //assualt marines
         col = obj_controller.bat_assault_column;
         new_combat.assaults++;
 
@@ -467,11 +476,11 @@ function add_unit_to_battle(unit,meeting){
         col = obj_controller.bat_librarian_column;                  //librarium
         new_combat.librarians++;
         moov = 1;
-    }else if (_unit_role = obj_ini.role[100, 16]) {            //techmarines
+    }else if (_unit_role = _role[16]) {            //techmarines
         col = obj_controller.bat_techmarine_column;
         new_combat.techmarines++;
         moov = 2;
-    } else if (_unit_role = obj_ini.role[100, 2]) {            //honour guard
+    } else if (_unit_role = _role[2]) {            //honour guard
         col = obj_controller.bat_honor_column;
         new_combat.honors++;
 
@@ -493,32 +502,34 @@ function add_unit_to_battle(unit,meeting){
         }
     }
 
-    if (_unit_role = obj_ini.role[100, 15]) or (_unit_role = obj_ini.role[100, 14]) or (unit.IsSpecialist("trainee")) {
-        if (_unit_role = string(obj_ini.role[100, 14]) + " Aspirant") {
+    if (_unit_role = _role[15]) or (_unit_role = _role[14]) or (unit.IsSpecialist("trainee")) {
+        if (_unit_role = string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
             new_combat.tacticals++;
         }
 
-        if (_unit_role = obj_ini.role[100, 15]) then new_combat.apothecaries++;
-        if (_unit_role = obj_ini.role[100, 14]) {
+        if (_unit_role = _role[15]) then new_combat.apothecaries++;
+        if (_unit_role = _role[14]) {
             new_combat.chaplains++;
             if (new_combat.big_mofo > 5) then new_combat.big_mofo = 5;
         }
 
         col = obj_controller.bat_tactical_column;
-        if (obj_ini.armour[cooh][va] = "Terminator Armour") or(obj_ini.armour[cooh][va] = "Tartaros Armour") {
-            col = obj_controller.bat_terminator_column;
+        if (_wearing_armour){
+            if (_armour_data.has_tag("terminator")){
+                col = obj_controller.bat_terminator_column;
+            }
         }
         if (company = 10) then col = obj_controller.bat_scout_column;
     }
 
-    if (_unit_role = obj_ini.role[100, 5]) or(_unit_role = obj_ini.role[100][11]) or(_unit_role = obj_ini.role[100, 7]) {
-        if (_unit_role = obj_ini.role[100, 5]) {
+    if (_unit_role = _role[5]) or(_unit_role = _role[11]) or(_unit_role = _role[7]) {
+        if (_unit_role = _role[5]) {
             new_combat.captains++;
             if (new_combat.big_mofo > 5) then new_combat.big_mofo = 5;
         }
-        if (_unit_role = obj_ini.role[100][11]) then new_combat.standard_bearers++;
-        if (_unit_role = obj_ini.role[100, 7]) then new_combat.champions++;
+        if (_unit_role = _role[11]) then new_combat.standard_bearers++;
+        if (_unit_role = _role[7]) then new_combat.champions++;
 
         //if (company = 1) {
         //    col = obj_controller.bat_veteran_column;
@@ -576,30 +587,29 @@ function add_unit_to_battle(unit,meeting){
     }
     if (col = 0) then col = obj_controller.bat_hire_column;
     if (_unit_role = "Death Company") { // Ahahahahah
-        var really;
-        really = false;
-        if (string_count("Dreadnought", targ.marine_armour[targ.men]) > 0) then really = true;
-        if (really = false) then new_combat.thirsty++;
-        if (really = true) then new_combat.really_thirsty++;
+        var really = false;
+        if (_wearing_armour){
+            really = _armour_data.has_tag("dreadnought");
+        }
+
+        if (!really){
+            new_combat.thirsty++;
+        } else {
+            new_combat.really_thirsty++;
+        }
         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
     }
 
     targ = instance_nearest(col * 10, 240, obj_pnunit);
 
     with (targ){
-        scr_add_unit_to_roster(unit);
+        scr_add_unit_to_roster(unit, is_local);
     }
 
     // marine_attack[i]=1;
     // marine_ranged[i]=1;
     // marine_defense[i]=1;
-
-    if (obj_ini.mobi[cooh][va] = "Bike") {
-        man_size = 3;
-    }
-    if (obj_ini.mobi[cooh][va] = "Jump Pack") {
-        man_size = 2;
-    }
+    man_size = unit.get_unit_size();
 
     //evaluates if there is a limit on the size of men that can be in a battle and only adds the allowable number to roster
     if (new_combat.man_size_limit == 0) {
@@ -615,7 +625,7 @@ function add_unit_to_battle(unit,meeting){
     }
 }   
 
-function add_vehicle_to_battle(company, veh_index){
+function add_vehicle_to_battle(company, veh_index, is_local){
     var new_combat = obj_ncombat;
     var v =veh_index;
     new_combat.veh_fighting[company][v] = 1;
@@ -650,7 +660,7 @@ function add_vehicle_to_battle(company, veh_index){
     targ.veh_wep3[targ.veh] = obj_ini.veh_wep3[company][v];
     targ.veh_upgrade[targ.veh] = obj_ini.veh_upgrade[company][v];
     targ.veh_acc[targ.veh] = obj_ini.veh_acc[company][v];
-    if (vokay = 2) then targ.veh_local[targ.veh] = 1;
+    targ.veh_local[targ.veh] = is_local;
 
 
     if (obj_ini.veh_role[company][v] = "Land Speeder") {

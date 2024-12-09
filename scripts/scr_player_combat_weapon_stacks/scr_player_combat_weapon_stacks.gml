@@ -303,7 +303,7 @@ function scr_player_combat_weapon_stacks() {
 }
 
 
-function scr_add_unit_to_roster(unit, is_ally=false){
+function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     array_push(unit_struct, unit);
     array_push(marine_co, unit.company);
     array_push(marine_id, unit.marine_number);
@@ -321,7 +321,7 @@ function scr_add_unit_to_roster(unit, is_ally=false){
     array_push(marine_powers, unit.specials());
     array_push(marine_ac, unit.armour_calc());
     array_push(marine_attack, unit.melee_attack());
-    array_push(marine_local, 0);
+    array_push(marine_local, is_local);
     array_push(marine_casting, 0);
     array_push(marine_defense, 1);
 
@@ -336,7 +336,9 @@ function scr_add_unit_to_roster(unit, is_ally=false){
     array_push(marine_spatial, 0);
     array_push(marine_dementia, 0);
     array_push(ally, is_ally);
-
+    if (is_local){
+        local_forces=true;
+    }
     if (unit.IsSpecialist("dreadnoughts")){
         dreads++;
     } else {
@@ -344,4 +346,17 @@ function scr_add_unit_to_roster(unit, is_ally=false){
     }
 }
 
-
+function cancel_combat(){
+     with(obj_pnunit) {
+        instance_destroy();
+    }
+    with(obj_enunit) {
+        instance_destroy();
+    }
+    with(obj_nfort) {
+        instance_destroy();
+    }
+    with(obj_ncombat) {
+        instance_destroy();
+    }   
+}
