@@ -13,9 +13,6 @@ function __init_external() {
     if (file_exists("message_log.log")) {
         file_delete("message_log.log");
     }
-    if (directory_exists("logs")) {
-        directory_destroy("logs");
-    }
     // ========================
 
     if (!directory_exists("Logs")) {
