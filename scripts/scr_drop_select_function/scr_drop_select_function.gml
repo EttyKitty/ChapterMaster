@@ -123,7 +123,7 @@ function drop_select_draw(){
         _select_all_button.active = !_all_active;
         _select_all_button.update();
         _select_all_button.draw();
-        if (_select_all_button.clicked() && _select_all_button.active) {
+        if (_select_all_button.clicked()) {
             for (var e=0;e<array_length(roster.ships);e++) {
                 var _ship_button = roster.ships[e];
                 _ship_button.active = true;

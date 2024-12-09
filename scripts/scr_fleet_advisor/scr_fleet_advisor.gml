@@ -215,24 +215,16 @@ function scr_fleet_advisor(){
                     }
                     tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
                     if (_goto_button.click()) {
-                        obj_controller.temp[40] = obj_ini.ship[i];
                         with(obj_p_fleet) {
-                            for (var k = 0; k <= 40; k++) {
-                                if (capital[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
-                                if (frigate[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
-                                if (escort[k] == obj_controller.temp[40]) then instance_create(x, y, obj_temp7);
-                            }
-                        }
-                        if (instance_exists(obj_temp7)) {
-                            obj_controller.x = obj_temp7.x;
-                            obj_controller.y = obj_temp7.y;
-                            obj_controller.menu = 0;
-                            with(obj_fleet_show) {
-                                instance_destroy();
-                            }
-                            instance_create(obj_temp7.x, obj_temp7.y, obj_fleet_show);
-                            with(obj_temp7) {
-                                instance_destroy();
+                            var _fleet_ships = fleet_full_ship_array();
+                            if (array_contains(_fleet_ships, i)){
+                                obj_controller.x = x;
+                                obj_controller.y = y;
+                                obj_controller.menu = 0;
+                                with(obj_fleet_show) {
+                                    instance_destroy();
+                                }  
+                                instance_create(x, y, obj_fleet_show);                              
                             }
                         }
                     }
