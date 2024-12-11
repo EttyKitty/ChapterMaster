@@ -1403,7 +1403,7 @@ function scr_random_event(execute_now) {
 		move_ship_between_player_fleets(fleet, lost_ship_fleet,ship_type,ship_index);
 		var unit;
 		for(var company = 0; company <= obj_ini.companies; company++){
-			for(var marine = 0; marine <= array_length(obj_ini.role[company]); marine++){
+			for(var marine = 0; marine < array_length(obj_ini.role[company]); marine++){
 				if (obj_ini.name[company][marine] == "") then continue;
 				unit = fetch_unit([company, marine]);
 				if(unit.ship_location == chosen_ship) {
