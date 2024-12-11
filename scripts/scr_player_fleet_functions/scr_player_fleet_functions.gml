@@ -634,4 +634,20 @@ function get_player_ships(location="", name=""){
 }
 
 
+function return_lost_ships(){
+	if (array_contains(obj_ini.ship_location, "Lost")){
+		if (d100_roll()>97){
+			var _return_id = get_valid_player_ship("Lost");
+			if (_return_id!=-1){
+				var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
+				_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
+				_new_fleet.owner  = eFACTION.Player;
+				add_ship_to_fleet(_return_id,_new_fleet);
+				var _text = "The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system";
+				scr_popup("Ship Returns",_text,"lost_warp","");				
+			}
+		}
+	}
+}
+
 

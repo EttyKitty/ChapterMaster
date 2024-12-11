@@ -1349,7 +1349,7 @@ function scr_random_event(execute_now) {
 			exit;
 		}
 		
-		var fleet = eligible_fleets[irandom(array_length(eligible_fleets) - 1)];		
+		var fleet = array_random(eligible_fleets);
 		var ship_index = -1;
 		var ship_type="";
 	    var ship_count = fleet.capital_number + fleet.frigate_number + fleet.escort_number;
@@ -1402,12 +1402,12 @@ function scr_random_event(execute_now) {
 		add_ship_to_fleet(ship_index, lost_ship_fleet);
 		move_ship_between_player_fleets(fleet, lost_ship_fleet,ship_type,ship_index);
 		var unit;
-		for(var company = 0; company <= 10; company++){
-			for(var marine = 1; marine <= 300; marine++){
+		for(var company = 0; company <= obj_ini.companies; company++){
+			for(var marine = 0; marine <= array_length(obj_ini.role[company]); marine++){
 				if (obj_ini.name[company][marine] == "") then continue;
 				unit = fetch_unit([company, marine]);
 				if(unit.ship_location == chosen_ship) {
-					obj_ini.loc[company, marine] = "Lost";
+					obj_ini.loc[company][marine] = "Lost";
 				}
 			}
 			for(var vehicle = 1; vehicle <= 100; vehicle++){
