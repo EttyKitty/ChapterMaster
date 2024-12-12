@@ -3,7 +3,7 @@ try_and_report_loop("player alarm 1",function(){
 
     acted=0;
 
-    if (action="lost"){
+    if (action=="Lost"){
         set_fleet_location("Lost");
         exit;
 

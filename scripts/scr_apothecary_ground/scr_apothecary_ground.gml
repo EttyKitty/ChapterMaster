@@ -36,7 +36,7 @@ function calculate_full_chapter_spread(){
 		    if (is_healer){
 		    	add_apoth_points_to_stack(_unit);
 		    }
-		  	if (_mar_loc[2]!="Warp"){
+		  	if (_mar_loc[2]!="Warp" && _mar_loc[2]!="Lost"){
   	    		if (_mar_loc[0]=location_types.planet){
   	    			array_slot = _mar_loc[1];
   	    		} else if (_mar_loc[0] == location_types.ship){
@@ -76,7 +76,8 @@ function calculate_full_chapter_spread(){
             	if (obj_ini.veh_race[company][v]!=0){
             		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
-	            		if (obj_ini.ship_location[veh_location] == "Warp"){
+	            		var _ship_loc = obj_ini.ship_location[veh_location];
+	            		if (_ship_loc == "Warp" || _ship_loc=="Lost"){
 			  	    		if instance_exists(obj_p_fleet){
 			  	    			with (obj_p_fleet){
 			  	    				if (array_contains(capital_num, veh_location) ||

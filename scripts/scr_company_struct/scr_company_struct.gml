@@ -148,7 +148,8 @@ function CompanyStruct(comp) constructor{
 				var button_row_offset = 0;
 				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assigments",1,1,0);
 				tooltip_text="Guard Duty";
-				if (squad_loc.same_system) and (squad_loc.system!="Warp"){
+				var _squad_sys = squad_loc.system;
+				if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
 					button_row_offset+=string_width(tooltip_text)+6;
 					button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
 					if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text), yy+bound_height[0]+150+string_height(tooltip_text))){

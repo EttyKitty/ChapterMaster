@@ -38,7 +38,7 @@ function set_up_armentarium(){
 function same_locations(first_loc,second_loc){
     var same_loc = false;
     if (is_array(first_loc)&& is_array(second_loc)){
-        if (first_loc[2] != "Warp" && first_loc[2] != "lost"){
+        if (first_loc[2] != "Warp" && first_loc[2] != "Lost"){
             if (first_loc[2] == second_loc[2]) then same_loc=true;
         } else {
             if (first_loc[1] == second_loc[1]) &&

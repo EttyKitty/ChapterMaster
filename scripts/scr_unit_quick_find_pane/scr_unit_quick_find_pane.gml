@@ -160,7 +160,10 @@ function UnitQuickFindPanel() constructor{
 			    draw_text(xx+160, yy+90+(20*i), cur_fleet.frigate_number);
 			    draw_text(xx+240, yy+90+(20*i), cur_fleet.escort_number);
 			    var _fleet_point_data = cur_fleet.point_breakdown;
-			    if (cur_fleet.action=="move"){
+			    if (cur_fleet.action == "Lost"){
+			    	draw_text(xx+310, yy+90+(20*i), "Lost");
+			    }
+			    else if (cur_fleet.action=="move"){
 			    	draw_text(xx+310, yy+90+(20*i), "Warp Travel");
 			    } else {
 			    	var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
@@ -686,7 +689,7 @@ function load_selection(){
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
     if (man_size>0) and (obj_controller.selecting_ship>=1) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Warp"){
+    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);

@@ -9,11 +9,22 @@ function return_lost_ships_chance(){
 function return_lost_ship(){
 	var _return_id = get_valid_player_ship("Lost");
 	if (_return_id!=-1){
+		_lost_fleet = "none";
+		with (obj_p_fleet){
+			if (action == "Lost"){
+				_lost_fleet = id;
+				break;
+			}
+		}
 		var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
 		_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
 		_new_fleet.owner  = eFACTION.Player;
-		add_ship_to_fleet(_return_id,_new_fleet);
-		set_fleet_location(_star.name);
+		if (_lost_fleet!="none"){
+			find_and_move_ship_between_fleets(_lost_fleet, _new_fleet,_return_id);
+		} else {
+			add_ship_to_fleet(_return_id, _new_fleet);
+		}
+
 		var _return_defect = d100_roll();
 		var _text = "The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system\n";
 		if (_return_defect<90){
@@ -34,7 +45,7 @@ function return_lost_ship(){
 				if (array_length(_units)){
 					_text += "While in the warp the geller fields temporarily went down leaving the ships crew to face the horror of the warp";
 					for (var i=0;i<array_length(_units);i++){
-						_units.edit_corruption(max(0,irandom_range(20, 80)-_unit.piety));
+						_units.edit_corruption(max(0,irandom_range(20, 120)-_unit.piety));
 					}
 				}
 			} else if (_return_defect>50){
@@ -60,7 +71,14 @@ function return_lost_ship(){
 			//More scenarios needed but this is a good start
 
 		}
-		scr_popup("Ship Returns",_text,"lost_warp","");				
+		scr_popup("Ship Returns",_text,"lost_warp","");
+		if (_lost_fleet != "none"){
+			if (!player_fleet_ship_count(_lost_fleet)){
+				with (_lost_fleet){
+					instance_destroy();
+				}
+			}
+		}		
 	}
 }
 
@@ -153,9 +171,16 @@ function loose_ship_to_warp_event(){
 		text += $"  {marine_count} Battle Brothers were onboard.";
 	}
 	scr_event_log("red",text);
-
-	var _lost_ship_fleet = instance_create(-500,-500,obj_p_fleet);
-	_lost_ship_fleet.owner = eFACTION.Player;
+	var _lost_ship_fleet = "none";
+	with (obj_p_fleet){
+		if (action == "Lost"){
+			_lost_ship_fleet = id;
+		}
+	}
+	if (_lost_ship_fleet=="none"){
+		var _lost_ship_fleet = instance_create(-500,-500,obj_p_fleet);
+		_lost_ship_fleet.owner = eFACTION.Player;
+	}
 
 	find_and_move_ship_between_fleets(_fleet, _lost_ship_fleet,_ship_index);
 	with (_lost_ship_fleet){
@@ -178,7 +203,7 @@ function loose_ship_to_warp_event(){
 		}
 	}
 
-	_lost_ship_fleet.action="lost";
+	_lost_ship_fleet.action="Lost";
 	_lost_ship_fleet.alarm[1]=2;
 	
 	scr_popup("Ship Lost",text,"lost_warp","");
