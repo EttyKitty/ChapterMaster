@@ -142,7 +142,24 @@ function set_new_player_fleet_course(target_array){
 
 }
 
-
+function find_and_move_ship_between_fleets(out_fleet, in_fleet, index){
+	var _class = player_ships_class(index);
+	var relative_index = -1;
+	switch (_class){
+		case "capital":
+			relative_index = array_get_index(out_fleet.capital_num, index);
+			break;
+		case "frigate":
+			relative_index = array_get_index(out_fleet.frigate_num, index);
+			break;
+		case "escort":
+			relative_index = array_get_index(out_fleet.escort_num, index);
+			break;
+	}
+	if (relative_index!=-1){
+		move_ship_between_player_fleets(out_fleet, in_fleet, _class, relative_index);
+	}
+}
 function move_ship_between_player_fleets(out_fleet, in_fleet, class, index){
 	if (class=="capital"){
 		array_insert(in_fleet.capital, 0,out_fleet.capital[index]);
@@ -228,21 +245,6 @@ function find_ships_fleet(index){
 	}
 	return _chosen_fleet;
 
-}
-
-function player_ships_class (index){
-	var _escorts = ["Escort", "Hunter", "Gladius"];
-	var _capitals = ["Gloriana", "Battle Barge", "Capital"];
-	var _frigates = ["Strike Cruiser", "Frigate"];	
-	var _ship_name_class = obj_ini.ship_class[index];
-	if (array_contains(_escorts, _ship_name_class)){
-		return "escort";
-	} else if (array_contains(_capitals, _ship_name_class)){
-		return "capital";
-	}else if (array_contains(_frigates, _ship_name_class)){
-		return "frigate";
-	}
-	return _ship_name_class;
 }
 
 function add_ship_to_fleet(index, fleet="none"){
@@ -395,189 +397,6 @@ function player_fleet_selected_count(fleet="none"){
 	return ship_count;			
 }
 
-function new_player_ship_defualts(){
-	with (obj_ini){
-		array_push(ship, "");
-		array_push(ship_uid,0);
-		array_push(ship_owner,0);
-		array_push(ship_class, "");
-		array_push(ship_size,0);
-		array_push(ship_leadership,0);
-		array_push(ship_hp,0);
-		array_push(ship_maxhp,0);
-		array_push(ship_location, "");
-		array_push(ship_shields,0);
-		array_push(ship_conditions, "");
-		array_push(ship_speed,0);
-		array_push(ship_turning,0);
-		array_push(ship_front_armour,0);
-		array_push(ship_other_armour,0);
-		array_push(ship_weapons,0);
-		array_push(ship_wep, array_create(6,""));
-		array_push(ship_wep_facing, array_create(6,""));
-		array_push(ship_wep_condition, array_create(6,""));
-		array_push(ship_capacity,0);
-		array_push(ship_carrying,0);
-		array_push(ship_contents, "");
-		array_push(ship_turrets,0);
-	}
-	return array_length(obj_ini.ship)-1;
-}
-
-
-function new_player_ship(type, start_loc="home", new_name=""){
-    var ship_names="",index=0;
-    var index = new_player_ship_defualts();
-    
-    for(var k=0; k<=200; k++){
-        if (new_name==""){
-            new_name=global.name_generator.generate_imperial_ship_name();
-            if (array_contains(obj_ini.ship,new_name)) then new_name="";
-        } else {break};
-    }
-    if (start_loc == "home") then start_loc = obj_ini.home_name;
-    obj_ini.ship[index]=new_name;
-    obj_ini.ship_uid[index]=floor(random(99999999))+1;
-    obj_ini.ship_owner[index]=1; //TODO: determine if this means the player or not
-    obj_ini.ship_size[index]=1;
-    obj_ini.ship_location[index]=start_loc;
-    obj_ini.ship_leadership[index]=100;	
-    if (string_count("Battle Barge",type)>0){
-        obj_ini.ship_class[index]="Battle Barge";
-        obj_ini.ship_size[index]=3;
-        obj_ini.ship_hp[index]=1200;
-        obj_ini.ship_maxhp[index]=1200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=20;
-        obj_ini.ship_turning[index]=45;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
-        obj_ini.ship_weapons[index]=5;
-        obj_ini.ship_shields[index]=12;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="left";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="right";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_wep[index,3]="Thunderhawk Launch Bays";
-        obj_ini.ship_wep_facing[index,3]="special";
-        obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Torpedo Tubes";
-        obj_ini.ship_wep_facing[index,4]="front";
-        obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_wep[index,5]="Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,5]="most";
-        obj_ini.ship_wep_condition[index,5]="";
-        obj_ini.ship_capacity[index]=600;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=3;
-    }
-    if (string_count("Strike Cruiser",type)>0){
-        obj_ini.ship_class[index]="Strike Cruiser";
-        obj_ini.ship_size[index]=2;
-        obj_ini.ship_hp[index]=600;
-        obj_ini.ship_maxhp[index]=600;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=25;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
-        obj_ini.ship_weapons[index]=4;
-        obj_ini.ship_shields[index]=6;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="left";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="right";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_wep[index,3]="Thunderhawk Launch Bays";
-        obj_ini.ship_wep_facing[index,3]="special";
-        obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,4]="most";
-        obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_capacity[index]=250;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
-    }
-    if (string_count("Gladius",type)>0){
-        obj_ini.ship_class[index]="Gladius";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=1;
-        obj_ini.ship_shields[index]=1;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="most";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_capacity[index]=30;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
-    }
-    if (string_count("Hunter",type)>0){
-        obj_ini.ship_class[index]="Hunter";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=2;
-        obj_ini.ship_shields[index]=1;
-        obj_ini.ship_wep[index,1]="Torpedoes";
-        obj_ini.ship_wep_facing[index,1]="front";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="most";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_capacity[index]=25;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
-    }
-    if (string_count("Gloriana",type)>0){
-		obj_ini.ship[last_ship]=new_name;
-        obj_ini.ship_size[last_ship]=3;
-    
-        obj_ini.ship_class[last_ship]="Gloriana";
-    
-        obj_ini.ship_hp[last_ship]=2400;
-        obj_ini.ship_maxhp[last_ship]=2400;
-        obj_ini.ship_conditions[last_ship]="";
-        obj_ini.ship_speed[last_ship]=25;
-        obj_ini.ship_turning[last_ship]=60;
-        obj_ini.ship_front_armour[last_ship]=8;
-        obj_ini.ship_other_armour[last_ship]=8;
-        obj_ini.ship_weapons[last_ship]=4;
-        obj_ini.ship_shields[last_ship]=24;
-        obj_ini.ship_wep[last_ship,1]="Lance Battery";
-        ship_wep_facing[last_ship,1]="most";
-        obj_ini.ship_wep_condition[last_ship,1]="";
-        obj_ini.ship_wep[last_ship,2]="Lance Battery";
-		ship_wep_facing[last_ship,2]="most";
-        obj_ini.ship_wep_condition[last_ship,2]="";
-        obj_ini.ship_wep[last_ship,3]="Lance Battery";
-        ship_wep_facing[last_ship,3]="most";
-        obj_ini.ship_wep_condition[last_ship,3]="";
-        obj_ini.ship_wep[last_ship,4]="Plasma Cannon";
-        ship_wep_facing[last_ship,4]="front";
-        obj_ini.ship_wep_condition[last_ship,4]="";
-        obj_ini.ship_capacity[last_ship]=800;
-        obj_ini.ship_carrying[last_ship]=0;
-        obj_ini.ship_contents[last_ship]="";
-        obj_ini.ship_turrets[last_ship]=8;
-    }
-    return index;
-}
 
 
 function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_moving=false){
@@ -602,52 +421,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_movi
 	return chosen_fleet;	
 }
 
-function get_valid_player_ship(location="", name=""){
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
-				return i;
-			} else {
-				if (obj_ini.ship_location[i] == location){
-					return i;
-				}
-			}
-		}
-	}
-	return -1;
-}
-
-function get_player_ships(location="", name=""){
-	var _ships = [];
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
-				array_push(_ships, i);
-			} else {
-				if (obj_ini.ship_location[i] == location){
-					array_push(_ships, i);
-				}
-			}
-		}
-	}
-	return _ships;
-}
 
 
-function return_lost_ships(){
-	if (array_contains(obj_ini.ship_location, "Lost")){
-		if (d100_roll()>97){
-			var _return_id = get_valid_player_ship("Lost");
-			if (_return_id!=-1){
-				var _star = instance_find(obj_star, irandom(instance_number(obj_star) - 1));
-				_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
-				_new_fleet.owner  = eFACTION.Player;
-				add_ship_to_fleet(_return_id,_new_fleet);
-				var _text = "The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system";
-				scr_popup("Ship Returns",_text,"lost_warp","");				
-			}
-		}
-	}
-}
 
 

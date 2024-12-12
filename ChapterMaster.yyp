@@ -555,6 +555,7 @@
     {"id":{"name":"spr_rock_bg","path":"sprites/spr_rock_bg/spr_rock_bg.yy",},},
     {"id":{"name":"spr_weapon_grav_gun","path":"sprites/spr_weapon_grav_gun/spr_weapon_grav_gun.yy",},},
     {"id":{"name":"spr_ingame_menu","path":"sprites/spr_ingame_menu/spr_ingame_menu.yy",},},
+    {"id":{"name":"scr_player_ship_functions","path":"scripts/scr_player_ship_functions/scr_player_ship_functions.yy",},},
     {"id":{"name":"spr_sal_mk5_helm","path":"sprites/spr_sal_mk5_helm/spr_sal_mk5_helm.yy",},},
     {"id":{"name":"spr_loadbar","path":"sprites/spr_loadbar/spr_loadbar.yy",},},
     {"id":{"name":"scr_mission_functions","path":"scripts/scr_mission_functions/scr_mission_functions.yy",},},

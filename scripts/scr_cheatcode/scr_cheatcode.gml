@@ -280,6 +280,13 @@ function scr_cheatcode(argument0) {
 						scr_alert("green", "recruitment", (string(obj_controller.recruit_name[i]) + "has started training."), 0, 0)
 					}
 					break;
+				case "shiplostevent":
+					loose_ship_to_warp_event();
+					break;
+				case "recoverlostship":
+					return_lost_ship();
+					break;
+
 			}
 		}
 	} catch(_exception) {

@@ -426,7 +426,7 @@ function SpecialistPointHandler() constructor{
             } else {
                 repeat(item.count){
                     var vehicle = scr_add_vehicle(item.name,9,"standard","standard","standard","standard","standard");
-                    var build_loc = array_random(obj_controller.player_forge_data.vehicle_hanger);
+                    var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                     obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                     obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
                     obj_ini.veh_lid[vehicle[0]][vehicle[1]] = 0;
