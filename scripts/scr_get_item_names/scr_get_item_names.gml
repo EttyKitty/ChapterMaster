@@ -122,15 +122,16 @@ function push_marine_gear_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_mobility_item_names(_item_names) {
-    var item_count = 4;
+    var item_count = 5;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
     var index = initial_size;
     _item_names[@ index++] = "Bike";
     _item_names[@ index++] = "Jump Pack";
+    _item_names[@ index++] = "Heavy Weapons Pack";
     _item_names[@ index++] = "Servo-arm";
-    _item_names[@ index++] = "Servo-harness"; // 4
+    _item_names[@ index++] = "Servo-harness"; // 5
 }
 
 
