@@ -2160,10 +2160,18 @@ function scr_initialize_custom() {
 
 
 	for (i = 0; i <= 20; i++) {
-		if (role[defaults_slot, i] != "") then scr_start_allow(i, "wep1", wep1[defaults_slot, i]);
-		if (role[defaults_slot, i] != "") then scr_start_allow(i, "wep2", wep2[defaults_slot, i]);
-		if (role[defaults_slot, i] != "") then scr_start_allow(i, "mobi", mobi[defaults_slot, i]);
-		if (role[defaults_slot, i] != "") then scr_start_allow(i, "gear", gear[defaults_slot, i]);
+		if (role[defaults_slot, i] != "") {
+			scr_start_allow(i, "wep1", wep1[defaults_slot, i]);
+		}
+		if (role[defaults_slot, i] != "") {
+			scr_start_allow(i, "wep2", wep2[defaults_slot, i]);
+		}
+		if (role[defaults_slot, i] != "") {
+			scr_start_allow(i, "mobi", mobi[defaults_slot, i]);
+		}
+		if (role[defaults_slot, i] != "") {
+			scr_start_allow(i, "gear", gear[defaults_slot, i]);
+		}
 		// check for allowable starting equipment here
 	}
 
