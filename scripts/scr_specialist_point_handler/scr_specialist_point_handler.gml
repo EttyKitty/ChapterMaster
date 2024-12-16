@@ -20,10 +20,14 @@ function SpecialistPointHandler() constructor{
     point_breakdown = {};
     // ** Gene-seed Test-Slaves **
     static add_to_armoury_repair = function(item, count=1){
-        if (!struct_exists(armoury_repairs, item)){
-            armoury_repairs[$ item] = count;
-        } else {
-            armoury_repairs[$ item]+=count;
+        if (is_string(item)){
+            if (item!=""){
+                if (!struct_exists(armoury_repairs, item)){
+                    armoury_repairs[$ item] = count;
+                } else {
+                    armoury_repairs[$ item]+=count;
+                }
+            }
         }
     }
 
