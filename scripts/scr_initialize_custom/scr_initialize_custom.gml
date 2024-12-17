@@ -853,8 +853,8 @@ function scr_initialize_custom() {
 
 	var chapter_option, o; 
 	if scr_has_adv("Tech-Brothers") {
-		techmarines += 6;
-		tenth -= 6;
+		techmarines += 5;
+		tenth -= 5;
 	}
 	if scr_has_adv("Assault Doctrine") {
 		assault += 10;
@@ -873,9 +873,9 @@ function scr_initialize_custom() {
 		tenth -= 5;
 	}
 	if scr_has_adv("Psyker Abundance") {
-		tenth -= 4;
+		tenth -= 5;
 		epistolary += 1;
-		codiciery += 1;
+		codiciery += 2;
 		lexicanum += 2;
 	}
 	if scr_has_disadv("Psyker Intolerant") {
@@ -927,12 +927,12 @@ function scr_initialize_custom() {
 		tenth -= 10;
 	}
 	if scr_has_disadv("Obliterated") {
-		techmarines = 0;
-		epistolary = 0;
+		techmarines = 1;
+		epistolary = 1;
 		codiciery = 0;
 		lexicanum = 0;
-		apothecary = 0;
-		chaplains = 0;
+		apothecary = 1;
+		chaplains = 1;
 		terminator = 0;
 		veteran = 0;
 		second = 0;
@@ -945,21 +945,20 @@ function scr_initialize_custom() {
 		ninth = 0;
 		tenth = 10; 
 		assault = 0;
-		siege = 0;
 		devastator = 0;
 	}
 
 	if  scr_has_disadv ("Tech-Heresy") {
-		techmarines -= 4;
-		tenth += 4;
+		techmarines -= 5;
+		tenth += 5;
 	}
 	if scr_has_adv ("Reverent Guardians") {
-		chaplains += 4;
-		tenth -= 4;
+		chaplains += 5;
+		tenth -= 5;
 	}
 	if scr_has_adv("Medicae Primacy") {
 		apothecary_per_company += 1;
-		apothecary += 7;
+		apothecary += 5;
 	}
 	
 	// Strength ratings are made up for founding chapters
