@@ -89,9 +89,13 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 // Bonuses
                 difficulty+=unit.experience/20;
                 difficulty+=(1-(target.hp/target.maxhp))*33;
-                //TODO define tag for bording weapons
-                if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_one())) then difficulty+=3;
-                if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_two())) then difficulty+=3;
+                //tag for boarding weapons = boarding 1-3
+                if (array_contains(["Chainsword","Power Sword","Force Sword","Bolter","Multi-Melta","Plasma Pistol","Plasma Gun","Bolt Pistol"], unit.weapon_one())) then difficulty+=2;
+                if (array_contains(["Chainsword","Power Sword","Force Sword","Bolter","Multi-Melta","Plasma Pistol","Plasma Gun","Bolt Pistol"], unit.weapon_two())) then difficulty+=2;
+                if (array_contains(["Power Axe","Force Axe","Power Fist","Power Fists","Lightning Claw","Thunder Hammer","Crozius Arcanum","Boltstorm Gauntlet","Wrist-Mounted Storm Bolter","Combiflamer","Storm Bolter","Boarding Shield","Hand Flamer","Flamer","Infernus Pistol"], unit.weapon_one())) then difficulty+=4;
+                if (array_contains(["Power Axe","Force Axe","Power Fist","Power Fists","Lightning Claw","Thunder Hammer","Crozius Arcanum","Boltstorm Gauntlet","Wrist-Mounted Storm Bolter","Combiflamer","Storm Bolter","Boarding Shield","Hand Flamer","Flamer","Infernus Pistol"], unit.weapon_two())) then difficulty+=4;
+                if (array_contains(["Chainfist","Meltagun","Combimelta", "Lascutter","Incinerator","Heavy Flamer"], unit.weapon_one())) then difficulty+=6;
+                if (array_contains(["Chainfist","Meltagun","Combimelta", "Lascutter","Incinerator","Heavy Flamer"], unit.weapon_two())) then difficulty+=6;
 
                 if (scr_has_adv("Boarders")) then  difficulty+=7;
                 if (scr_has_adv("Assault Doctrine")) then  difficulty+=3;
