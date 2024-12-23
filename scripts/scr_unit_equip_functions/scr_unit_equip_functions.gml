@@ -245,29 +245,31 @@ function scr_update_unit_gear(new_gear,from_armoury=true, to_armoury=true, quali
 
 function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, to_armoury=true, quality="any"){
 	var arti = !is_string(new_mobility_item);
-	var change_mob=mobility_item();
+	var _old_mobility_item=mobility_item();
+	new_mobility_item = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
+
 	if (new_mobility_item != ""){
-		var arm_data = get_armour_data();
-		if (is_struct(arm_data)){
-			if (arm_data.has_tag("terminator")){
-				return "incompatible with terminator";
+		var _armour_data = get_armour_data();
+		if (is_struct(_armour_data)){
+			if (_armour_data.has_tag("terminator")){
+				if (!array_contains(["Servo-arm", "Servo-harness", "Conversion Beamer Pack"], new_mobility_item)) {
+					return "incompatible with terminator";
+				}
 			}
 
 			//can probably condense the next 10 lines at some point
-			var core_type = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
 			//TODO move to tag system
-			if (core_type=="Jump Pack" && !arm_data.has_tag("power_armour")){
+			if (new_mobility_item=="Jump Pack" && !_armour_data.has_tag("power_armour")){
 				return "requires power armour";
 			}
 		} else {
-			var core_type = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
-			if (core_type=="Jump Pack"){
+			if (new_mobility_item=="Jump Pack"){
 				return "requires power armour";
 			}			
 		}
 	}
 	var same_quality = quality == "any" || quality == mobility_item_quality;
-	if (change_mob == new_mobility_item && same_quality){
+	if (_old_mobility_item == new_mobility_item && same_quality){
 		return "no change";
 	}
   	if (from_armoury && new_mobility_item!="" && !arti){
@@ -285,11 +287,11 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 		quality= quality=="any"?"standard":quality;
 	}
 	var portion = hp_portion();
-	if (change_mob != "") and (to_armoury){
+	if (_old_mobility_item != "") and (to_armoury){
 		if (!is_string(mobility_item(true))){
 			obj_ini.artifact_equipped[mobility_item(true)]=false;
 		} else {
-			scr_add_item(change_mob,1,mobility_item_quality, true );
+			scr_add_item(_old_mobility_item,1,mobility_item_quality, true );
 		}
 	}
 	obj_ini.mobi[company][marine_number] = new_mobility_item;
@@ -304,7 +306,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 	update_health(portion*max_health());
 	get_unit_size(); //every time mobility_item is changed see if the marines size has changed
 	return "complete";
-};
+}
 
 
 function alter_unit_equipment(update_equipment, from_armoury=true, to_armoury=true, quality="any"){
