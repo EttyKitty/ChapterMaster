@@ -85,6 +85,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
             unit=fetch_unit([co,i]);
             gear_bonus=0;
             marine_bonus=0;
+			boarding_odds=50;
             boarding_advantage=0;
             boarding_disadvantage=0;
             if (unit.hp()>0){
@@ -128,7 +129,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 if (target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=1) then boarding_disadvantage-=20;//       Veteran marines
                 if ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=2)) or (target.owner = eFACTION.Tyranids) then boarding_disadvantage-=30;// Daemons, veteran CSM, tyranids
 
-                boarding_odds+=((boarding_advantage+boarding_disadvantage)+50);
+                boarding_odds+=boarding_advantage+boarding_disadvantage;
                 outcome_roll=floor(random(100))+1;
                 
                 
