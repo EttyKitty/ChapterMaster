@@ -1,7 +1,6 @@
 function distribute_experience(_units, _exp_amount) {
     var _eligible_units_count = array_length(_units);
     var _average_exp = 0;
-    show_debug_message($"_eligible_units_count: {_eligible_units_count}");
 
     if (_eligible_units_count > 0 && _exp_amount > 0) {
         var _individual_exp = _exp_amount / _eligible_units_count;
