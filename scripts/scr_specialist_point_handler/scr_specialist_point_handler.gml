@@ -140,18 +140,20 @@ function SpecialistPointHandler() constructor{
         try_and_report_loop("Specialist points logic", pre_error_wrapped_research_points);
     }
 
-    static new_tech_heretic_spawn = function(){
+    static new_tech_heretic_spawn = function() {
         var _tester = global.character_tester;
         var _possibility_of_heresy = 8;
-        if (array_contains(obj_ini.dis,"Tech-Heresy")) then _possibility_of_heresy = 6;
-        if (irandom(power(_possibility_of_heresy,(array_length()+2.2))) == 0 && array_length(techs)>0){
-            var _current_tech = array_random_element(techs);
-           if  (!_tester.standard_test(_current_tech, "piety")[0]){
-               _current_tech.add_trait("tech_heretic");
-               _current_tech.edit_corruption(20+irandom(15));
-           }
+        if (array_contains(obj_ini.dis, "Tech-Heresy")) {
+            _possibility_of_heresy = 6;
         }
-    }
+        if (irandom(power(_possibility_of_heresy, (array_length(techs) + 2.2))) == 0 && array_length(techs) > 0) {
+            var _current_tech = array_random_element(techs);
+            if (!_tester.standard_test(_current_tech, "piety")[0]) {
+                _current_tech.add_trait("tech_heretic");
+                _current_tech.edit_corruption(20 + irandom(15));
+            }
+        }
+    };
 
     static add_forge_points_to_stack = function(unit){
         if (unit.in_jail()) {
@@ -168,7 +170,7 @@ function SpecialistPointHandler() constructor{
                 master_craft_chance += (unit.experience/50);
             }
             forge_points += _forge_point_gen[0];
-            var _tech_array_id = array_push(, array_length(techs)-1);
+            var _tech_array_id = array_length(techs)-1;
             if (unit.has_trait("tech_heretic")){
                 array_push(heretics, _tech_array_id);
             }

@@ -404,7 +404,6 @@ function scr_random_event(execute_now) {
 	        if (marine_is_planetside && heritical_item) {
 	        	var _system = star_by_name(obj_ini.loc[company][marine]);
 	        	var _planet = unit.planet_location;
-	        	star_by_name
 	            if (_system!="none"){
 	            	with (_system){
 	            		p_hurssy[_planet]+=6;
