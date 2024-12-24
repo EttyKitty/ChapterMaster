@@ -1,9 +1,7 @@
 var _unit;
 
 if (obj_ncombat.defeat == 0) {
-    obj_ncombat.total_battle_exp_gain = obj_ncombat.threat * 50;
     var _current_exp;
-    var _eligible_units = [];
     var _exp_mod = 1;
     var _unit_xp_data = [];
     var _unit_recovery_score = obj_ncombat.unit_recovery_score;
@@ -24,26 +22,8 @@ if (obj_ncombat.defeat == 0) {
                 _exp_mod = max(1 - (_current_exp / 200), 0.03);
 
                 _unit_xp_data = [_unit, _exp_mod];
-                array_push(_eligible_units, _unit_xp_data);
+                array_push(obj_ncombat.end_alive_units, _unit_xp_data);
             }
-        }
-    }
-
-    // EXP allocation
-    var _eligible_units_count = array_length(_eligible_units);
-    if (_eligible_units_count > 0 && obj_ncombat.total_battle_exp_gain > 0) {
-        var _individual_exp = obj_ncombat.total_battle_exp_gain / _eligible_units_count;
-        obj_ncombat.average_battle_exp_gain = _individual_exp;
-        for (var i = 0; i < _eligible_units_count; i++) {
-            var _unit = _eligible_units[i][0];
-            var _exp_mod = _eligible_units[i][1];
-            var _exp_update_data = _unit.add_exp(_individual_exp*_exp_mod);
-
-            var _powers_learned = _exp_update_data[1];
-            if (_powers_learned > 0) {
-                array_push(obj_ncombat.upgraded_librarians, _unit);
-            }
-
         }
     }
 

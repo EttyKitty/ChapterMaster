@@ -34,6 +34,7 @@ on_ship=false;
 alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
+end_alive_units = [];
 average_battle_exp_gain=0;
 upgraded_librarians=[];
 

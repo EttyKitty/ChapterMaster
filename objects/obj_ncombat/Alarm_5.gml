@@ -127,6 +127,7 @@ if (post_equipment_lost[1]!=""){
     scr_newtext();
 }
 if (total_battle_exp_gain>0){
+    average_battle_exp_gain = distribute_experience(end_alive_units, total_battle_exp_gain); // Due to cool alarm timer shitshow, I couldn't think of anything but to put it here.
     newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";
     scr_newtext();
 

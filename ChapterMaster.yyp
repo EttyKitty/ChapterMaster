@@ -532,6 +532,7 @@
     {"id":{"name":"spr_weapon_powfist3","path":"sprites/spr_weapon_powfist3/spr_weapon_powfist3.yy",},},
     {"id":{"name":"spr_servo_harness","path":"sprites/spr_servo_harness/spr_servo_harness.yy",},},
     {"id":{"name":"spr_weapon_powfist_old","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},},
+    {"id":{"name":"scr_experience_distribution","path":"scripts/scr_experience_distribution/scr_experience_distribution.yy",},},
     {"id":{"name":"spr_weapon_powmaul","path":"sprites/spr_weapon_powmaul/spr_weapon_powmaul.yy",},},
     {"id":{"name":"spr_weapon_lightning1","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},
     {"id":{"name":"spr_weapon_lightning2","path":"sprites/spr_weapon_lightning2/spr_weapon_lightning2.yy",},},
@@ -1085,7 +1086,7 @@
     {"id":{"name":"spr_bionics_leg","path":"sprites/spr_bionics_leg/spr_bionics_leg.yy",},},
     {"id":{"name":"spr_bionics_eye","path":"sprites/spr_bionics_eye/spr_bionics_eye.yy",},},
     {"id":{"name":"spr_bionics_arm","path":"sprites/spr_bionics_arm/spr_bionics_arm.yy",},},
-    {"id":{"name":"spr_bionics_arm_2","path":"sprites/spr_bionics_arm_2/spr_bionics_arm_2.yy",},},    
+    {"id":{"name":"spr_bionics_arm_2","path":"sprites/spr_bionics_arm_2/spr_bionics_arm_2.yy",},},
     {"id":{"name":"scr_enemy_ai_c","path":"scripts/scr_enemy_ai_c/scr_enemy_ai_c.yy",},},
     {"id":{"name":"spr_ship_back_white","path":"sprites/spr_ship_back_white/spr_ship_back_white.yy",},},
     {"id":{"name":"scr_enemy_ai_d","path":"scripts/scr_enemy_ai_d/scr_enemy_ai_d.yy",},},
@@ -1438,6 +1439,6 @@
   ],
   "templateType": null,
   "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"targets":-1,},
+    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"targets":-1,},
   ],
 }
