@@ -532,7 +532,7 @@
     {"id":{"name":"spr_weapon_powfist3","path":"sprites/spr_weapon_powfist3/spr_weapon_powfist3.yy",},},
     {"id":{"name":"spr_servo_harness","path":"sprites/spr_servo_harness/spr_servo_harness.yy",},},
     {"id":{"name":"spr_weapon_powfist_old","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},},
-    {"id":{"name":"scr_experience_distribution","path":"scripts/scr_experience_distribution/scr_experience_distribution.yy",},},
+    {"id":{"name":"scr_distribute_experience","path":"scripts/scr_distribute_experience/scr_distribute_experience.yy",},},
     {"id":{"name":"spr_weapon_powmaul","path":"sprites/spr_weapon_powmaul/spr_weapon_powmaul.yy",},},
     {"id":{"name":"spr_weapon_lightning1","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},
     {"id":{"name":"spr_weapon_lightning2","path":"sprites/spr_weapon_lightning2/spr_weapon_lightning2.yy",},},
