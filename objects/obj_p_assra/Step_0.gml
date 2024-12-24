@@ -67,8 +67,8 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
     board_cooldown-=1;
 
     if (board_cooldown=0){board_cooldown=60;
-        var o,challenge,boarding_difficulty,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship;
-        o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;
+        var o,challenge,boarding_difficulty,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship,bridge_damage;
+        o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0,bridge_damage=1;
         co=0;i=0;ac=0;dr=1;
         
         repeat(boarders){
@@ -103,10 +103,14 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
 
                         if (_weapon.has_tag("boarding 1")) {
                             gear_bonus += 2;
+                        	bridge_damage = max(bridge_damage, 3);
                         } else if (_weapon.has_tag("boarding 2")) {
                             gear_bonus += 4;
+                        	bridge_damage = max(bridge_damage, 5);
                         } else if (_weapon.has_tag("boarding 3")) {
                             gear_bonus += 6;
+                        	bridge_damage = max(bridge_damage, 7);
+
                         }
                     }
                 }
@@ -143,24 +147,12 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                             obj_ini.gear[co][i]="";
                         }
                     }
+
                     if (steal=true) and (damage=false){// Stealing
-                        var bridge_damage=0;
                         damaged_ship=max(1,damaged_ship);
-                        
-                        var whi;
-						whi=0;
-                        
-                        bridge_damage=3;
-                        //TODO tagging system to slove this
-                        
-                        if (_weapon.has_tag("boarding 3")) then bridge_damage=max(bridge_damage,7);
-                        
-                        if (_weapon.has_tag("boarding 2")) then bridge_damage=max(bridge_damage,5);
-                        
-                        if (_weapon.has_tag("boarding 1")) then bridge_damage=max(bridge_damage,3);
-                        
                         target.bridge-=bridge_damage;
                     }
+
                     if ((target.hp<=0) or (target.bridge<=0)){
                         var husk=instance_create(target.x,target.y,obj_en_husk);
                         
