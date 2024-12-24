@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "scr_experience_distribution",
+  "name": "scr_distribute_experience",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
