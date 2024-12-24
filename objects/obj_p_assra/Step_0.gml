@@ -110,7 +110,6 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                         } else if (_weapon.has_tag("boarding 3")) {
                             gear_bonus += 6;
                         	bridge_damage = max(bridge_damage, 7);
-
                         }
                     }
                 }
