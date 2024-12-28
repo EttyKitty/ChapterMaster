@@ -2080,7 +2080,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					secondary_modifier = 0.3;
 					side_arm_data="Flame: x0.3";
 				}
-				var side_arm = floor(secondary_modifier*((_melee_mod/100)*secondary_weapon.attack));
+				var side_arm = floor(secondary_modifier*(_melee_mod*secondary_weapon.attack));
 				if (side_arm>0){
 					final_attack+=side_arm;
 					explanation_string+=$"Side Arm: +{side_arm} ({side_arm_data})#";
