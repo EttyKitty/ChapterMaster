@@ -31,14 +31,18 @@ jobs:
       - name: Get Changed Files
         id: changed_files
         run: |
+          # Get list of changed Rust files in the PR
           changed_files=$(git diff --name-only origin/main...HEAD | grep '\.rs$' || true)
-          echo "changed_files=$changed_files" >> $GITHUB_ENV
+          echo "$changed_files"  # Output to debug
+          echo "changed_files=$changed_files" >> $GITHUB_ENV  # Persist to environment variable for later steps
 
       - name: Run Formatter on Changed Files
         run: |
           if [ -n "$changed_files" ]; then
+            # Iterate over changed files
             for file in $changed_files; do
-              ./gobo $file
+              echo "Formatting $file"
+              ./gobo-linux $file  # Run formatter on each changed file
             done
           else
             echo "No files changed, skipping formatting."
@@ -50,4 +54,4 @@ jobs:
 
       - name: Check for formatting changes
         run: |
-          git diff --exit-code || exit 1
+          git diff --quiet --exit-code || exit 1
