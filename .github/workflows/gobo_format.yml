@@ -22,3 +22,7 @@ jobs:
       - name: Run Formatter
         run: |
           ./gobo.exe .
+
+      - name: Check for formatting changes
+        run: |
+          git diff --exit-code || exit 1
