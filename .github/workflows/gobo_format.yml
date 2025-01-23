@@ -1,0 +1,24 @@
+name: Format Code
+
+on:
+  pull_request:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest  # Or 'windows-latest' if using Windows runner
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Download Release
+        run: |
+          curl -LO https://github.com/Pizzaandy/Gobo/releases/download/v0.4.0/gobo-ubuntu.zip
+
+      - name: Extract ZIP
+        run: |
+          unzip gobo-ubuntu.zip
+
+      - name: Run Formatter
+        run: |
+          ./gobo.exe .
