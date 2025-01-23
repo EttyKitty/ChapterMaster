@@ -24,6 +24,10 @@ jobs:
         run: |
           unzip gobo-ubuntu.zip
 
+      - name: Ensure executable permissions
+        run: |
+          chmod +x ./gobo
+
       - name: Run Formatter
         run: |
           ./gobo .
