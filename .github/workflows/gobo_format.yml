@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Formatter
         run: |
-          ./gobo.exe .
+          ./gobo .
 
       - name: Check for formatting changes
         run: |
