@@ -28,9 +28,25 @@ jobs:
         run: |
           chmod +x ./gobo
 
-      - name: Run Formatter
+      - name: Get Changed Files
+        id: changed_files
         run: |
-          ./gobo .
+          changed_files=$(git diff --name-only origin/main...HEAD | grep '\.rs$' || true)
+          echo "changed_files=$changed_files" >> $GITHUB_ENV
+
+      - name: Run Formatter on Changed Files
+        run: |
+          if [ -n "$changed_files" ]; then
+            for file in $changed_files; do
+              ./gobo $file
+            done
+          else
+            echo "No Rust files changed, skipping formatting."
+          fi
+
+      - name: Clean up Gobo Files
+        run: |
+          rm -rf gobo-ubuntu.zip gobo  # Clean up Gobo files to avoid affecting the diff
 
       - name: Check for formatting changes
         run: |
