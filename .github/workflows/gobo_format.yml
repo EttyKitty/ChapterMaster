@@ -31,19 +31,22 @@ jobs:
       - name: Get Changed Files
         id: changed_files
         run: |
-          # Get the target branch from GitHub Actions context
           target_branch="${{ github.event.pull_request.base.ref }}"
           pr_branch="${{ github.event.pull_request.head.ref }}"
           echo "Target branch is $target_branch"
           echo "PR branch is $pr_branch"
 
-          # Fetch the latest state of both the base and head branches
+          # Fetch the base branch and PR branch commit refs
           git fetch origin $target_branch:$target_branch
           git fetch origin $pr_branch:$pr_branch
 
-          # Get the changed files between the PR branch and the target branch
-          changed_files=$(git diff --name-only origin/$target_branch..origin/$pr_branch | grep '\.rs$' || true)
+          # Now compare with the correct commit hash
+          git diff --name-only origin/$target_branch...origin/$pr_branch | grep '\.rs$' || true
+
+          # Store the result of the diff in the environment variable
+          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch | grep '\.rs$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_ENV
+
 
       - name: Run Formatter on Changed Files
         run: |
