@@ -41,12 +41,12 @@ jobs:
               ./gobo $file
             done
           else
-            echo "No Rust files changed, skipping formatting."
+            echo "No files changed, skipping formatting."
           fi
 
       - name: Clean up Gobo Files
         run: |
-          rm -rf gobo-ubuntu.zip gobo  # Clean up Gobo files to avoid affecting the diff
+          rm -rf gobo-ubuntu.zip gobo
 
       - name: Check for formatting changes
         run: |
