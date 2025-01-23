@@ -16,6 +16,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
+      - name: Fetch
+        run: |
+          git fetch --all
+
       - name: Download Release
         run: |
           curl -LO https://github.com/Pizzaandy/Gobo/releases/download/v0.4.0/gobo-ubuntu.zip
