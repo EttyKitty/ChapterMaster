@@ -40,7 +40,7 @@ jobs:
           echo "Target branch is $target_branch"
 
           # Compare the PR branch with the target branch (e.g., main)
-          changed_files=$(git diff --name-only origin/$target_branch...HEAD | grep '\.rs$' || true)
+          changed_files=$(git diff --name-only HEAD...origin/$target_branch | grep '\.rs$' || true)
           echo "changed_files=$changed_files" >> $GITHUB_ENV
 
       - name: Run Formatter on Changed Files
