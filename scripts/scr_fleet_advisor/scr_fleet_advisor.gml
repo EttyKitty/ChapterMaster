@@ -21,8 +21,11 @@ function scr_fleet_advisor(){
     draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 1);
 
     if (menu_adept = 0) {
-        scr_image("advisor", 6, xx + 16, yy + 43, 310, 828);
-        // draw_sprite(spr_advisors,6,xx+16,yy+43);
+        if(struct_exists(obj_ini.custom_advisors, "admiral")){
+            scr_image("advisor/splash", obj_ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
+        } else {
+            scr_image("advisor/splash", 7, xx + 16, yy + 43, 310, 828);
+        }        // draw_sprite(spr_advisors,6,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -32,7 +35,7 @@ function scr_fleet_advisor(){
         blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
     }
     if (menu_adept = 1) {
-        scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
@@ -200,14 +203,14 @@ function scr_fleet_advisor(){
 
                         cn.temp[109] = string(obj_ini.ship_turrets[i]);
 
-                        cn.temp[110] = obj_ini.ship_wep[i][1];
-                        cn.temp[111] = obj_ini.ship_wep_facing[i][1];
-                        cn.temp[112] = obj_ini.ship_wep[i][2];
-                        cn.temp[113] = obj_ini.ship_wep_facing[i][2];
-                        cn.temp[114] = obj_ini.ship_wep[i][3];
-                        cn.temp[115] = obj_ini.ship_wep_facing[i][3];
-                        cn.temp[116] = obj_ini.ship_wep[i][4];
-                        cn.temp[117] = obj_ini.ship_wep_facing[i][4];
+                        var facing_length = array_length(obj_ini.ship_wep_facing[i]);
+                        var wep_length = array_length(obj_ini.ship_wep[i]);
+                        var max_weapons = min(facing_length, wep_length, 5);
+
+                        for (var s = 1; s < max_weapons; s++) {
+                            cn.temp[110+((s-1)*2)] = obj_ini.ship_wep[i][s];
+                            cn.temp[110+((s-1)*2)+1] = obj_ini.ship_wep_facing[i][s];
+                        }
 
                         cn.temp[118] = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
                         cn.temp[119] = "";

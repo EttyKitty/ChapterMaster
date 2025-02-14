@@ -63,18 +63,24 @@ function UnitButtonObject() constructor{
 	color= #50a076;
 	keystroke = false;
 	tooltip = "";
+	bind_method = "";
 
-	static update = function(data){
-		updaters = struct_get_names(data);
-		for (var i=0;i<array_length(updaters);i++){
-			self[$ updaters[i]] = data[$ updaters[i]];
-		}
-	}
 
 	static update_loc = function(){
+		if (label != ""){
+			w = string_width(label)
+		};
 		x2 = x1 + w;
 		y2 = y1 + h;		
 	}
+	static update = function(data){
+		var _updaters = struct_get_names(data);
+		var i=0;
+		for (i=0;i<array_length(_updaters);i++){
+			self[$ _updaters[i]] = data[$ _updaters[i]];
+		}
+		update_loc();
+	}	
 
 	update_loc();
 	static move = function(m_direction, with_gap=false, multiplier=1){
@@ -102,11 +108,44 @@ function UnitButtonObject() constructor{
 			tooltip_draw(tooltip);
 		}
 		if (allow_click){
-			return (point_and_click(draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha)) || keystroke);
+			var clicked = point_and_click(draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha)) || keystroke;
+			if (clicked){
+				if (is_callable(bind_method)){
+					bind_method();
+				}
+			}
+			return clicked
 		} else {
 			draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha);
 			return false;
 		}
+	}
+}
+
+function PurchaseButton(req) : UnitButtonObject() constructor{
+	req_value = req;
+	static draw = function(allow_click=true){
+		
+		var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha);
+		var _sh = sprite_get_height(spr_requisition);
+		var _scale = (y2 - y1) / _sh;
+		draw_sprite_ext(spr_requisition,0,x1,y2,_scale,_scale,0,c_white,1);
+		var _allow_click = obj_controller.requisition >= req_value;
+		if (scr_hit(x1, y1, x2, y2) && tooltip!=""){
+			tooltip_draw(tooltip);
+		}
+		if (allow_click && _allow_click){
+			var clicked = point_and_click(_but) || keystroke;
+			if (clicked){
+				if (is_callable(bind_method)){
+					bind_method();
+				}
+				obj_controller.requisition -= req_value;
+			}
+			return clicked
+		} else {
+			return false;
+		}		
 	}
 }
 
@@ -158,7 +197,7 @@ function TextBarArea(XX,YY,Max_width = 400) constructor{
         if (!allow_input) then draw_text(xx,yy+2,string_hash_to_newline("''"+string(string_area)+"'' "));
         if (allow_input){
         	obj_cursor.image_index=2;
-        	draw_text(xx,yy+2,string_hash_to_newline("''"+string(string_area)+"|''"))
+        	draw_text(xx,yy+2,$"''{string_area}|''")
         };
 
 		draw_set_font(old_font);
@@ -205,11 +244,71 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     return [selection,open_marker];
 }
 
-function ToggleButton() constructor {
+function radio_set(options_array, title)constructor{
+	toggles = [];
+	current_selection = 0;
+	self.title = title;
+	active_col = #009500;
+	innactive_col = c_gray;
+	allow_changes = true;
+	x_gap = 10;
+	y_gap = 5;
+	x1 = 0;
+	y1 = 0;
+	max_width = 0;
+	max_height = 0;
+	for (var i=0;i<array_length(options_array);i++){
+		array_push(toggles, new ToggleButton(options_array[i]));
+	}
+	x2 = 0;
+	y2 = 0;
+
+	static update = function(data){
+	    var _data_presets = struct_get_names(data);
+	    for (var i=0;i<array_length(_data_presets);i++){
+	    	self[$_data_presets[i]] = data[$_data_presets[i]];
+	    }		
+	}
+	static draw = function(){
+		draw_text(x1, y1, title);
+
+		var _prev_x = x1;
+		var _prev_y = y1+string_height(title)+10;
+		var items_on_row = 0;
+		for (var i=0;i<array_length(toggles);i++){
+			var _cur_opt = toggles[i];
+			_cur_opt.x1 = _prev_x;
+			_cur_opt.y1 = _prev_y;
+			_cur_opt.update()
+			_cur_opt.active = i==current_selection;
+			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.draw();
+			items_on_row++
+			
+			if (_cur_opt.clicked() && allow_changes){
+				current_selection = i;
+			}
+			_prev_x = _cur_opt.x2+x_gap;
+
+			x2 = _prev_x>x2 ? _prev_x:x2;
+			y2 = _prev_y + _cur_opt.height;
+			if (max_width>0){
+				if (_prev_x - x1 > max_width){
+					_prev_x = x1;
+					_prev_y += _cur_opt.height+y_gap;
+					items_on_row = 0;
+				}
+			}
+		}
+	}
+}
+
+function ToggleButton(data={}) constructor {
     x1 = 0;
     y1 = 0;
 	x2 = 0;
 	y2 = 0;
+	tooltip = "";
     str1 = "";
     width = 0;
 	height = 0;
@@ -219,8 +318,13 @@ function ToggleButton() constructor {
     text_halign = fa_left;
     text_color = c_gray;
     button_color = c_gray;
-
+    font = fnt_40k_12;
+    var _data_presets = struct_get_names(data);
+    for (var i=0;i<array_length(_data_presets);i++){
+    	self[$_data_presets[i]] = data[$_data_presets[i]];
+    }
     update = function () {
+    	draw_set_font(font);
         if (width == 0) {
             width = string_width(str1) + 4;
         }
@@ -246,6 +350,7 @@ function ToggleButton() constructor {
     };
 
     draw = function() {
+    	draw_set_font(font);
         var str1_h = string_height(str1);
         var text_padding = width * 0.03;
         var text_x = x1 + text_padding;
@@ -267,6 +372,11 @@ function ToggleButton() constructor {
                 if (hover_alpha < 1) hover_alpha += 0.03; // Increase state_alpha when not hovered
             }
         }
+        if (tooltip!=""){
+        	if (hover()){
+	        	tooltip_draw(tooltip);
+	        }
+        }
 
         total_alpha = state_alpha * hover_alpha;
         draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
@@ -278,7 +388,7 @@ function ToggleButton() constructor {
     };
 }
 
-function InteractiveButton() constructor {
+function InteractiveButton(data={}) constructor {
     x1 = 0;
     y1 = 0;
 	x2 = 0;
@@ -294,7 +404,10 @@ function InteractiveButton() constructor {
     text_halign = fa_left;
     text_color = c_gray;
     button_color = c_gray;
-
+    var _data_presets = struct_get_names(data);
+    for (var i=0;i<array_length(_data_presets);i++){
+    	self[$_data_presets[i]] = data[$_data_presets[i]];
+    }
     update = function () {
         if (width == 0) {
             width = string_width(str1) + 4;

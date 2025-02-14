@@ -216,7 +216,7 @@ global.trait_list = {
 		intelligence:[4,2,"max"],
 		wisdom:1,
 		technology:2,
-		stength:-1,
+		strength:-1,
 		display_name:"Scholar",
 		flavour_text:"Keen mind and enjoys reading and training it whenever possible",
 	},
@@ -308,7 +308,7 @@ global.trait_list = {
 		flavour_text:"Started life on a deathworld Prison environment or other desolate start point. While this has greatly improved their strength and survival abilities, their skills in technology and other advanced fields are reduced",
 		intelligence:-3,
 		technology:[-3,2],
-		piety:[300,100],
+		piety:[3,1],
 	},
 	"technophobe":{
 		display_name:"Technophobe",
@@ -383,6 +383,78 @@ global.trait_list = {
 		constitution : [2,2],
 		flavour_text:"Understands the ins and outs of defences both in building them and in taking them appart",
 		effect:"Bonus when commanding defences and extra boosts when leading a garrison",
+	},
+	"students_of_war":{
+		wisdom:[3,2,"max"],
+		charisma:[3,2,"max"],
+		intelligence:[1,1],
+		strength:[-2, 2,"min"],
+		display_name:"Student of war",
+		flavour_text:"The sons of Guilliman are equally elite warriors and learned statesman",
+	},
+	"secretive_knights":{
+		constitution:[3,2,"max"],
+		dexterity:[3,2,"max"],
+		weapon_skill:[1,1],
+		charisma:[-2, 2,"min"],
+		display_name:"Secretive Knight",
+		flavour_text:"This Warrior speaks precious few words to those outside his chapter but his mastery of arms is apparent",
+	},
+	"warriors_of_the_Wind":{
+		dexterity:[3,2,"max"],
+		weapon_skill:[3,2,"max"],
+		wisdom:[1,1],
+		strength:[-2, 2,"min"],
+		display_name:"Warrior of the Wind",
+		flavour_text:"Like the Khagan this marine is a tempest in combat flowing through enemies with finesse not common for astartes",
+	},
+	"wolf_prince":{
+		strength:[3,2,"max"],
+		dexterity:[3,2,"max"],
+		wisdom:[1,1],
+		technology:[-2, 2,"min"],
+		display_name:"Wolf Prince",
+		flavour_text:"The Canis Helix of this marine raises him to acts of savage ferocity  matched only by other sons of the Wolf Lord",
+	},
+	"shadow_masters":{
+		dexterity:[3,2,"max"],
+		ballistic_skill:[3,2,"max"],
+		wisdom:[1,1],
+		constitution:[-2, 2,"min"],
+		display_name:"Shadow Born",
+		flavour_text:"The progeny of the Raven lord are exceptionally nimble stealth operatives this Marine is one such example ",
+	},
+	"keepers_of_the_flame":{
+		strength:[3,2,"max"],
+		constitution:[3,2,"max"],
+		technology:[1,1],
+		dexterity:[-2, 2,"min"],
+		display_name:"Keeper of the Flame",
+		flavour_text:"The sons Vulkan are blessed with strong and durable bodies they use to safeguard humanity's flame",
+	},
+	"will_of_iron":{
+		wisdom:[3,2,"max"],
+		constitution:[3,2,"max"],
+		strength:[1,1],
+		charisma:[-2, 2,"min"],
+		display_name:"Will of Iron",
+		flavour_text:"Honed and tempered in the flames of war this marine has chained the emotions that killed his genesire",
+	},
+	"host_of_angels":{
+		charisma:[3,2,"max"],
+		intelligence:[3,2,"max"],
+		weapon_skill:[1,1],
+		constitution:[-2, 2,"min"],
+		display_name:"Angelic Host",
+		flavour_text:"Comparable to the angels of legend this marine wields a paintbrush with the same grace he does a blade",
+	},
+	"obstinate_defenders":{
+		constitution:[3,2,"max"],
+		intelligence:[3,2,"max"],
+		ballistic_skill:[1,1],
+		dexterity:[-2, 2,"min"],
+		display_name:"Obstinate Defender",
+		flavour_text:"Even in the face of unsurmountable odds this marine will hold defiantly as befitting a son of Dorn",
 	},
 	"lobotomized" : {
 		wisdom : -50,
@@ -802,9 +874,90 @@ global.astartes_trait_dist = [
 					[eTrials.APPRENTICESHIP, -2],
 				]				
 			}
-		]		
+		],		
+		[
+			"secretive_knights",
+			[1,1],
+			{
+				chapter_name:[
+					"Dark Angels",[500,0]
+				],			
+			}
+		],		
+		[
+			"warriors_of_the_wind",
+			[1,1],
+			{
+				chapter_name:[
+					"White Scars",[500,0]
+				],			
+			}
+		],		
+		[
+			"wolf_prince",
+			[1,1],
+			{
+				chapter_name:[
+					"Space Wolves",[500,0]
+				],			
+			}
+		],		
+		[
+			"obstinate_defenders",
+			[1,1],
+			{
+				chapter_name:[
+					"Imperial Fists",[500,0]
+				],			
+			}
+		],		
+		[
+			"host_of_angels",
+			[1,1],
+			{
+				chapter_name:[
+					"Blood Angels",[500,0]
+				],			
+			}
+		],		
+		[
+			"will_of_iron",
+			[1,1],
+			{
+				chapter_name:[
+					"Iron Hands",[500,0]
+				],			
+			}
+		],		
+		[
+			"students_of_war",
+			[1,1],
+			{
+				chapter_name:[
+					"Ultramarines",[500,0]
+				],			
+			}
+		],		
+		[
+			"keepers_of_the_flame",
+			[1,1],
+			{
+				chapter_name:[
+					"Salamanders",[500,0]
+				],			
+			}
+		],		
+		[
+			"shadow_masters",
+			[1,1],
+			{
+				chapter_name:[
+					"Raven Guard",[500,0]
+				],			
+			}
+		],		
+		
 	];
-
 
 
 
@@ -825,17 +978,18 @@ function scr_marine_trait_spawning(distribution_set){
 				add_trait(distribution_set[i][0])
 			}
 		} else if (array_length(distribution_set[i])==3){  //trait has conditions
-			var dist_modifiers =distribution_set[i][2];
-			var dist_rate = distribution_set[i][1];
+			var dist_modifiers = DeepCloneStruct(distribution_set[i][2]);
+			var dist_rate=[];
+			array_copy(dist_rate, 0, distribution_set[i][1], 0, array_length(distribution_set[i][1]));
 			if (struct_exists(dist_modifiers, "disadvantage")){
-				if (array_contains(obj_ini.dis, dist_modifiers[$"disadvantage"][0])){
+				if (scr_has_disadv(dist_modifiers[$"disadvantage"][0])){
 					dist_rate = dist_modifiers[$"disadvantage"][1];  //apply new modifier rate
 				} else if (is_state_required(dist_modifiers[$"disadvantage"])){
 					dist_rate=[0,0];
 				}
 			}
 			if (struct_exists(dist_modifiers, "advantage")){
-				if (array_contains(obj_ini.adv, dist_modifiers[$"advantage"][0])){
+				if (scr_has_adv(dist_modifiers[$"advantage"][0])){
 					dist_rate = dist_modifiers[$"advantage"][1];  //apply new modifier rate
 				} else if (is_state_required(dist_modifiers[$"advantage"])){
 					dist_rate=[0,0];

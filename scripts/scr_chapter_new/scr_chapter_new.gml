@@ -12,7 +12,7 @@ function ChapterData() constructor {
 	icon = 0;
 	icon_name = "aa";
 	aspirant_trial = eTrials.BLOODDUEL;
-	fleet_type = eFLEET_TYPES.NONE;
+	fleet_type = ePlayerBase.none;
 	strength = 0;
 	purity = 0;
 	stability = 0;
@@ -24,6 +24,11 @@ function ChapterData() constructor {
 	recruiting = "Death"; 
 	recruiting_name = global.name_generator.generate_star_name();
 	homeworld_rule = eHOMEWORLD_RULE.NONE;
+	home_spawn_loc = 1;
+	recruit_home_relationship = 1;
+	home_warp = 1;
+	home_planets = 1;
+
 	flagship_name = global.name_generator.generate_imperial_ship_name();
 	monastary_name = "";
 	advantages = array_create(9);
@@ -142,6 +147,9 @@ function ChapterData() constructor {
 	custom_squads = {};
 
 
+	custom_advisors = {};
+
+
 	/// @desc Returns true if loaded successfully, false if not.
 	/// @param {Enum.eCHAPTERS} chapter_id 
 	/// @param {Bool} use_app_data if set to true will read from %AppData%/Local/ChapterMaster instead of /datafiles
@@ -155,7 +163,7 @@ function ChapterData() constructor {
 			 load_result = file_loader.load_struct_from_json_file($"main\\chapters\\{chapter_id}.json", "chapter", false);
 		}
 		if(!load_result.is_success){
-			// debugl($"No chapter json exits for chapter_id {chapter_id}");
+			// log_error($"No chapter json exits for chapter_id {chapter_id}");
 			return false;
 		}
 		var json_chapter = load_result.value.chapter;
@@ -219,7 +227,7 @@ function scr_chapter_new(argument0) {
 		}
 	}
 	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-	load_default_gear(eROLE.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
 	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
 	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
 	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
@@ -250,7 +258,7 @@ function scr_chapter_new(argument0) {
 		var successfully_loaded = chapter_obj.load_from_json(chapter_id);
 		if(!successfully_loaded){
 			var issue = $"No json file exists for chapter id {chapter_id} and name {argument0}";
-			// debugl (issue);
+			// log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}
@@ -268,7 +276,7 @@ function scr_chapter_new(argument0) {
 		var successfully_loaded = chapter_obj.load_from_json(argument0, true);
 		if(!successfully_loaded){
 			var issue = $"No json file exists for chapter id {argument0} and name {argument0}";
-			debugl (issue);
+			log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}
@@ -304,6 +312,11 @@ function scr_chapter_new(argument0) {
 		obj_creation.recruiting_exists = chapter_object.recruiting_exists;
 		obj_creation.recruiting = chapter_object.recruiting;
 		obj_creation.recruiting_name = chapter_object.recruiting_name;
+
+		obj_creation.buttons.home_spawn_loc_options.current_selection = chapter_object.home_spawn_loc ?? 1;
+		obj_creation.buttons.recruit_home_relationship.current_selection = chapter_object.recruit_home_relationship ?? 1;
+		obj_creation.buttons.home_warp.current_selection = chapter_object.home_warp ?? 1;
+		obj_creation.buttons.home_planets.current_selection =   chapter_object.home_planets ??1;
 
 		obj_creation.aspirant_trial = trial_map(chapter_object.aspirant_trial);
 		obj_creation.adv = chapter_object.advantages;
@@ -368,17 +381,17 @@ function scr_chapter_new(argument0) {
 			    }
 			    obj_creation.livery_picker = new ColourItem(100,230);
 			    obj_creation.livery_picker.scr_unit_draw_data();
-			    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special);
+			    obj_creation.livery_picker.set_default_armour(struct_cols,col_special);
 			    obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
-			    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
+			    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_default_librarian(struct_cols);
 
-			    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
+			    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_default_chaplain(struct_cols);
 
-			    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
+			    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_default_apothecary(struct_cols);
 
-			    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
+			    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_default_techmarines(struct_cols);
 			    obj_creation.livery_picker.scr_unit_draw_data();
-			    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special); 			
+			    obj_creation.livery_picker.set_default_armour(struct_cols,col_special); 			
 			}
 			obj_creation.livery_picker.map_colour = full_liveries[0];
 			obj_creation.livery_picker.role_set = 0;  			 			
@@ -439,6 +452,13 @@ function scr_chapter_new(argument0) {
 			obj_creation.custom_squads = chapter_object.custom_squads;
 		}
 
+		if(struct_exists(chapter_object, "custom_advisors")){
+			obj_creation.custom_advisors = chapter_object.custom_advisors;
+		}
+		
+		
+
+
 		points = chapter_object.points;
 		maxpoints=chapter_object.points;	
 
@@ -469,14 +489,6 @@ function scr_chapter_new(argument0) {
 	return true;
 }
 
-
-enum eFLEET_TYPES {
-	NONE = 0,
-	HOMEWORLD = 1,
-	FLEET_BASED,
-	PENITENCE,
-}
-
 enum eHOMEWORLD_RULE {
 	NONE = 0,
 	GOVERNOR = 1,
@@ -489,4 +501,9 @@ enum eCM_SPECIALTY {
 	LEADER = 1,
 	CHAMPION,
 	PSYKER,
+}
+enum eRecruitHomeRelationship{
+	SAMEPLANET,
+	SAMESYSTEM,
+	DIFFERENTSYSTEM,
 }

@@ -22,4 +22,10 @@ function draw_rectangle_outline(_x, _y, _x2, _y2, _bg_color = c_black, _outline_
 
     draw_set_color(_cur_color);
     draw_set_alpha(_cur_alpha);
+
 }
+
+function draw_rectangle_array(coords, outline){
+    draw_rectangle(coords[0], coords[1], coords[2], coords[3], outline);
+}
+

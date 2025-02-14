@@ -11,7 +11,7 @@ function scr_livery_setup(){
     tooltip2="";
     obj_cursor.image_index=0;
 
-    draw_text_color_simple(800,80,string_hash_to_newline(string(chapter_name)),38144);
+    draw_text_color_simple(800,80,chapter_name,38144);
     var draw_sprites = [spr_mk7_colors, spr_mk4_colors,spr_mk5_colors,spr_beakie_colors,spr_mk8_colors,spr_mk3_colors, spr_terminator3_colors];
     var draw_hem = [spr_generic_sgt_mk7, spr_generic_sgt_mk4,spr_generic_sgt_mk5,spr_generic_sgt_mk6,spr_generic_sgt_mk8,spr_generic_sgt_mk3, spr_generic_terminator_sgt];
     
@@ -34,8 +34,6 @@ function scr_livery_setup(){
         test_sprite--;
         if (test_sprite<0) then test_sprite=(array_length(draw_sprites)-1);
     }
-    var liv_string = $"Full Livery {livery_picker.role_set == 0? "Defualt" :role[100][livery_picker.role_set]}";
-    draw_text(150, 200, liv_string);
     livery_picker.draw_base();
     draw_rectangle_color_simple(preview_box.x1,preview_box.y1,preview_box.x2,preview_box.y2,1,38144);
     if( shader_is_compiled(sReplaceColor)){
@@ -133,6 +131,8 @@ function scr_livery_setup(){
     }else{
         draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
     }
+    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
+    draw_text(160, 100, liv_string);    
     
     draw_set_color(38144);
     draw_set_halign(fa_left);
@@ -283,7 +283,7 @@ function scr_livery_setup(){
 	    			lens_color:lens_color,
 	    			weapon_color:weapon_color
 	    		}
-	    		livery_picker.set_defualt_armour(struct_cols, col_special);          
+	    		livery_picker.set_default_armour(struct_cols, col_special);          
              }
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
         }
@@ -537,7 +537,7 @@ function scr_livery_setup(){
         }
     }
     if (livery_picker.role_set!=0){
-    	if (point_and_click(draw_unit_buttons([10, 150], $"Return to defualt Livery"))){
+    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
             full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
             livery_picker.map_colour = full_liveries[0];
             livery_picker.role_set = 0;   		

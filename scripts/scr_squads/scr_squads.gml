@@ -140,6 +140,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	type_data={};
 	formation_place=""
 	formation_options=[];
+	allow_bulk_swap = true;
 
 
 	//TODO introduce loyalty hits from long periods of exile from hierarchy nodes
@@ -650,7 +651,7 @@ function game_start_squads(){
 		create_squad("command_squad", company);
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){ ///keep making tact squads for as long as there are enough tact marines
-			if (global.chapter_name == "White Scars") or (array_contains(obj_ini.adv, "Lightning Warriors")) {
+			if (scr_has_adv("Lightning Warriors")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("tactical_squad", company);
@@ -669,7 +670,7 @@ function game_start_squads(){
 		}		
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){
-			if (array_contains(obj_ini.adv, "Boarders")) {
+			if (scr_has_adv("Boarders")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("assault_squad", company);
@@ -734,10 +735,10 @@ function set_member_loc (loc_data){
 			system.p_player[member_location[1]]-=size;
 			system.p_player[wid]+=size;
 			planet_location = wid;
-			ship_location = 0;
+			ship_location = -1;
 		}
 	} else {
-		if (wid == 0 && lid>0){
+		if (wid == 0 && lid>-1){
 			load_marine(lid);
 		}
 	}

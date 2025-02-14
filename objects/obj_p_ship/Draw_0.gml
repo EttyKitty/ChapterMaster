@@ -45,7 +45,7 @@ draw_set_halign(fa_center);
 
 if (boarders>0){
     // draw_sprite(spr_force_icon,0,x-16,y+12);
-    scr_image("ui/force",0,x-16-32,y+12-32,64,64);
+    scr_image("ui/force",1,x-16-32,y+12-32,64,64);
     
     draw_set_color(0);
     draw_text(x-16,y+12,string_hash_to_newline(string(boarders)));

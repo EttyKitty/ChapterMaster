@@ -39,7 +39,13 @@ function temp_marine_variables(co, unit_num){
 		array_push(temp_struct,jsonify_marine_struct(co,unit_num));
 		scr_wipe_unit(co,unit_num);
 }
-
+function sort_all_companies(){
+	with (obj_ini){
+		for (var i=0;i<=obj_ini.companies;i++){
+			scr_company_order(i);
+		}
+	}
+}
 function scr_company_order(company) {
 	try_and_report_loop("company order", function(company){
 

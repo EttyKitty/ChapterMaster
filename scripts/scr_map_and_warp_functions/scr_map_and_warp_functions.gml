@@ -60,7 +60,10 @@ function scr_map_scale(){
 
 function draw_warp_lanes(){
 	static routes = [];
-	if (array_length(routes)==0){
+	static current_seed = global.game_seed;
+	if (array_length(routes)==0 || current_seed!=global.game_seed){
+		current_seed=global.game_seed;
+		routes = [];
 		var star_degrade_list = [];
 		var total_stars = instance_number(obj_star);
 		var cur_star,this_star,connection,i, check_star;
@@ -214,6 +217,91 @@ function draw_warp_lanes(){
 		}
 
 	}
+}
+
+function create_complex_star_routes(player_star){
+	var north=[], east=[], west=[], south=[], central=[];
+	with (obj_star){
+
+		var _home = id == player_star;
+		if (_home){
+			if (obj_ini.home_warp_position==0){//isolated environment
+				instance_deactivate_object(id);
+				continue;
+			}
+		}
+		var _allow_major = (!_home || (obj_ini.home_warp_position == 2 && _home));
+		if (_allow_major){
+			if (x<700) then array_push(west, id);
+			if (y<700) then array_push(north, id);
+			if (x>room_width-700) then array_push(east, id);
+			if (y>room_height-700) then array_push(south, id);
+			if (x>700) && (y>700) && (x<room_width-700) && (y<room_height-700){
+				array_push(central, id);
+			}
+		}
+
+		var nearest_star = distance_removed_star(x,y,1,true,true,false);
+		if (determine_warp_join(nearest_star.id, self.id)){
+			array_push(warp_lanes, [distance_removed_star(x,y,2,true,true,false).name, 1]);
+		} else {
+			array_push(warp_lanes, [nearest_star.name, 1]);
+		}
+
+		if (!irandom(8) || (id == player_star && obj_ini.home_warp_position==2)){
+			array_push(warp_lanes, [distance_removed_star(x,y,irandom_range(3, 6),true,true,false).name, 1]);
+		}
+	}
+	full_loci = [north, east,west,south,central];
+	// here is where we set up the warp hubs
+	var WarpHub,set, join_set, total_joins;
+	for (var i=0;i<array_length(full_loci);i++){
+		var player_hub_overide = false;
+		if (irandom(1)){
+			if (obj_ini.home_warp_position!=2){
+				continue;
+			} else {
+				if (!array_contains(full_loci[i], player_star)){
+					continue;
+				} else {
+					player_hub_overide = true;
+				}
+			}
+			
+		} else {
+			if (array_contains(full_loci[i], player_star)){
+				player_hub_overide = true;
+			}
+		}
+		set = full_loci[i];
+		if (array_length(set) == 0) then continue;
+		if (player_hub_overide){
+			for (var i=0;i<array_length(set);i++){
+				if (set[i] == player_star){
+					WarpHub = set[i];
+					break;
+				}
+			}
+		} else {
+			WarpHub = array_random_element(set);
+		}
+		total_joins =0;
+		for (var s=0;s<array_length(full_loci);s++){
+			if (!irandom(1)) then continue;
+			join_set = full_loci[s];
+			var set_count = array_length(join_set);
+			if (s==i || set_count == 0)then continue;
+			/*//if (irandom(1)) then continue;
+			for (var i=0;i<array_length(full_loci[s])i++){
+				//if !(irandom(2)) then
+			}*/
+			join_star = array_random_element(join_set);
+			array_push(WarpHub.warp_lanes, [join_star.name, 4]);
+			total_joins++;
+			if (total_joins>3) then break;
+		}
+	}
+	instance_activate_object(obj_star);
 }
 
 function set_map_pan_to_loc(target){

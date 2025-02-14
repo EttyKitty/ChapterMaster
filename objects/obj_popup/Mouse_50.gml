@@ -210,8 +210,8 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
         with(obj_controller){
             // man_current=0;
             var i=-1;
-            man_size=0
-            ;selecting_location="";
+            man_size=0;
+            selecting_location="";
             selecting_types="";
             selecting_ship=-1;
             

@@ -16,7 +16,7 @@ try {
     obj_controller.cooldown=10;
     
     
-    debugl($"Ground Combat - {defeat ? "Defeat" : "Victory"}Victory - Enemy:{enemy} ({battle_special})");
+    log_message($"Ground Combat - {defeat ? "Defeat" : "Victory"}Victory - Enemy:{enemy} ({battle_special})");
     
     
     // If battling own dudes, then remove the loyalists after the fact
@@ -260,12 +260,6 @@ try {
     
     instance_activate_all();
     
-    if (scr_role_count("Chapter Master","")=0){
-        obj_controller.alarm[7]=1;
-        if (global.defeat<=1) then global.defeat=1;
-        if (enemy=1) or (enemy=2) or (enemy=5) then global.defeat=3;
-    }
-    
     
     if (turn_count < 20){
         if (defeat=0) and (threat>=4) then scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}",enemy);
@@ -296,7 +290,9 @@ try {
                 
                 _battle_object.p_player[_planet]-=world_size;
 
-                if (defeat=1) then yeehaw1.p_player[_planet]=0;
+                if (defeat=1){
+                    _battle_object.p_player[_planet]=0;
+                };
             }
             obj_controller.combat=0;
             with(obj_turn_end){
@@ -505,7 +501,7 @@ try {
             scr_event_log("red","A handful of loyalist "+string(global.chapter_name)+" overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             pop.mission="loyalist_destroy_ship";
 
-            with(obj_ini){scr_ini_ship_cleanup();}
+            scr_ini_ship_cleanup();
         }
     }
     
@@ -598,23 +594,21 @@ try {
             pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
             scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             
-            with(obj_ini){scr_ini_ship_cleanup();}
+            scr_ini_ship_cleanup();
         }
     }
     
     if (battle_special="space_hulk") and (defeat=0) and (hulk_treasure>0){
-        var shiyp,shi,d,loc;
-        shiyp=0;shi=0;d=0;
-        
-        with(obj_p_fleet){if (action!="") then instance_deactivate_object(id);}
-        shiyp=instance_nearest(battle_object.x,battle_object.y,obj_p_fleet);
-        if (shi=0) and (shiyp.capital_number>0) then shi=shiyp.capital_num[1];
-        if (shi=0) and (shiyp.frigate_number>0) then shi=shiyp.frigate_num[1];
-        if (shi=0) and (shiyp.escort_number>0) then shi=shiyp.escort_num[1];
-        loc=obj_ini.ship[shi];instance_activate_object(obj_p_fleet);
+        var shi=0,loc="";
+
+        var shiyp=instance_nearest(battle_object.x,battle_object.y,obj_p_fleet);
+        if (shiyp.x == battle_object.x && shiyp.y ==battle_object.y){
+            shi = fleet_full_ship_array(shiyp)[0];
+            loc = obj_ini.ship[shi];
+        }
         
         if (hulk_treasure=1){// Requisition
-            var reqi;reqi=round(random_range(30,60)+1)*10;
+            var reqi=round(random_range(30,60)+1)*10;
             obj_controller.requisition+=reqi;
             
             var pop;pop=instance_create(0,0,obj_popup);
@@ -622,14 +616,14 @@ try {
             pop.title="Space Hulk: Resources";
             pop.text="Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting "+string(reqi)+" Requisition.";
         }else if (hulk_treasure=2){// Artifact
-            scr_add_artifact("random","random",4,loc,shi+500);
-            var i,last_artifact;i=0;last_artifact=0;
-            repeat(100){
-            if (last_artifact=0){i+=1;if (obj_ini.artifact[i]="") then last_artifact=i-1;}}
-            var pop;pop=instance_create(0,0,obj_popup);
+            //TODO this will eeroniously put artifacts in the wrong place but will resolve crashes
+            var last_artifact = scr_add_artifact("random","random",4,loc,shi+500);
+            var i=0;
+
+            var pop=instance_create(0,0,obj_popup);
             pop.image="space_hulk_done";
             pop.title="Space Hulk: Artifact";
-            pop.text="An Artifact has been retrieved from the Space Hulk and stowed upon "+string(loc)+".  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought home and identified posthaste.";
+            pop.text=$"An Artifact has been retrieved from the Space Hulk and stowed upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
             scr_event_log("","Artifact recovered from the Space Hulk.");
         }else if (hulk_treasure=3){// STC
             scr_add_stc_fragment();// STC here

@@ -41,7 +41,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 			assignment=unit.assignment();
 			if (assignment!="none"){
 				unit_location_string += $"({assignment})";
-			}else if (fest_planet==0) and (fest_sid>0) and (fest_repeats>0) and (ma_lid[selected]==fest_sid){
+			}else if (fest_planet==0) and (fest_sid>-1) and (fest_repeats>0) and (ma_lid[selected]==fest_sid){
 				unit_location_string="=Event=";
 				eventing=true;
 			}else if (fest_planet==1) and (fest_wid>0) and (fest_repeats>0) and (ma_wid[selected]==fest_wid) and (ma_loc[selected]==fest_star){
@@ -88,7 +88,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
         if (ma_wid[selected]!=0){
         	//numeral for vehicle planet
         	unit_location_string += scr_roman(ma_wid[selected]);
-        } else if (ma_lid[selected]>0){
+        } else if (ma_lid[selected]>-1){
         	unit_location_string = obj_ini.ship[ma_lid[selected]]
         }
         health_string=string(round(ma_health[selected]))+"% HP";
@@ -173,14 +173,26 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	    // Squads
 	    var sqi="";
 	    draw_set_color(c_black);
-	    var squad_colours=[c_teal,c_red,c_green,c_orange,c_aqua,c_fuchsia,c_green,c_blue,c_fuchsia,c_maroon]
-	    var squad_modulo = squad[selected]%10;
-	    draw_set_color(squad_colours[squad_modulo])
+	    var squad_colours=[c_teal,c_red,c_green,c_orange,c_aqua,c_fuchsia,c_green,c_blue,c_fuchsia,c_maroon];
+	    if (squad[selected]!=-1){
+	    	var _squad_modulo = squad[selected]%10;
+	    	draw_set_color(squad_colours[_squad_modulo])
+	    }
 	
-	    if (selected>0 && selected<array_length(display_unit)-1){
-	        if (squad[selected]==squad[selected+1]) and (squad[selected]!=squad[selected-1]){sqi="top"}
-	        else if (squad[selected]==squad[selected+1]) and (squad[selected]==squad[selected-1]){sqi="mid"}
-	        else if (squad[selected]!=squad[selected+1]) and (squad[selected]==squad[selected-1]) then sqi="bot";
+	    if (selected>0 && selected<array_length(display_unit)-1 && array_length(squad)-1>selected){
+	    	var _cur_squad = squad[selected];
+	    	var _next_squad = squad[selected+1];
+	    	var _prev_squad = squad[selected-1];
+	        if (_cur_squad==_next_squad){
+	        	if (squad[selected]!=_prev_squad){
+	        		sqi="top";
+	        	} else {
+	        		sqi="mid"
+	        	}
+	        }
+	        else if (squad[selected]==_prev_squad){
+	        	sqi="bot";
+	        }
 	    }
 	    //TODO handle recursively with an array
 	      draw_rectangle(xx+25,yy+64,xx+25+8,yy+85,0);
@@ -267,8 +279,8 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	                	draw_sprite(spr_loc_icon,0,xx+427+8,yy+66);
 	                }
 	        }else{
-	            if (ma_lid[selected]==0) and (ma_wid[selected]>0) then draw_sprite(spr_loc_icon,0,xx+427+8,yy+66);
-	            if (ma_lid[selected]>0) and (ma_wid[selected]==0) then draw_sprite(spr_loc_icon,1,xx+427+8,yy+66);
+	            if (ma_lid[selected]==-1) and (ma_wid[selected]>0) then draw_sprite(spr_loc_icon,0,xx+427+8,yy+66);
+	            if (ma_lid[selected]>-1) and (ma_wid[selected]==0) then draw_sprite(spr_loc_icon,1,xx+427+8,yy+66);
 	        }
 	    }
 	     //TODO handle recursively
@@ -336,7 +348,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
     var wrong_location = false;
     if (!no_location){
     	if (selecting_ship>-1){
-    		if (ma_lid[selected]==0){
+    		if (ma_lid[selected]==-1){
     			wrong_location=true;
     		} else {
     			wrong_location = obj_ini.ship_location[ma_lid[selected]] != selecting_location;

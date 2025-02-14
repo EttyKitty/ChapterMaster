@@ -28,17 +28,17 @@ function set_up_armentarium(){
                // stc_flashes[i][f].flash_size
             }
         }*/
-        speeding_bits = [
-            new SpeedingDot(0, 0,(210/6)*stc_wargear),
-            new SpeedingDot(0, 0,(210/6)*stc_vehicles),
-            new SpeedingDot(0, 0,(210/6)*stc_ships)
-        ]        
+        speeding_bits = {
+            "wargear":new SpeedingDot(0, 0,(210/6)*stc_wargear),
+            "vehicles":new SpeedingDot(0, 0,(210/6)*stc_vehicles),
+            "ships":new SpeedingDot(0, 0,(210/6)*stc_ships)
+		}        
 }
 
 function same_locations(first_loc,second_loc){
     var same_loc = false;
     if (is_array(first_loc)&& is_array(second_loc)){
-        if (first_loc[2] != "warp" && first_loc[2] != "lost"){
+        if (first_loc[2] != "Warp" && first_loc[2] != "Lost"){
             if (first_loc[2] == second_loc[2]) then same_loc=true;
         } else {
             if (first_loc[1] == second_loc[1]) &&
@@ -75,15 +75,8 @@ function identify_stc(area){
     }
 }
 function scr_draw_armentarium(){
-	    var recruitment_pace = [
-        " is currently halted.",
-        " is advancing sluggishly.",
-        " is advancing slowly.",
-        " is advancing moderately fast.",
-        " is advancing fast.",
-        " is advancing frenetically.",
-        " is advancing as fast as possible."
-    ];
+    var _recruit_pace = ARR_recruitment_pace;
+    var _train_tiers  = ARR_techmarine_training_tiers;
     var xx = __view_get(e__VW.XView, 0) + 0;
 	var yy = __view_get(e__VW.YView, 0) + 0;
 	draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -98,7 +91,11 @@ function scr_draw_armentarium(){
     
     if (menu_adept = 0) {
         // draw_sprite(spr_advisors,4,xx+16,yy+43);
-        scr_image("advisor", 4, xx + 16, yy + 43, 310, 828);
+        if(struct_exists(obj_ini.custom_advisors, "forge_master")){
+            scr_image("advisor/splash", obj_ini.custom_advisors.forge_master, xx + 16, yy + 43, 310, 828);
+        } else {
+            scr_image("advisor/splash", 5, xx + 16, yy + 43, 310, 828);
+        }
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -111,7 +108,7 @@ function scr_draw_armentarium(){
     }
     if (menu_adept = 1) {
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
-        scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -240,32 +237,11 @@ function scr_draw_armentarium(){
             blurp = "Your Chapter contains " + string(temp[36]) + " " + string(obj_ini.role[100, 16]) + ".##";
             blurp += "The training of a new " + string(obj_ini.role[100, 16]);
         }
-        if (training_techmarine = 0) {
-            blurp += recruitment_pace[training_techmarine];
+        if (training_techmarine>=0){
+            blurp += _recruit_pace[training_techmarine];
         }
-        if (training_techmarine = 1) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 1) + 1;
-        }
-        if (training_techmarine = 2) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 2) + 1;
-        }
-        if (training_techmarine = 3) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 4) + 1;
-        }
-        if (training_techmarine = 4) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 6) + 1;
-        }
-        if (training_techmarine = 5) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 10) + 1;
-        }
-        if (training_techmarine = 6) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 14) + 1;
+        if (training_techmarine >0 && training_techmarine<=6) {
+            eta = floor((359 - tech_points) / _train_tiers[training_techmarine])+ 1;
         }
 
         if (tech_aspirant > 0) and(training_techmarine > 0) and(menu_adept = 1) {
@@ -298,7 +274,7 @@ function scr_draw_armentarium(){
         }
         var research_progress = ceil(((5000*(research_area_limit+1))-stc_research[$ stc_research.research_focus])/specialist_point_handler.research_points);
 		static research_drop_down = false;
-        var research_eta_message = $"Based on current progress it will be {research_progress} months until next significant research step is complete";
+        var research_eta_message = $"Based on current progress it will be {research_progress} months until next significant research step is complete, Research is currently focussed on {stc_research.research_focus}";
         draw_text_ext(xx + 336 + 16, y_offset+25, string_hash_to_newline(research_eta_message), -1, 536);        
 
 
@@ -310,69 +286,111 @@ function scr_draw_armentarium(){
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
         draw_text_transformed(xx + 605, yy + 432, string_hash_to_newline("STC Fragments"), 0.75, 0.75, 0);
-         draw_set_font(fnt_40k_12);
+        draw_set_font(fnt_40k_12);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);       
-        var drop_down_results = drop_down_sandwich(
-            stc_research.research_focus,
-            xx + 336 + 16,
-            y_offset,
-            ["vehicles","wargear", "ships"],
-            research_drop_down,
-            "Research is currently focussed on", 
-            ".");
-        research_drop_down = drop_down_results[1];
-        stc_research.research_focus = drop_down_results[0]; 
               
-        var hi;
-        draw_set_color(38144);
-        hi = 0;
+        var hi = 0;
         var f, y_loc;
-        draw_sprite_ext(spr_research_bar, 0, xx+359, yy+554, 1, 0.7, 0, c_white, 1)
-        draw_sprite_ext(spr_research_bar, 0, xx+539, yy+554, 1, 0.7, 0, c_white, 1)
-       draw_sprite_ext(spr_research_bar, 0, xx+719, yy+554, 1, 0.7, 0, c_white, 1)
 
-        if (stc_wargear > 0) then speeding_bits[0].draw(xx+359, yy+554);
-        for (f =0;f<6;f++){
-            if (f>=stc_wargear){
-                draw_sprite_ext(spr_research_bar, 1, xx+359, yy+554+((210/6)*f), 1, 0.6, 0, c_white, 1)
-            }            
-               /* y_loc = yy+560+((210/6)*f);
-                if ((speeding_bits[0].current_y()-y_loc)<5 && (speeding_bits[0].current_y()-y_loc)>-5){
-                    stc_flashes[0][f].one_flash_finished=false;
+        draw_set_color(c_gray);
+        var _area_coords = {
+            "wargear" : [xx+350, yy+535, xx+520, yy+800],
+            "vehicles" : [xx+530, yy+535, xx+700, yy+800],
+            "ships" : [xx+710, yy+535, xx+880, yy+800],
+        }
+        var _area_data = {
+            "wargear" : stc_wargear,
+            "vehicles" : stc_vehicles,
+            "ships" : stc_ships,            
+        }
+        var _display_string = {
+            "wargear" : "Wargear",
+            "vehicles" : "Vehicles",
+            "ships" : "Ships",            
+        }
+        var _wargear_one = ["Random","Enhanced Bolts","Enhanced Chain Weapons","Enhanced Flame Weapons","Enhanced Missiles","Enhanced Armour"];
+        var _wargear_two = [ "Random","Enhanced Fist Weapons Bolts","Enhanced Plasma","Enhanced Armour"];
+        var _vehicle_one = ["Random","Enhanced Hull","Enhanced Accuracy","New Weapons","Survivability","Enhanced Armour"];
+        var _vehicle_two = ["Random","Enhanced Hull","Enhanced Armour","New Weapons"];
+        var _ship_one = ["Random","Enhanced Hull","Enhanced Accuracy","Enhanced Turning","Enhanced Boarding","Enhanced Armour"];
+        var _ship_two = ["Random","Enhanced Hull","Enhanced Armour","Enhanced Speed"]; 
+
+        var _bonus_strings = {
+            "wargear" : [
+                "8% discount",
+                _wargear_one[stc_bonus[1]],
+                "16% discount",
+                _wargear_two[stc_bonus[2]],
+                "25% discount",
+                "Can produce Terminator Armour and Dreadnoughts."
+            ],
+            "vehicles" : [
+                "8% discount",
+                _vehicle_one[stc_bonus[3]],
+                "16% discount",
+                _vehicle_two[stc_bonus[4]],
+                "25% discount",
+                "Can produce Land Speeders and Land Raiders."
+            ],
+            "ships" : [
+                "8% discount",
+                _ship_one[stc_bonus[5]],
+                "16% discount",
+                _ship_two[stc_bonus[6]],
+                "25% discount",
+                "Warp Speed is increased and ships self-repair."            
+            ], 
+        }   
+        var _researches = ["vehicles","wargear", "ships"];
+        for (var i=0;i<array_length(_researches);i++){
+            draw_set_alpha(1);
+            draw_set_color(c_gray);
+            var _res = _researches[i];
+            var _coords = _area_coords[$ _res];
+            if (stc_research.research_focus == _res){
+                draw_rectangle_array(_coords, false);
+            } else {
+                if (scr_hit(_coords)){
+                    draw_set_alpha(1);
+                    draw_set_color(c_white);
+                    draw_rectangle_array(_area_coords[$ _res], false);
+                    draw_set_color(c_gray);
+                    tooltip_draw($"Click to change STC research to {_display_string[$_res]}");
+                    if (scr_click_left()){
+                        stc_research.research_focus = _res;
+                    }
                 }
-                stc_flashes[0][f].draw_one_flash(xx+359, y_loc);*/
-        } 
-        //draw_rectangle(xx + 351, yy + 539, xx + 368, yy + 539 + hi, 0);
-
-        if (stc_vehicles > 0) then speeding_bits[1].draw(xx+539, yy+554);
-          for (f =0;f<6;f++){
-            if (f>=stc_vehicles){
-                draw_sprite_ext(spr_research_bar, 1, xx+539, yy+554+((210/6)*f), 1, 0.6, 0, c_white, 1)
             }
-            //stc_flashes[1][f].draw_one_flash(xx+539, yy+560+((210/6)*f));
-        }     
-        //draw_rectangle(xx + 531, yy + 539, xx + 548, yy + 539 + hi, 0);
+            draw_set_color(c_gray);
+            draw_sprite_ext(spr_research_bar, 0, _coords[0]+9, _coords[1]+19, 1, 0.7, 0, c_white, 1)
+            if (_area_data[$_res]>0){
+                speeding_bits[$_res].draw(_coords[0], _coords[1]+20);
+            }
+            for (f =0;f<6;f++){
+                if (f>=_area_data[$_res]){
+                    draw_sprite_ext(spr_research_bar, 1, _coords[0]+9, _coords[1]+19+((210/6)*f), 1, 0.6, 0, c_white, 1)
+                }
+            }            
+            if (stc_research.research_focus == _res){
+                stc_flashes.draw(_coords[0]+9,_coords[1]+19+((210/6)*_area_data[$_res]));
+            }
+            draw_set_alpha(1);
+            draw_set_color(c_gray);
+            draw_set_font(fnt_40k_14);
+            draw_text(_coords[0] + 36, _coords[1] - 18, _display_string[$_res]);
+            var _bonus =  _bonus_strings[$_res];
+            draw_set_font(fnt_40k_12);
+            if (stc_research.research_focus == _res || scr_hit(_coords)){
+                draw_set_color(c_black);
+            }
+            for (var s=0;s<array_length(_bonus);s++){
+                draw_set_alpha(stc_wargear>s?1:0.5);
+                draw_text_ext(_coords[0] + 22, yy + 549+(s*35), $"{s+1}) {_bonus[s]}", -1,140);
+            }
+        }
 
-        if (stc_ships > 0) then speeding_bits[2].draw(xx+719, yy+554);
-       for (f =0;f<6;f++){
-            if (f>=stc_ships){
-                draw_sprite_ext(spr_research_bar, 1, xx+719, yy+554+((210/6)*f), 1, 0.6, 0, c_white, 1)
-            }        
-            //stc_flashes[2][f].draw_one_flash(xx+719,yy+ 560+((210/6)*f));
-        }  
-        switch(stc_research.research_focus){
-            case "wargear":
-                stc_flashes.draw(xx+359,yy+560+((210/6)*stc_wargear));
-                break;
-            case "vehicles":
-                stc_flashes.draw(xx+539,yy+560+((210/6)*stc_vehicles));
-                break;
-            case "ships":
-                stc_flashes.draw(xx+719,yy+560+((210/6)*stc_ships));
-                break;
-
-        }              
+        draw_set_color(38144);           
        // draw_rectangle(xx + 711, yy + 539, xx + 728, yy + 539 + hi, 0);
         draw_set_alpha(1);
         draw_set_color(c_gray);
@@ -380,120 +398,6 @@ function scr_draw_armentarium(){
         //draw_rectangle(xx + 531, yy + 539, xx + 548, yy + 749, 1);
         //draw_rectangle(xx + 711, yy + 539, xx + 728, yy + 749, 1);
 
-        draw_set_font(fnt_40k_14);
-        draw_text(xx + 386, yy + 517, string_hash_to_newline("Wargear"));
-        draw_text(xx + 566, yy + 517, string_hash_to_newline("Vehicles"));
-        draw_text(xx + 746, yy + 517, string_hash_to_newline("Ships"));
-
-        draw_set_font(fnt_40k_12);
-        draw_set_alpha(1);
-        if (stc_wargear < 1) then draw_set_alpha(0.5);
-        draw_text(xx + 372, yy + 549, string_hash_to_newline("1) 8% discount"));
-
-        var stc_bonus_strings = ["Random","Enhanced Bolts","Enhanced Chain Weapons","Enhanced Flame Weapons","Enhanced Missiles","Enhanced Armour"];
-        var bonus_string=stc_bonus_strings[stc_bonus[1]];
-        draw_set_alpha(1);
-
-        if (stc_wargear < 2) then draw_set_alpha(0.5);
-        draw_text_ext(xx + 372, yy + 549 + 35, string_hash_to_newline("2) " + string(bonus_string)),-1,150);
-        draw_set_alpha(1);
-
-        if (stc_wargear < 3) then draw_set_alpha(0.5);
-        draw_text(xx + 372, yy + 549 + 70, string_hash_to_newline("3) 16% discount"));
-
-        stc_bonus_strings = [ "Random","Enhanced Fist Weapons Bolts","Enhanced Plasma","Enhanced Armour"]
-        bonus_string=stc_bonus_strings[stc_bonus[2]];
-
-        draw_set_alpha(1);
-
-        if (stc_wargear < 4) then draw_set_alpha(0.5);
-        draw_text_ext(xx + 372, yy + 549 + 105, string_hash_to_newline("4) " + string(bonus_string)), -1,150);
-        draw_set_alpha(1);
-
-        if (stc_wargear < 5) then draw_set_alpha(0.5);
-        draw_text(xx + 372, yy + 549 + 140, string_hash_to_newline("5) 25% discount"));
-        draw_set_alpha(1);
-
-        if (stc_wargear < 6) then draw_set_alpha(0.5);
-        draw_text_ext(xx + 372, yy + 549 + 175, string_hash_to_newline("6) Can produce Terminator Armour and Dreadnoughts."), -1, 140);
-        draw_set_alpha(1);
-
-        // 21 right of the gray bar
-        draw_set_font(fnt_40k_12);
-        draw_set_alpha(1);
-        if (stc_vehicles < 1) then draw_set_alpha(0.5);
-        draw_text(xx + 552, yy + 549, string_hash_to_newline("1) 8% discount"));
-
-        bonus_string = "Random";
-        if (stc_bonus[3] = 1) then bonus_string = "Enhanced Hull";
-        if (stc_bonus[3] = 2) then bonus_string = "Enhanced Accuracy";
-        if (stc_bonus[3] = 3) then bonus_string = "New Weapons";
-        if (stc_bonus[3] = 4) then bonus_string = "Survivability";
-        if (stc_bonus[3] = 5) then bonus_string = "Enhanced Armour";
-        draw_set_alpha(1);
-
-        if (stc_vehicles < 2) then draw_set_alpha(0.5);
-        draw_text(xx + 552, yy + 549 + 35, string_hash_to_newline("2) " + string(bonus_string)));
-        draw_set_alpha(1);
-
-        if (stc_vehicles < 3) then draw_set_alpha(0.5);
-        draw_text(xx + 552, yy + 549 + 70, string_hash_to_newline("3) 16% discount"));
-
-        bonus_string = "Random";
-        if (stc_bonus[4] = 1) then bonus_string = "Enhanced Hull";
-        if (stc_bonus[4] = 2) then bonus_string = "Enhanced Armour";
-        if (stc_bonus[4] = 3) then bonus_string = "New Weapons";
-        draw_set_alpha(1);
-
-        if (stc_vehicles < 4) then draw_set_alpha(0.5);
-        draw_text(xx + 552, yy + 549 + 105, string_hash_to_newline("4) " + string(bonus_string)));
-        draw_set_alpha(1);
-
-        if (stc_vehicles < 5) then draw_set_alpha(0.5);
-        draw_text(xx + 552, yy + 549 + 140, string_hash_to_newline("5) 25% discount"));
-        draw_set_alpha(1);
-
-        if (stc_vehicles < 6) then draw_set_alpha(0.5);
-        draw_text_ext(xx + 552, yy + 549 + 175, string_hash_to_newline("6) Can produce Land Speeders and Land Raiders."), -1, 140);
-        draw_set_alpha(1);
-
-        // 21 right of the gray bar
-        draw_set_font(fnt_40k_12);
-        draw_set_alpha(1);
-        if (stc_ships < 1) then draw_set_alpha(0.5);
-        draw_text(xx + 732, yy + 549, string_hash_to_newline("1) 8% discount"));
-        bonus_string = "Random";
-        if (stc_bonus[5] = 1) then bonus_string = "Enhanced Hull";
-        if (stc_bonus[5] = 2) then bonus_string = "Enhanced Accuracy";
-        if (stc_bonus[5] = 3) then bonus_string = "Enhanced Turning";
-        if (stc_bonus[5] = 4) then bonus_string = "Enhanced Boarding";
-        if (stc_bonus[5] = 5) then bonus_string = "Enhanced Armour";
-        draw_set_alpha(1);
-
-        if (stc_ships < 2) then draw_set_alpha(0.5);
-        draw_text(xx + 732, yy + 549 + 35, string_hash_to_newline("2) " + string(bonus_string)));
-        draw_set_alpha(1);
-
-        if (stc_ships < 3) then draw_set_alpha(0.5);
-        draw_text(xx + 732, yy + 549 + 70, string_hash_to_newline("3) 16% discount"));
-
-        bonus_string = "Random";
-        if (stc_bonus[6] = 1) then bonus_string = "Enhanced Hull";
-        if (stc_bonus[6] = 2) then bonus_string = "Enhanced Armour";
-        if (stc_bonus[6] = 3) then bonus_string = "Enhanced Speed";
-        draw_set_alpha(1);
-
-        if (stc_ships < 4) then draw_set_alpha(0.5);
-        draw_text(xx + 732, yy + 549 + 105, string_hash_to_newline("4) " + string(bonus_string)));
-        draw_set_alpha(1);
-
-        if (stc_ships < 5) then draw_set_alpha(0.5);
-        draw_text(xx + 732, yy + 549 + 140, string_hash_to_newline("5) 25% discount"));
-        draw_set_alpha(1);
-
-        if (stc_ships < 6) then draw_set_alpha(0.5);
-        draw_text_ext(xx + 732, yy + 549 + 175, string_hash_to_newline("6) Warp Speed is increased and ships self-repair."), -1, 140);
-        draw_set_alpha(1);
     }else {
         yy+=25;
         draw_set_halign(fa_left);

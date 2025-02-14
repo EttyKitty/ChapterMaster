@@ -87,3 +87,15 @@ function scr_colors_initialize() {
         col_b[i] = colors_array[i][3];
     }
 }
+
+function get_shader_array(wanted_colour){
+    var _cols = [0,0,0];
+    with (obj_controller){
+        _cols = [col_r[wanted_colour]/255, col_g[wanted_colour]/255, col_b[wanted_colour]/255];
+    }
+
+    return _cols;
+}
+
+
+

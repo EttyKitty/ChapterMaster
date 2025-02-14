@@ -73,41 +73,111 @@ action="";
         weapons=5;
         shield_size=3;
         sprite_index=spr_ship_bb;
-        weapon_facing[1]="left";weapon_dam[1]=15;weapon_range[1]=450;weapon_cooldown[1]=30;
-        weapon_facing[2]="right";weapon_dam[2]=15;weapon_range[2]=450;weapon_cooldown[2]=30;
-        weapon_facing[3]="special";weapon_cooldown[3]=90;weapon_ammo[3]=3;weapon_range[3]=9999;
-        weapon_facing[4]="front";weapon_dam[4]=12;weapon_range[4]=1000;weapon_cooldown[4]=120;// volley several
-        weapon_facing[5]="most";weapon_dam[5]=16;weapon_range[5]=300;weapon_cooldown[5]=30;
+        weapon_facing[1]="left";
+        weapon_dam[1]=15;
+        weapon_range[1]=450;
+        weapon_cooldown[1]=30;
+        weapon_facing[2]="right";
+        weapon_dam[2]=15;
+        weapon_range[2]=450;
+        weapon_cooldown[2]=30;
+        weapon_facing[3]="special";
+        weapon_cooldown[3]=90;
+        weapon_ammo[3]=3;
+        weapon_range[3]=9999;
+        weapon_facing[4]="front";
+        weapon_dam[4]=12;
+        weapon_range[4]=1000;
+        weapon_cooldown[4]=120;// volley several
+        weapon_facing[5]="most";
+        weapon_dam[5]=16;
+        weapon_range[5]=300;
+        weapon_cooldown[5]=30;
     }
 
-    if (class="Slaughtersong"){turrets=3;weapons=5;shield_size=3;sprite_index=spr_ship_song;
-        weapon_facing[1]="most";weapon_dam[1]=16;weapon_range[1]=550;weapon_cooldown[1]=26;
-        weapon_facing[2]="most";weapon_dam[2]=16;weapon_range[2]=550;weapon_cooldown[2]=26;
-        weapon_facing[3]="most";weapon_dam[3]=16;weapon_range[3]=550;weapon_cooldown[3]=26;
-        weapon_facing[4]="front";weapon_dam[4]=32;weapon_range[4]=1000;weapon_cooldown[4]=90;
+    if (class="Slaughtersong"){turrets=3;
+        weapons=5;shield_size=3;sprite_index=spr_ship_song;
+        weapon_facing[1]="most";
+        weapon_dam[1]=16;
+        weapon_range[1]=550;
+        weapon_cooldown[1]=26;
+        weapon_facing[2]="most";
+        weapon_dam[2]=16;
+        weapon_range[2]=550;
+        weapon_cooldown[2]=26;
+        weapon_facing[3]="most";
+        weapon_dam[3]=16;
+        weapon_range[3]=550;
+        weapon_cooldown[3]=26;
+        weapon_facing[4]="front";
+        weapon_dam[4]=32;
+        weapon_range[4]=1000;
+        weapon_cooldown[4]=90;
     }
 
 
-if (class="Gloriana"){turrets=3;weapons=5;shield_size=3;sprite_index=spr_ship_song;
-    weapon_facing[1]="most";weapon_dam[1]=16;weapon_range[1]=550;weapon_cooldown[1]=26;
-    weapon_facing[2]="most";weapon_dam[2]=16;weapon_range[2]=550;weapon_cooldown[2]=26;
-    weapon_facing[3]="most";weapon_dam[3]=16;weapon_range[3]=550;weapon_cooldown[3]=26;
-    weapon_facing[4]="front";weapon_dam[4]=32;weapon_range[4]=1000;weapon_cooldown[4]=90;
+if (class="Gloriana"){
+    turrets=3;
+    weapons=5;
+    shield_size=3;
+    sprite_index=spr_ship_song;
+    weapon_facing[1]="most";
+    weapon_dam[1]=16;
+    weapon_range[1]=550;
+    weapon_cooldown[1]=26;
+    weapon_facing[2]="most";
+    weapon_dam[2]=16;
+    weapon_range[2]=550;
+    weapon_cooldown[2]=26;
+    weapon_facing[3]="most";
+    weapon_dam[3]=16;
+    weapon_range[3]=550;
+    weapon_cooldown[3]=26;
+    weapon_facing[4]="front";
+    weapon_dam[4]=32;
+    weapon_range[4]=1000;
+    weapon_cooldown[4]=90;
 }
-    if (class="Strike Cruiser"){turrets=1;weapons=4;shield_size=1;sprite_index=spr_ship_stri;
-        weapon_facing[1]="left";weapon_dam[1]=8;weapon_range[1]=300;weapon_cooldown[1]=30;
-        weapon_facing[2]="right";weapon_dam[2]=8;weapon_range[2]=300;weapon_cooldown[2]=30;
-        weapon_facing[3]="special";weapon_cooldown[3]=90;weapon_ammo[3]=3;weapon_range[3]=9999;
-        weapon_facing[4]="most";weapon_dam[4]=12;weapon_range[4]=300;weapon_cooldown[4]=30;
+    if (class="Strike Cruiser"){turrets=1;
+        weapons=4;
+        shield_size=1;
+        sprite_index=spr_ship_stri;
+        weapon_facing[1]="left";
+        weapon_dam[1]=8;
+        weapon_range[1]=300;
+        weapon_cooldown[1]=30;
+        weapon_facing[2]="right";
+        weapon_dam[2]=8;
+        weapon_range[2]=300;
+        weapon_cooldown[2]=30;
+        weapon_facing[3]="special";
+        weapon_cooldown[3]=90;
+        weapon_ammo[3]=3;
+        weapon_range[3]=9999;
+        weapon_facing[4]="most";
+        weapon_dam[4]=12;
+        weapon_range[4]=300;
+        weapon_cooldown[4]=30;
     }
 
-    if (class="Hunter"){turrets=1;weapons=2;shield_size=1;sprite_index=spr_ship_hunt;
-        weapon_facing[1]="front";weapon_dam[1]=8;weapon_range[1]=450;weapon_cooldown[1]=60;
-        weapon_facing[2]="most";weapon_dam[2]=8;weapon_range[2]=300;weapon_cooldown[2]=60;
+    if (class="Hunter"){turrets=1;
+        weapons=2;shield_size=1;sprite_index=spr_ship_hunt;
+        weapon_facing[1]="front";
+        weapon_dam[1]=8;
+        weapon_range[1]=450;
+        weapon_cooldown[1]=60;
+        weapon_facing[2]="most";
+        weapon_dam[2]=8;
+        weapon_range[2]=300;
+        weapon_cooldown[2]=60;
     }
 
-    if (class="Gladius"){turrets=1;weapons=2;shield_size=1;sprite_index=spr_ship_glad;
-        weapon_facing[1]="most";weapon_dam[1]=8;weapon_range[1]=300;weapon_cooldown[1]=30;
+    if (class="Gladius"){turrets=1;
+        weapons=2;shield_size=1;sprite_index=spr_ship_glad;
+        weapon_facing[1]="most";
+        weapon_dam[1]=8;
+        weapon_range[1]=300;
+        weapon_cooldown[1]=30;
     }
 
 

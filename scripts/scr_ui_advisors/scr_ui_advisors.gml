@@ -4,35 +4,6 @@ function scr_ui_advisors() {
     var xx, yy, blurp, eta, va;
     var romanNumerals;
     romanNumerals = scr_roman_numerals();
-    var recruitment_rates = [
-        "sluggish",
-        "slow",
-        "moderate",
-        "fast",
-        "frenetic",
-        "hereticly fast"
-    ];
-
-    var recruitment_pace = [
-        " is currently halted.",
-        " is advancing sluggishly.",
-        " is advancing slowly.",
-        " is advancing moderately fast.",
-        " is advancing fast.",
-        " is advancing frenetically.",
-        " is advancing as fast as possible."
-    ];
-
-    var recruitement_rate = [
-        "HALTED",
-        "SLUGGISH",
-        "SLOW",
-        "MODERATE",
-        "FAST",
-        "FRENETIC",
-        "MAXIMUM",
-    ];
-
 
     xx = __view_get(e__VW.XView, 0) + 0;
     yy = __view_get(e__VW.YView, 0) + 0;
@@ -73,8 +44,12 @@ function scr_ui_advisors() {
 
         if (menu_adept = 0) {
             // draw_sprite(spr_advisors,2,xx+16,yy+43);
-            scr_image("advisor", 2, xx + 16, yy + 43, 310, 828);
-            if (global.chapter_name = "Space Wolves") then scr_image("advisor", 11, xx + 16, yy + 43, 310, 828);
+            if(struct_exists(obj_ini.custom_advisors, "chaplain")){
+                scr_image("advisor/splash", obj_ini.custom_advisors.chaplain, xx + 16, yy + 43, 310, 828);
+            } else {
+                scr_image("advisor/splash", 3, xx + 16, yy + 43, 310, 828);
+            }
+            // if (global.chapter_name = "Space Wolves") then scr_image("advisor", 11, xx + 16, yy + 43, 310, 828);
             // draw_sprite(spr_advisors,11,xx+16,yy+16);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
@@ -84,7 +59,7 @@ function scr_ui_advisors() {
         }
         if (menu_adept = 1) {
             // draw_sprite(spr_advisors,0,xx+16,yy+43);
-            scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+            scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
@@ -100,29 +75,12 @@ function scr_ui_advisors() {
         // 
         if (global.chapter_name != "Space Wolves") and(global.chapter_name != "Iron Hands") {
             blurp += "##Currently, we are training additional " + string(obj_ini.role[100, 14]) + " at a ";
-            if (training_chaplain = 1) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 0.8) + 1;
-            }
-            if (training_chaplain = 2) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 0.9) + 1;
-            }
-            if (training_chaplain = 3) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 1) + 1;
-            }
-            if (training_chaplain = 4) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 1.5) + 1;
-            }
-            if (training_chaplain = 5) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 2) + 1;
-            }
-            if (training_chaplain = 6) {
-                blurp += recruitment_rates[training_chaplain - 1];
-                eta = floor((47 - chaplain_points) / 4) + 1;
+            var _recruit_rates = ARR_recruitment_rates;
+            blurp += _recruit_rates[training_chaplain];
+            if (training_chaplain>0 && training_chaplain <=6) {
+                var training_points_values = ARR_chaplain_training_tiers;
+                blurp += _recruit_rates[training_chaplain];
+                eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
             }
             // 
             blurp += " rate";
@@ -164,7 +122,10 @@ function scr_ui_advisors() {
             blurp = "Your Chapter contains " + string(temp[36]) + " " + string(obj_ini.role[100, 14]) + "s.##";
             if (global.chapter_name != "Space Wolves") and(global.chapter_name != "Iron Hands") {
                 blurp += "Training of further " + string(obj_ini.role[100, 14]) + "s";
-                if (training_chaplain >= 0 && training_chaplain <= 6) then blurp += recruitment_pace[training_chaplain];
+                if (training_chaplain >= 0 && training_chaplain <= 6){
+                    var _recruit_pace = ARR_recruitment_pace;
+                    blurp += _recruit_pace[training_chaplain];
+                }
                 if (training_chaplain > 0) then blurp += "  The next " + string(obj_ini.role[100, 14]) + " is expected in " + string(eta) + " months.";
             }
         }
@@ -710,7 +671,7 @@ function scr_ui_advisors() {
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
         var unit = fetch_unit([0,1]);
-        if (unit.ship_location = 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
+        if (unit.ship_location == -1) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
         if (unit.ship_location>-1) then draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {obj_ini.ship[unit.ship_location]}#Health: {unit.hp()}%"));
         draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
 
@@ -721,7 +682,7 @@ function scr_ui_advisors() {
     if (menu >= 500 && menu <= 510) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);
         // draw_sprite(spr_advisors,0,xx+16,yy+16);
-        scr_image("advisor", 0, xx + 16, yy + 16, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 16, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(0);
         draw_set_font(fnt_40k_14);

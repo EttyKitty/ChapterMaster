@@ -15,24 +15,22 @@ function FeatureSelected(Feature, system, planet) constructor{
 	planet_data = new PlanetData(planet,system);
 
 	if (feature.f_type == P_features.Forge){
-		var worker_caps= [2,4,8];
-		worker_capacity = worker_caps[feature.size-1];	
+		var _worker_caps = [2,4,8];
+		worker_capacity = _worker_caps[feature.size-1];	
 		techs = collect_role_group("forge", obj_star_select.target.name);
 		feature.techs_working = 0;
 		for (var i=0;i<array_length(techs);i++){
-			if (techs[i].assignment()=="forge" && techs[i].job.planet == obj_controller.selecting_planet){
-				feature.techs_working++;
-				if (feature.techs_working==worker_capacity) then break;
+			var _cur_tech = techs[i];
+			if (_cur_tech.assignment()=="forge"){
+				if (_cur_tech.job.planet == planet_data.planet){
+					feature.techs_working++;
+					if (feature.techs_working==worker_capacity) then break;
+				}
 			}
 		}
 	}
 
 	draw_planet_features = function(xx,yy){
-		if (!struct_exists(self,"planet_data")){
-			planet_data = new PlanetData(obj_controller.selecting_planet,obj_controller.selected.id);
-		} else if (!is_struct(planet_data)){
-			planet_data = new PlanetData(obj_controller.selecting_planet,obj_controller.selected.id);
-		}
 	    draw_set_halign(fa_center);
 	    draw_set_font(fnt_40k_14);
 	    //draw_sprite(spr_planet_screen,0,xx,yy);
@@ -75,9 +73,9 @@ function FeatureSelected(Feature, system, planet) constructor{
 						purpose:"Forge Assignment",
 						purpose_code : "forge_assignment",
 						number:worker_capacity,
-						system:obj_controller.selected.id,
-						feature:obj_star_select.feature,
-						planet : obj_controller.selecting_planet,
+						system:planet_data.system,
+						feature:feature,
+						planet : planet_data.planet,
 						selections : []
 					});
 					destroy=true;
@@ -104,7 +102,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					if (point_and_click(build_coords) && obj_controller.requisition>=upgrade_cost){
 						feature.vehicle_hanger=1;
 						obj_controller.requisition -=  upgrade_cost;
-						array_push(obj_controller.player_forge_data.vehicle_hanger,[obj_controller.selected.name,obj_controller.selecting_planet]);
+						array_push(obj_controller.player_forge_data.vehicle_hanger,[obj_controller.selected.name,planet_data.planet]);
 					}					
 				} else if(feature.vehicle_hanger){
 					draw_text(next_position[0], next_position[1], "Forge has a vehicle hanger")
@@ -181,7 +179,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				break;
 			case P_features.Recruiting_World:
 				generic = true;
-				var _planet = obj_controller.selecting_planet;
+				var _planet = planet_data.planet;
 				var _star = obj_star_select.target;
 				var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
 				var _spare_apoth_points = 0;
@@ -199,7 +197,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				break;
 			case P_features.Mission:
 				var mission_description=$"";
-				var planet_name = planet_numeral_name(obj_controller.selecting_planet, obj_star_select.target);
+				var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);
 				var button_text="none";
 				var button_function="none";
 				var help = "none";
@@ -224,9 +222,9 @@ function FeatureSelected(Feature, system, planet) constructor{
 								purpose:"Beast Hunt",
 								purpose_code : feature.problem,
 								number:3,
-								system:obj_controller.selected.id,
+								system:planet_data.system,
 								feature:obj_star_select.feature,
-								planet : obj_controller.selecting_planet,
+								planet : planet_data.planet,
 								array_slot : feature.array_position,
 								selections : []
 							});
@@ -247,9 +245,9 @@ function FeatureSelected(Feature, system, planet) constructor{
 								purpose:"Select Officer",
 								purpose_code : feature.problem,
 								number:1,
-								system:obj_controller.selected.id,
+								system:planet_data.system,
 								feature:obj_star_select.feature,
-								planet : obj_controller.selecting_planet,
+								planet : planet_data.planet,
 								selections : []
 							});
 							destroy=true;
@@ -320,6 +318,9 @@ function DataSlateMKTwo()constructor{
 	width=0;
 	XX=0;
 	YY=0;
+	static entered = function(){
+		return scr_hit(XX, YY, XX+width, YY+height);
+	}
 	static draw = function(xx,yy,x_scale=1, y_scale=1){
 		XX=xx;
 		YY=yy;
@@ -560,6 +561,15 @@ function DataSlate() constructor{
 	width=0;
 	height=0;
 	percent_cut=0;
+
+	static entered = function(){
+		return (scr_hit(
+                    XX-4,
+                    YY,
+                    XX + width,
+                    YY + height,
+                ));
+	}
 	static draw = function(xx,yy, scale_x=1, scale_y=1){
 		XX=xx;
 		YY=yy;

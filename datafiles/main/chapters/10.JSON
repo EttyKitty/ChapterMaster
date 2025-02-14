@@ -19,6 +19,7 @@
         "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "",
+        "recruit_home_relationship" : 2, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'

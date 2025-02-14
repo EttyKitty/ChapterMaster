@@ -8,6 +8,15 @@ enum eTrials{
 	APPRENTICESHIP,
 	num
 }
+#macro ARR_recruitment_pace [" is currently halted."," is advancing sluggishly."," is advancing slowly."," is advancing moderately fast."," is advancing fast."," is advancing frenetically."," is advancing as fast as possible."]
+
+#macro ARR_recruitement_rate  ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",]
+
+#macro ARR_recruitment_rates  ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"]
+#macro ARR_apothecary_training_tiers [0,0.8,0.9,1,1.5,2,4 ]
+#macro ARR_chaplain_training_tiers  [0,0.8,0.9, 1,1.5,2,4]
+#macro ARR_techmarine_training_tiers  [0,1,2,4, 6,10,14]
+
 function find_recruit_success_chance(local_apothecary_points, planet_type){
 	var recruit_type = scr_trial_data(obj_controller.recruit_trial);
 	var recruit_chance_array = [0, 1000, 900, 800, 700, 600, 500];
@@ -258,7 +267,7 @@ function scr_trial_data(wanted=-1){
 			train_time : {
 				base : [90, 108],
 				planets : {
-					shrine :[70, 108],
+					Shrine :[70, 108],
 				}
 			},
 			exp_bonus : {
@@ -277,7 +286,7 @@ function scr_trial_data(wanted=-1){
 			train_time : {
 				base : [66, 80],
 				planets : {
-					shrine :[70, 108],
+					Shrine :[70, 108],
 				}
 			},
 			exp_bonus : {
@@ -290,7 +299,7 @@ function scr_trial_data(wanted=-1){
 			train_time : {
 				base : [120, 140],
 				planets : {
-					shrine :[70, 108],
+					Shrine :[70, 108],
 				}
 			},
 			exp_bonus : {
@@ -391,7 +400,7 @@ function scr_compile_trial_bonus_string(trial_data){
 	}	
 	if (struct_exists(trial_data,"train_time")){
 		var train_time_data = trial_data.train_time;
-		bonus_string+=$"years training : {train_time_string(train_time_data.base)}\n";
+		bonus_string+=$"Years training : {train_time_string(train_time_data.base)}\n";
 		if (struct_exists(train_time_data, "planets")){
 			var planets = struct_get_names(train_time_data.planets);
 			for (var i=0;i<array_length(planets);i++){
@@ -439,7 +448,7 @@ function scr_compile_trial_bonus_string(trial_data){
 	}
 	var _traits = global.trait_list;
 	if (struct_exists(trial_data,"favoured_traits")){
-		bonus_string += "Favoured Traits:"
+		bonus_string += "Favoured Traits: "
 		for (var i=0;i<array_length(trial_data.favoured_traits);i++){
 			var _favoured_trait = trial_data.favoured_traits[i];
 			bonus_string += $"{_traits[$ _favoured_trait].display_name}, ";
@@ -447,16 +456,16 @@ function scr_compile_trial_bonus_string(trial_data){
 		bonus_string+="\n\n";
 	}
 	if (struct_exists(trial_data,"disfavoured_traits")){
-		bonus_string += "Dis-Favoured Traits:"
+		bonus_string += "Dis-Favoured Traits: "
 		for (var i=0;i<array_length(trial_data.disfavoured_traits);i++){
 			var _disfavoured_trait = trial_data.disfavoured_traits[i];
 			bonus_string += $"{_traits[$ _disfavoured_trait].display_name}, ";
 		}
 		bonus_string+="\n\n";
 	}
-	if (struct_exists(trial_data,"stat_diffs")){
-		bonus_string+=$"{trial_data.stat_diffs}\n";
-	}		
+	// if (struct_exists(trial_data,"stat_diffs")){
+	// 	bonus_string+=$"{trial_data.stat_diffs}\n";
+	// }		
 	return bonus_string;
 }
 function StatDistributionUnit(data) constructor{
@@ -512,39 +521,12 @@ function set_up_recruitment_view(){
 	}
 }
 
-
+/// @mixin
 function scr_draw_recruit_advisor(){
    var blurp, eta, va;
     var romanNumerals;
     romanNumerals = scr_roman_numerals();
-    var recruitment_rates = [
-        "sluggish",
-        "slow",
-        "moderate",
-        "fast",
-        "frenetic",
-        "hereticly fast"
-    ];
-
-    var recruitment_pace = [
-        " is currently halted.",
-        " is advancing sluggishly.",
-        " is advancing slowly.",
-        " is advancing moderately fast.",
-        " is advancing fast.",
-        " is advancing frenetically.",
-        " is advancing as fast as possible."
-    ];
-
-    var recruitement_rate = [
-        "HALTED",
-        "SLUGGISH",
-        "SLOW",
-        "MODERATE",
-        "FAST",
-        "FRENETIC",
-        "MAXIMUM",
-    ];
+    var _recruit_rate = ARR_recruitement_rate;
     var xx=__view_get( e__VW.XView, 0 )+0;
     var yy=__view_get( e__VW.YView, 0 )+0;
     blurp = "";
@@ -567,8 +549,11 @@ function scr_draw_recruit_advisor(){
 
     if (menu_adept = 0) {
         // draw_sprite(spr_advisors,5,xx+16,yy+43);
-        scr_image("advisor", 5, xx + 16, yy + 43, 310, 828);
-        draw_set_halign(fa_left);
+		if(struct_exists(obj_ini.custom_advisors, "recruiter")){
+            scr_image("advisor/splash", obj_ini.custom_advisors.recruiter, xx + 16, yy + 43, 310, 828);
+        } else {
+            scr_image("advisor/splash", 6, xx + 16, yy + 43, 310, 828);
+        }        draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("World " + string(obj_ini.recruiting_name)), 1, 1, 0);
@@ -577,7 +562,7 @@ function scr_draw_recruit_advisor(){
     }
     if (menu_adept = 1) {
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
-        scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -586,38 +571,59 @@ function scr_draw_recruit_advisor(){
         draw_set_font(fnt_40k_14);
     }
 
-    if (menu_adept = 0) then blurp = "Hail " + string(obj_ini.name[0, 0]) + "!  You asked for a report?\n\n";
+    if (menu_adept = 0) then blurp = $"Hail {obj_ini.name[0, 0]}! You asked for a report?\n\n";
 
-    if (obj_ini.doomed = 0) {
-        if (recruits <= 0) and(marines >= 1000) then blurp += "Our Chapter currently has no Neophytes- we are at maximum strength and do not require more marines.  ";
-        if (recruits <= 0) and(marines < 1000) and(recruiting = 0) then blurp += "Our Chapter currently has no Neophytes.  Without training more our chapter is doomed to a slow death.";
-        if (recruits <= 0) and(marines < 1000) and(recruiting > 0) then blurp += "Our Chapter currently has no Neophytes.  We are doing our utmost best to find suitable recruits.";
-        if (recruits = 1) then blurp += $"Our Chapter currently has one recruit being trained.  The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in " + string(recruit_training[0] + recruit_distance[0]) + " months' time.  ";
-        if (recruits > 1) then blurp += $"Our Chapter currently has {recruits} recruits being trained.  {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in " + string(recruit_training[0] + recruit_distance[0]) + " months' time.  ";
-        if (gene_seed > 0) {
-            if (recruiting = 0) and(marines >= 1000) then blurp += "\n\nRecruitment" + recruitment_rates[recruiting] + ".  You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.  ";
-            if (recruiting = 0) and(marines < 1000) then blurp += "\n\nRecruitment " + recruitment_rates[recruiting] + ".  You must only give me the word and I can begin further increasing our numbers.  ";
+	if (obj_ini.doomed == 0) {
+		if (recruits <= 0) {
+			if (marines >= 1000) {
+				blurp += "Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.";
+			}
+			if ((marines < 1000) && (recruiting == 0)) {
+				blurp += "Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.";
+			}
+			if ((marines < 1000) && (recruiting > 0)) {
+				blurp += "Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.";
+			}
+		} else if (recruits == 1) {
+			blurp += $"Our Chapter currently has one recruit being trained. The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+		} else if (recruits > 1) {
+			blurp += $"Our Chapter currently has {recruits} recruits being trained. {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+		}
 
-            if (recruiting>0 && recruiting < 3) then blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}.  With an increase of funding I could vastly increase the rate.  ";
-            else if (recruiting = 3) then blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}  ";
-            else if (recruiting>=4){
-                blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}- give me the word when we have enough Neophytes being trained.  ";
-            }
-        }
-    }
+		if (gene_seed > 0) {
+			var _recruit_rates = ARR_recruitment_rates;
+			var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
+			if ((recruiting == 0) && (marines >= 1000)) {
+				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.";
+			} else if ((recruiting == 0) && (marines < 1000)) {
+				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers.";
+			} else if (recruiting > 0 && recruiting < 3) {
+				blurp += $"\n{_cur_recruit_rate}. With an increase of funding I could vastly increase the rate.";
+			} else if (recruiting == 3) {
+				blurp += $"\n{_cur_recruit_rate}. Everything is progressing as expected.";
+			} else if (recruiting >= 4) {
+				blurp += $"\n{_cur_recruit_rate}. Give me the word when we have enough Neophytes being trained.";
+			}
+		}
+	}
 
-    if (obj_ini.doomed = 1) {
-        blurp += "Our chapter's mutation currently makes us unable to recruit new Neophytes.  We are doomed to a slowe demise unless the Apothecaries can fix it.\n\n";
-    }
-
-    if (gene_seed = 0) {
-        blurp += "We have no more gene-seed in our vaults and cannot create more neophytes as a result.  Something must be done, Chapter Master.\n\n";
-    }
-
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) = 1) then blurp += "Our Chapter is recruiting from one world- " + string(obj_ini.recruiting_name) + ".  Perhaps we should speak with a planetary governor to acquire another.";
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) = 2) then blurp += "Our Chapter is recruiting from two worlds.  Finding recruits is vastly accelerated but incuring more expenses.";
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) > 2) then blurp += "Our Chapter is recruiting from several worlds.";
-
+	if (obj_ini.doomed == 1) {
+		blurp += "\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.";
+	}
+	
+	if (gene_seed == 0) {
+		blurp += "\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.";
+	}
+	
+	if (recruiting > 0) {
+		if ((string_count("|", obj_controller.recruiting_worlds) == 1)) {
+			blurp += $"\nWe're recruiting from one world - {obj_ini.recruiting_name}. Perhaps we should speak with a planetary governor to acquire another.";
+		} else if ((string_count("|", obj_controller.recruiting_worlds) == 2)) {
+			blurp += "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated but incurring more expenses.";
+		} else if ((string_count("|", obj_controller.recruiting_worlds) > 2)) {
+			blurp += "\nWe're recruiting from several worlds.";
+		}
+	}
 
 
     if (menu_adept = 1) {
@@ -644,7 +650,9 @@ function scr_draw_recruit_advisor(){
     if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 356);
     if (recruiting != 0) then draw_text(xx + 351 + 16, yy + 354, string_hash_to_newline(string(amo)));
     draw_set_color(c_gray);
-    if (recruiting >= 0) and(recruiting <= 6) then blur = recruitement_rate[recruiting];
+    if (recruiting >= 0) and(recruiting <= 6){
+    	blur = _recruit_rate[recruiting];
+    }
     draw_text(xx + 407, yy + 354, string_hash_to_newline("Space Marine Recruiting: " + string(blur)));
     draw_text(xx + 728, yy + 354, string_hash_to_newline("[-] [+]"));
 
@@ -660,7 +668,7 @@ function scr_draw_recruit_advisor(){
     if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 396);
     if (training_apothecary != 0) then draw_text(xx + 351 + 16, yy + 394, string_hash_to_newline(string(amo)));
     draw_set_color(c_gray);
-    if (training_apothecary >= 0) and(training_apothecary <= 6) then blur = recruitement_rate[training_apothecary];
+    if (training_apothecary >= 0) and(training_apothecary <= 6) then blur = _recruit_rate[training_apothecary];
     draw_text(xx + 407, yy + 394, string_hash_to_newline("Apothecary Training: " + string(blur)));
     draw_text(xx + 728, yy + 394, string_hash_to_newline("[-] [+]"));
 
@@ -678,7 +686,7 @@ function scr_draw_recruit_advisor(){
         if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 416);
         if (training_chaplain != 0) then draw_text(xx + 351 + 16, yy + 414, string_hash_to_newline(string(amo)));
         draw_set_color(c_gray);
-        if (training_chaplain >= 0) and(training_chaplain <= 6) then blur = recruitement_rate[training_chaplain];
+        if (training_chaplain >= 0) and(training_chaplain <= 6) then blur = _recruit_rate[training_chaplain];
         draw_text(xx + 407, yy + 414, string_hash_to_newline("Chaplain Training: " + string(blur)));
         draw_text(xx + 728, yy + 414, string_hash_to_newline("[-] [+]"));
     }
@@ -695,7 +703,7 @@ function scr_draw_recruit_advisor(){
     if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 436);
     if (training_psyker != 0) then draw_text(xx + 351 + 16, yy + 434, string_hash_to_newline(string(amo)));
     draw_set_color(c_gray);
-    if (training_psyker >= 0) and(training_psyker <= 6) then blur = recruitement_rate[training_psyker];
+    if (training_psyker >= 0) and(training_psyker <= 6) then blur = _recruit_rate[training_psyker];
     draw_text(xx + 407, yy + 434, string_hash_to_newline("Psyker Training: " + string(blur)));
     draw_text(xx + 728, yy + 434, string_hash_to_newline("[-] [+]"));
 
@@ -711,7 +719,7 @@ function scr_draw_recruit_advisor(){
     if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 456);
     if (training_techmarine != 0) then draw_text(xx + 351 + 16, yy + 456, string_hash_to_newline(string(amo)));
     draw_set_color(c_gray);
-    if (training_techmarine >= 0) and(training_techmarine <= 6) then blur = recruitement_rate[training_techmarine];
+    if (training_techmarine >= 0) and(training_techmarine <= 6) then blur = _recruit_rate[training_techmarine];
     draw_text(xx + 407, yy + 454, $"Techmarine Training: {blur}");
     draw_text(xx + 728, yy + 454, "[-] [+]");
 

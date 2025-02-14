@@ -86,7 +86,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			skills: {
 				weapons:{
 					"bolter":3, "chainsword":3, "ccw":3, "bolt_pistol":3}},
-			start_gear:{"armour":"power_armour", "wep1":"bolter", "wep2":"chainsword"},
+			start_gear:{"armour":"Power Armour", "wep1":"Chainsword", "wep2":"Chainsword"},
 			base_group : "astartes",
 	},
 	"scout":{
@@ -104,7 +104,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			luck :10,
 			technology :[28,3],
 			skills: {weapons:{"bolter":3, "chainsword":3, "ccw":3, "bolt_pistol":3}},
-			start_gear:{"armour":"power_armour", "wep1":"bolter", "wep2":"chainsword"}, // Scouts should probably have access only to scout armour, and perhaps some stuff from hirelings
+			start_gear:{"armour":"Power Armour", "wep1":"Bolter", "wep2":"Chainsword"}, // Scouts should probably have access only to scout armour, and perhaps some stuff from hirelings
 			base_group : "astartes",
 	},
 	"dreadnought":{
@@ -122,7 +122,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			luck :10,
 			technology :[30,3],
 			skills: {weapons:{"bolter":3, "chainsword":3, "ccw":3, "bolt_pistol":3}},
-			start_gear:{"armour":"power_armour", "wep1":"bolter", "wep2":"chainsword"},
+			start_gear:{"armour":"Power Armour", "wep1":"Bolter", "wep2":"Chainsword"},
 			base_group : "astartes",
 			traits:["ancient","slow_and_purposeful","lead_example","zealous_faith",choose("still_standing","beast_slayer","lone_survivor")]
 	},			
@@ -696,12 +696,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		"left_leg":{
 			leg_variants: irandom(100),
 		}, 
-		"right_leg":{}, 
+		"right_leg":{
+			leg_variants: irandom(100),
+		}, 
 		"torso":{
 			cloth:{
 				variation:irandom(15),
 			},
-			armour_choice:irandom(1),
+			armour_choice:irandom(100),
 			variation:irandom(10),
 			backpack_variation:irandom(100),
 			thorax_variation : irandom(100),
@@ -713,13 +715,28 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		"right_arm":{
 			trim_variation : irandom(100),
 		}, 
-		"left_eye":{}, 
-		"right_eye":{},
-		"throat":{}, 
-		"jaw":{
-			mouth_variants: irandom(100),
+		"left_eye":{
+			variant : irandom(100),
+		}, 
+		"right_eye":{
+			variant : irandom(100),
 		},
-		"head":{variation:irandom(100)}
+		"throat":{
+			variant : irandom(100),
+		}, 
+		"jaw":{
+			variant: irandom(100),
+		},
+		"head":{
+			variation:irandom(100),
+			crest_variation : irandom(100),
+			forehead_variation : irandom(100),
+			crown_variation : irandom(100),
+		},
+		"cloak":{
+			type: "none",
+			variant: irandom(100)
+		},
 	}; //body parts list can be extended as much as people want
 
 	static alter_body = function(body_slot, body_item_key, new_body_data, overwrite=true){//overwrite means it will replace any existing data
@@ -859,10 +876,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				}
 			}
 
-			if (array_contains(obj_ini.adv, "Psyker Abundance")){
+			if (scr_has_adv("Psyker Abundance")){
 				if (psionic<16) then psionic++;
 				if (psionic<10) then psionic++;
-			} else if (array_contains(obj_ini.dis, "Psyker Intolerant")){
+			} else if (scr_has_disadv("Psyker Intolerant")){
 				if (warp_level<=190){
 					psionic=choose(0,1);
 				} else {
@@ -879,22 +896,34 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				religion_sub_cult = "The Cult of Iron";
 			} 
 
+			var _robe_chance = 5;
 			if (global.chapter_name == "Black Templars"){
-				if (irandom(14)==0){
-					body[$"torso"].robes =choose(0,0,0,1,1,2);
-					if (body[$"torso"].robes == 0 && irandom(1) == 0){
-						body[$"head"].hood = 1;
-					}
-				}
+				_robe_chance += 70;
 			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
-				body[$"torso"].robes = choose(0,0,0,1,2);
+				_robe_chance += 50;
+			}
+			if (irandom(100) <= _robe_chance) {
+				body.torso.robes = irandom(2);
 				if (body[$"torso"].robes == 0 && irandom(1) == 0){
 					body[$"head"].hood = 1;
 				}
-			}else if(irandom(30)==0){
-				body.torso.robes =choose(0,1,2,2,2,2,2);
-				if (body[$"torso"].robes == 0 && irandom(1) == 0){
-					body[$"head"].hood = 1;
+			}
+
+			var _cloak_chance = 5;
+			if (role() == obj_ini.role[100][eROLE.Chaplain]) {
+				_cloak_chance += 25;
+			} else if (role() == obj_ini.role[100][eROLE.Librarian]) {
+				_cloak_chance += 75;
+			}
+			if (irandom(100) <= _cloak_chance) {
+				if (global.chapter_name == "Salamanders") {
+					body.cloak.type = "scale";
+				} else if (global.chapter_name == "Space Wolves") {
+					body.cloak.type = "pelt";
+				} else {
+					body.cloak.type = "cloth";
+					body.cloak.image_0 = irandom(100);
+					body.cloak.image_1 = irandom(100);
 				}
 			}
 			break;
@@ -970,14 +999,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					constitution += 2;
 					strength++;
 					dexterity -= 2;
-					body[$ new_bionic_pos][$"bionic"].variant=irandom(2);
+					body[$ new_bionic_pos][$"bionic"].variant=irandom(100);
 				}else if (array_contains(["left_eye", "right_eye"], new_bionic_pos)){
-					body[$ new_bionic_pos][$"bionic"].variant=irandom(2);
+					body[$ new_bionic_pos][$"bionic"].variant=irandom(100);
 					constitution += 1;
 					wisdom += 1;
 					dexterity++;
 				} else if (array_contains(["left_arm", "right_arm"], new_bionic_pos)){
-					body[$ new_bionic_pos][$"bionic"].variant=irandom(1);
+					body[$ new_bionic_pos][$"bionic"].variant=irandom(100);
 					constitution += 2;
 					strength += 2;
 					weapon_skill--;
@@ -1227,7 +1256,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}			
 			if (weapon_slot==0){
 				//decide if any weapons are ranged
-				if (_wep1.range<=1.1 && _wep2.range<=1.1){
+				if (_wep1.range<1.1 && _wep2.range<1.1){
 					if (array_length(_wep1.second_profiles) + array_length(_wep2.second_profiles) ==0){
 						ranged_damage_data = [final_range_attack,explanation_string,carry_data,primary_weapon, secondary_weapon];
 					} else {
@@ -1595,7 +1624,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else {
 				location_type =  location_types.ship; //marine is on ship
 				location_id = ship_location; //ship array position
-				location_name = obj_ini.ship_location[location_id]; //location of ship
+				if (location_id<array_length(obj_ini.ship_location)){
+					location_name = obj_ini.ship_location[location_id]; //location of ship
+				} else {
+					location_name = location_name = obj_ini.loc[company][marine_number];
+				}
 			}
 			return [location_type,location_id ,location_name];
 		};
@@ -1654,7 +1687,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	static unload = function(planet_number, system){
 		var current_location = marine_location();
 		if (current_location[0]==location_types.ship){
-			if (!array_contains(["Warp", "Terra", "Mechanicus Vessel"],current_location[2]) && current_location[2]==system.name){
+			if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"],current_location[2]) && current_location[2]==system.name){
 				obj_ini.loc[company][marine_number]=obj_ini.ship_location[current_location[1]];
 				planet_location=planet_number;
 				ship_location=-1;
@@ -1745,7 +1778,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	static marine_assembling = scr_marine_game_spawn_constructions;
 
-	static roll_armour = scr_marine_spawn_armour;
+	static random_update_armour = scr_marine_spawn_armour;
 
 	static roll_age = scr_marine_spawn_age;
 

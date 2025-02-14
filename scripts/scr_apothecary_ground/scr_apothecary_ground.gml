@@ -36,7 +36,7 @@ function calculate_full_chapter_spread(){
 		    if (is_healer){
 		    	add_apoth_points_to_stack(_unit);
 		    }
-		  	if (_mar_loc[2]!="warp"){
+		  	if (_mar_loc[2]!="Warp" && _mar_loc[2]!="Lost"){
   	    		if (_mar_loc[0]=location_types.planet){
   	    			array_slot = _mar_loc[1];
   	    		} else if (_mar_loc[0] == location_types.ship){
@@ -50,7 +50,7 @@ function calculate_full_chapter_spread(){
   	    					array_contains(frigate_num, _mar_loc[1])||
   	    					array_contains(escort_num, _mar_loc[1])
   	    				){
-  	    					key_val=string(id);
+  	    					key_val=$"{id}";
   	    					array_slot=eSystemLoc.orbit;
   	    					break;
   	    				}
@@ -76,7 +76,8 @@ function calculate_full_chapter_spread(){
             	if (obj_ini.veh_race[company][v]!=0){
             		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
-	            		if (obj_ini.ship_location[veh_location] == "warp"){
+	            		var _ship_loc = obj_ini.ship_location[veh_location];
+	            		if (_ship_loc == "Warp" || _ship_loc=="Lost"){
 			  	    		if instance_exists(obj_p_fleet){
 			  	    			with (obj_p_fleet){
 			  	    				if (array_contains(capital_num, veh_location) ||
@@ -155,7 +156,7 @@ function apothecary_simple(){
 		}
 		if (!marines_present){
 			if (obj_controller.gene_seed == 0) and (obj_controller.recruiting > 0) {
-				var _training_ground = system_feature_bool(self, P_features.Recruiting_World);
+				var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
 				if (_training_ground){
                     obj_controller.recruiting = 0;
                     obj_controller.income_recruiting = 0;
@@ -168,7 +169,7 @@ function apothecary_simple(){
 	var cur_units, cur_techs, _loc_heal_points, veh_health, points_spent, cur_system, features;
 	var total_bionics = scr_item_count("Bionics");
 	for (i=0;i<array_length(_locations);i++){
-		_cur_loc = _locations[i];
+		var _cur_loc = _locations[i];
 		cur_system="";
 		if (array_length(_unit_spread[$_cur_loc]) == 6){
 			cur_system = _unit_spread[$_cur_loc][5];
@@ -225,6 +226,7 @@ function apothecary_simple(){
 							if (turn_end){
 								obj_ini.veh_hp[_unit[0]][_unit[1]]++;
 							}
+							forge_veh_maintenance.repairs++;
 							_loc_forge_points--;
 							tech_points_used++;
 						}
@@ -270,12 +272,17 @@ function apothecary_simple(){
 			_point_breakdown.forge_points_use = _point_breakdown.forge_points - _loc_forge_points;	
 			if (cur_system!=""){
 				point_breakdown.systems[$ cur_system.name][p] = DeepCloneStruct(_point_breakdown);
-			} else if (p==0){
-				if (instance_exists(real(_cur_loc))){
-					_cur_loc.point_breakdown = DeepCloneStruct(_point_breakdown);
+			} else if (p==0 && (string_count("ref instance", _cur_loc))){
+				try {
+					var _instance_int = real(string_replace(_cur_loc, "ref instance ", ""));
+					if (instance_exists(_instance_int)){
+						var _instance = _instance_int;
+						_instance.point_breakdown = DeepCloneStruct(_point_breakdown);
+					}
+				}catch(_exception) {
+					handle_exception(_exception);
 				}
 			}	
-			
 			if (cur_system!="" && p>0 && turn_end){
 				with (cur_system){
 		 			if (array_length(p_feature[p])!=0){

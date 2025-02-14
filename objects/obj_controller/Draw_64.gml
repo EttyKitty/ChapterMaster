@@ -43,7 +43,7 @@ if (!zoomed && !zui){
     
     
     if (y_slide>0) then draw_set_alpha((100-(y_slide*2))/100);
-    
+
     draw_set_alpha(1);
     draw_sprite(spr_new_banner,0,1439+new_banner_x,62);
     draw_sprite(spr_new_ui_cover,0,0,(900-17));
@@ -53,15 +53,18 @@ if (!zoomed && !zui){
         sprw = 141,
         sprh = 141;
     
-    draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    if (sprite_exists(global.chapter_icon_sprite)){
+        draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    }
        
     
     draw_set_color(38144);
     draw_set_font(fnt_menu);
     draw_set_halign(fa_center);
     // Draws the sector name
-    draw_text(775,17,string_hash_to_newline("Sector "+string(obj_ini.sector_name)));
-    draw_text(775.5,17.5,string_hash_to_newline("Sector "+string(obj_ini.sector_name)));
+    var _sector_string = $"Sector {obj_ini.sector_name ?? "Terra Nova"}";
+    draw_text(775,17,_sector_string);
+    draw_text(775.5,17.5,_sector_string);
     
     // Checks if you are penitent
     if (obj_controller.faction_status[eFACTION.Imperium]!="War"){

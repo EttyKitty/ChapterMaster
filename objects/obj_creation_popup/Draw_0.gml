@@ -182,6 +182,44 @@ if (col_shift){
         confirm_gear_button.alpha = target_gear > 0 ? 0.5 : 1;
         confirm_gear_button.rects = draw_unit_buttons([614,716], "CONFIRM",[1,1], 38144,, fnt_40k_14b, confirm_gear_button.alpha);
         if (point_and_click(confirm_gear_button.rects) and (target_gear = 0)) {
+            var possible_custom_roles = [
+                ["chapter_master", eROLE.ChapterMaster],
+                ["honour_guard",eROLE.HonourGuard],
+                ["veteran",eROLE.Veteran],
+                ["terminator",eROLE.Terminator],
+                ["captain",eROLE.Captain],
+                ["dreadnought",eROLE.Dreadnought],
+                ["champion",eROLE.Champion],
+                ["tactical",eROLE.Tactical],
+                ["devastator",eROLE.Devastator],
+                ["assault",eROLE.Assault],
+                ["ancient",eROLE.Ancient],
+                ["scout",eROLE.Scout],
+                ["chaplain",eROLE.Chaplain],
+                ["apothecary",eROLE.Apothecary],
+                ["techmarine",eROLE.Techmarine],
+                ["librarian",eROLE.Librarian],
+                ["sergeant",eROLE.Sergeant],
+                ["veteran_sergeant",eROLE.VeteranSergeant],
+            ];
+
+            var _role_id = ide;
+            for(var i = 0; i < array_length(possible_custom_roles); i++){
+                if(possible_custom_roles[i][1] == _role_id){
+                    var c_role = {
+                        name: obj_creation.role[100][_role_id],
+                        wep1: obj_creation.wep1[100][_role_id],
+                        wep2: obj_creation.wep2[100][_role_id],
+                        gear: obj_creation.gear[100][_role_id],
+                        mobi: obj_creation.mobi[100][_role_id],
+                        armour: obj_creation.armour[100][_role_id]
+                    }
+                    show_debug_message($"Updating role {_role_id} from {obj_creation.custom_roles}");
+                    variable_struct_set(obj_creation.custom_roles, possible_custom_roles[i][0], c_role);
+                }
+            }
+            show_debug_message($"New obj_creation.custom_roles {obj_creation.custom_roles}");
+
             obj_creation.cooldown = 8000;
             instance_destroy();
         }

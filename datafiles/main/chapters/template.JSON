@@ -196,6 +196,9 @@
             "ninth": 0,
             "tenth": 0
         },
+        /**
+        * All vehicles are added to the 10th company at the start of the game
+        */
         "extra_vehicles": {
             "rhino": 0,
             "whirlwind": 0,

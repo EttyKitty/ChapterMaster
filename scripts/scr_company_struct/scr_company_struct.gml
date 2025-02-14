@@ -66,7 +66,7 @@ function CompanyStruct(comp) constructor{
 		return obj_ini.squads[company_squads[cur_squad]];
 	}
 
-	static defualt_member = function(){
+	static default_member = function(){
 		var member = obj_ini.squads[company_squads[0]].members[0];
 		obj_controller.temp[120] = fetch_unit(member);
 		selected_unit = obj_controller.temp[120];		
@@ -89,18 +89,18 @@ function CompanyStruct(comp) constructor{
     					}
     				}
     				if (!squad_found){
-    					defualt_member();
+    					default_member();
     				}
     			}
     		} else {
-    			defualt_member();
+    			default_member();
     		}
 		} else if (obj_controller.view_squad){
 			obj_controller.view_squad = false;
 			obj_controller.unit_profile =false;
 		}
 		if (selected_unit.squad=="none"){
-			defualt_member();
+			default_member();
 		}
     	if (selected_unit.squad!="none"){			        	
 			current_squad = obj_ini.squads[selected_unit.squad];
@@ -147,25 +147,26 @@ function CompanyStruct(comp) constructor{
 			if (current_squad.assignment == "none"){
 				var button_row_offset = 0;
 				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assigments",1,1,0);
-				tooltip_text="Guard Duty";
-				if (squad_loc.same_system) and (squad_loc.system!="Warp"){
+				tooltip_text="Garrison Duty";
+				var _squad_sys = squad_loc.system;
+				if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
 					button_row_offset+=string_width(tooltip_text)+6;
 					button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
-					if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text), yy+bound_height[0]+150+string_height(tooltip_text))){
-						tooltip_text = "Having squads assigned to Guard Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth.";
+					if(scr_hit(button)){
+						tooltip_text = "Having squads assigned to Garrison Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth.";
 						tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5, yy+bound_height[0]+200]);
-						if (mouse_check_button_pressed(mb_left)){
+						if (scr_click_left()){
 							send_on_mission=true;
 							mission_type="garrison";
 						}
 					}
-					if (array_contains(current_squad.class, "scout")){
+					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
 						tooltip_text="Sabotage";
 						button = draw_unit_buttons([button[2] + 4, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
-						if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5+ button_row_offset, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text)+ button_row_offset, yy+bound_height[0]+150+string_height(tooltip_text))){
+						if (scr_hit(button)){
 							tooltip_text = "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk.";
 							tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5+button_row_offset, yy+bound_height[0]+200]);
-							if (mouse_check_button_pressed(mb_left)){
+							if (scr_click_left()){
 								send_on_mission=true;
 								mission_type="sabotage";
 							}
@@ -218,12 +219,13 @@ function CompanyStruct(comp) constructor{
 						var garrison_but = draw_unit_buttons([cancel_but[2]+10, cancel_but[1]],"View Garrison",[1,1],c_red,,,,true);
 						if (point_and_click(garrison_but)){
 							var garrrison_star =  star_by_name(cur_assignment.location);
+							obj_controller.view_squad = false;
 							if (garrrison_star!="none"){
-								obj_controller.menu=0;
-				                obj_controller.hide_banner=0;
+								scr_toggle_manage();
 				                obj_controller.x = garrrison_star.x;
 				                obj_controller.y = garrrison_star.y;
 				                obj_controller.selection_data =  {
+				                	system : garrrison_star.id,
 				                	planet:cur_assignment.ident,
 				                	feature:"",
 				                }
@@ -242,16 +244,8 @@ function CompanyStruct(comp) constructor{
 				draw_set_color(c_red);
 				draw_text_transformed(xx+bound_width[0]+5+ string_width(deploy_text) + string_width(current_squad.formation_place)+9, yy+bound_height[0], "column",1,1,0);
 				draw_set_color(c_gray);
-				var point_in_button = (point_in_rectangle(
-						mouse_x,
-						mouse_y,
-						button [0], 
-						button[1], 
-						button[2], 
-						button[3]
-					));
 				if (array_length(current_squad.formation_options)>1){
-					if (point_in_button){
+					if (scr_hit(button)){
 						drop_down_open = true;
 					}
 					if (drop_down_open){
@@ -266,9 +260,7 @@ function CompanyStruct(comp) constructor{
 							roll_down_offset += string_height(current_squad.formation_options[col])+4;
 
 						}
-						if (!point_in_rectangle(
-								mouse_x,
-								mouse_y,
+						if (!scr_hit(
 								xx+bound_width[0]+5+string_width(deploy_text),
 								yy+bound_height[0],
 								xx+bound_width[0]+13+ string_width(deploy_text) +string_width(current_squad.formation_place),
@@ -286,9 +278,17 @@ function CompanyStruct(comp) constructor{
 				current_squad.sort_squad_loadout();
 				reset_squad_surface();
 			}
+			var _button_text = current_squad.allow_bulk_swap ? "Exclude from mass" : "Allow mass";
+			button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+200],_button_text,[1,1],c_green,,,,true);
+			if (point_and_click(button)){
+				current_squad.allow_bulk_swap = !current_squad.allow_bulk_swap;
+			}
+			if (scr_hit(button)){
+				tooltip_draw("Enable to stop this squad from being included in mass equipment changes in chapter settings");
+			}		
 			
 			if (unit_rollover){
-				if (point_in_rectangle(mouse_x, mouse_y, xx+25, yy+144, xx+925, yy+981)){
+				if (scr_hit(xx+25, yy+144, xx+925, yy+981)){
 					x_overlap_mod =180;
 				} else {
 					unit_rollover = !unit_rollover;
@@ -315,7 +315,7 @@ function CompanyStruct(comp) constructor{
 					member_width++;
 					unit_sprite_coords = [xx+25+x_mod, yy+144+y_mod, xx+25+x_mod+166, yy+144+y_mod+231];
 					cur_member_surface.draw_part(unit_sprite_coords[0],unit_sprite_coords[1], 0,0, 166, 231,true);
-					if (point_in_rectangle(mouse_x, mouse_y, unit_sprite_coords[0], unit_sprite_coords[1], unit_sprite_coords[2], unit_sprite_coords[3]) && !exit_period && unit_rollover){
+					if (scr_hit(unit_sprite_coords) && !exit_period && unit_rollover){
 						sprite_draw_delay = [member,unit_sprite_coords, cur_member_surface];
 						obj_controller.temp[120] = member;									
 					}else {
@@ -340,7 +340,7 @@ function CompanyStruct(comp) constructor{
 				}
 			}						
 			if (!unit_rollover && !instance_exists(obj_star_select)){
-				if (point_in_rectangle(mouse_x, mouse_y, xx+25, yy+144, xx+525, yy+981) && !exit_period){
+				if (scr_hit(xx+25, yy+144, xx+525, yy+981) && !exit_period){
 					if (rollover_sequence<10){
 						rollover_sequence++;
 					} else {
@@ -352,7 +352,7 @@ function CompanyStruct(comp) constructor{
 					}
 				}
 			}
-			if (exit_period and !point_in_rectangle(mouse_x, mouse_y, xx+25, yy+144, xx+525, yy+981)){
+			if (exit_period and !scr_hit(xx+25, yy+144, xx+525, yy+981)){
 				exit_period=false;
 			}
 		}

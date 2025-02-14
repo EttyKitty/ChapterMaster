@@ -98,7 +98,9 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
                 // Apply damage for each shot
                 for (var shot = 0; shot < man_hits; shot++) {
-                    if (array_length(valid_marines) == 0) break; // No valid targets left
+                    if (array_length(valid_marines) == 0){
+                        break; // No valid targets left
+                    }
 
                     // Select a random marine from the valid list
                     var random_index = array_random_index(valid_marines);
@@ -106,7 +108,16 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     var marine = unit_struct[marine_index];
 
                     // Apply damage
-                    var minus = hostile_damage - (2 * marine_ac[marine_index]);
+                    var _shot_luck = d100_roll();
+                    if (_shot_luck<1){
+                        var minus = hostile_damage;
+                    } else if (_shot_luck<5){
+                        var minus = hostile_damage - marine_ac[marine_index];
+                    } else {
+                        var minus = hostile_damage - (2 * marine_ac[marine_index]);
+                    }
+                    
+
                     if (minus > 0) {
                         var damage_resistance = (marine.damage_resistance() / 100);
                         if (marine_mshield[marine_index] > 0) damage_resistance += 0.1;

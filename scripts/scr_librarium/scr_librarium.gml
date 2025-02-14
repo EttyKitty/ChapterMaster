@@ -17,15 +17,6 @@ function set_chapter_arti_data(){
 }
 function scr_librarium(){
 	var blurp="";
-	var recruitment_pace = [
-        " is currently halted.",
-        " is advancing sluggishly.",
-        " is advancing slowly.",
-        " is advancing moderately fast.",
-        " is advancing fast.",
-        " is advancing frenetically.",
-        " is advancing as fast as possible."
-    ];
     var xx = __view_get(e__VW.XView, 0) + 0;
 	var yy = __view_get(e__VW.YView, 0) + 0;	
  	draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -46,8 +37,12 @@ function scr_librarium(){
 
         if (menu_adept = 0) {
             // draw_sprite(spr_advisors,3,xx+16,yy+43);
-            scr_image("advisor", 3, xx + 16, yy + 43, 310, 828);
-            if (global.chapter_name = "Space Wolves") then scr_image("advisor", 10, xx + 16, yy + 43, 310, 828);
+            if(struct_exists(obj_ini.custom_advisors, "librarian")){
+                scr_image("advisor/splash", obj_ini.custom_advisors.librarian, xx + 16, yy + 43, 310, 828);
+            } else {
+                scr_image("advisor/splash", 4, xx + 16, yy + 43, 310, 828);
+            }
+            // if (global.chapter_name = "Space Wolves") then scr_image("advisor", 10, xx + 16, yy + 43, 310, 828);
             // draw_sprite(spr_advisors,10,xx+16,yy+43);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
@@ -58,7 +53,7 @@ function scr_librarium(){
         }
         if (menu_adept = 1) {
             // draw_sprite(spr_advisors,0,xx+16,yy+43);
-            scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+            scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_large);
@@ -70,7 +65,10 @@ function scr_librarium(){
         var tip2 = "";
 
         // Set pace of recruitment based on training psyker value
-        if (training_psyker >= 0 && training_psyker <= 6) then blurp += recruitment_pace[training_psyker];
+        if (training_psyker >= 0 && training_psyker <= 6){
+            var _recruit_pace = ARR_recruitment_pace;
+            blurp += _recruit_pace[training_psyker];
+        }
 
         var artif = "",
             artif_descr = "",

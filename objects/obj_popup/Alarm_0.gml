@@ -24,7 +24,23 @@ if (battle_special=3.1){
     instance_activate_object(obj_controller);
     instance_activate_object(obj_ncombat);
     
-    scr_battle_roster(loc,planet,true);
+    _roster = new Roster();
+    with (_roster){
+        roster_location = obj_ncombat.battle_loc;
+        roster_planet = obj_ncombat.battle_id;
+        determine_full_roster();
+        only_locals();
+        update_roster();
+        if (array_length(selected_units)){  
+            setup_battle_formations();
+            add_to_battle();
+        } else {
+            instance_destroy(obj_ncombat);
+            instance_activate_all();
+            delete _roster
+        }               
+    }
+    delete _roster
 }
 instance_destroy();exit;
 

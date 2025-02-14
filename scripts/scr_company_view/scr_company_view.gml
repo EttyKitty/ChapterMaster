@@ -34,6 +34,7 @@ function reset_manage_arrays() {
         ma_promote=[];
         ma_god=[];
         ma_view = [];
+        squad = [];
     }
     reset_ship_manage_arrays();
 }
@@ -73,6 +74,7 @@ function add_man_to_manage_arrays(unit){
         array_push(display_unit,unit);
         array_push(ma_god,0);
         array_push(ma_view,true);
+        array_push(squad, -1);
 	}
 }
 
@@ -118,6 +120,7 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_promote,0);
 		array_push(ma_god,0);
 		array_push(ma_view,true);
+		array_push(squad, -1);
 	}
 }
 
@@ -360,6 +363,7 @@ function filter_and_sort_company(type, specific){
         var tempprom =ma_promote[a];
         var tempdis =display_unit[a];
         var tempview = ma_view[a];
+        var temp_squad = squad[a]
 
         man[a]=man[b];
         ide[a]=ide[b];
@@ -379,6 +383,7 @@ function filter_and_sort_company(type, specific){
         ma_promote[a]=ma_promote[b];
         display_unit[a] =display_unit[b];
         ma_view[a] =ma_view[b];
+        squad[a] = squad[b]
 
         man[b]=tempman;
         ide[b]=tempide;
@@ -397,7 +402,8 @@ function filter_and_sort_company(type, specific){
         ma_exp[b]= tempexp;
         ma_promote[b]= tempprom;
         display_unit[b] = tempdis;  
-        ma_view[b] = tempview;      
+        ma_view[b] = tempview;
+        squad[b] = temp_squad;
 	}
 	if (type=="stat"){
 		var swapped;
@@ -465,10 +471,8 @@ function company_manage_actions(){
     // Back out from company
     if (point_and_click([xx+23,yy+80,xx+95,yy+128])){
         managing=0;
-        cooldown=8000;
         scr_ui_refresh();
         scr_management(1);
-        cooldown=8000;
         click=1;
         popup=0;
         selected=0;
@@ -487,4 +491,32 @@ function company_manage_actions(){
     	var new_view = managing == 15 ? 1 : managing+1;
     	switch_view_company(new_view)
     } 	 	 
+}
+
+function ui_manage_hotkeys(){
+	if (managing >=0){
+	    for (var i=1;i<10;i++){ 
+	    	if (press_exclusive(ord(string(i)))){
+	    		switch_view_company(i);
+	    	}
+	    }
+		if (press_exclusive(ord("0"))){
+			switch_view_company(10);
+		}
+		else if (press_exclusive(ord("Q"))){
+			switch_view_company(11);
+		} 
+		else if (press_exclusive(ord("E"))){
+			switch_view_company(12);
+		}
+		else if (press_exclusive(ord("R"))){
+			switch_view_company(13);
+		}
+		else if (press_exclusive(ord("T"))){
+			switch_view_company(14);
+		}
+		else if (press_exclusive(ord("Y"))){
+			switch_view_company(15);
+		}    		
+	}	
 }

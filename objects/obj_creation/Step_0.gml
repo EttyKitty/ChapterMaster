@@ -35,7 +35,7 @@ if (slide==1){
             chapter_string=chapter_name;
         }
         scr_creation(2);
-        scr_creation(3.5);
+        scr_creation(3);
         scr_creation(4);
         scr_creation(5);
         scr_creation(6);
@@ -114,7 +114,8 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         recruiting_name=global.name_generator.generate_star_name();
         flagship_name=global.name_generator.generate_imperial_ship_name();
         recruiting_exists=1;
-        homeworld_exists=1;homeworld_rule=1;
+        homeworld_exists=1;
+        homeworld_rule=1;
         aspirant_trial=eTrials.BLOODDUEL;
         discipline="default";
         battle_cry="For the Emperor";
@@ -244,17 +245,17 @@ if (full_liveries == ""){
         weapon_color:weapon_color
     }
     livery_picker.scr_unit_draw_data();
-    livery_picker.set_defualt_armour(struct_cols,col_special);
+    livery_picker.set_default_armour(struct_cols,col_special);
     full_liveries = array_create(21,DeepCloneStruct(livery_picker.map_colour));
-    full_liveries[eROLE.Librarian] = livery_picker.set_defualt_librarian(struct_cols);
+    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
 
-    full_liveries[eROLE.Chaplain] = livery_picker.set_defualt_chaplain(struct_cols);
+    full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
 
-    full_liveries[eROLE.Apothecary] = livery_picker.set_defualt_apothecary(struct_cols);
+    full_liveries[eROLE.Apothecary] = livery_picker.set_default_apothecary(struct_cols);
 
-    full_liveries[eROLE.Techmarine] = livery_picker.set_defualt_techmarines(struct_cols);
+    full_liveries[eROLE.Techmarine] = livery_picker.set_default_techmarines(struct_cols);
     livery_picker.scr_unit_draw_data();
-    livery_picker.set_defualt_armour(struct_cols,col_special);    
+    livery_picker.set_default_armour(struct_cols,col_special);    
 }
 
 // on left mouse release, if greater than 5000 and less than 9000, set cooldown to 0

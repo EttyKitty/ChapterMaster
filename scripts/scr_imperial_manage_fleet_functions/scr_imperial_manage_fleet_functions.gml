@@ -5,6 +5,7 @@ function new_colony_fleet (doner_star, doner_planet, target, target_planet, miss
     new_colonise_fleet.image_index=3;
     new_colonise_fleet.warp_able=false;
 
+    show_debug_message($"{doner_star.name}, {doner_planet}, {target.name}, {target_planet}");
     var doner_volume = 0;
     if (doner_star.p_large[doner_planet]) {
         doner_volume = (doner_star.p_population[doner_planet]*0.01)*power(10,8);
@@ -33,6 +34,7 @@ function new_colony_fleet (doner_star, doner_planet, target, target_planet, miss
 
     new_colonise_fleet.action_x=target.x;
     new_colonise_fleet.action_y=target.y;
+    new_colonise_fleet.target = target;
     with (new_colonise_fleet){
         set_fleet_movement();
     }

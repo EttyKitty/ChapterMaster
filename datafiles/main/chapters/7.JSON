@@ -19,6 +19,8 @@
         "homeworld_rule": 3, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "Temperate", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "Macragge",
+        "recruit_home_relationship" : 2, //recruit from different system
+        "home_planets":3,
         "recruiting": "Death", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "Parmenio",
         "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'

@@ -170,7 +170,7 @@ function new_inquisitor_inspection(){
 function inquisition_inspection_logic(){
 	var inspec_alert_string = "";
 	var cur_star=instance_nearest(x,y,obj_star);
-
+    inquisitor = inquisitor<0 ? 0 : inquisitor;
 	var inquis_string = $"Inquisitor {obj_controller.inquisitor[inquisitor]}";
 	 if (string_count("fleet",trade_goods)==0){
             inspec_alert_string = $"{inquis_string} finishes inspection of {cur_star.name}";

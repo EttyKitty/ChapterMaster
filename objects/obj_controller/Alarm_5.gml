@@ -188,7 +188,7 @@ try_and_report_loop("imperial ship build", function(){
 // ** Training **
 // * Apothecary *
 recruit_count=0;
-var training_points_values = [ 0, 0.8, 0.9, 1, 1.5, 2, 4 ];
+var training_points_values = ARR_apothecary_training_tiers;
 apothecary_recruit_points += training_points_values[training_apothecary]
 
 novice_type = string("{0} Aspirant",obj_ini.role[100][15])
@@ -267,6 +267,7 @@ if (training_apothecary>0){
 // * Chaplain training *
 // TODO add functionality for Space Wolves and Iron Hands
 recruit_count=0;
+var training_points_values = ARR_chaplain_training_tiers;
 if (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
 	chaplain_points += training_points_values[training_chaplain];
     novice_type = string("{0} Aspirant",obj_ini.role[100][14]);
@@ -487,9 +488,7 @@ if (training_techmarine>0){
                 obj_ini.loc[0][g1]="Terra";
                 unit.planet_location=4;
                 unit.ship_location=-1;
-                if (unit.weapon_one()!="Power Weapon"){
-                    unit.update_weapon_one("");
-                }
+                unit.update_weapon_one("");
                 unit.update_weapon_two("");
                 unit.update_gear("");
                 unit.update_mobility_item("");
@@ -562,11 +561,11 @@ if (turn=240) and (global.chapter_name="Lamenters"){
 }
 */
 // ** Battlefield Loot **
-if (array_contains(obj_ini.adv,"Tech-Scavengers")){
+if (scr_has_adv("Tech-Scavengers")){
     var lroll1,lroll2,loot="";
     lroll1=floor(random(100))+1;
     lroll2=floor(random(100))+1;
-    if (array_contains(obj_ini.dis,"Shitty Luck")){
+    if (scr_has_disadv("Shitty Luck")){
         lroll1+=2;
         lroll2+=25;
     }
@@ -717,9 +716,13 @@ for(var c=0; c<11; c++){
 }
 // STC Bonuses
 if (obj_controller.stc_ships>=6){
-    for(var v=1; v<=40; v++){
-        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]+=round(obj_ini.ship_maxhp[v]*0.06);
-        if (obj_ini.ship_hp[v]>obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]=obj_ini.ship_maxhp[v];
+    //self healing ships logic
+    for (var v=0; v<array_length(obj_ini.ship_hp); v++){
+        if (obj_ini.ship[v]=="" || obj_ini.ship_hp[v]<0) then continue;
+        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
+            var _max = obj_ini.ship_maxhp[v];
+            obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));
+        }
     }
 }
 
@@ -1075,7 +1078,7 @@ for(var i=1; i<=99; i++){
             if (string_count("inquisitor_spared",event[i])>0){
                 var diceh=floor(random(100))+1;
 
-                if (string_count("Shit",obj_ini.strin2)>0) then diceh-=25;
+                if (scr_has_disadv("Shitty Luck")) then diceh-=25;
 
                 if (diceh<=25){
                     alarm[8]=1;
@@ -1126,7 +1129,7 @@ for(var i=1; i<=99; i++){
                         last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
                     } else {
                         if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[1],501);
+                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
                         }
                     }
 
@@ -1260,6 +1263,7 @@ if (fest_scheduled>0) and (fest_repeats>0){
 research_end();
 merge_ork_fleets();
 //complex route plotting for player fleets
+return_lost_ships_chance();
 with (obj_p_fleet){
     if (array_length(complex_route)>0  && action == ""){
         set_new_player_fleet_course(complex_route);

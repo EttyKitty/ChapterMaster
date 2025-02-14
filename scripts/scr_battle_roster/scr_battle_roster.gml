@@ -52,7 +52,7 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                 //Special (okay -1) battle cases go here
                 var _not_dread_advised = (_spyrer_mission > 0) or(new_combat.battle_special == "space_hulk") or(string_count("chaos_meeting", new_combat.battle_special) > 0);
                 if (_not_dread_advised) {
-                    var _u_armour = unit.armour_data();
+                    var _u_armour = unit.get_armour_data();
                     if (is_struct(_u_armour)){
                         if (_u_armour.has_tag("dreadnought")){
                             okay = -1;
@@ -62,7 +62,6 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                 if (_spyrer_mission > 0) {
                     if (okay == 1) and(array_length(new_combat.unit_struct)) then okay = -1;
                 }
-                if (okay <= -1) then new_combat.fighting[company][v] = 0;
 
                 //Normal and other battle cases checks go here
                 else if (okay >= 0) {
@@ -83,9 +82,8 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                         }
                     } else if (instance_exists(obj_drop_select)) { // When attacking, normal battle
                         //If not fighting (obj_drop_select pre-check), we skip the unit
-                        if (obj_drop_select.fighting[company][v] == 0) then okay = 0;
 
-                        else if (obj_drop_select.attack == 1) {
+                        if (obj_drop_select.attack == 1) {
                             if (_is_planet) and(obj_ini.loc[company][v] == required_location) and(unit.planet_location == _target_location)   then okay = 1;
                             else if (!_is_planet) and(unit.ship_location == _target_location) then okay = 1;
                         } else if (obj_drop_select.attack != 1) {

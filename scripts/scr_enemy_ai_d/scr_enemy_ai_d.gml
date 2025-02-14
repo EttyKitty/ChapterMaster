@@ -57,9 +57,9 @@ function scr_enemy_ai_d() {
         problem_count_down(i);
         numeral_name = planet_numeral_name(i);
 	    if (has_problem_planet_and_time(i, "succession", 0)){
-            var dice1,dice2,result,alert_text;
-            dice1=floor(random(100))+1;
-            dice2=floor(random(100))+1;
+            var result,alert_text;
+            var dice1=d100_roll();
+            var dice2=d100_roll();
         
             result="";alert_text="";
             if (dice1<=(p_heresy[i]*2)) then result="chaos";
@@ -99,7 +99,7 @@ function scr_enemy_ai_d() {
             if (result="imperial") then scr_event_log("",alert_text);
             remove_planet_problem(i, "succession");
 	    }
-	   if (has_problem_planet_and_time(i, "recon", 0)){
+	   if (has_problem_planet_and_time(i, "recon", 0)>-1){
             var alert_text="Inquisition Mission Failed: Investigate ";
             alert_text+=string(name)+" "+scr_roman(i)+".";
             scr_alert("red","mission_failed",alert_text,0,0);
@@ -108,7 +108,7 @@ function scr_enemy_ai_d() {
             remove_planet_problem(i, "recon");
         }
 
-        if (has_problem_planet_and_time(i, "great_crusade", 0)){
+        if (has_problem_planet_and_time(i, "great_crusade", 0)>-1){
             var flet,cont,dir;cont=0;
             flet=instance_nearest(x,y,obj_p_fleet);
         
@@ -139,7 +139,7 @@ function scr_enemy_ai_d() {
         }
 
         var raider_planet_slot = has_problem_planet_with_time(i,"mech_raider");
-        if (raider_planet_slot){
+        if (raider_planet_slot>-1){
             check1=scr_role_count(obj_ini.role[100][16],string(name)+"|"+string(i)+"|");
             check2=scr_vehicle_count("Land Raider",string(name)+"|"+string(i)+"|");
             if (check1>=6) and (check2>=1){
@@ -153,7 +153,7 @@ function scr_enemy_ai_d() {
             }     	
         }
         var bionics_planet_slot = has_problem_planet_with_time(i,"mech_bionics");
-        if (bionics_planet_slot){
+        if (bionics_planet_slot>-1){
             check1=scr_bionics_count("star",string(name),i,"number");
             if (check1>=10){
             	p_problem_other_data[p][bionics_planet_slot].completion += 100/24;
@@ -166,10 +166,10 @@ function scr_enemy_ai_d() {
             }     	
         }
         var tomb2_planet_slot = has_problem_planet_with_time(i,"mech_tomb2");
-        if (tomb2_planet_slot){
+        if (tomb2_planet_slot>-1){
         	var battli=0;
         	var roll1=floor(random(100))+1;
-        	var completion = p_problem_other_data[i][bionics_planet_slot].completion>0;
+        	var completion = p_problem_other_data[i][tomb2_planet_slot].completion>0;
         	if (completion>2){
                 if (roll1>=90) and (roll1<98) then battli=1;// oops
                 if (roll1>=98) then battli=2;// very oops, much necron, wow
@@ -226,7 +226,7 @@ function scr_enemy_ai_d() {
             }        	
         }
         var tomb1_planet_slot = has_problem_planet_with_time(i,"mech_tomb1");
-        if (tomb1_planet_slot){
+        if (tomb1_planet_slot>-1){
         	if (scr_marine_count(id,i,20)>=20){
         		remove_planet_problem(i,"mech_tomb1");
         		add_new_problem(i, "mech_tomb2", 999,star="none", other_data={completion:0})
@@ -234,7 +234,7 @@ function scr_enemy_ai_d() {
         	}
         }
         var mars_mech_mission = has_problem_planet_and_time(i,"mech_mars", 0);
-        if (mars_mech_mission){
+        if (mars_mech_mission>-1){
             var techs_taken,com,ide,ship_planet, unit;
             techs_taken=0;com=-1;ide=0;ship_planet="";        	
             for (com =0; com<=10;com++){
@@ -246,7 +246,7 @@ function scr_enemy_ai_d() {
                             p_player[i]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
                             obj_ini.loc[com][ide]="Mechanicus Vessel";
                             unit.planet_location=0;
-                            unit.ship_location=0;
+                            unit.ship_location=-1;
                             techs_taken+=1;
                         }
                         if (unit.ship_location>-1){
@@ -287,26 +287,26 @@ function scr_enemy_ai_d() {
             flit.action_y=y+lengthdir_y(3000,obj_controller.terra_direction);
             flit.action="move";flit.action_eta=48;                    	
         }
-        if (has_problem_planet_and_time(i,"mech_tomb1", 0)){
+        if (has_problem_planet_and_time(i,"mech_tomb1", 0)>-1){
             var alert_text="Mechanicus Mission Failed: Necron Tomb Study at "+string(name)+" "+scr_roman(i)+".";
             scr_alert("red","mission_failed",alert_text,0,0);
             scr_event_log("red",alert_text, name);
             obj_controller.disposition[3]-=15; 
             remove_planet_problem(i,"mech_tomb1");       	
         }
-        if (has_problem_planet_and_time(i,"mech_raider", 0)){
+        if (has_problem_planet_and_time(i,"mech_raider", 0)>-1){
             var alert_text="Mechanicus Mission Failed: Land Raider testing at "+string(name)+" "+scr_roman(i)+".";
             scr_alert("red","mission_failed",alert_text,0,0);scr_event_log("red",alert_text);
             obj_controller.disposition[3]-=6;
             remove_planet_problem(i,"mech_raider");      	
         }
-        if (has_problem_planet_and_time(i,"mech_bionics", 0)){
+        if (has_problem_planet_and_time(i,"mech_bionics", 0)>-1){
             var alert_text="Mechanicus Mission Failed: Land Raider testing at "+string(name)+" "+scr_roman(i)+".";
             scr_alert("red","mission_failed",alert_text,0,0);scr_event_log("red",alert_text);
             obj_controller.disposition[3]-=6; 
             remove_planet_problem(i,"mech_bionics");       	
         }
-        if (has_problem_planet_and_time(i,"bomb", 0)){
+        if (has_problem_planet_and_time(i,"bomb", 0)>-1){
 
             var alert_text="The Necron Tomb of planet ";
 
@@ -320,7 +320,7 @@ function scr_enemy_ai_d() {
             // scr_alert("red","mission_failed",alert_text,0,0);
             obj_controller.disposition[4]-=8;
         }
-        if (has_problem_planet_and_time(i,"inquisitor1", 6)|| has_problem_planet_and_time(i,"inquisitor2", 6)){
+        if (has_problem_planet_and_time(i,"inquisitor1", 6)>-1|| has_problem_planet_and_time(i,"inquisitor2", 6)>-1){
             var flit, x7,y7,drr;
             drr=random(floor(360))+1;
             x7=x+lengthdir_x(384,drr);
@@ -349,7 +349,7 @@ function scr_enemy_ai_d() {
            remove_planet_problem(i,"inquisitor1"); 
            remove_planet_problem(i,"inquisitor2"); 
         }
-         if (has_problem_planet_and_time(i,"spyrer", 0)){
+         if (has_problem_planet_and_time(i,"spyrer", 0)>-1){
             var alert_text,text;
             var planet_name = planet_numeral_name(i, self);
             alert_text=$"The Spyrer on {planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.";
@@ -359,7 +359,7 @@ function scr_enemy_ai_d() {
             scr_event_log("red",text);
             remove_planet_problem(i,"spyrer"); 
          }
-         if (has_problem_planet_and_time(i,"fallen", 0)){
+         if (has_problem_planet_and_time(i,"fallen", 0)>-1){
             //TODO marker point for cohesion mechanics
             var alert_text="";
             var unit;
@@ -446,11 +446,11 @@ function scr_enemy_ai_d() {
     
 	    }
 
-        if (has_problem_planet_and_time(i,"Hive Fleet", 3)){
+        if (has_problem_planet_and_time(i,"Hive Fleet", 3)>-1){
             var woop=scr_role_count("Chief "+string(obj_ini.role[100,17]),"");
         
             var o,yep,yep2;o=0;yep=true;yep2=false;
-            if (array_contains(obj_ini.dis, "Psyker Intolerant")) then yep=false;
+            if (scr_has_disadv("Psyker Intolerant")) then yep=false;
             
             if (obj_controller.known[eFACTION.Tyranids]=0) and (woop!=0) and (yep!=false){
                 scr_popup("Shadow in the Warp",$"Chief {obj_ini.role[100,17]} "+string(obj_ini.name[0,5])+" reports a disturbance in the warp.  He claims it is like a shadow.","shadow","");
@@ -484,14 +484,14 @@ function scr_enemy_ai_d() {
 		storm-=1;
 	    if (storm=0){
 	        var tr="Warp Storms over "+string(name)+" dissipate.";
-	        scr_alert("green","warp",tr,x,y);scr_event_log("green",tr);
+	        scr_alert("green","Warp",tr,x,y);scr_event_log("green",tr);
 	    }
 	}
 	if (trader>0){
 		trader-=1;
 	    if (trader=0){
 	        var tr="Rogue Trader fleet departs from "+string(name)+".";
-	        scr_alert("green","warp",tr,x,y);scr_event_log("green",tr);
+	        scr_alert("green","Warp",tr,x,y);scr_event_log("green",tr);
 	    }
 	}
 

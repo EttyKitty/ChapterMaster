@@ -132,7 +132,6 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Force Staff":spr_weapon_frcstaff,
 			"Force Sword":spr_weapon_powswo,
 			"Force Axe":spr_weapon_powaxe,
-			"Power Weapon":spr_weapon_powswo,
             "Relic Blade":spr_weapon_relic_blade,
             "Eviscerator":spr_weapon_evisc,
             "Power Mace":spr_weapon_powmace,
@@ -321,17 +320,17 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         hand_on_top[2]=true;
     }
 
-    if (array_contains(["Power Mace", "Mace of Absolution", "Power Axe", "Shock Maul", "Chain Axe"], equiped_weapon)) {
+    if (array_contains(["Power Mace", "Mace of Absolution", "Power Axe", "Shock Maul", "Chainaxe", "Force Axe"], equiped_weapon)) {
         hand_variant[left_or_right] = 3;
     }
 
-    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword"], equiped_weapon)) {
+    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword"], equiped_weapon)) {
         hand_variant[left_or_right] = 2;
         hand_on_top[left_or_right] = true;
     }
 
     // New weapon draw method
-    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chain Axe"], equiped_weapon)) {
+    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe"], equiped_weapon)) {
         new_weapon_draw[left_or_right] = true;
     }
 

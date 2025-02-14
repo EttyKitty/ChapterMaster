@@ -29,25 +29,32 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
     var _format_version = string_split(global.game_version, "/");
     _full_message += $"Game Version: {_format_version[0]}\n"; 
     _full_message += $"Build Date: {global.build_date}\n";
-    _full_message += $"Commit Hash: https://github.com/EttyKitty/ChapterMaster/commits/{global.commit_hash}\n\n";
+    _full_message += $"Commit Hash: {global.commit_hash}\n\n";
     _full_message += $"Details:\n";
-    _full_message += $"{_message}\n";
+    _full_message += $"{_message}\n\n";
     _full_message += $"Stacktrace:\n";
     _full_message += $"{_stacktrace}\n";
     _full_message += $"{LB_92}";
-
-    var _player_message = "";
-    _player_message += $"{_header}\n\n";
-    _player_message += $"{STR_error_message}";
-    _player_message += _critical ? "" : $"\n\n{STR_error_message_ps}";
 
     if (_report_title != "") {
         _report_title += "\n";
     }
 
-    create_error_file(_full_message);
-    clipboard_set_text($"{_report_title}{markdown_codeblock(_full_message)}");
+    var _commit_history_link = $"https://github.com/EttyKitty/ChapterMaster/commits/{global.commit_hash}";
+
+    create_error_file($"{_report_title}{_full_message}\n{_commit_history_link}");
     show_debug_message(_full_message);
+
+    var _clipboard_message = "";
+    _clipboard_message += $"{_report_title}";
+    _clipboard_message += $"{markdown_codeblock(_full_message, "log")}\n";
+    _clipboard_message += $"{_commit_history_link}";
+    clipboard_set_text(_clipboard_message);
+
+    var _player_message = "";
+    _player_message += $"{_header}\n\n";
+    _player_message += $"{STR_error_message}";
+    _player_message += _critical ? "" : $"\n\n{STR_error_message_ps}";
     show_message(_player_message);
 }
 
@@ -104,10 +111,11 @@ exception_unhandled_handler(function(_exception) {
 
 /// @function markdown_codeblock
 /// @description Formats text as a code block.
-/// @param {string} _message - The message to format.
+/// @param {string} _message The message to format.
+/// @param {string} _language (Optional) Code language prefix to add into the codeblock.
 /// @returns {string} The formatted message.
-function markdown_codeblock(_message) {
-    return string_length(_message) > 0 ? $"```\n{_message}\n```" : "";
+function markdown_codeblock(_message, _language = "") {
+    return string_length(_message) > 0 ? $"```{_language}\n{_message}\n```" : "";
 }
 
 /// @function format_time

@@ -1,16 +1,11 @@
 if (instance_number(obj_ncombat)>1) then  instance_destroy();
 
-set_zoom_to_defualt();
+set_zoom_to_default();
 var co,i;co=-1;
-repeat(15){co+=1;i=-1;
-    repeat(401){i+=1;
-        fighting[co][i]=0;
-        if (i<=150){veh_fighting[co][i]=0;}
-    }
-}co=0;i=0;hue=0;
+co=0;i=0;hue=0;
 
 turn_count = 0;
-debugl("Ground Combat Started");
+log_message("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle,0,true);
@@ -34,6 +29,7 @@ on_ship=false;
 alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
+end_alive_units = [];
 average_battle_exp_gain=0;
 upgraded_librarians=[];
 

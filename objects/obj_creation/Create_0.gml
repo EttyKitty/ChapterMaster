@@ -113,7 +113,8 @@ complex_selection = "sgt";
 complex_depth_selection = 0;
 //TODO probably make this array based at some point ot match other unit data
 complex_livery_data = complex_livery_default();
-
+left_data_slate = new DataSlate();
+right_data_slate = new DataSlate();
 standard_livery_components = 0;
 enum LiveryComponents{
 	Body,
@@ -144,7 +145,88 @@ heheh=0;
 icons_top=1;
 icons_max=0;
 turn_selection_change=false;
+buttons = {
+    home_world_recruit_share : new ToggleButton(),
+    complex_homeworld : new ToggleButton({
+        x1 : 550,
+        y1 :  422,
+        active : false,
+        str1 : "Spawn System Options",
+        tooltip : "Click for Complex Spawn System Options",
+        button_color : #009500,
+    }),
+    home_spawn_loc_options : new radio_set([
+        {
+            str1 : "Fringe",
+            font : fnt_40k_30b,
+            tooltip : "Your home system sits at the edge of the sector",
+        },
+        {
+            str1 : "Central",
+            font : fnt_40k_30b,
+            tooltip : "Your home system is relativly central in the sector",
+        },        
+    ], "Home Spwan\nLocation"),
 
+    recruit_home_relationship : new radio_set([
+        {
+            str1 : "Share Planet",
+            font : fnt_40k_14b,
+            tooltip : "Your recruit world will be the same planet as your home world",
+        },
+        {
+            str1 : "Share System",
+            font : fnt_40k_14b,
+            tooltip : "Your recruit world will be in the the same system as your home world",
+        },
+        {
+            str1 : "Seperate",
+            font : fnt_40k_14b,
+            tooltip : "Your recruit world will be in a different system to your homeworld",
+        },            
+    ], "Recruit world"),
+    home_warp : new radio_set([
+        {
+            str1 : "Secluded",
+            font : fnt_40k_14b,
+            tooltip : "Your home system is logistically secluded with no major warp routes",
+        },
+        {
+            str1 : "Connected",
+            font : fnt_40k_14b,
+            tooltip : "Your home system is connected to the larger imperium and system by warp routes",
+        },
+        {
+            str1 : "Warp Hub",
+            font : fnt_40k_14b,
+            tooltip : "Your home system is in a very stable warp area, accessible by several warp lanes",
+        },            
+    ], "Home warp access"),
+    home_planets : new radio_set([
+        {
+            str1 : "one",
+            font : fnt_40k_14b,
+        },
+        {
+            str1 : "two",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "three",
+            font : fnt_40k_14b
+        }, 
+        {
+            str1 : "four",
+            font : fnt_40k_14b
+        },                    
+    ], "Home System Planets"),        
+}
+with (buttons){
+    home_spawn_loc_options.current_selection = 1;
+    home_planets.current_selection = 1;
+    home_warp.current_selection = 1;
+    recruit_home_relationship.current_selection = 1;
+}
 scrollbar_engaged=0;
 
 text_selected="none";
@@ -398,6 +480,7 @@ for(var c = 1; c < 40; c++){
         );
         all_chapters[c].json = true;
         all_chapters[c].icon = json_chapter.icon;
+        all_chapters[c].icon_name = json_chapter.icon_name;
         all_chapters[c].splash = json_chapter.splash;
         all_chapters[c].loaded = true;
         all_chapters[c].disabled = false;
@@ -424,10 +507,10 @@ founding_chapters = array_filter(all_chapters, function(item){ return item.origi
 successor_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.SUCCESSOR});
 custom_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.CUSTOM});
 other_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.NON_CANON});
-show_debug_message($"founding: {founding_chapters}");
-show_debug_message($"successor: {successor_chapters}");
-show_debug_message($"custom: {custom_chapters}");
-show_debug_message($"other: {other_chapters}");
+// show_debug_message($"founding: {founding_chapters}");
+// show_debug_message($"successor: {successor_chapters}");
+// show_debug_message($"custom: {custom_chapters}");
+// show_debug_message($"other: {other_chapters}");
 
 
 // TODO refactor into struct constructors stored in which are struct arrays 
@@ -840,7 +923,7 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     race[defaults_slot, _role_id] = 1;
 }
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-load_default_gear(eROLE.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
 load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
 load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
@@ -857,6 +940,9 @@ load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "P
 load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
 load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
 
+builtin_icons = array_length(sprite_get_info(spr_icon_chapters).frames);
+normal_and_builtin = global.normal_icons_count + builtin_icons;
+total_icons = global.normal_icons_count + builtin_icons + global.custom_icons;
 
 
 
@@ -871,8 +957,8 @@ if (global.restart>0){
     slide=2;
     slide_show=2;
     
-    scr_restart_variables(4);
-    with(obj_restart_vars){instance_destroy();}
+    reset_creation_variables();
+    //with(obj_restart_vars){instance_destroy();}
     global.restart=0;
 }
 

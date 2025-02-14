@@ -20,46 +20,7 @@ if (__b__){
 
     // TODO Need to change max_ships to something more meaningful to make sure that SOMETHING is dropping
     if (obj_controller.cooldown<=0){
-        if (ships_selected>0) and point_in_rectangle(mouse_x, mouse_y, bombard_button[0], bombard_button[1], bombard_button[2], bombard_button[3]){
-            obj_controller.cooldown=30;
-            
-            var str=0;
-            // TODO a centralised point to be able to fetch display names from factions identifying number
-            switch (target) {
-                case 2:
-                    str = imp;
-                    break;
-                case 2.5:
-                    str = pdf;
-                    break;
-                case 3:
-                    str = mechanicus;
-                    break;
-                case 5:
-                    str = sisters;
-                    break;
-                case 6:
-                    str = eldar;
-                    break;
-                case 7:
-                    str = ork;
-                    break;
-                case 8:
-                    str = tau;
-                    break;
-                case 9:
-                    str = tyranids;
-                    break;
-                case 10:
-                    str = max(traitors, chaos);
-                    break;
-                default:
-                    str = 0;
-                    break;
-            }           
-            // Start bombardment here
-            scr_bomb_world(p_target,obj_controller.selecting_planet,target,bomb_score,str);
-        }
+        
     }
     instance_activate_object(obj_star_select);
 }

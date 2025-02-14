@@ -1,11 +1,14 @@
 try {
-    var yeehaw1, yeehaw2, tstar;
-    yeehaw1=0;yeehaw2=0;tstar=0;
+    var _player_battle_fleet, yeehaw2, tstar;
+    _player_battle_fleet=0;yeehaw2=0;tstar=0;
     
-    if (player_started=1){yeehaw1=pla_fleet;yeehaw2=ene_fleet;}
+    if (player_started=1){
+        _player_battle_fleet=pla_fleet;
+        yeehaw2=ene_fleet;
+    }
     
     if (player_started=0) and (instance_exists(obj_turn_end)){
-        yeehaw1=obj_turn_end.battle_pobject[obj_turn_end.current_battle];
+        _player_battle_fleet=obj_turn_end.battle_pobject[obj_turn_end.current_battle];
     }
     
     
@@ -18,14 +21,11 @@ try {
         }
     }
     
-    
-    
-    
-    
-    yeehaw1.capital_number=max(capital,0);
-    yeehaw1.frigate_number=max(frigate,0);
-    yeehaw1.escort_number=max(escort,0);
-    yeehaw1.alarm[6]=1;// Check for low health ships
+    with (_player_battle_fleet){
+        scr_ini_ship_cleanup()
+
+        if (player_fleet_ship_count() == 0) then instance_destroy();            
+    }
     
     var op,ii,killer,killer_tg;op=0;killer=0;killer_tg=0;ii=-50;
     

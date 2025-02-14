@@ -119,7 +119,7 @@ function khorne_fleet_cargo(){
                 
                 
                 if (landing_planet=0 && trade_goods="Khorne_warband_landing_force"){
-                    debugl("BLOOD: A");
+                    log_message("BLOOD: A");
                     
                     // Go after the player now
                     var yarr = false;
@@ -208,6 +208,15 @@ function khorne_fleet_cargo(){
             }
         }
     }	
+}
+function spawn_chaos_fleet_at_system(system){
+    var _new_fleet = instance_create(system.x,system.y,obj_en_fleet);
+    with (_new_fleet){
+        owner = eFACTION.Chaos;
+        sprite_index=spr_fleet_chaos;
+        image_index=9;
+    }
+    return _new_fleet;
 }
 function spawn_chaos_warlord(){
 	with (obj_controller){

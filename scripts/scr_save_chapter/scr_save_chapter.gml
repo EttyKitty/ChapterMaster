@@ -20,12 +20,18 @@ function scr_save_chapter(chapter_id){
 	chap.purity = purity;
 	chap.stability = stability;
 	chap.cooperation = cooperation;
-	chap.homeword = homeworld;
+	chap.homeworld = homeworld;
 	chap.homeworld_exists = homeworld_exists;
 	chap.homeworld_name = homeworld_name;
 	chap.homeworld_rule = homeworld_rule;
 	chap.recruiting = recruiting;
 	chap.recruiting_exists = recruiting_exists;
+	
+	chap.home_spawn_loc = buttons.home_spawn_loc_options.current_selection;
+	chap.recruit_home_relationship = buttons.recruit_home_relationship.current_selection;
+	chap.home_warp = buttons.home_warp.current_selection;
+	chap.home_planets = buttons.home_planets.current_selection;
+
 	chap.advantages = adv;
 	chap.disadvantages = dis;
 	chap.colors = {
@@ -79,6 +85,7 @@ function scr_save_chapter(chapter_id){
 		split_scouts: load_to_ships[1],
 		split_vets: load_to_ships[2],
 	};
+
 	chap.disposition = disposition;
 	if(variable_instance_exists(self.id, "monastery_name")){
 		chap.monastary_name = monastery_name;
@@ -91,6 +98,9 @@ function scr_save_chapter(chapter_id){
 		traits: [],
 	}
 
+	chap.custom_roles = custom_roles;
+	
+	
 	global.chapter_creation_object = chap;
 
 	var data_json = json_stringify({chapter: global.chapter_creation_object}, true);

@@ -23,7 +23,7 @@ function scr_manage_task_selector(){
 	                	if (man_sel[i]){
 	                		switch(selection_data.purpose_code){
 	                			case "forge_assignment":
-					                var forge = selection_data.feature.feature;
+					                var forge = selection_data.feature;
 					                forge.techs_working = 0;		                			
 		                			forge.techs_working++;
 		                			unit = display_unit[i];
@@ -97,7 +97,7 @@ function scr_manage_task_selector(){
 	                	} else {
 	                		switch(selection_data.purpose_code){
 	                			case "forge_assignment":
-					                var forge = selection_data.feature.feature;
+					                var forge = selection_data.feature;
 					                forge.techs_working = false;		                			
 			                		unit = display_unit[i];
 			                		var job = unit.job;

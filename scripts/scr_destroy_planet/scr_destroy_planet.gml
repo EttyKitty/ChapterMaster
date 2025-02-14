@@ -52,7 +52,7 @@ function scr_destroy_planet(destruction_method) {
 	    for (var ed=0;ed<array_length(obj_ini.role[cah]);ed++){
 	    	unit = fetch_unit([cah,ed])
 	        if (obj_ini.loc[cah,ed]=you.name) and (unit.planet_location=baid){
-	            if (obj_ini.role[cah,ed]="Chapter Master"){
+	            if (unit.role()="Chapter Master"){
 	            	obj_controller.alarm[7]=15;
 	            	if (global.defeat<=1) then global.defeat=1;
 	            }

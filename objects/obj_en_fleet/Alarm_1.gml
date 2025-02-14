@@ -33,92 +33,13 @@ if (_is_orbiting) {
 			_is_orbiting=false;
 		}
 	}
-    if (instance_exists(obj_crusade)) 
-	and (orbiting.owner <= eFACTION.Ecclesiarchy) 
-	and (owner = eFACTION.Imperium) 
-	and (navy=1) 
-	and (trade_goods="") 
-	and (action="") 
-	and (guardsmen_unloaded = 0) {// Crusade AI
-        obj_controller.temp[88]=owner;
-        with(obj_crusade){
-			if (owner!=obj_controller.temp[88]){
-				y-=20000;
-			}
+	if (instance_exists(obj_crusade)){
+		try{
+			fleet_respond_crusade();
+		} catch(_exception) {
+			 handle_exception(_exception);
 		}
-
-		var enemu;
-		//var cs
-        with(obj_star) {
-			var cs = instance_nearest(x,y,obj_crusade);
-			
-            if (point_distance(x,y,cs.x,cs.y)>cs.radius) {
-				y-=20000;
-			}
-			enemu=0;
-			
-			var nids = array_reduce(p_tyranids, function(prev, curr) {
-				return prev || curr > 3
-			}, false)
-			var tau = array_reduce(p_tau, function(prev, curr) {
-				return prev || curr > 0;
-			}, false)
-			
-			enemu += nids + tau
-
-            if (present_fleet[eFACTION.Eldar]>0)	then enemu+=2;
-			if (present_fleet[eFACTION.Ork]>0)		then enemu+=2;
-            if (present_fleet[eFACTION.Tau]>0)		then enemu+=2;
-			if (present_fleet[eFACTION.Tyranids]>0) then enemu+=2;
-            if (present_fleet[eFACTION.Chaos]>0)	then enemu+=2;
-			//nothing for heritics faction
-			if (present_fleet[eFACTION.Necrons]>0)	then enemu+=2;
-
-        }
-		var ns = instance_nearest(x,y,obj_star);
-		var ok=false;
-		var max_dist = 800;
-		var min_dist = 40;
-		var to_ignore = [eFACTION.Imperium, eFACTION.Mechanicus,eFACTION.Inquisition, eFACTION.Ecclesiarchy]
-		
-		var dist = point_distance(x,y,ns.x,ns.y)
-		var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false)
-        if valid_target and dist <= max_dist and dist >= min_dist and (owner = eFACTION.Imperium) 
-			then ok = true;
-
-        // if ((ns.owner>5) or (ns.owner  = eFACTION.Player)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.Imperium){
-        if (ok){
-            action_x=ns.x;
-			action_y=ns.y;
-			alarm[4]=1;
-            orbiting.present_fleet[owner]-=1;
-            home_x=orbiting.x;
-            home_y=orbiting.y;
-			
-            var i;
-			i=0;
-            repeat(4){
-				i+=1;
-                if (orbiting.p_owner[i]=eFACTION.Imperium) and (orbiting.p_guardsmen[i]>500) {
-					guardsmen +=round(orbiting.p_guardsmen[i]/2);
-					orbiting.p_guardsmen[i]=round(orbiting.p_guardsmen[i]/2);}
-            }
-
-            alarm[5]=2;
-            
-            with(obj_crusade){if (y<-10000) then y+=20000;}
-            with(obj_crusade){if (y<-10000) then y+=20000;}
-            with(obj_star){if (y<-10000) then y+=20000;}
-            with(obj_star){if (y<-10000) then y+=20000;}
-            
-            exit;
-        }
-        
-        with(obj_crusade){if (y<-10000) then y+=20000;}
-        with(obj_crusade){if (y<-10000) then y+=20000;}
-        with(obj_star){if (y<-10000) then y+=20000;}
-        with(obj_star){if (y<-10000) then y+=20000;}
-    }
+	}
 }
 
 if (navy && action=="") {
@@ -186,7 +107,7 @@ if (navy && action=="") {
                 
 	                var bombard=0,deaths=0,hurss=0,onceh=0,wob=0,kill=0;
                 
-	                for (var o=1;o<=planets;o++){
+	                for (var o=1;o<=orbiting.planets;o++){
 	                	if (orbiting.p_owner[o]==eFACTION.Player){
 	                		if (orbiting.p_population[o]+orbiting.p_pdf[o]>0) ||  (orbiting.p_player[o]>0){
 	                			bombard=o;
@@ -706,8 +627,8 @@ if (action=="" && _is_orbiting){
             
             var whom=-1;
             whom = inquisitor;
-
-            var inquis_string = $"Inquisitor {obj_controller.inquisitor[whom]}";
+            var inquisitors = obj_controller.inquisitor;
+            var inquis_string = $"Inquisitor {whom>-1 ? inquisitors[whom] : inquisitors[0]}";
             
             // INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; 
             var cur_star,t,type,cha,dem,tem1,tem1_base,perc,popup;

@@ -14,6 +14,7 @@ function UnitQuickFindPanel() constructor{
 
 	view_area = "fleets";
 	static update_garrison_log = function(){
+		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
 			obj_ini.ship_carrying[i]=0
 		};
@@ -21,6 +22,7 @@ function UnitQuickFindPanel() constructor{
 		delete garrison_log;
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
+	    var _ship_count = array_length(obj_ini.ship_carrying);
 	    show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
@@ -48,7 +50,9 @@ function UnitQuickFindPanel() constructor{
 						group.techies++;
 	    			}
 	    		} else if (unit_location[0]==location_types.ship){
-	    			obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+	    			if (unit.ship_location<_ship_count && unit.ship_location>-1){
+	    				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+	    			}
 	    		}
 	    	}
 	    	try{
@@ -78,7 +82,10 @@ function UnitQuickFindPanel() constructor{
 				handle_exception(_exception);
 			}
 	    }
-	    update_mission_log();	
+	    update_mission_log();
+	    }catch(_exception){
+			handle_exception(_exception);
+		}	
 	}
 
 	update_mission_log = function(){
@@ -160,7 +167,10 @@ function UnitQuickFindPanel() constructor{
 			    draw_text(xx+160, yy+90+(20*i), cur_fleet.frigate_number);
 			    draw_text(xx+240, yy+90+(20*i), cur_fleet.escort_number);
 			    var _fleet_point_data = cur_fleet.point_breakdown;
-			    if (cur_fleet.action=="move"){
+			    if (cur_fleet.action == "Lost"){
+			    	draw_text(xx+310, yy+90+(20*i), "Lost");
+			    }
+			    else if (cur_fleet.action=="move"){
 			    	draw_text(xx+310, yy+90+(20*i), "Warp Travel");
 			    } else {
 			    	var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
@@ -422,11 +432,7 @@ function HoverBox() constructor{
 }
 
 function exit_adhoc_manage(){
-	menu=0;
-    onceh=1;
-    cooldown=10;
-    click=1;
-    hide_banner=0;
+	scr_toggle_manage();
     if (instance_exists(selection_data.system)){
    		selection_data.system.alarm[3]=2;
     }		
@@ -455,7 +461,7 @@ function update_general_manage_view(){
 				company_data={};
 	        }            
 	        cooldown=10;
-	        sel_loading=0;
+	        sel_loading=-1;
 	        unload=0;
 	        alarm[6]=30;
 	    } else if (managing==-1){
@@ -560,7 +566,7 @@ function jail_selection(){
     } else if (managing==-1){
     	update_garrison_manage()
     }
-    sel_loading=0;
+    sel_loading=-1;
     unload=0;
     alarm[6]=7;		
 }
@@ -676,7 +682,7 @@ function equip_selection(){
 }
 
 function load_selection(){
-    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel"){
+    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Lost"){
         scr_company_load(selecting_location);
         menu=30;
         top=1;
@@ -685,8 +691,8 @@ function load_selection(){
 
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
-    if (man_size>0) and (obj_controller.selecting_ship>=1) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Warp"){
+    if (man_size>0) and (obj_controller.selecting_ship>=0) and (!instance_exists(obj_star_select)) 
+    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);

@@ -20,10 +20,14 @@ function SpecialistPointHandler() constructor{
     point_breakdown = {};
     // ** Gene-seed Test-Slaves **
     static add_to_armoury_repair = function(item, count=1){
-        if (!struct_exists(armoury_repairs, item)){
-            armoury_repairs[$ item] = count;
-        } else {
-            armoury_repairs[$ item]+=count;
+        if (is_string(item)){
+            if (item!=""){
+                if (!struct_exists(armoury_repairs, item)){
+                    armoury_repairs[$ item] = count;
+                } else {
+                    armoury_repairs[$ item]+=count;
+                }
+            }
         }
     }
 
@@ -56,10 +60,12 @@ function SpecialistPointHandler() constructor{
 
         forge_string = $"Forge Production Rate#";
         forge_master=-1;
-        forge_veh_maintenance={};
+        forge_veh_maintenance={
+            repairs : 0
+        };
         healing_and_point_use();
 
-        var _noticed_heresy=false, at_forge=0;
+        var at_forge=0;
         tech_locations=[]
         var _cur_tech;
         total_techs = array_length(techs);
@@ -78,6 +84,7 @@ function SpecialistPointHandler() constructor{
         forge_string += $"Techmarines: +{floor(forge_points)}#";
         forge_points-=tech_points_used;        
         forge_string += $"Vehicle Repairs:#";
+        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}\n";
         if (struct_exists(forge_veh_maintenance, "land_raider")){
             forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
             forge_points-=forge_veh_maintenance.land_raider;
@@ -102,7 +109,7 @@ function SpecialistPointHandler() constructor{
 
         }
         forge_points = floor(forge_points);
-        //in this instance tech heretics are techmarines with the "tech_heretic" trait
+        //in this instance tech  are techmarines with the "tech_heretic" trait
         if (turn_end){
             if (array_length(techs)==0) then scr_loyalty("Upset Machine Spirits","+");
 
@@ -136,18 +143,20 @@ function SpecialistPointHandler() constructor{
         try_and_report_loop("Specialist points logic", pre_error_wrapped_research_points);
     }
 
-    static new_tech_heretic_spawn = function(){
+    static new_tech_heretic_spawn = function() {
         var _tester = global.character_tester;
         var _possibility_of_heresy = 8;
-        if (array_contains(obj_ini.dis,"Tech-Heresy")) then _possibility_of_heresy = 6;
-        if (irandom(power(_possibility_of_heresy,(array_length(heretics)+2.2))) == 0 && array_length(techs)>0){
-            var _current_tech = array_random_element(techs);
-           if  (!_tester.standard_test(_current_tech, "piety")[0]){
-               _current_tech.add_trait("tech_heretic");
-               _current_tech.edit_corruption(20+irandom(15));
-           }
+        if (scr_has_disadv("Tech-Heresy")) {
+            _possibility_of_heresy = 6;
         }
-    }
+        if (irandom(power(_possibility_of_heresy, (array_length(techs) + 2.2))) == 0 && array_length(techs) > 0) {
+            var _current_tech = array_random_element(techs);
+            if (!_tester.standard_test(_current_tech, "piety")[0]) {
+                _current_tech.add_trait("tech_heretic");
+                _current_tech.edit_corruption(20 + irandom(15));
+            }
+        }
+    };
 
     static add_forge_points_to_stack = function(unit){
         if (unit.in_jail()) {
@@ -161,10 +170,10 @@ function SpecialistPointHandler() constructor{
             if (struct_exists(_unit_forge_gen_data,"crafter")) then crafters++;
             if (struct_exists(_unit_forge_gen_data,"at_forge")){
                 at_forge++;
-                master_craft_chance += (unit.experience()/50);
+                master_craft_chance += (unit.experience/50);
             }
             forge_points += _forge_point_gen[0];
-            var _tech_array_id = array_push(heretics, array_length(techs)-1);
+            var _tech_array_id = array_length(techs)-1;
             if (unit.has_trait("tech_heretic")){
                 array_push(heretics, _tech_array_id);
             }
@@ -187,31 +196,34 @@ function SpecialistPointHandler() constructor{
 
     //handles tech heretic idealology rot
     static tech_ideology_spread = function(){
-        var tech_test, charisma_test, piety_test, met_non_heretic, heretics_pursuade_chances, new_pursuasion;
+        try{
+        var tech_test, charisma_test, piety_test, _met_non_heretic, heretics_persuade_chances;
         var _tester = global.character_tester;
+        var _noticed_heresy = false; // should this be in the for loop?
         if (array_length(heretics)>0 && obj_controller.turn>75){
             var _heretic_location, _same_location, _current_heretic, _current_tech;
             //iterate through tech heretics;
             for (var heretic=0; heretic<array_length(heretics); heretic++){
-                _heretic_location =tech_locations[heretics[heretic]];
+                _heretic_location = tech_locations[heretics[heretic]];
                 _current_heretic = techs[heretics[heretic]];
                 if (_current_heretic.in_jail()) then continue;
-                heretics_pursuade_chances = (floor(_current_heretic.charisma/5) - 3)
+                heretics_persuade_chances = (floor(_current_heretic.charisma/5) - 3)
                 //iterate through rest of techs
-                pursuasions =[];
-                met_non_heretic = false;
-                for (var i=0; i<array_length(techs) && heretics_pursuade_chances>0; i++){
+                var _pursuasions =[];
+                _met_non_heretic = false;
+                var _new_pursuasion;
+                for (var i=0; i<array_length(techs) && heretics_persuade_chances>0; i++){
                     _same_location=false;
-                    new_pursuasion = irandom(array_length(techs)-1);
+                    var _new_pursuasion = array_random_index(techs);
                     //if tech is also heretic skip
-                    if (array_contains(heretics,new_pursuasion)) then continue;
-                    if (array_contains(pursuasions,new_pursuasion)) then continue;
-                    heretics_pursuade_chances--;
-                    _current_tech = techs[new_pursuasion];
+                    if (array_contains(heretics,_new_pursuasion)) then continue;
+                    if (array_contains(_pursuasions,_new_pursuasion)) then continue;
+                    heretics_persuade_chances--;
+                    _current_tech = techs[_new_pursuasion];
 
                     // find out if heretic is in same location as techmarine
-                    if (same_locations(_heretic_locationtech_locations[new_pursuasion])){
-                        met_non_heretic=true;
+                    if (same_locations(_heretic_location, tech_locations[_new_pursuasion])){
+                        _met_non_heretic=true;
                         //if so do a an opposed technology test of techmarine vs tech  heretic techmarine
                         tech_test = _tester.oppposed_test(_current_heretic,_current_tech, "technology");
 
@@ -243,7 +255,7 @@ function SpecialistPointHandler() constructor{
                                 }
                             }
                         }
-                        if (new_pursuasion==forge_master){
+                        if (_new_pursuasion==forge_master){
                             // if tech is the forge master then forge master takes a wisdom in this case doubling as a perception test
                             // if forge master passes tech heresy is noted and chapter master notified
                             if (_tester.standard_test(_current_tech, "wisdom", - 40)[0] && !_noticed_heresy){
@@ -255,7 +267,7 @@ function SpecialistPointHandler() constructor{
                         }
                     }
                 }
-                if (!met_non_heretic){
+                if (!_met_non_heretic){
                     if (irandom(4)==0){
                         _current_heretic.edit_corruption(1);
                     }
@@ -276,7 +288,10 @@ function SpecialistPointHandler() constructor{
                     }
                 }
             }
-        }   
+        }
+        } catch(_exception) {
+            handle_exception(_exception);
+        }
     }
 
 
@@ -346,7 +361,7 @@ function SpecialistPointHandler() constructor{
                 }
             } else if (is_array(forge_queue[i].name)){
                 if (forge_queue[i].name[0]  == "research"){
-                    draw_text(xx+359,yy + item_gap,forge_queue[i].name[1]);
+                    draw_text(xx,yy + item_gap,forge_queue[i].name[1]);
                 }
             }
             draw_text(xx+271,yy + item_gap,string_hash_to_newline(forge_queue[i].forge_points));
@@ -377,7 +392,7 @@ function SpecialistPointHandler() constructor{
                     _cur_slave.eta=60;
                     obj_controller.gene_seed+=_cur_slave.num;
                     // color / type / text /x/y
-                    scr_alert("green","test-slaves","Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
+                    scr_alert("green","test-slaves",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
                 } else if (_cur_slave.num==0){
                     array_push(_stack_lost_incubators, i);
                 }
@@ -426,10 +441,10 @@ function SpecialistPointHandler() constructor{
             } else {
                 repeat(item.count){
                     var vehicle = scr_add_vehicle(item.name,9,"standard","standard","standard","standard","standard");
-                    var build_loc = array_random(obj_controller.player_forge_data.vehicle_hanger);
+                    var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                     obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                     obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];
-                    obj_ini.veh_lid[vehicle[0]][vehicle[1]] = 0;
+                    obj_ini.veh_lid[vehicle[0]][vehicle[1]] = -1;
                 }
                 scr_popup("Forge Completed",$"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}","","");
             }                      

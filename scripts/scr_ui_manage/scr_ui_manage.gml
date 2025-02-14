@@ -8,31 +8,9 @@ function scr_ui_manage() {
     	if((managing>0)){
     		company_manage_actions();
     	}
-    	if (managing >=0){
-		    for (var i=1;i<10;i++){ 
-		    	if (press_exclusive(ord(string(i)))){
-		    		switch_view_company(i);
-		    	}
-		    }
-			if (press_exclusive(ord("0"))){
-				switch_view_company(10);
-			}
-			else if (press_exclusive(ord("Q"))){
-				switch_view_company(11);
-			} 
-			else if (press_exclusive(ord("E"))){
-				switch_view_company(12);
-			}
-			else if (press_exclusive(ord("R"))){
-				switch_view_company(13);
-			}
-			else if (press_exclusive(ord("T"))){
-				switch_view_company(14);
-			}
-			else if (press_exclusive(ord("Y"))){
-				switch_view_company(15);
-			}    		
-    	}
+    	if (!text_bar){
+    		ui_manage_hotkeys();
+    	};
     }
     
 	if (menu==1) and (managing>0 || managing <0){
@@ -99,7 +77,9 @@ function scr_ui_manage() {
 		// Draw the company followed by chapters name
 	    	draw_text(xx+800,yy+74,string_hash_to_newline(string(fx)+", "+string(global.chapter_name)));			
 		} else if (managing<0){
-			draw_text(xx+800,yy+74,selection_data.purpose);			
+			if (struct_exists(selection_data, "purpose")){
+				draw_text(xx+800,yy+74,$"{selection_data.purpose}");			
+			}
 		}
 		
 	    if (managing<=10 && managing>0){
@@ -111,14 +91,14 @@ function scr_ui_manage() {
 	        draw_rectangle(xx+800-(bar_wid/2),yy+108,xx+800+(bar_wid/2),yy+100+string_h,1);
 	        click_check = scr_hit(xx+800-(bar_wid/2),yy+108,xx+800+(bar_wid/2),yy+100+string_h);
 	        obj_cursor.image_index=0;
-	        if (!click_check) and (mouse_left==1) and (cooldown<=0){
-	         text_bar=0;
+	        if (!click_check) and (mouse_left==1) and (!cooldown){
+	         text_bar=false;
 	        }else if(click_check){
 	            obj_cursor.image_index=2;
 
-	            if (cooldown<=0) and (mouse_left==1) and (text_bar=0){
+	            if (!cooldown) and (mouse_left==1) and (!text_bar){
 	                cooldown=8000;
-	                text_bar=1;
+	                text_bar=true;
 	                keyboard_string=obj_ini.company_title[managing];
 	            }
             
@@ -468,7 +448,7 @@ function scr_ui_manage() {
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+466, string_hash_to_newline($"Experience: {round(cn.temp[113])}"));
+	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+466, string_hash_to_newline($"Experience: {cn.temp[113]}"));
 
        
         		 
@@ -831,11 +811,11 @@ function scr_ui_manage() {
 				button.tooltip = "Press Shift L";
 				if (load_unload_possible){
 					button.alpha = 1;
-					if (sel_loading==0){
+					if (sel_loading==-1){
 						if (button.draw()){
 							load_selection();						
 						}
-					} else if (sel_loading!=0){
+					} else if (sel_loading!=-1){
 						button.label = "Unload";
 						if (button.draw()){
 							unload_selection();   // Unload - ask for planet confirmation					
@@ -928,7 +908,7 @@ function scr_ui_manage() {
 				button.label = "Set Boarder";
 				button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("Q"))));
 				button.tooltip = "Press Shift Q";					
-				var boarder_possible = sel_loading!=0  && man_size>0;
+				var boarder_possible = sel_loading!=-1  && man_size>0;
 				button.alpha = boarder_possible ? 1 : 0.5;
 				if (button.draw() && boarder_possible){
 					if (boarder_possible) then toggle_selection_borders();
@@ -1111,7 +1091,7 @@ function scr_ui_manage() {
 					stats_displayed = false;
 				}
 		        with (obj_controller){
-    		        if (view_squad && !instance_exists(obj_temp3) && !instance_exists(obj_popup)){
+    		        if (view_squad && !instance_exists(obj_popup)){
     		        	if (managing>10){
     		        		view_squad=false;
     		        		unit_profile=false;
@@ -1240,7 +1220,7 @@ function scr_ui_manage() {
                                 if (is_struct(display_unit[q])) {
                                     unit = display_unit[q];
                                     unit.load_marine(sh_ide[sel], load_from_star);
-                                    ma_loc[q] = sh_name[sel];
+                                    ma_loc[q] = sh_loc[sel];
                                     ma_lid[q] = sh_ide[sel];
                                     ma_wid[q] = 0;
                                 }
@@ -1251,7 +1231,7 @@ function scr_ui_manage() {
                                     if ((sh_cargo[sel] + vehic_size) <= sh_cargo_max[sel] && man_sel[q] != 0) {
                                         var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
                                         var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
-                                        ma_loc[q] = sh_name[sel];
+                                        ma_loc[q] = sh_loc[sel];
                                         ma_lid[q] = sh_ide[sel];
                                         ma_wid[q] = 0;
                                         obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[sel];
@@ -1268,10 +1248,12 @@ function scr_ui_manage() {
                                 }
                             }
                         }
+                        selecting_location = "";
                         man_size = 0;
                         man_current = 0;
                         menu = 1;
                         cooldown = 8;
+                        selecting_ship = -1;
                         for (var k = 0; k < array_length(display_unit); k++) {
                             man_sel[k] = 0;
                         }

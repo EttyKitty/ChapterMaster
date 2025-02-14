@@ -118,18 +118,13 @@ function drop_select_draw(){
 
         var _select_all_button = roster.select_all_ships;
 
-        _select_all_button.x1 = 700;
-        _select_all_button.y1 = 299;
-        _select_all_button.active = !_all_active;
-        _select_all_button.update();
-        _select_all_button.draw();
-        if (_select_all_button.clicked()) {
+        if (_select_all_button.draw()){
             for (var e=0;e<array_length(roster.ships);e++) {
                 var _ship_button = roster.ships[e];
-                _ship_button.active = true;
+                _ship_button.active = !_ship_button.active;
             }        
             roster.update_roster();
-        }        
+        } 
         draw_set_font(fnt_40k_14);
         draw_set_color(c_gray);
         draw_set_alpha(1);
@@ -174,6 +169,7 @@ function drop_select_draw(){
         // draw_text(x2 + 14, y2 + 352, string_hash_to_newline("Selection: " + string(smin) + "/" + string(smax)));
 
         // Target
+        var race_quantity = 0;
         if (purge == DropType.RaidAttack){
             var target_race = "",
                 target_threat = "",
@@ -230,8 +226,7 @@ function drop_select_draw(){
         btn_attack.x1 = btn_back.x1 + btn_attack.width + 10;
         btn_attack.y1 = btn_back.y1;
         if (purge == DropType.RaidAttack){
-            if (attack = 0) then btn_attack.str1 = "RAID!";
-            if (attack = 1) then btn_attack.str1 = "ATTACK!";
+            btn_attack.str1  = (attack) ? "ATTACK!": "RAID!"
             btn_attack.active = (array_length(roster.selected_units) > 0 && race_quantity > 0);
         }
         else if (purge>1){
@@ -342,6 +337,7 @@ function drop_select_draw(){
                             combating = 0;
                             instance_activate_all();
                             exit;
+                        
                         }
                         if (obj_controller.known[eFACTION.Chaos] >= 2 && obj_controller.faction_gender[10] = 1){
                             with(obj_drop_select) {

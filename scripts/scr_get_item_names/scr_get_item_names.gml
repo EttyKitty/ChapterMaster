@@ -122,15 +122,16 @@ function push_marine_gear_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_mobility_item_names(_item_names) {
-    var item_count = 4;
+    var item_count = 5;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
     var index = initial_size;
     _item_names[@ index++] = "Bike";
     _item_names[@ index++] = "Jump Pack";
+    _item_names[@ index++] = "Heavy Weapons Pack";
     _item_names[@ index++] = "Servo-arm";
-    _item_names[@ index++] = "Servo-harness"; // 4
+    _item_names[@ index++] = "Servo-harness"; // 5
 }
 
 
@@ -259,6 +260,15 @@ function push_rhino_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Twin Linked Bolters";
     _item_names[@ index++] = "Storm Bolter";
     _item_names[@ index++] = "HK Missile"; // 5
+}
+
+function push_rhino_side_item_names(_item_names) {
+    var item_count = 1;
+    var initial_size = array_length(_item_names);
+    array_resize(_item_names, initial_size + item_count);
+
+    var index = initial_size;
+    _item_names[@ index++] = "HK Missile";
 }
 
 /// @description This function appends the list of predator turret weapons to the given list.
@@ -544,6 +554,7 @@ function get_slot_name(_role, _slot) {
         case eROLE.Rhino:
             switch (_slot) {
                 case 1: return "Weapon";
+                case 2: return "Side";
                 case 4: return "Upgrade";
                 case 5: return "Accessory";
                 default: return "Unknown";
@@ -844,9 +855,9 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
                 case 1: push_rhino_weapons_item_names(_item_names); break;
+                case 2: push_rhino_side_item_names(_item_names); break;
                 case 4: push_tank_upgrade_item_names(_item_names, false); break;
                 case 5: push_tank_accessory_item_names(_item_names, false, false); break;
-                case 2:
                 case 3:
                     // Rhino doesn't have these slots, but empty lists are shown in the UI
                     break;

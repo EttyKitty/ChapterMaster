@@ -18,7 +18,7 @@ function default_bat_formation(){
 
 function scr_load_controller(save_id){
 		var rang=0,i=0,g=0,stars=0,pfleets=0,efleets=0;
-		debugl("Loading slot "+string(save_id));
+		log_message("Loading slot "+string(save_id));
 		var save_file_name = $"save{save_id}.ini";
 
 		if(file_exists("tsave.ini"))
@@ -33,7 +33,7 @@ function scr_load_controller(save_id){
 		}
 		else
 		{
-			debugl("Could not load save game " + save_file_name + ", file does not exist.");
+			log_error("Could not load save game " + save_file_name + ", file does not exist.");
 			game_restart();
 		}
 
@@ -230,7 +230,8 @@ function scr_load_controller(save_id){
 	    if (Production_research!=0){
 	    	obj_controller.production_research = json_parse(base64_decode(Production_research));
 	    }
-	    var forge_queue=ini_read_string("Controller","specialist_point_handler.forge_queue",0);
+	    specialist_point_handler = new SpecialistPointHandler();
+	    var forge_queue=ini_read_string("Controller","forge_queue",0);
 	    if (forge_queue!=0){
 	    	obj_controller.specialist_point_handler.forge_queue = json_parse(base64_decode(forge_queue));
 	    }

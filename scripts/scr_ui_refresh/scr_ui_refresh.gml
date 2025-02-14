@@ -10,7 +10,7 @@ function scr_ui_refresh() {
     reset_manage_arrays();
 	
     alll = 0;
-    sel_loading = 0;
+    sel_loading = -1;
     unload = 0;
     alarm[6] = 7;
 }

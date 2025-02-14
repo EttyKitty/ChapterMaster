@@ -31,12 +31,35 @@ with(obj_star_select){
 instance_create(x,y,obj_star_select);
 obj_star_select.owner=self.owner;
 obj_star_select.target=self.id;
-if (obj_controller.selection_data != false){
-    var data = obj_controller.selection_data;
-    obj_star_select.feature = data.feature;
-    obj_controller.selecting_planet = data.planet;
-    obj_controller.selection_data=false;
-    if (obj_controller.selecting_planet >0 && obj_controller.selecting_planet<5){
-        obj_star_select.garrison = new GarrisonForce(p_operatives[obj_controller.selecting_planet]);       
+
+try{
+    if (obj_controller.selection_data != false){
+        loading = false;
+        var _data = obj_controller.selection_data;
+        if (!struct_exists(_data, "system")){
+            _data.system = id;
+        }
+        if (_data.system != "none"){
+            if (struct_exists(_data, "feature")){
+                if (_data.feature != " none"){
+                    if (is_struct(_data.feature)){
+                        if (struct_exists(_data.feature, "f_type")){
+                            if (_data.feature.f_type != "none"){
+                                obj_star_select.feature = new FeatureSelected(_data.feature,_data.system, _data.planet);
+                            }
+                        }
+                    }
+                }
+            }
+            obj_controller.selecting_planet = _data.planet;
+            obj_controller.selection_data=false;
+            if (obj_controller.selecting_planet >0 && obj_controller.selecting_planet<5){
+                obj_star_select.garrison = new GarrisonForce(p_operatives[obj_controller.selecting_planet]);       
+            }
+        }
     }
+    obj_controller.selection_data = false;
+} catch(_exception){
+    handle_exception(_exception);
+    obj_controller.selection_data = false;
 }

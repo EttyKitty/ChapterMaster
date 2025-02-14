@@ -247,7 +247,7 @@ function collect_role_group(group="standard", location="", opposite=false, searc
 	        	if (location==""){
 	        		_add=true;
 	       		} else if (!is_array(location)){
-		       		_add=unit.is_at_location(location, 0, 0);
+		       		_add=unit.is_at_location(location);
 		       	} else {
 		       		_add=unit.is_at_location(location[0], location[1], location[2]);
 		       	}
@@ -299,7 +299,7 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 	        	}
 	        	if (location==""){
 	        		_add=true;
-	       		} else if (unit.is_at_location(location, 0, 0)){
+	       		} else if (unit.is_at_location(location)){
 	       			_add=true;
 	       		}
 	        }
@@ -313,7 +313,7 @@ function group_selection(group, selection_data){
 	try {
 		var unit, s, unit_location;
 		obj_controller.selection_data = selection_data;
-		set_zoom_to_defualt();
+		set_zoom_to_default();
 		with (obj_controller){
 				menu=1;
 				onceh=1;
@@ -344,7 +344,7 @@ function group_selection(group, selection_data){
 				reset_manage_arrays();
 				alll=0;              
 				cooldown=10;
-				sel_loading=0;
+				sel_loading=-1;
 				unload=0;
 				alarm[6]=7;
 				company_data={};

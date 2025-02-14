@@ -193,7 +193,7 @@ function nearest_star_proper(xx,yy) {
 }
 
 
-function nearest_star_with_ownership(xx,yy, ownership, start_star="none"){
+function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
 	var nearest = "none"
 	var total_stars =  instance_number(obj_star);
 	var i=0;
@@ -204,7 +204,7 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none"){
 		i++;
 		var cur_star =  instance_nearest(xx,yy, obj_star);
 		if (start_star!="none"){
-			if (start_star.id == cur_star.id){
+			if (start_star.id == cur_star.id ||( is_dead_star(cur_star) && ignore_dead)){
 				instance_deactivate_object(cur_star.id);
 				continue;
 			}
@@ -313,7 +313,7 @@ function scr_faction_string_name(faction){
 
 function scr_planet_image_numbers(p_type){
 	var image =0;
-	image_map = ["","lava","lava", "Desert","Forge","Hive","Death","Agri","Feudal","Temperate","Ice","Dead","Daemon","Craftworld","","Space Hulk", "", "Shrine"];
+	image_map = ["","Lava","Lava", "Desert","Forge","Hive","Death","Agri","Feudal","Temperate","Ice","Dead","Daemon","Craftworld","","Space Hulk", "", "Shrine"];
 	for (var i=0;i<array_length(image_map);i++){
 		if (image_map[i] == p_type) then return i;
 	}

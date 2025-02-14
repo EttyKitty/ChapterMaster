@@ -47,7 +47,7 @@ ork=p_target.p_orks[obj_controller.selecting_planet];
 tau=p_target.p_tau[obj_controller.selecting_planet];
 chaos=p_target.p_chaos[obj_controller.selecting_planet];
 tyranids=p_target.p_tyranids[obj_controller.selecting_planet];
-if (tyranids<5) then tyranids=0;
+//if (tyranids<5) then tyranids=0;
 traitors=p_target.p_traitors[obj_controller.selecting_planet];
 necrons=p_target.p_necrons[obj_controller.selecting_planet];
 

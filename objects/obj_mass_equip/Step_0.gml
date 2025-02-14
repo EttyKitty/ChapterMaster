@@ -5,12 +5,18 @@ var romanNumerals= scr_roman_numerals();
 var unit;
 var unit_armour,complete;
 if (engage=true){
-    for(var co=0; co<11; co++){
+    for(var co=0; co<=obj_ini.companies; co++){
         var i=0;
         if (role_number[co]>0){
-			for(i=1; i<=500; i++){
+			for(i=0; i<array_length(obj_ini.role[co]); i++){
                 if (obj_ini.role[co][i]==obj_ini.role[100,role]){
                 	unit = fetch_unit([co,i]);
+                	if (unit.squad!="none"){
+                		var _squad = fetch_squad(unit.squad);
+                		if (!_squad.allow_bulk_swap){
+                			continue;
+                		}
+                	}
                     // ** Start Armour **
                     var yes=false,done="";
 					var unit_armour=unit.get_armour_data();

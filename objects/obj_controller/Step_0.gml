@@ -442,7 +442,7 @@ if (unload>0){
             ma_wid[q]=unload;
         }
         else if (man[q]=="vehicle") and (ma_loc[q]==selecting_location)  and (ma_wid[q]<1) and(man_sel[q]!=0){
-            if (b==0) then b=ma_lid[q];
+            if (b==-1) then b=ma_lid[q];
             var unit_id = display_unit[q][1];
             var company = display_unit[q][0]
             obj_ini.veh_loc[company][unit_id]=obj_ini.ship_location[b];
@@ -460,9 +460,9 @@ if (unload>0){
         man_sel[i]=0;
     }
     obj_ini.ship_carrying[b]-=man_size;
-    sh_cargo[b]-=man_size;
+    reset_ship_manage_arrays();
     cooldown=10;
-    sel_loading=0;
+    sel_loading=-1;
     man_size=0;
     unload=0;
     with(obj_star_select){instance_destroy();}

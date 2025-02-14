@@ -119,7 +119,9 @@ __b__ = action_if_number(obj_popup, 0, 0);
     
     
     
-				    if (tip!=""){                                   // Fight fight fight, ground
+				    if (tip!=""){
+				        var _loc = battle_location[current_battle]
+				        var _planet = battle_world[current_battle]				                                     // Fight fight fight, ground
 				        obj_controller.cooldown=8;
         
 				        // Start battle here
@@ -130,27 +132,40 @@ __b__ = action_if_number(obj_popup, 0, 0);
 				        instance_activate_object(obj_controller);
 				        instance_activate_object(obj_ini);
 				        instance_activate_object(battle_object[current_battle]);
-        
+
+				        var _battle_obj = battle_object[current_battle];
+        				
 				        instance_create(0,0,obj_ncombat);
 				        obj_ncombat.enemy=battle_opponent[current_battle];
-				        obj_ncombat.battle_object=battle_object[current_battle];
-				        obj_ncombat.battle_loc=battle_location[current_battle];
-				        obj_ncombat.battle_id=battle_world[current_battle];
+				        obj_ncombat.battle_object=_battle_obj;
+				        obj_ncombat.battle_loc=_loc;
+				        obj_ncombat.battle_id=_planet;
+
+				        var _enemy = obj_ncombat.enemy;
+        				
+        				var _planet_data = new PlanetData(_planet, _battle_obj);
+				        if (tip="offensive"){
+				        	obj_ncombat.formation_set=1;
+				        } else if (tip="defensive"){
+				        	obj_ncombat.formation_set=2;
+				        }
         
-				        if (tip="offensive") then obj_ncombat.formation_set=1;
-				        if (tip="defensive") then obj_ncombat.formation_set=2;
         
-        
-				        var yeah;yeah=false;
-				        if (battle_object[current_battle].p_owner[battle_world[current_battle]]=1) then yeah=true;
-				        if (battle_object[current_battle].p_owner[battle_world[current_battle]]=7) then yeah=true;
-				        if (battle_object[current_battle].p_owner[battle_world[current_battle]]=9) then yeah=true;
-				        if (obj_controller.faction_status[battle_object[current_battle].p_owner[battle_world[current_battle]]]!="War") then yeah=true;
-				        if (yeah=true) then obj_ncombat.fortified=battle_object[current_battle].p_fortified[battle_world[current_battle]];
-				        if (obj_ncombat.enemy=13) then obj_ncombat.fortified=0;
+				        var _allow_fortifications=false;
+				        var _fort_factions = [eFACTION.Player, eFACTION.Tyranids,eFACTION.Ork];
+				        _allow_fortifications =  (array_contains(_fort_factions, _planet_data.current_owner))
+
+				        if (!_allow_fortifications){
+				        	var owner_fac_status
+				        	_allow_fortifications =  (_planet_data.owner_status() != "War");
+				        }
+
+				        if (_allow_fortifications) then obj_ncombat.fortified=_planet_data.fortification_level;
+
+				        if (obj_ncombat.enemy==13) then obj_ncombat.fortified=0;
         
 				        obj_ncombat.battle_special=battle_special[current_battle];
-				        obj_ncombat.battle_climate=battle_object[current_battle].p_type[battle_world[current_battle]];
+				        obj_ncombat.battle_climate=_planet_data.planet_type;
         
 				        // show_message(string(battle_object[current_battle].p_feature[battle_world[current_battle]]));
 				        /*if (scr_planetary_feature.plant_feature_bool(battle_object[current_battle].p_feature[battle_world[current_battle]], P_features.Monastery)==1){
@@ -160,20 +175,29 @@ __b__ = action_if_number(obj_popup, 0, 0);
 				            obj_ncombat.player_silos+=battle_object[current_battle].p_silo[battle_world[current_battle]];
 				        }*/
         
-				        if (obj_ncombat.enemy = eFACTION.Imperium){obj_ncombat.threat=min(1000000,battle_object[current_battle].p_guardsmen[battle_world[current_battle]]);}
-				        if (obj_ncombat.enemy = eFACTION.Eldar) then obj_ncombat.threat=battle_object[current_battle].p_eldar[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Ork) then obj_ncombat.threat=battle_object[current_battle].p_orks[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Tau) then obj_ncombat.threat=battle_object[current_battle].p_tau[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Tyranids) then obj_ncombat.threat=battle_object[current_battle].p_tyranids[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Chaos) then obj_ncombat.threat=battle_object[current_battle].p_traitors[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Heretics) then obj_ncombat.threat=battle_object[current_battle].p_chaos[battle_world[current_battle]];
-				        if (obj_ncombat.enemy = eFACTION.Necrons) then obj_ncombat.threat=battle_object[current_battle].p_necrons[battle_world[current_battle]];
-				        if (obj_ncombat.enemy=30) then obj_ncombat.threat=1;
+				        if (_enemy == eFACTION.Imperium){
+				        	obj_ncombat.threat=min(1000000,_planet_data.guardsmen);
+				        } else if (obj_ncombat.enemy<14 && _enemy>5){
+							obj_ncombat.threat = _planet_data.planet_forces[_enemy];
+				        }
+				        else if (_enemy=30){
+				        	obj_ncombat.threat=1;
+				        }
         
-				        // 
-        
-				        scr_battle_roster(string(battle_location[current_battle]),battle_world[current_battle],true);
-        
+				        //
+        				_roster = new Roster();
+					    with (_roster){
+					        roster_location = _loc;
+					        roster_planet = _planet;
+					        determine_full_roster();
+					        only_locals();
+					        update_roster();
+					        if (array_length(selected_units)){  
+					            setup_battle_formations();
+					            add_to_battle();
+					        }              
+					    }
+					    delete _roster
 				        instance_deactivate_object(battle_object[current_battle]);
 				    }
 				}

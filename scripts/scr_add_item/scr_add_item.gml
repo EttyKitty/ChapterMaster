@@ -1,9 +1,9 @@
-function scr_add_item(item_name, number_of_items, quality="any", from_marine=false) {
+function scr_add_item(item_name, number_of_items=1, quality="any", from_marine=false) {
+	if (item_name=="") then exit;
+	var i, last_open, match_slot, open_slot=false, matched=false;
+	var ok=0;
 
-	var i, ok, last_open, match_slot, open_slot=false, matched=false, last_slot;
-	ok=0;
-
-	last_slot=array_length(obj_ini.equipment);
+	var last_slot=array_length(obj_ini.equipment);
     for (i=0;i<last_slot;i++){
         if (obj_ini.equipment[i]=="") and (open_slot==false){
         	last_open=i;
