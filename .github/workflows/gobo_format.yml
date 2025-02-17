@@ -40,11 +40,8 @@ jobs:
           git fetch origin $target_branch:$target_branch
           git fetch origin $pr_branch:$pr_branch
 
-          # Now compare with the correct commit hash
-          git diff --name-only origin/$target_branch...origin/$pr_branch | grep '\.rs$' || true
-
           # Store the result of the diff in the environment variable
-          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch | grep '\.rs$' || true)
+          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch)
           echo "changed_files=$changed_files" >> $GITHUB_ENV
           
           # Echo the contents of the changed_files variable
@@ -57,7 +54,7 @@ jobs:
             # Iterate over each file using a for loop
             for file in $changed_files; do
               echo "Formatting $file"
-              ./gobo-linux "$file"  # Run formatter on each changed file
+              ./gobo "$file"  # Run formatter on each changed file
             done
           else
             echo "No files changed, skipping formatting."
