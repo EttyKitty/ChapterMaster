@@ -45,8 +45,6 @@ jobs:
           echo "changed_files=$changed_files" >> $GITHUB_ENV
           
           # Echo the contents of the changed_files variable
-          echo "Changed files: $changed_files"
-
 
       - name: Run Formatter on Changed Files
         run: |
