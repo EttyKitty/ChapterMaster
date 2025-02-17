@@ -40,17 +40,21 @@ jobs:
           git fetch origin $target_branch:$target_branch
           git fetch origin $pr_branch:$pr_branch
 
-          # Store the result of the diff in the environment variable
-          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch)
+          # Get the list of changed files and store as a space-separated string
+          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch | paste -s -d' ')
           echo "changed_files=$changed_files" >> $GITHUB_ENV
           
           # Echo the contents of the changed_files variable
+          echo "Changed files: $changed_files"
 
       - name: Run Formatter on Changed Files
         run: |
           if [ -n "$changed_files" ]; then
+            # Split the space-separated string into an array
+            IFS=' ' read -r -a files <<< "$changed_files"
+
             # Iterate over each file using a for loop
-            for file in $changed_files; do
+            for file in "${files[@]}"; do
               echo "Formatting $file"
               ./gobo "$file"  # Run formatter on each changed file
             done
