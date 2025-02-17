@@ -68,17 +68,10 @@ jobs:
 
       - name: Check for formatting changes
         run: |
-          echo "Checking for formatting changes..."
-          git diff --exit-code || exit 1
-
-          if [ $? -ne 0 ]; then
-            failed_files=$(cat failed_files.txt)
-            if [ -z "$failed_files" ]; then
-              echo "No specific failed files identified."
-            else
-              echo -e "\n⚠️  Formatting failed for the following files:\n"
-              echo -e "```\n$failed_files\n```"
-            fi
+          if ! git diff --quiet --exit-code; then
+            failed_files=$(git diff --name-only | tr '\n' ' ')
+            echo -e "\n⚠️  Formatting failed for the following files:\n"
+            echo -e "```\n$failed_files\n```"
             exit 1
           else
             echo "🎉 All formatting checks passed successfully!"
