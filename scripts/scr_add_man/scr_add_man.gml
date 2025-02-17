@@ -50,7 +50,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 			*/
 			/* TODO - add "serf" and the related stuff
 			case "Serf":
-				obj_ini.wep1[target_company][good] = "Bolt Pisto";
+				obj_ini.wep1[target_company][good] = "Bolt Pistol";
 				obj_ini.wep2[target_company][good] = "Combat Knife";
 				obj_ini.armour[target_company][good] = "Scout Armour";
 				obj_ini.race[target_company][good] = 1;
