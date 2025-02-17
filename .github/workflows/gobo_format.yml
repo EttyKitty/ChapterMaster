@@ -68,4 +68,10 @@ jobs:
 
       - name: Check for formatting changes
         run: |
-          git diff --quiet --exit-code || exit 1
+          if ! git diff --quiet --exit-code; then
+            echo -e "\n⚠️  Formatting failed for the following files:\n"
+            echo -e "```\n$(git diff --name-only)\n```"
+            exit 1
+          else
+            echo "🎉 All formatting checks passed successfully!"
+          fi
