@@ -468,7 +468,7 @@ if (defeat == 0 && _reduce_power) {
         if (dropping == true || defending == true) {
             power_reduction = 1;
         } else {
-            power_reduction = 2;
+            power_reduction = enemy_power;
         }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
