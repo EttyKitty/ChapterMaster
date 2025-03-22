@@ -135,7 +135,7 @@ if (__b__) {
                     }
                     eta += speed_string;
 
-                    draw_text_transformed(sys.x + 17, sys.y, string_hash_to_newline(eta), scale, scale, 0);
+                    draw_text_transformed_outline(sys.x + 17, sys.y, string_hash_to_newline(eta), scale, scale, 0);
                     if (mouse_check_button(mb_right) && viable) {
                         var ship_count = player_fleet_ship_count(player_fleet);
                         var fleet_selected = player_fleet_selected_count(player_fleet);
