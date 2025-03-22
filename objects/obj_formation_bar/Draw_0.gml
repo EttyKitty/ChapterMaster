@@ -7,10 +7,11 @@ if (tist=true){
 }*/ draw_set_alpha(1);
 
 if (dragging == false) {
-    draw_sprite_ext(spr_formation_bars, image_index, x, y, image_xscale, image_yscale, 0, c_white, 1);
+    draw_rectangle_outline(x, y, x + 39, y + 47, color, c_black);
 }
+
 if (dragging == true) {
-    draw_sprite_ext(spr_formation_bars, image_index, x, y + 1000, image_xscale, image_yscale, 0, c_white, 1);
+    draw_rectangle_outline(x, y + 100, x + 39, y + 47 + 100, color, c_black);
 }
 
 draw_set_alpha(1);

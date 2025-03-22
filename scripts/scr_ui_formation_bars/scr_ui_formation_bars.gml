@@ -28,42 +28,42 @@ function scr_ui_formation_bars() {
 
         for (var ii = 1; ii <= 17; ii++) {
             if ((ii == 1) && (bat_comm_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 0, "HQ");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "HQ", c_yellow);
             } else if ((ii == 2) && (bat_hono_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "Hono");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "HG", c_yellow);
             } else if ((ii == 3) && (bat_libr_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 8, "Lib");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "LIB", c_aqua);
             } else if ((ii == 4) && (bat_tech_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 9, "Tech");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "TEC", c_red);
             } else if ((ii == 5) && (bat_term_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 10, "Term");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "TER", c_white);
             } else if ((ii == 6) && (bat_vete_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 6, "Veteran");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "VET", c_white);
             } else if ((ii == 7) && (bat_tact_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 6, 3, "Tactical");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "TAC", c_navy);
             } else if ((ii == 8) && (bat_deva_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 3, 2, "Devastator");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "DEV", c_purple);
             } else if ((ii == 9) && (bat_assa_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 3, 5, "Assault");
-            } else if ((ii == 10) && (bat_scou_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 4, "Sco");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "ASS");
             } else if ((ii == 11) && (bat_drea_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 11, "Dread");
-            } else if ((ii == 12) && (bat_hire_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 1, 7, "???");
-            } else if ((ii == 16) && (bat_landspee_for[_formatting] == bar)) {
-                init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Speeder");
+                init_combat_bars(bar, ii, ui_formations_data, 1, 1, "DRD", c_orange);
             }
 
             if (bat_formation_type[_formatting] != 2) {
                 if ((ii == 13) && (bat_rhin_for[_formatting] == bar)) {
-                    init_combat_bars(bar, ii, ui_formations_data, 4, 12, "Rhino");
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "RHN");
                 } else if ((ii == 14) && (bat_pred_for[_formatting] == bar)) {
-                    init_combat_bars(bar, ii, ui_formations_data, 2, 13, "Predator");
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "PRD");
                 } else if ((ii == 15) && (bat_landraid_for[_formatting] == bar)) {
-                    init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Raider");
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "LND");
+                } else if ((ii == 16) && (bat_landspee_for[_formatting] == bar)) {
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "SPD");
                 } else if ((ii == 17) && (bat_whirl_for[_formatting] == bar)) {
-                    init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Whirlwind");
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "WHR");
+                } else if ((ii == 12) && (bat_hire_for[_formatting] == bar)) {
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "AUX");
+                } else if ((ii == 10) && (bat_scou_for[_formatting] == bar)) {
+                    init_combat_bars(bar, ii, ui_formations_data, 1, 1, "SCU", c_green);
                 }
             }
 
@@ -78,10 +78,10 @@ function scr_ui_formation_bars() {
                 bat_vete_for[bar] = 2;
                 bat_hire_for[bar] = 3;
                 bat_libr_for[bar] = 3;
-                bat_comm_for[bar] = 3;
-                bat_tech_for[bar] = 3;
+                bat_comm_for[bar] = 4;
+                bat_tech_for[bar] = 4;
                 bat_term_for[bar] = 3;
-                bat_hono_for[bar] = 3;
+                bat_hono_for[bar] = 6;
                 bat_drea_for[bar] = 5;
                 bat_rhin_for[bar] = 6;
                 bat_pred_for[bar] = 7;
@@ -99,7 +99,7 @@ function scr_ui_formation_bars() {
 }
 
 /// @mixin
-function init_combat_bars(bar, ii, formations_data, size, image_index, unit_type) {
+function init_combat_bars(bar, ii, formations_data, size, image_index, unit_type, color = c_gray) {
     formations_data.nbar = instance_create(formations_data.x9, formations_data.y9 + temp[formations_data.te], obj_formation_bar);
     formations_data.nbar.size = size;
     formations_data.nbar.height = formations_data.nbar.size * 47;
@@ -111,6 +111,7 @@ function init_combat_bars(bar, ii, formations_data, size, image_index, unit_type
     temp[formations_data.te + 100] += formations_data.nbar.size;
     formations_data.nbar.image_index = image_index;
     formations_data.nbar.unit_type = unit_type;
+    formations_data.nbar.color = color;
     formations_data.nbar.unit_id = ii;
     formations_data.nbar.col_parent = bar;
 }

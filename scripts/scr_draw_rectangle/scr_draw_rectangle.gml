@@ -19,6 +19,7 @@ function draw_rectangle_outline(_x, _y, _x2, _y2, _bg_color = c_black, _outline_
     draw_rectangle(_x, _y, _x2, _y2, 0);
     draw_set_color(_outline_color);
     draw_rectangle(_x, _y, _x2, _y2, 1);
+    draw_rectangle(_x + 2, _y + 2, _x2 - 2, _y2 - 2, 1);
 
     draw_set_color(_cur_color);
     draw_set_alpha(_cur_alpha);
