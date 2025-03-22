@@ -334,13 +334,13 @@ function calculate_action_speed(fleet = noone, selected = false) {
                     escorts = types[2];
                 }
             }
-            var fleet_speed = 128;
+            var fleet_speed = 384;
             if (capitals > 0) {
-                fleet_speed = 100;
+                fleet_speed = 300;
             } else if (frigates > 0) {
-                fleet_speed = 128;
+                fleet_speed = 384;
             } else if (escorts > 0) {
-                fleet_speed = 174;
+                fleet_speed = 522;
             }
             if (_is_player_fleet) {
                 if ((obj_controller.stc_ships >= 6) && (fleet_speed >= 100)) {
