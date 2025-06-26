@@ -109,9 +109,9 @@ deserialize = function(save_data){
     }
      if(struct_exists(save_data, "cargo_data")){
         variable_struct_set(self, "cargo_data", save_data.cargo_data);
-        show_debug_message("cargo_data");
+        // show_debug_message("cargo_data");
         if (fleet_has_cargo("ork_warboss")){
-            show_debug_message("warboss_fleet");
+            // show_debug_message("warboss_fleet");
             var _boss = new NewPlanetFeature(P_features.OrkWarboss);
             _boss.load_json_data(cargo_data.ork_warboss)
             cargo_data.ork_warboss = _boss;
