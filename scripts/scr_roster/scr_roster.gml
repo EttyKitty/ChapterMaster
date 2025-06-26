@@ -721,23 +721,23 @@ function add_vehicle_to_battle(company, veh_index, is_local){
 
 
     if (obj_ini.veh_role[company][v] = "Land Speeder") {
-    targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2.5;
-        targ.veh_hp_multiplier[targ.veh] = 2.5;
-        targ.veh_ac[targ.veh] = 20;
+    targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 0.15;
+        targ.veh_hp_multiplier[targ.veh] = 1;
+        targ.veh_ac[targ.veh] = 18;
     }
     else if (obj_ini.veh_role[company][v] = "Rhino") or(obj_ini.veh_role[company][v] = "Whirlwind") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
-        targ.veh_hp_multiplier[targ.veh] = 3;
-        targ.veh_ac[targ.veh] = 35;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 0.25;
+        targ.veh_hp_multiplier[targ.veh] = 1;
+        targ.veh_ac[targ.veh] = 24;
     }
     else if (obj_ini.veh_role[company][v] = "Predator") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
-        targ.veh_hp_multiplier[targ.veh] = 3;
-        targ.veh_ac[targ.veh] = 40;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 0.5;
+        targ.veh_hp_multiplier[targ.veh] = 1;
+        targ.veh_ac[targ.veh] = 42;
     }
     else if (obj_ini.veh_role[company][v] = "Land Raider") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 5;
-        targ.veh_hp_multiplier[targ.veh] = 5;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 0.5;
+        targ.veh_hp_multiplier[targ.veh] = 1;
         targ.veh_ac[targ.veh] = 50;
     }
 

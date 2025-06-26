@@ -7,6 +7,12 @@ co=0;i=0;hue=0;
 turn_count = 0;
 log_message("Ground Combat Started");
 
+log_combat = function(_text) {
+    var combat_log_file = file_text_open_append("Logs/combat.log");
+    file_text_write_string(combat_log_file, $"[Turn {turn_count}]: {_text}" + "\n");
+    file_text_close(combat_log_file);
+}
+
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle,0,true);
 audio_sound_gain(snd_battle, 0, 0);

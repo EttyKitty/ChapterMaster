@@ -383,101 +383,102 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	if (obj_ncombat.enemy = 7) {
 
 		if (argument0 = "Choppa") {
-			atta = 100;
-			arp = 1;
+			atta = 6;
+			arp = 2;
 			rang = 1;
 			spli = 3;
 		}
 		if (argument0 = "Power Klaw") {
-			atta = 160;
-			arp = 3;
+			atta = 11;
+			arp = 10;
 			rang = 1;
 			spli = 3;
 		}
 		if (argument0 = "Slugga") {
-			atta = 70;
-			arp = 1;
+			atta = 9;
+			arp = 0;
 			rang = 3.1;
 			amm = 4;
 			spli = 3;
 		}
 		if (argument0 = "Tankbusta Bomb") {
-			atta = 150;
-			arp = 4;
+			atta = 30;
+			arp = 10;
 			rang = 1;
 			amm = 1;
 			spli = 1;
 		}
 		if (argument0 = "Big Shoota") {
-			atta = 120;
-			arp = 1;
+			atta = 11;
+			arp = 2;
 			rang = 6;
 			amm = 30;
-			spli = 5;
-		}
-		if (argument0 = "Dakkagun") {
-			atta = 140;
-			arp = 1;
-			rang = 8;
-			amm = 20;
 			spli = 10;
 		}
-		if (argument0 = "Deffgun") {
-			atta = 150;
-			arp = 4;
+		if (argument0 = "Dakkagun") {
+			atta = 5;
+			arp = 2;
 			rang = 8;
 			amm = 20;
-			spli = 1;
+			spli = 7;
+		}
+		if (argument0 = "Deffgun") {
+			atta = 15;
+			arp = 2;
+			rang = 8;
+			amm = 20;
+			spli = 8;
 		}
 		if (argument0 = "Snazzgun") {
-			atta = 200;
-			arp = 2;
+			atta = 10;
+			arp = 5;
 			rang = 5;
-			spli = 0;
+			spli = 2;
 		}
 		if (argument0 = "Grot Blasta") {
-			atta = 50;
-			arp = 1;
+			atta = 8;
+			arp = 0;
 			rang = 2;
 			amm = 6;
 		}
 		if (argument0 = "Kannon") {
-			atta = 200;
-			arp = 4;
+			atta = 22;
+			arp = 6;
 			rang = 10.1;
 			amm = 5;
-			spli = 3;
+			spli = 4;
 		}
 		if (argument0 = "Shoota") {
-			atta = 80;
-			arp = 1;
+			atta = 9;
+			arp = 0;
 			rang = 5;
+			spli = 3;
 		}
 		if (argument0 = "Burna") {
-			atta = 140;
+			atta = 9;
 			arp = 2;
 			rang = 2;
-			amm = 4;
+			amm = 6;
 			spli = 3;
 		}
 		if (argument0 = "Skorcha") {
-			atta = 200;
+			atta = 12;
 			arp = 3;
 			rang = 2;
 			amm = 6;
 			spli = 3;
 		}
 		if (argument0 = "Rokkit Launcha") {
-			atta = 150;
-			arp = 4;
+			atta = 16;
+			arp = 6;
 			rang = 15;
-			spli = 3;
+			spli = 1;
 		}
 		if (argument0 = "Krooz Missile") {
-			atta = 300;
-			arp = 4;
+			atta = 20;
+			arp = 8;
 			rang = 15;
-			spli = 3;
+			spli = 1;
 		}
 
 	}
