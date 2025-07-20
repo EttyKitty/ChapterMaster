@@ -29,20 +29,31 @@ function string_plural(_string, _variable = 2) {
         return _string;
     }
 
-    var _last_char = string_char_at(_string, string_length(_string));
-    var _last_two_chars = string_copy(_string, string_length(_string) - 1, 2);
+    var _len = string_length(_string);
+    var _last_char = string_char_at(_string, _len);
+    var _last_two = string_copy(_string, _len - 1, 2);
+    var _prev_char = _len > 1 ? string_char_at(_string, _len - 1) : "";
+
     if (_last_char == "y") {
-        return string_copy(_string, 1, string_length(_string) - 1) + "ies";
+        if (array_contains(["a", "e", "i", "o", "u"], _prev_char)) {
+            return _string + "s";
+        } else {
+            return string_copy(_string, 1, _len - 1) + "ies";
+        }
     }
-    else if (array_contains(["s", "x", "z", "ch", "sh"], _last_char)) {
+
+    if (array_contains(["s", "x", "z"], _last_char) || array_contains(["ch", "sh"], _last_two)) {
         return _string + "es";
     }
-    else if (_last_char == "f" || _last_two_chars == "fe") {
-        return string_copy(_string, 1, string_length(_string) - string_length(_last_two_chars)) + "ves";
+
+    if (_last_two == "fe") {
+        return string_copy(_string, 1, _len - 2) + "ves";
     }
-    else {
-        return _string + "s";
+    if (_last_char == "f") {
+        return string_copy(_string, 1, _len - 1) + "ves";
     }
+
+    return _string + "s";
 }
 
 /// @function string_plural_count
