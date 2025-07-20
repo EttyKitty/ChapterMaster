@@ -1467,20 +1467,55 @@ try {
 					warning = "Not enough " + string(n_mobi) + "; " + string(units - req_mobi_num) + " more are required.";
 				}
 
-				if (is_struct(armour_data) && is_struct(mobility_data)) {
-					if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator")){
-						n_good5 = 0;
-						warning = "Cannot use this with Terminator Armour.";
-					} else if (!armour_data.has_tag("terminator") && mobility_data.has_tag("terminator_only")){
-						n_good5 = 0;
-						warning = "Cannot use this without Terminator Armour.";
-					} else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought")) {
-						n_good5 = 0;
-						warning = "Cannot use this with Dreadnought Armour.";
-					} else if (!armour_data.has_tag("dreadnought") && mobility_data.has_tag("dreadnought_only")) {
-						n_good5 = 0;
-						warning = "Cannot use this without Dreadnought Armour.";
+				/// @description Validate that mobility tags align with armour tags for special armours.
+				fnc_validate_special_armour = function(armour_data, mobility_data) {
+					if (!is_struct(armour_data) || !is_struct(mobility_data)) {
+						return {
+							valid: true,
+							warning: ""
+						};
 					}
+
+					var specs = [{
+						tag: "terminator",
+						warningWith: "Cannot use this with Terminator Armour.",
+						warningWithout: "Cannot use this without Terminator Armour."
+					}, {
+						tag: "dreadnought",
+						warningWith: "Cannot use this with Dreadnought Armour.",
+						warningWithout: "Cannot use this without Dreadnought Armour."
+					}];
+
+					for (var i = 0; i < array_length(specs); i++) {
+						var spec = specs[i];
+						var hasArm = armour_data.has_tag(spec.tag);
+						var hasMob = mobility_data.has_tag(spec.tag);
+						var onlyMob = mobility_data.has_tag(spec.tag + "_only");
+
+						if (hasArm && !(hasMob || onlyMob)) {
+							return {
+								valid: false,
+								warning: spec.warningWith
+							};
+						}
+						if (!hasArm && onlyMob) {
+							return {
+								valid: false,
+								warning: spec.warningWithout
+							};
+						}
+					}
+
+					return {
+						valid: true,
+						warning: ""
+					};
+				};
+
+				var result = fnc_validate_special_armour(armour_data, mobility_data);
+				if (!result.valid) {
+					n_good5 = 0;
+					warning = result.warning;
 				}
 			}
 		}

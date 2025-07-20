@@ -343,7 +343,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
 		var _armour_data = get_armour_data();
 		if (is_struct(_armour_data)) {
-			if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator")) {
+			if (_armour_data.has_tag("terminator") && (!_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only"))) {
 				log_error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
 				return false;
 			} else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
@@ -467,6 +467,3 @@ function unit_has_equipped(check_equippment){
 	}	
 	return true;
 }
-
-
-
