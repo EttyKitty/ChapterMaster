@@ -1,40 +1,52 @@
-name: GoboLint
+name: Gobo Lint
 
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  lint:
+  format:
     if: >
       github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, '/lint') &&
-      (github.event.comment.author_association == 'COLLABORATOR' || 
-      github.event.comment.author_association == 'MEMBER' || 
-      github.event.comment.author_association == 'OWNER')
-    
+      startsWith(github.event.comment.body, '/format') &&
+      (github.event.comment.author_association == 'MEMBER' || 
+      github.event.comment.author_association == 'OWNER' || 
+      github.event.comment.author_association == 'COLLABORATOR')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      - name: Get PR branch info
-        id: pr_data
-        uses: xt0rted/pull-request-comment-branch@v2
+      - name: Fetch PR Details
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Use the GitHub CLI to get the branch name and the full repository name (owner/repo)
+          PR_JSON=$(gh pr view ${{ github.event.issue.number }} --repo ${{ github.repository }} --json headRefName,headRepositoryOwner,headRepository)
+          
+          # Extract values using jq
+          HEAD_REF=$(echo "$PR_JSON" | jq -r .headRefName)
+          HEAD_OWNER=$(echo "$PR_JSON" | jq -r .headRepositoryOwner.login)
+          HEAD_REPO_NAME=$(echo "$PR_JSON" | jq -r .headRepository.name)
+          
+          echo "head_ref=$HEAD_REF" >> $GITHUB_OUTPUT
+          echo "head_repo=$HEAD_OWNER/$HEAD_REPO_NAME" >> $GITHUB_OUTPUT
 
       - name: Checkout PR Branch
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ steps.pr_data.outputs.head_owner }}/${{ steps.pr_data.outputs.head_repo }}
-          ref: ${{ steps.pr_data.outputs.head_ref }}
+          repository: ${{ steps.pr.outputs.head_repo }}
+          ref: ${{ steps.pr.outputs.head_ref }}
+          fetch-depth: 0
 
       - name: Get Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
-          base_sha: ${{ steps.pr_data.outputs.base_ref }}
+          base_sha: ${{ github.event.issue.pull_request.base.sha }}
           files: '**.gml'
 
       - name: Setup Gobo
@@ -44,19 +56,19 @@ jobs:
           unzip gobo-ubuntu.zip
           chmod +x ./gobo
 
-      - name: Run Linter
+      - name: Run Formatter
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [ -f "$file" ]; then
-              echo "Linting $file..."
+              echo "Formatting $file..."
               ./gobo "$file"
             fi
           done
 
-      - name: Commit Changes
+      - name: Commit and Push changes
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "style: auto-lint GML files with Gobo"
+          commit_message: "style: Auto-format GML files with Gobo"
           file_pattern: '**.gml'
