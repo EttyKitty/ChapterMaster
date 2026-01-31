@@ -19,22 +19,22 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Get PR branch
+      - name: Get PR branch info
+        id: pr_data
         uses: xt0rted/pull-request-comment-branch@v2
-        id: comment-branch
 
-      - name: Checkout PR branch
+      - name: Checkout PR Branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
-          repository: ${{ steps.comment-branch.outputs.head_owner }}/${{ steps.comment-branch.outputs.head_repo }}
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ steps.pr_data.outputs.head_owner }}/${{ steps.pr_data.outputs.head_repo }}
+          ref: ${{ steps.pr_data.outputs.head_ref }}
 
       - name: Get Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
-          base_sha: ${{ steps.comment-branch.outputs.base_ref }}
+          base_sha: ${{ steps.pr_data.outputs.base_ref }}
           files: '**.gml'
 
       - name: Setup Gobo
