@@ -31,8 +31,10 @@ jobs:
       - name: Run Formatter
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # Pass all changed files to gobo at once
-          ./gobo ${{ steps.changed-files.outputs.all_changed_files }}
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Formatting $file..."
+            ./gobo "$file"
+          done
 
       - name: Verify Formatting
         run: |
