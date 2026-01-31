@@ -7,7 +7,7 @@ if (__b__) {
         if (__b__) {
             if ((obj_controller.menu == 0 && !instance_exists(obj_popup_dialogue)) || ((obj_controller.menu == 999) && instance_exists(obj_ncombat))) {
                 if (instance_exists(obj_ncombat)) {
-                    if (obj_ncombat.start==7) {
+                    if (obj_ncombat.start == 7) {
                         exit;
                     }
                 }
