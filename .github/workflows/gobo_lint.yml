@@ -1,0 +1,62 @@
+name: GoboLint
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  lint:
+    if: >
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/lint') &&
+      (github.event.comment.author_association == 'COLLABORATOR' || 
+      github.event.comment.author_association == 'MEMBER' || 
+      github.event.comment.author_association == 'OWNER')
+    
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v2
+        id: comment-branch
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          repository: ${{ steps.comment-branch.outputs.head_owner }}/${{ steps.comment-branch.outputs.head_repo }}
+          fetch-depth: 0
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          base_sha: ${{ steps.comment-branch.outputs.base_ref }}
+          files: '**.gml'
+
+      - name: Setup Gobo
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          curl -LO https://github.com/EttyKitty/Gobo/releases/download/v1.0.0/gobo-ubuntu.zip
+          unzip gobo-ubuntu.zip
+          chmod +x ./gobo
+
+      - name: Run Linter
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [ -f "$file" ]; then
+              echo "Linting $file..."
+              ./gobo "$file"
+            fi
+          done
+
+      - name: Commit Changes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-lint GML files with Gobo"
+          file_pattern: '**.gml'
