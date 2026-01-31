@@ -6,9 +6,8 @@ function draw_animated_scanline(x1, y1, width, height, time = 10, color = 599838
     if (anim <= 10) {
         draw_set_alpha(anim / 10);
     } else {
-        draw_set_alpha(2 - (anim / 10));
-    }
-    line_move = y1 + (height * ((anim % 20) / 20));
+        draw_set_alpha(2-(anim / 10));
+    }line_move = y1 + (height * ((anim % 20) / 20));
     if (irandom(100) <= 5) {
         line_move -= 4;
     }
