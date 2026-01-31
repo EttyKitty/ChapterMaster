@@ -1,4 +1,4 @@
-name: Format Code
+name: GoboLintCheck
 
 on:
   pull_request:
