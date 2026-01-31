@@ -10,9 +10,10 @@ function scr_arti_descr() {
         if (typ != "armour") {
             mission_data = $"This artifact is a {type()}";
             if (inq_mission) {
-                mission_data +=", entrusted by the Inquisition.#";
+                mission_data += ", entrusted by the Inquisition.#";
             } else if (!inq_mission) {
-                mission_data += ".#";}
+                mission_data += ".#";
+            }
         } else if (typ == "armour") {
             mission_data = $"This artifact is {type()}";
             if (inq_mission) {
