@@ -185,9 +185,9 @@
             "codiciery": 0,
             "lexicanum": 0,
             "terminator": 0,
-            "assault": 0,
+            "assault": 10,
             "veteran": 0,
-            "devastator": 0
+            "devastator": -10
         },
         /**
         * * Default Marine strength
