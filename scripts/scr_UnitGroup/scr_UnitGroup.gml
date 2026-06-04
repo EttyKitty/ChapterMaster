@@ -610,15 +610,21 @@ function UnitIndex(units) constructor {
     };
 
     static hierarchy_keys = function() {
-        var _keys = keys();
+        var _indexed = keys();
         var _all_roles = role_hierarchy();
-        for (var i = array_length(_all_roles) - 1; i >= 0; i--) {
-            if (!array_contains(_keys, _all_roles[i])) {
-                array_delete(_all_roles, i, 1);
+        var _keep = [];
+        var _seen = {};
+        for (var i = 0; i < array_length(_all_roles); i++) {
+            var _r = _all_roles[i];
+            if (struct_exists(_seen, _r)) {
+                continue;
+            }
+            if (array_contains(_indexed, _r)) {
+                _seen[$ _r] = true;
+                array_push(_keep, _r);
             }
         }
-
-        return _all_roles;
+        return _keep;
     };
 
     static pop_role_member = function(role) {
