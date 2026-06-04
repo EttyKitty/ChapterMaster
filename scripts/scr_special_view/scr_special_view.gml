@@ -52,7 +52,7 @@ function scr_special_view(command_group) {
     }
 
     if ((command_group == 14) || (command_group == 0)) {
-        // Reclusium
+        // Reclusiam
         var chaps = collect_role_group([SPECIALISTS_CHAPLAINS, true]);
         for (var i = 0; i < array_length(chaps); i++) {
             unit = chaps[i];

@@ -483,7 +483,7 @@ function company_specific_management() {
                 _company_name = "Librarium";
                 break;
             case 14:
-                _company_name = "Reclusium";
+                _company_name = "Reclusiam";
                 break;
             case 15:
                 _company_name = "Armamentarium";
@@ -1188,7 +1188,7 @@ function scr_ui_manage() {
                         fx = "Librarium";
                         break;
                     case 14:
-                        fx = "Reclusium";
+                        fx = "Reclusiam";
                         break;
                     case 15:
                         fx = "Armamentarium";

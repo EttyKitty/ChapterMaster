@@ -2172,7 +2172,7 @@ function scr_initialize_custom() {
         add_unit_to_company("marine", company, k, roles.apothecary, eROLE.APOTHECARY, "Chainsword", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
-    // Chaplains in Reclusium
+    // Chaplains in Reclusiam
     repeat (chaplains) {
         k += 1;
         commands += 1;
