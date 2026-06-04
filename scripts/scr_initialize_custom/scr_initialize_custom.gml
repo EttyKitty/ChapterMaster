@@ -951,20 +951,15 @@ function scr_initialize_custom() {
     // LOGGER.info(ship_summary_str);
     // LOGGER.debug(ship_summary_str);
 
-    if (glorianas>=1)
-	{
-	for (v=0;v<glorianas;v++){
+	for (var i = 0; i < glorianas; i++){
 		var new_ship = new_player_ship("Gloriana", "home");
-		if (flagship_name!="") and (v=0) then ship[new_ship]=flagship_name;
+		if (flagship_name!="") and (i == 0) then ship[new_ship]=flagship_name;
 	}
-	}
-	if (battle_barges>=1)
-	{
-	 	for (v=0;v<battle_barges;v++){
-	 		var new_ship = new_player_ship("Battle Barge", "home");
-		    if (flagship_name=="") && (v=0) then ship[new_ship]=flagship_name;
-		}
-	}
+
+    for (var i=0;i<battle_barges;i++){
+        var new_ship = new_player_ship("Battle Barge", "home");
+        if (flagship_name!="") && (i==0) then ship[new_ship]=flagship_name;
+    }
 
     for (var i = 0; i < strike_cruisers; i++) {
         new_player_ship("Strike Cruiser");
