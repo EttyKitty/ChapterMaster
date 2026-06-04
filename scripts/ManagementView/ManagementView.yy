@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_management",
+  "%Name":"ManagementView",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_management",
+  "name":"ManagementView",
   "parent":{
-    "name":"Interface",
-    "path":"folders/Scripts/Interface.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
