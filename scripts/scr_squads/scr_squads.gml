@@ -488,8 +488,12 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 // Also try the JSON key itself as a source role (base role before squad rename)
                 var _fill_role_base = _wanted_unit_role;
                 while (_squad_role_current < _max_role_count) {
-                    var _pick_role = fill_from.has_role(_fill_role) ? _fill_role
-                        : (fill_from.has_role(_fill_role_base) ? _fill_role_base : "");
+                    var _pick_role = "";
+                    if (fill_from.has_role(_fill_role)) {
+                        _pick_role = _fill_role;
+                    } else if (fill_from.has_role(_fill_role_base)) {
+                        _pick_role = _fill_role_base;
+                    }
                     if (_pick_role == "") break;
                     var _new_member = fill_from.pop_role_member(_pick_role);
                     add_member(_new_member.company, _new_member.marine_number);
