@@ -95,7 +95,7 @@ if (!zoomed && !zui) {
         menu_buttons.chapter_manage.draw(34, 838 + y_slide, "Chapter Management", 1, 1, 145);
         menu_buttons.chapter_settings.draw(179, 838 + y_slide, "Chapter Settings", 1, 1, 145);
         menu_buttons.apoth.draw(357, 838 + y_slide, "Apothecarium");
-        menu_buttons.reclu.draw(473, 838 + y_slide, "Reclusium");
+        menu_buttons.reclu.draw(473, 838 + y_slide, "Reclusiam");
         menu_buttons.lib.draw(590, 838 + y_slide, "Librarium");
         menu_buttons.arm.draw(706, 838 + y_slide, "Armamentarium");
         menu_buttons.recruit.draw(822, 838 + y_slide, "Recruitment");

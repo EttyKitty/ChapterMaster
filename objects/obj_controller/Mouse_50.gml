@@ -7,7 +7,7 @@ if ((trading > 0) && (force_goodbye != 0)) {
     trading = 0;
 }
 
-// ** Reclusium Jail Marines**
+// ** Reclusiam Jail Marines**
 if ((menu == 12) && (cooldown <= 0) && (penitorium > 0)) {
     var behav = 0, r_eta = 0, re = 0;
     for (var qp = 1; qp <= min(36, penitorium); qp++) {
