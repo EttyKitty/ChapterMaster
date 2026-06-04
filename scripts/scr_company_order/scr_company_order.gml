@@ -219,6 +219,15 @@ function role_hierarchy() {
         _roles[eROLE.TECHMARINE], _roles[eROLE.LIBRARIAN]
     ];
 
+    array_push(hierarchy,
+        _roles[eROLE.TERMINATOR],
+        _roles[eROLE.VETERAN],
+        _roles[eROLE.TACTICAL],
+        _roles[eROLE.ASSAULT],
+        _roles[eROLE.DEVASTATOR],
+        _roles[eROLE.SCOUT]
+    );
+
     var _squad_type_names = struct_get_names(obj_ini.squad_types);
     for (var _si = 0; _si < array_length(_squad_type_names); _si++) {
         var _sq_data = obj_ini.squad_types[$ _squad_type_names[_si]];
@@ -256,12 +265,6 @@ function role_hierarchy() {
     }
 
     array_push(hierarchy,
-        _roles[eROLE.TERMINATOR],
-        _roles[eROLE.VETERAN],
-        _roles[eROLE.TACTICAL],
-        _roles[eROLE.ASSAULT],
-        _roles[eROLE.DEVASTATOR],
-        _roles[eROLE.SCOUT],
         $"Venerable {_roles[eROLE.DREADNOUGHT]}",
         _roles[eROLE.DREADNOUGHT],
         "Skitarii",
