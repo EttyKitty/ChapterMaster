@@ -79,6 +79,20 @@ function CountingMap() constructor {
         return result;
     };
 
+    static get_plural_strings_array = function() {
+        var keys = struct_get_names(map);
+        var size = array_length(keys);
+        var result = array_create(size, "");
+
+        for (var i = 0; i < size; i++) {
+            var key = keys[i];
+            var value = map[$ key];
+            result[i] = $"{value} {string_plural(key, value)}";
+        }
+
+        return result;
+    };
+
     static get_string = function(_key) {
         return struct_exists(map, _key) ? string(map[$ _key]) + "x " + _key : "";
     };

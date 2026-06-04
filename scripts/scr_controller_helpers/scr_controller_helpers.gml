@@ -170,7 +170,7 @@ function scr_toggle_manage() {
             if (menu != eMENU.MANAGE) {
                 hide_banner = 1;
                 basic_manage_settings();
-                scr_management(1);
+                management_view = new ManagementView().init();
             }
         }
     });

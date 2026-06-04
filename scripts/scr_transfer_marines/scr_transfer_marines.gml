@@ -115,7 +115,7 @@ function transfer_marines() {
 
     if (obj_controller.managing > 0) {
         with (obj_controller) {
-            scr_management(1);
+            management_view = new ManagementView().init();
         }
     }
     obj_ini.selected_company = company;

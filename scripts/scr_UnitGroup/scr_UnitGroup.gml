@@ -643,7 +643,7 @@ function UnitIndex(units) constructor {
         return new UnitGroup(_units);
     };
 
-    static create_plural_strings_array = function(arrange_with_hierarchy = true, allow_draw_data = true, use_names_for_heads = true) {
+    static create_plural_strings_array = function(arrange_with_hierarchy = true, allow_draw_data = true, use_names_for_heads = true, _role_filter = undefined) {
         var _strings_array = [];
         var _keys;
         if (arrange_with_hierarchy) {
@@ -652,24 +652,31 @@ function UnitIndex(units) constructor {
             _keys = keys();
         }
         for (var i = 0; i < array_length(_keys); i++) {
-            var _count = role_count(_keys[i]);
-            if (_count == 0) {
+            var _role = _keys[i];
+
+            if (!is_undefined(_role_filter) && !struct_exists(_role_filter, _role)) {
                 continue;
             }
-            if (_count == 1) {
+
+            var _count = role_count(_role);
+            if (_count == 0) {
+                continue;
+            } else if (_count == 1) {
                 if (allow_draw_data) {
-                    var _string = _keys[i];
+                    var _string = _role;
                     var _italic = false;
-                    if (use_names_for_heads && is_specialist(_keys[i], SPECIALISTS_HEADS) || _keys[i] == active_roles()[eROLE.CAPTAIN]) {
-                        _string = role_index[$ _keys[i]][0].name();
+                    var _bold = false;
+                    if (use_names_for_heads && is_specialist(_role, SPECIALISTS_HEADS) || _role == active_roles()[eROLE.CAPTAIN]) {
+                        _string = role_index[$ _role][0].name();
                         _italic = true;
+                        _bold = true
                     }
-                    array_push(_strings_array, {str1: _string, bold: true, italic: _italic});
+                    array_push(_strings_array, {str1: _string, bold: _bold, italic: _italic});
                 } else {
-                    array_push(_strings_array, string(_keys[i]));
+                    array_push(_strings_array, string(_role));
                 }
             } else {
-                array_push(_strings_array, string_plural_count(_keys[i], role_count(_keys[i]), false));
+                array_push(_strings_array, string_plural_count(_role, _count, false));
             }
         }
 

@@ -119,7 +119,7 @@ function setup_promotion_popup() {
                 } // End repeat
 
                 with (obj_controller) {
-                    scr_management(1);
+                    management_view = new ManagementView().init();
                 }
 
                 with (obj_ini) {

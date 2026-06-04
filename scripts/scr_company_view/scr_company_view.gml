@@ -495,7 +495,7 @@ function company_manage_actions() {
     if (point_and_click([xx + 23, yy + 80, xx + 95, yy + 128])) {
         managing = 0;
         scr_ui_refresh();
-        scr_management(1);
+        management_view = new ManagementView().init();
         click = 1;
         popup = 0;
         selected = 0;

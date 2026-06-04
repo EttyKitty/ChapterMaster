@@ -9,6 +9,7 @@ panel_width = 0;
 panel_height = 0;
 
 line = [];
+bold = false;
 slate_panel = new DataSlate();
 
 scroll_active = 0;
