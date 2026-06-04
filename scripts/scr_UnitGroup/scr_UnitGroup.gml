@@ -197,13 +197,30 @@ function UnitGroup(units) constructor {
         return _squad_index;
     };
 
-    var _roles = active_roles();
+    // var _roles = active_roles();
 
     static sgt_types = [];
 
+    static _sgt_group_for = function(_sgt_type, _squad_unit_types, _fill_squad) {
+        for (var r = 0; r < array_length(_squad_unit_types); r++) {
+            var _role_name = _squad_unit_types[r];
+            var _role_def = _fill_squad[$ _role_name];
+            var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
+            if (_primary_role_name == _sgt_type || (_role_name == "Sergeant" && _sgt_type == sgt_types[0]) || (_role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1])) {
+                return _role_name;
+            }
+        }
+        return "";
+    };
+
+    static _actual_sgt_role = function(_sgt_group, _sgt_type, _fill_squad) {
+        var _sgt_role_def = _fill_squad[$ _sgt_group];
+        return struct_exists(_sgt_role_def, "role") ? _sgt_role_def.role : _sgt_type;
+    };
+
     static create_squad = function(squad_type, squad_loadout = true, squad_uid = "", game_start = false) {
         //LOGGER.info($"sgts : ${sgt_types}");
-        sgt_types  = role_groups(SPECIALISTS_SQUAD_LEADERS);
+        sgt_types = role_groups(SPECIALISTS_SQUAD_LEADERS);
 
         var roles = active_roles();
 
@@ -225,7 +242,7 @@ function UnitGroup(units) constructor {
         var _fulfilled = false;
         //adding multiple role sources on gen within a single squad
         var _all_roles_to_fetch = array_create(0);
-            for (var r = 0; r < array_length(squad_unit_types); r++) {
+        for (var r = 0; r < array_length(squad_unit_types); r++) {
             var _primary_role = squad_unit_types[r];
             var _primary_role_def = _fill_squad[$ _primary_role];
             var _primary_role_name = struct_exists(_primary_role_def, "role") ? _primary_role_def.role : _primary_role;
@@ -267,25 +284,17 @@ function UnitGroup(units) constructor {
             }
 
             var _sgt = _available_sgt.units[0];
-            squad.add_member(_sgt.company, _sgt.marine_number);
-            var _sgt_group = "";
-            for (var r = 0; r < array_length(squad_unit_types); r++) {
-                var _role_name = squad_unit_types[r];
-                var _role_def = _fill_squad[$ _role_name];
-                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
-                if (_primary_role_name == _sgt_type || (_role_name == "Sergeant" && _sgt_type == sgt_types[0]) || (_role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1])) {
-                    _sgt_group = _role_name;
-                    break;
-                }
+            var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
+            if (_sgt_group == "") {
+                continue;
             }
-            if (_sgt_group != "") {
-                squad_fulfilment[$ _sgt_group]++;
-                // Rename pre-existing sergeant to squad-specific role if needed
-                var _sgt_slot_def = _fill_squad[$ _sgt_group];
-                var _target_sgt_role = struct_exists(_sgt_slot_def, "role") ? _sgt_slot_def.role : _sgt_type;
-                if (_target_sgt_role != _sgt.role()) {
-                    _sgt.update_role(_target_sgt_role);
-                }
+
+            squad.add_member(_sgt.company, _sgt.marine_number);
+            squad_fulfilment[$ _sgt_group]++;
+            // Rename pre-existing sergeant to squad-specific role if needed
+            var _target_sgt_role = _actual_sgt_role(_sgt_group, _sgt_type, _fill_squad);
+            if (_target_sgt_role != _sgt.role()) {
+                _sgt.update_role(_target_sgt_role);
             }
             sergeant_found = true;
         }
@@ -303,16 +312,8 @@ function UnitGroup(units) constructor {
             var _has_sgt_requirements = false;
             for (var s = 0; s < 2; s++) {
                 var _sgt_type = sgt_types[s];
-                for (var r = 0; r < array_length(squad_unit_types); r++) {
-                    var _role_name = squad_unit_types[r];
-                    var _role_def = _fill_squad[$ _role_name];
-                    var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
-                    if (_primary_role_name == _sgt_type || _role_name == "Sergeant" && _sgt_type == sgt_types[0] || _role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1]) {
-                        _has_sgt_requirements = true;
-                        break;
-                    }
-                }
-                if (_has_sgt_requirements) {
+                if (_sgt_group_for(_sgt_type, squad_unit_types, _fill_squad) != "") {
+                    _has_sgt_requirements = true;
                     break;
                 }
             }
@@ -388,24 +389,13 @@ function UnitGroup(units) constructor {
         if (!bool(_members.number())) {
             return [false, squad.uid];
         }
+        var _exp_unit = undefined;
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
-            var _sgt_group = "";
-            var _exp_unit = undefined;
-            for (var r = 0; r < array_length(squad_unit_types); r++) {
-                var _role_name = squad_unit_types[r];
-                var _role_def = _fill_squad[$ _role_name];
-                var _primary_role_name = struct_exists(_role_def, "role") ? _role_def.role : _role_name;
-                if (_primary_role_name == _sgt_type || (_role_name == "Sergeant" && _sgt_type == sgt_types[0]) || (_role_name == "Veteran Sergeant" && _sgt_type == sgt_types[1])) {
-                    _sgt_group = _role_name;
-                    break;
-                }
-            }            
-                if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
+            var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
+            if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
                 _exp_unit = _members.highest_exp();
-                var _sgt_role_def = _fill_squad[$ _sgt_group];
-                var _actual_sgt_role = struct_exists(_sgt_role_def, "role") ? _sgt_role_def.role : _sgt_type;
-                _exp_unit.update_role(_actual_sgt_role);
+                _exp_unit.update_role(_actual_sgt_role(_sgt_group, _sgt_type, _fill_squad));
                 squad_fulfilment[$ _sgt_group]++;
                 if (game_start && irandom(1) == 0) {
                     _exp_unit.add_trait("lead_example");
@@ -425,8 +415,10 @@ function UnitGroup(units) constructor {
         }
         if (_fulfilled) {
             for (var s = 0; s < 2; s++) {
-                if (struct_exists(squad_fulfilment, sgt_types[s]) && (sergeant_found == false) && (_exp_unit != undefined)) {
-                    _exp_unit.update_role(sgt_types[s]); //if squad is viable promote marine to sergeant
+                var _sgt_type = sgt_types[s];
+                var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
+                if (struct_exists(squad_fulfilment, _sgt_group) && (sergeant_found == false) && (_exp_unit != undefined)) {
+                    _exp_unit.update_role(_actual_sgt_role(_sgt_group, _sgt_type, _fill_squad));
                     if (game_start && irandom(1) == 0) {
                         _exp_unit.add_trait("lead_example");
                     }
