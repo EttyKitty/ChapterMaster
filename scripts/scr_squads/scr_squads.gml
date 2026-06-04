@@ -59,6 +59,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     optional_load = undefined;
     optional_fill_counts = {};   // flat struct: "slot_groupIndex" -> filled count
     required_load = undefined;
+    ignore_units = [];
 
     target_squad.update_fulfilment();
 
@@ -197,17 +198,16 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                 continue;
             }
 
-            // Required loadout is always applied — ignore_units only gates optional extras
+            // Units that already received a full equipment set are ignored for all further loadout assignments
+            if (array_contains(ignore_units, _unit.uid)) {
+                continue;
+            }
+
             if (required_load != undefined && struct_exists(required_load, current_load_slot)) {
                 var _needed_required = equip_required_for_role(_unit);
                 if (_needed_required) {
                     continue;
                 }
-            }
-
-            // Optional loadout respects ignore_units (units that already got a full equipment set)
-            if (array_contains(ignore_units, _unit.uid)) {
-                continue;
             }
 
             if (optional_load != undefined && struct_exists(optional_load, current_load_slot)) {
@@ -268,7 +268,6 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
             structure_role_required_loadout(_loudout_data[$ "required"]);
         }
 
-        ignore_units = [];
         for (var i = 0; i < array_length(load_out_areas); i++) {
             current_load_slot = load_out_areas[i];
             equip_loudouts_specific_equip_slot();
