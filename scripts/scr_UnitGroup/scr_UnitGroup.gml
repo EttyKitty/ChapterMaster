@@ -395,6 +395,7 @@ function UnitGroup(units) constructor {
         }
 
         var _exp_unit = undefined;
+        var _add_trait = false;
 
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
@@ -405,7 +406,7 @@ function UnitGroup(units) constructor {
                 squad_fulfilment[$ _sgt_group]++;
                 sergeant_found = true;
                 if (game_start && irandom(1) == 0) {
-                    _exp_unit.add_trait("lead_example");
+                    _add_trait = true;
                 }
             }
         }
@@ -426,6 +427,10 @@ function UnitGroup(units) constructor {
             }
             for (var m = 0; m < array_length(_member_commits); m++) {
                 _member_commits[m].unit.update_role(_member_commits[m].role);
+            }
+
+            if (_add_trait && _exp_unit != undefined) {
+                _exp_unit.add_trait("lead_example");
             }
 
             //update units squad marker
