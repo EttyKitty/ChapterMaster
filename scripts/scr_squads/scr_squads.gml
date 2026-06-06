@@ -170,9 +170,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                         continue;
                     }
                 } else {
-                var _opt_load_out = {};
-                _opt_load_out[$ current_load_slot] = _item_to_add;
-                _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
+                    var _opt_load_out = {};
+                    _opt_load_out[$ current_load_slot] = _item_to_add;
+                    _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
                 }
 
                 // Struct field write — guaranteed in-place, no copy-on-write in GML
@@ -395,6 +395,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var _unit;
         var highest_exp = -1;
         var member_length = array_length(members);
+    
         for (var i = 0; i < member_length; i++) {
             _unit = fetch_unit(members[i]);
             if (_unit.name() == "") {
@@ -403,11 +404,13 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 i--;
                 continue;
             }
+        
             if (exp_unit == "" || _unit.experience > highest_exp) {
                 highest_exp = _unit.experience;
                 exp_unit = _unit;
             }
         }
+
         if ((array_length(members) > 0) && is_struct(exp_unit)) {
             if (exp_unit.name() != "") {
                 var new_role;
@@ -418,12 +421,16 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 } else {
                     new_role = obj_ini.role[100][18];
                 }
+
                 exp_unit.update_role(new_role);
                 if (irandom(1) == 0) {
                     exp_unit.add_trait("lead_example");
                 }
+
+                return true;
             }
         }
+        return false;
     };
 
     static kill_members = function() {
@@ -527,14 +534,14 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
             var _role_def = fill_squad[$ _req_key];
             if (_role_def == undefined) continue;
             var _actual_role = struct_exists(_role_def, "role") ? _role_def.role : _req_key;
-            if (_req_key == _default_sarge || _actual_role == _default_sarge
-                || string_lower(_req_key) == "sergeant") {
-                new_sergeant(false, _actual_role);
-                required[$ _req_key]--;
-            } else if (_req_key == _default_vet_sarge || _actual_role == _default_vet_sarge
-                || string_lower(_req_key) == "veteran sergeant") {
-                new_sergeant(true, _actual_role);
-                required[$ _req_key]--;
+            if (_req_key == _default_sarge || _actual_role == _default_sarge || string_lower(_req_key) == "sergeant") {
+                if (new_sergeant(false, _actual_role)) {
+                    required[$ _req_key]--;
+                }
+            } else if (_req_key == _default_vet_sarge || _actual_role == _default_vet_sarge || string_lower(_req_key) == "veteran sergeant") {
+                if (new_sergeant(true, _actual_role)) {
+                    required[$ _req_key]--;
+                }
             }
         }
     };
@@ -606,6 +613,18 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     //this dermine the relative coherency of a squad on the basis that a squad needs to more or less be all together in order ot undertake squad actions
     static squad_loci = function() {
         var member_length = array_length(members);
+
+        if (member_length == 0) {
+            return {
+                text: "Empty Squad",
+                system: "none",
+                same_system: true,
+                exact_loc: false,
+                planet_side: false,
+                in_orbit: false
+            };
+        }
+
         var locations = [];
         var system = "";
         var unit_loc;
