@@ -158,6 +158,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                     _unit.melee_attack();
                     if ((_unit.encumbered_ranged || _unit.encumbered_melee) && !_is_equipment_set) {
                         _unit.update_weapon_one(_return_item, from_armoury, to_armoury);
+                        _unit.ranged_attack();
+                        _unit.melee_attack();
                         continue;
                     }
                 } else if (current_load_slot == "wep2") {
@@ -167,6 +169,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                     _unit.melee_attack();
                     if ((_unit.encumbered_ranged || _unit.encumbered_melee) && !_is_equipment_set) {
                         _unit.update_weapon_two(_return_item, from_armoury, to_armoury);
+                        _unit.ranged_attack();
+                        _unit.melee_attack();
                         continue;
                     }
                 } else {
