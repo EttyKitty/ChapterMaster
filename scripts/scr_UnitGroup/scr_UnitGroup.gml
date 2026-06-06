@@ -560,7 +560,13 @@ function UnitGroup(units) constructor {
                 if (_unit.squad == "none" || array_contains(_sorted_squads, _unit.squad)) {
                     continue;
                 }
+
                 var _squad = fetch_squad(_unit.squad);
+                if (!is_struct(_squad)) {
+                    _unit.squad = "none";
+                    continue;
+                }
+
                 var _members_count = array_length(_squad.members);
                 var _conditions = {
                     squad: _unit.squad,
