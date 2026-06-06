@@ -386,10 +386,13 @@ function UnitGroup(units) constructor {
         /*and ((squad_fulfilment[$ obj_ini.role[100][8]] > 4)or (squad_fulfilment[$ obj_ini.role[100][10]] > 4) or (squad_fulfilment[$ obj_ini.role[100][9]] > 4)or (squad_fulfilment[$ obj_ini.role[100][3]] > 4) )*/
 
         var _members = squad.get_members(true);
+
         if (!bool(_members.number())) {
             return [false, squad.uid];
         }
+
         var _exp_unit = undefined;
+
         for (var s = 0; s < 2; s++) {
             var _sgt_type = sgt_types[s];
             var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
@@ -397,6 +400,7 @@ function UnitGroup(units) constructor {
                 _exp_unit = _members.highest_exp();
                 _exp_unit.update_role(_actual_sgt_role(_sgt_group, _sgt_type, _fill_squad));
                 squad_fulfilment[$ _sgt_group]++;
+                sergeant_found = true;
                 if (game_start && irandom(1) == 0) {
                     _exp_unit.add_trait("lead_example");
                 }
@@ -407,23 +411,13 @@ function UnitGroup(units) constructor {
         _fulfilled = true;
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             var _unit_role = squad_unit_types[i];
-            // LOGGER.info($"{_unit_role}, {squad_fulfilment[$ _unit_role]}, {_fill_squad[$ _unit_role][$ "min"]}");
             if (squad_fulfilment[$ _unit_role] < _fill_squad[$ _unit_role][$ "min"]) {
                 _fulfilled = false;
                 break;
             }
         }
+
         if (_fulfilled) {
-            for (var s = 0; s < 2; s++) {
-                var _sgt_type = sgt_types[s];
-                var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
-                if (struct_exists(squad_fulfilment, _sgt_group) && (sergeant_found == false) && (_exp_unit != undefined)) {
-                    _exp_unit.update_role(_actual_sgt_role(_sgt_group, _sgt_type, _fill_squad));
-                    if (game_start && irandom(1) == 0) {
-                        _exp_unit.add_trait("lead_example");
-                    }
-                }
-            }
             //update units squad marker
             squad.squad_fulfilment = squad_fulfilment;
             for (var i = 0; i < _members.number(); i++) {
