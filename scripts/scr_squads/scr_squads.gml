@@ -38,6 +38,7 @@ the requested squad type , if the squad is not possible it will  not be made*/
                         of all required loadout options
 
     */
+/// @param {Struct.UnitSquad} squad
 function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) constructor {
     self.target_squad = squad;
     self.from_armoury = from_armoury;
@@ -114,6 +115,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
+    /// @param {Struct.TTRPG_stats} _unit
     static equip_required_for_role = function(_unit) {
         if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
             //if the required amount of equipment is not in the squad already equip this marine with equipment
@@ -127,6 +129,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         return false;
     };
 
+    /// @param {Struct.TTRPG_stats} _unit
     static equip_optional_for_role = function(_unit) {
         //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
 
@@ -166,10 +169,12 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
                         _unit.update_weapon_two(_return_item, from_armoury, to_armoury);
                         continue;
                     }
-                }
+                } else {
                 var _opt_load_out = {};
                 _opt_load_out[$ current_load_slot] = _item_to_add;
                 _unit.alter_equipment(_opt_load_out, from_armoury, to_armoury);
+                }
+
                 // Struct field write — guaranteed in-place, no copy-on-write in GML
                 optional_fill_counts[$ _count_key]++;
                 if (_is_equipment_set) {
