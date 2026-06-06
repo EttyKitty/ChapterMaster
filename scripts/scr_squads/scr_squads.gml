@@ -1,11 +1,18 @@
+/// @desc Fetches a squad struct from the global squads storage by its ID
+/// @param {string|real} array_id The squad ID to look up
+/// @returns {Struct.UnitSquad} The squad struct matching the given ID
 function fetch_squad(array_id) {
     return obj_ini.squads[$ array_id];
 }
 
+/// @desc Returns an array of all squad IDs currently stored in the global squads storage
+/// @returns {Array<string>} Array of squad ID strings
 function get_squad_ids() {
     return struct_get_names(obj_ini.squads);
 }
 
+/// @desc Returns the total number of squads currently stored
+/// @returns {real} The number of squads
 function squad_count() {
     return array_length(get_squad_ids());
 }
@@ -38,7 +45,10 @@ the requested squad type , if the squad is not possible it will  not be made*/
                         of all required loadout options
 
     */
-/// @param {Struct.UnitSquad} squad
+/// @desc Handles sorting and equipping a squad's members according to the squad type's loadout rules, pulling from and returning equipment to the armoury as needed
+/// @param {Struct.UnitSquad} squad The squad to sort equipment for
+/// @param {bool} from_armoury Whether equipment can be taken from the armoury
+/// @param {bool} to_armoury Whether removed equipment should be returned to the armoury
 function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) constructor {
     self.target_squad = squad;
     self.from_armoury = from_armoury;
@@ -64,6 +74,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
     target_squad.update_fulfilment();
 
+    /// @desc Executes the full equipment sorting pass for every unit role defined in the squad type
     static sort = function() {
         for (var i = 0; i < array_length(squad_unit_types); i++) {
             unit_role = squad_unit_types[i];
@@ -80,6 +91,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         "mobi"
     ];
 
+    /// @desc Stores the optional loadout data and initialises per-slot fill counters for tracking how many optional items have been assigned
+    /// @param {struct} optional_data The optional loadout struct from the squad type definition
     static structure_role_optional_loadout = function(optional_data) {
         // Use the original data directly — no clone needed since optional_load is now read-only
         // (all mutable state lives in optional_fill_counts). variable_clone can incorrectly
@@ -98,6 +111,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
+    /// @desc Processes the required loadout data for the current role, resolving "max" placeholders and inserting counters for tracking equipped quantities
+    /// @param {struct} required_data The required loadout struct from the squad type definition
     static structure_role_required_loadout = function(required_data) {
         //find out if the _unit type for the squad has required  equipment thresholds
 
@@ -115,7 +130,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
-    /// @param {Struct.TTRPG_stats} _unit
+    /// @desc Equips the given unit with required equipment for the current load slot if the squad has not yet met the required quantity
+    /// @param {Struct.TTRPG_stats} _unit The unit to equip
+    /// @returns {bool} True if equipment was equipped, false otherwise
     static equip_required_for_role = function(_unit) {
         if (required_load[$ current_load_slot][2] < required_load[$ current_load_slot][1]) {
             //if the required amount of equipment is not in the squad already equip this marine with equipment
@@ -129,7 +146,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         return false;
     };
 
-    /// @param {Struct.TTRPG_stats} _unit
+    /// @desc Equips the given unit with optional equipment for the current load slot, randomly selecting from available options while respecting fill limits and encumbrance checks
+    /// @param {Struct.TTRPG_stats} _unit The unit to equip
     static equip_optional_for_role = function(_unit) {
         //this basically ensures the optional squad items are randomly selected and allocated in order to make squads more variable
 
@@ -193,6 +211,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
+    /// @desc Iterates over all members with the current unit role and equips them according to required and optional loadout rules for the current equipment slot
     static equip_loudouts_specific_equip_slot = function() {
         var _actual_role = role_key_to_actual[$ unit_role];
         var _members_with_role = members_UnitGroup.get_from({role:  _actual_role});
@@ -234,6 +253,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     //     { "wep1": ["Sword","Axe","Mace"], "wep2": ["Pistol","Plasma","Volkite"] },
     //     { "wep1": "Lightning Claw", "wep2": "Lightning Claw" }
     //   ]
+
+    /// @desc Picks one random loadout category from the provided options and equips all eligible squad members of the current role with the resolved equipment
+    /// @param {Array<struct>} pick_options Array of loadout category structs, each defining equipment slots and possible items
     static equip_random_pick_for_role = function(pick_options) {
         var _actual_role = role_key_to_actual[$ unit_role];
         var _members_with_role = members_UnitGroup.get_from({role: _actual_role});
@@ -257,6 +279,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
+    /// @desc Processes the current unit role's loadout definition, initialising required and optional loadouts then iterating through all equipment slots to apply them
     static role_squad_loadout = function() {
         required_load = undefined;
         optional_load = undefined;
@@ -289,6 +312,9 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
     };
 }
 
+/// @desc Creates a new squad of the given type within the specified company, initialising all squad properties and optionally sorting its equipment loadout
+/// @param {string} squad_type The squad type key used to look up squad definition data
+/// @param {real} company The company index this squad belongs to
 function UnitSquad(squad_type = undefined, company = 0) constructor {
     members = [];
     type = "";
@@ -316,18 +342,27 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
 
     // heres where the whole thing gets annoying
     /*basically each equipment slot is looped through and inside each loop each marine is looped through in a random order to ensure 
-			that each squad looks different and that each marine has a range of optional and required equipment
-			required equipmetn is things like boltguns and combat knives in a tactical squad
-			optional equipment is stuff like lascannons and specialist equipment in a tactical squad or plasma pistols in an assualt squad
-			in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
-		*/
+    that each squad looks different and that each marine has a range of optional and required equipment
+    required equipmetn is things like boltguns and combat knives in a tactical squad
+    optional equipment is stuff like lascannons and specialist equipment in a tactical squad or plasma pistols in an assualt squad
+    in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
+    */
+
+    /// @desc Sorts the squad's equipment loadout by creating a SquadEquipmentSorting instance and executing its sort routine
+    /// @param {bool} from_armoury Whether equipment can be taken from the armoury
+    /// @param {bool} to_armoury Whether removed equipment should be returned to the armoury
     static sort_squad_loadout = function(from_armoury = true, to_armoury = true) {
         var _sorter = new SquadEquipmentSorting(self, from_armoury, to_armoury);
         _sorter.sort();
     };
 
+    /// @desc Calculates the average value of the given stat across all squad members (currently unimplemented)
+    /// @param {string} stat The stat name to average
+    /// @returns {undefined}
     static stat_av = function(stat) {};
 
+    /// @desc Appends additional type data to the squad, setting display name, class, base type, and formation options based on the provided data struct
+    /// @param {struct} data The type data struct to apply
     static add_type_data = function(data) {
         type_data = data;
         display_name = type_data[$ "display_data"];
@@ -345,11 +380,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
+    /// @desc Changes the squad's type to the given type key and reloads its type data
+    /// @param {string} new_type The squad type key to switch to
     static change_type = function(new_type) {
         type = new_type;
         add_type_data(obj_ini.squad_types[$ type].type_data);
     };
 
+    /// @desc Inspects the squad type definition and returns the list of unit role keys that make up this squad, excluding the "type_data" key
+    /// @returns {Array<string>} Array of unit role keys present in the squad type
     static find_squad_unit_types = function() {
         //find out what type of units squad consists of
         var fill_squad = obj_ini.squad_types[$ type];
@@ -379,6 +418,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return squad_unit_types;
     };
 
+    /// @desc Returns the squad's members as either an array of unit structs or a UnitGroup, filtering out any invalid members
+    /// @param {bool} as_unit_group If true, returns a UnitGroup; otherwise returns an array
+    /// @returns {Array<Struct.TTRPG_stats>|Struct.UnitGroup} The squad members
     static get_squad_structs = function(as_unit_group = false) {
         var _struct_array = [];
         for (var i = array_length(members) - 1; i >= 0; i--) {
@@ -394,6 +436,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 
     // for creating a new sergeant from existing squad members
+    /// @desc Promotes the most experienced squad member to sergeant, optionally targeting a veteran sergeant and a specific role
+    /// @param {bool} veteran If true, promotes to veteran sergeant instead of regular sergeant
+    /// @param {string|undefined} target_role Optional role key to assign to the new sergeant
+    /// @returns {bool} True if a sergeant was promoted, false otherwise
     static new_sergeant = function(veteran = false, target_role = undefined) {
         var exp_unit = "";
         var _unit;
@@ -437,6 +483,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return false;
     };
 
+    /// @desc Kills all current squad members and clears the members list
     static kill_members = function() {
         for (var i = 0; i < array_length(members); i++) {
             scr_kill_unit(members[i][0], members[i][1]);
@@ -444,11 +491,11 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         members = [];
     };
 
+    /// @desc Cancels the squad's current assignment (currently unimplemented)
     static cancel_assignment = function() {};
 
-    /*checks the status of squad so it can be either restocked or 
-		deleted if there are no longer enough members ot make a squad*/
-    // fill from requiures a valid UnitIndex struct
+    /// @desc Checks the squad's fulfilment status, optionally filling empty slots from a provided UnitIndex, and updates required, space, and fulfilment tracking structs
+    /// @param {Struct.UnitIndex|undefined} fill_from Optional unit index to draw replacement members from
     static update_fulfilment = function(fill_from = undefined) {
         var _unit;
 
@@ -550,6 +597,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
+    /// @desc Removes all members from the squad, setting their squad reference to "none"
     static empty_squad = function() {
         for (var r = array_length(members) - 1; r >= 0; r--) {
             fetch_member(r).squad = "none";
@@ -557,6 +605,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         members = [];
     };
 
+    /// @desc Empties the squad and adds all former members to the provided unit index
+    /// @param {Struct.UnitIndex} index The unit index to add the squad's former members to
     static empty_squad_to_index = function(index) {
         var _mems = [];
         var _mem;
@@ -569,14 +619,23 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         members = [];
     };
 
+    /// @desc Returns the squad member at the given index
+    /// @param {real} index The zero-based index of the member to fetch
+    /// @returns {Struct.TTRPG_stats} The unit at the given index
     static fetch_member = function(index) {
         return fetch_unit(members[index]);
     };
 
+    /// @desc Returns all current squad members, optionally wrapped in a UnitGroup
+    /// @param {bool} as_UnitGroup If true, returns a UnitGroup; otherwise returns an array
+    /// @returns {Array<Struct.TTRPG_stats>|Struct.UnitGroup} The squad members
     static fetch_members = function() {
         return collect_role_group("all", "", false, {"company": base_company, "squad": uid, "max_wanted": array_length(members)});
     };
 
+    /// @desc Adds a new member to the squad using either a company/number pair or a unit struct
+    /// @param {real|Struct.TTRPG_stats} comp The company index or a unit struct
+    /// @param {real} unit_number The marine number within the company
     static add_member = function(comp, unit_number) {
         if (is_struct(comp)) {
             unit_number = comp.marine_number;
@@ -586,7 +645,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         life_members++;
     };
 
-    // for saving squads
+    /// @desc Serialises the squad into a JSON string or plain struct, omitting methods
+    /// @param {bool} stringify If true, returns a JSON string; otherwise returns a struct
+    /// @returns {string|struct} The serialised squad data
     static jsonify = function(stringify = true) {
         var copy_struct = self; //grab marine structure
         var new_struct = {};
@@ -606,7 +667,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
-    //function for loading in squad save data
+    /// @desc Loads saved squad data from a struct, copying all non-method properties onto this squad instance
+    /// @param {struct} data The saved squad data struct
     static load_json_data = function(data) {
         var names = variable_struct_get_names(data);
         for (var i = 0; i < array_length(names); i++) {
@@ -614,7 +676,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
-    //this dermine the relative coherency of a squad on the basis that a squad needs to more or less be all together in order ot undertake squad actions
+    /// @desc Determines the relative coherency and location status of the squad based on where its members are located
+    /// @returns {struct} A struct containing text, system, same_system, exact_loc, planet_side, and in_orbit fields describing squad coherency
     static squad_loci = function() {
         var member_length = array_length(members);
 
@@ -700,16 +763,14 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         //returns all the squad coherency data
     };
 
-    //determines the leader of a squad by using the hierarchy array returned by role_hierarchy()
-    //this means the highest ranking dude in a squad will always be the squad leader
-    //failing that the highest experience dude
+    /// @desc Determines the squad leader by selecting the highest-ranking member according to role hierarchy, falling back to highest experience on ties
+    /// @returns {Array<real>|string} The [company, marine_number] pair of the leader, or "none" if the squad is empty
     static determine_leader = function() {
         var _unit;
         var member_length = array_length(members);
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
-        var leader = "none", _unit;
-        var highest_exp = 0;
+        var leader = "none";
         for (var i = 0; i < member_length; i++) {
             _unit = fetch_unit(members[i]);
             if (_unit.name() == "") {
@@ -755,6 +816,8 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return leader;
     };
 
+    /// @desc Swaps the current squad sergeant with the provided new sergeant, transferring roles and adjusting loyalty
+    /// @param {Struct.TTRPG_stats} new_sgt The new sergeant unit to install
     static change_sgt = function(new_sgt) {
         sgt = determine_leader();
         var remove_sgt;
@@ -771,6 +834,11 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
     };
 
+    /// @desc Sets the location of all squad members to the given system, location ID, and world ID, handling ship and planet transfers
+    /// @param {string} loc The system name to move the squad to
+    /// @param {real} lid The location/planet ID within the system
+    /// @param {real} wid The world/body ID within the location
+    /// @returns {string|void} "invalid system" if the system is not found, otherwise undefined
     static set_location = function(loc, lid, wid) {
         var member_length = array_length(members);
         var member_location;
@@ -787,6 +855,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         member_loop(set_member_loc, {loc: loc, lid: lid, wid: wid, system: system});
     };
 
+    /// @desc Iterates over all squad members, calling the given member function with the provided data pack, supporting early exit via an "action":"break" response
+    /// @param {function} member_func The function to call for each member
+    /// @param {struct} data_pack The data struct to pass into each member function call
+    /// @returns {struct} The final data pack after processing all members
     static member_loop = function(member_func, data_pack) {
         var _unit;
         member_length = array_length(members);
@@ -813,6 +885,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return data_pack;
     };
 
+    /// @desc Returns all current squad members, optionally wrapped in a UnitGroup
+    /// @param {bool} as_UnitGroup If true, returns a UnitGroup; otherwise returns an array
+    /// @returns {Array<Struct.TTRPG_stats>|Struct.UnitGroup} The squad members
     static get_members = function(as_UnitGroup = false) {
         var mems = [];
         for (var i = 0; i < array_length(members); i++) {
@@ -825,9 +900,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
     };
 }
 
-// creates the origional distribution of squads accross the chapter
-// lots of room for customisation of different chapters here
-
+/// @desc Initialises the global squads storage and organises squads across the chapter according to the chapter squad arrangement configuration
 function game_start_squads() {
     obj_ini.squads = {};
     if (struct_exists(chapter_squad_arrangement, "companies")) {
@@ -839,6 +912,9 @@ function game_start_squads() {
     }
 }
 
+/// @desc Handles moving a single marine member to a new location, managing ship unloading, planet transfers, and marine loading as needed
+/// @param {struct} loc_data Data pack containing loc, lid, wid, and system information for the move
+/// @returns {struct} The updated location data pack
 function set_member_loc(loc_data) {
     var loc = loc_data.loc;
     var lid = loc_data.lid;
