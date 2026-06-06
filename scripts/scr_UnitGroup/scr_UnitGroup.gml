@@ -454,7 +454,7 @@ function UnitGroup(units) constructor {
     /// @param {Struct} _empty_squads_index
     /// @param {Bool} _is_game_start
     static organise_by_template = function(_template, _squad_index = {}, _empty_squads_index = {}, _is_game_start = true) {
-        if (!_template || !struct_exists(_template, "squads")) {
+        if (!is_struct(_template) || !struct_exists(_template, "squads")) {
             return;
         }
 
