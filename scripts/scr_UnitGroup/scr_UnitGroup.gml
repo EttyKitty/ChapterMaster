@@ -673,10 +673,10 @@ function UnitIndex(units) constructor {
                     var _string = _role;
                     var _italic = false;
                     var _bold = false;
-                    if (use_names_for_heads && is_specialist(_role, SPECIALISTS_HEADS) || _role == active_roles()[eROLE.CAPTAIN]) {
+                    if (use_names_for_heads && (is_specialist(_role, SPECIALISTS_HEADS) || _role == active_roles()[eROLE.CAPTAIN])) {
                         _string = role_index[$ _role][0].name();
                         _italic = true;
-                        _bold = true
+                        _bold = true;
                     }
                     array_push(_strings_array, {str1: _string, bold: _bold, italic: _italic});
                 } else {
