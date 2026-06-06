@@ -421,9 +421,9 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 if (target_role != undefined) {
                     new_role = target_role;
                 } else if (veteran == true) {
-                    new_role = obj_ini.role[100][19];
+                    new_role = obj_ini.role[100][eROLE.VETERANSERGEANT];
                 } else {
-                    new_role = obj_ini.role[100][18];
+                    new_role = obj_ini.role[100][eROLE.SERGEANT];
                 }
 
                 exp_unit.update_role(new_role);
