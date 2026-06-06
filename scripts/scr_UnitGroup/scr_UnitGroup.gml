@@ -235,6 +235,9 @@ function UnitGroup(units) constructor {
 
         var sergeant_found = false;
 
+        var _sgt_commits = [];
+        var _member_commits = [];
+
         var squad_unit_types = squad.find_squad_unit_types();
 
         var _fill_squad = obj_ini.squad_types[$ squad_type];
@@ -294,7 +297,7 @@ function UnitGroup(units) constructor {
             // Rename pre-existing sergeant to squad-specific role if needed
             var _target_sgt_role = _actual_sgt_role(_sgt_group, _sgt_type, _fill_squad);
             if (_target_sgt_role != _sgt.role()) {
-                _sgt.update_role(_target_sgt_role);
+                array_push(_sgt_commits, {unit: _sgt, role: _target_sgt_role});
             }
             sergeant_found = true;
         }
@@ -376,7 +379,7 @@ function UnitGroup(units) constructor {
                 var _slot_def = _fill_squad[$ _role_group];
                 if (struct_exists(_slot_def, "role") && _slot_def.role != _unit.role()
                     && _unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) {
-                    _unit.update_role(_slot_def.role);
+                    array_push(_member_commits, {unit: _unit, role: _slot_def.role});
                 }
             }
         }
@@ -398,7 +401,7 @@ function UnitGroup(units) constructor {
             var _sgt_group = _sgt_group_for(_sgt_type, squad_unit_types, _fill_squad);
             if (_sgt_group != "" && struct_exists(squad_fulfilment, _sgt_group) && (!sergeant_found)) {
                 _exp_unit = _members.highest_exp();
-                _exp_unit.update_role(_actual_sgt_role(_sgt_group, _sgt_type, _fill_squad));
+                array_push(_sgt_commits, {unit: _exp_unit, role: _actual_sgt_role(_sgt_group, _sgt_type, _fill_squad)});
                 squad_fulfilment[$ _sgt_group]++;
                 sergeant_found = true;
                 if (game_start && irandom(1) == 0) {
@@ -418,6 +421,13 @@ function UnitGroup(units) constructor {
         }
 
         if (_fulfilled) {
+            for (var s = 0; s < array_length(_sgt_commits); s++) {
+                _sgt_commits[s].unit.update_role(_sgt_commits[s].role);
+            }
+            for (var m = 0; m < array_length(_member_commits); m++) {
+                _member_commits[m].unit.update_role(_member_commits[m].role);
+            }
+
             //update units squad marker
             squad.squad_fulfilment = squad_fulfilment;
             for (var i = 0; i < _members.number(); i++) {
