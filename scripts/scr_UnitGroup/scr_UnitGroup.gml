@@ -993,7 +993,7 @@ function collect_by_religeon(religion, sub_cult = "", location = "") {
             }
             if (_unit.religion == religion) {
                 if (sub_cult != "") {
-                    if (_unit.religion_sub_cult != "sub_cult") {
+                    if (_unit.religion_sub_cult != sub_cult) {
                         continue;
                     }
                 }
