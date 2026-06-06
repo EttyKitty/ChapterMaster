@@ -379,10 +379,10 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return squad_unit_types;
     };
 
-    static get_squad_structs = function(as_UnitGroup) {
+    static get_squad_structs = function(as_unit_group = false) {
         var _struct_array = [];
         for (var i = array_length(members) - 1; i >= 0; i--) {
-            _unit = fetch_unit(members[i]);
+            var _unit = fetch_unit(members[i]);
             if (_unit.name() == "") {
                 array_delete(members, i, 1);
                 continue;
@@ -390,7 +390,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 array_push(_struct_array, _unit);
             }
         }
-        return _struct_array;
+        return as_unit_group ? new UnitGroup(_struct_array) : _struct_array;
     };
 
     // for creating a new sergeant from existing squad members
