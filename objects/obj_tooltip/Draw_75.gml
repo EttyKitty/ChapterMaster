@@ -89,7 +89,7 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
     // Draw tooltip text
     draw_set_font(_font);
     draw_text_ext_transformed_colour(_rect_x + _text_padding_x, _rect_y + _text_padding_y, _tooltip, DEFAULT_LINE_GAP, _text_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
-    _text_padding_y += string_height(_tooltip) * (_force_width && string_width(_tooltip) > _width) ? 2 : 1 + DEFAULT_LINE_GAP;
+    _text_padding_y += string_height(_tooltip) * ((_force_width && string_width(_tooltip) > _width) ? 2 : (1 + DEFAULT_LINE_GAP));
 
     // Draw footer text if it exists, this was so finicky if you see a better way to re-write this please be my guest.
     if (_footer != "") {

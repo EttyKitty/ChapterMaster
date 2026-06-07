@@ -304,7 +304,7 @@ function scr_ui_settings() {
     if (menu == 23) {
         if (settings > 0) {
             var co = 100;
-            var index = settings;
+            var _index = settings;
 
             draw_sprite_ext(spr_arrow, 0, xx + 25, yy + 70, 2, 2, 0, c_white, 1); // Back
             if ((scr_hit(xx + 25, yy + 70, xx + 25 + 64, yy + 70 + 64) == true) && mouse_button_clicked()) {
@@ -327,10 +327,10 @@ function scr_ui_settings() {
             draw_set_font(fnt_40k_30b);
             draw_set_color(c_gray);
             draw_set_halign(fa_left);
-            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co][index], 0.6, 0.6, 0);
+            draw_text_transformed(xx + 678, yy + 160, obj_ini.role[co][_index], 0.6, 0.6, 0);
 
             var wid = 0;
-            var hei = string_height_ext(string(obj_ini.role[co][index]) + "Q", -1, 580) * 0.6;
+            var hei = string_height_ext(string(obj_ini.role[co][_index]) + "Q", -1, 580) * 0.6;
 
             draw_rectangle(xx + 678 - 1, yy + 160 - 1, xx + 1056, yy + 160 + hei, 1);
             draw_set_color(c_gray);
@@ -347,23 +347,23 @@ function scr_ui_settings() {
                 y5 += spacing;
                 if (gg == 0) {
                     title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co][index];
+                    geh = obj_ini.wep1[co][_index];
                 }
                 if (gg == 1) {
                     title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co][index];
+                    geh = obj_ini.wep2[co][_index];
                 }
                 if (gg == 2) {
                     title = "Armour: ";
-                    geh = obj_ini.armour[co][index];
+                    geh = obj_ini.armour[co][_index];
                 }
                 if (gg == 3) {
                     title = "Special Item: ";
-                    geh = obj_ini.gear[co][index];
+                    geh = obj_ini.gear[co][_index];
                 }
                 if (gg == 4) {
                     title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co][index];
+                    geh = obj_ini.mobi[co][_index];
                 }
 
                 draw_set_halign(fa_right);
@@ -379,10 +379,10 @@ function scr_ui_settings() {
 
                     var nep = false;
 
-                    if (((obj_ini.armour[co][index] == "Terminator Armour") || (obj_ini.armour[co][index] == "Dreadnought")) && (gg == 3)) {
+                    if (((obj_ini.armour[co][_index] == "Terminator Armour") || (obj_ini.armour[co][_index] == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
-                    if ((index == 6) && ((gg == 2) || (gg == 4))) {
+                    if ((_index == 6) && ((gg == 2) || (gg == 4))) {
                         nep = true;
                     }
 
@@ -856,71 +856,71 @@ function scr_ui_settings() {
         draw_text(xx + 1278, yy + 207, "Astartes Role Settings");
 
         // Role Settings
-        var index = 0;
+        var _index = 0;
         var xxx = xx + 1277;
         var yyy = yy + 250 - 31;
 
         for (var i = 1; i <= 14; i++) {
             if (i == 1) {
-                index = 15;
+                _index = 15;
             }
             if (i == 2) {
-                index = 14;
+                _index = 14;
             }
             if (i == 3) {
-                index = 17;
+                _index = 17;
             }
             if (i == 4) {
-                index = 16;
+                _index = 16;
             }
             if (i == 5) {
-                index = 5;
+                _index = 5;
             }
             if (i == 6) {
-                index = 7;
+                _index = 7;
             }
             if (i == 7) {
-                index = 2;
+                _index = 2;
             }
             if (i == 8) {
-                index = 4;
+                _index = 4;
             }
             if (i == 9) {
-                index = 3;
+                _index = 3;
             }
             if (i == 10) {
-                index = 6;
+                _index = 6;
             }
             if (i == 11) {
-                index = 8;
+                _index = 8;
             }
             if (i == 12) {
-                index = 9;
+                _index = 9;
             }
             if (i == 13) {
-                index = 10;
+                _index = 10;
             }
             if (i == 14) {
-                index = 12;
+                _index = 12;
             }
 
             draw_set_alpha(1);
-            if (obj_ini.race[100][index] != 0) {
+            if (obj_ini.race[100][_index] != 0) {
                 // Creates mass_equip here
                 yyy += 31;
                 draw_set_color(c_gray);
                 draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                 draw_set_color(0);
-                draw_text(xxx, yyy, obj_ini.role[100][index]);
+                draw_text(xxx, yyy, obj_ini.role[100][_index]);
                 if (scr_hit(xxx, yyy, xxx + 289, yyy + 20) == true) {
                     draw_set_alpha(0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx, yyy, xxx + 289, yyy + 20, 0);
                     draw_set_alpha(1);
-                    tool1 = string(obj_ini.role[100][index]) + " Settings";
+                    tool1 = string(obj_ini.role[100][_index]) + " Settings";
                     tool2 = "Click to open the settings for this unit.";
                     if (mouse_button_clicked()) {
-                        settings = index;
+                        settings = _index;
                         menu = 23;
                         with (obj_mass_equip) {
                             instance_destroy();
