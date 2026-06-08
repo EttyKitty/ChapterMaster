@@ -130,9 +130,10 @@ try {
         }
     }
     // Nope // Cleans up menu
-    if ((menu != 60) && instance_exists(obj_temp_build)) {
+    if ((menu != eMENU.SECRET_LAIR) && instance_exists(obj_temp_build)) {
         if (obj_temp_build.isnew) {
-            menu = 60;
+            menu = eMENU.SECRET_LAIR;
+            lair_view = new LairView(obj_temp_build.target, obj_controller.selecting_planet);
         }
         with (obj_managment_panel) {
             instance_destroy();
@@ -159,7 +160,7 @@ try {
         }
     }
     // REMOVE
-    if ((menu != 60) && instance_exists(obj_temp_build)) {
+    if ((menu != eMENU.SECRET_LAIR) && instance_exists(obj_temp_build)) {
         with (obj_temp_build) {
             instance_destroy();
         }

@@ -11,7 +11,7 @@ try {
         scr_ui_diplomacy();
     }
     if (menu == eMENU.SECRET_LAIR) {
-        scr_secret_lair_view();
+        lair_view.draw();
     }
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);

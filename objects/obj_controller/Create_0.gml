@@ -1873,5 +1873,6 @@ action_set_alarm(2, 0);
 location_viewer.update_fleet_table();
 
 armamentarium = new Armamentarium(self);
+lair_view = undefined;
 
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 

@@ -9,7 +9,7 @@ if (__b__) {
             draw_set_halign(fa_center);
             draw_set_color(0);
 
-            if (obj_controller.menu == 60) {
+            if (obj_controller.menu == eMENU.SECRET_LAIR) {
                 exit;
             }
 

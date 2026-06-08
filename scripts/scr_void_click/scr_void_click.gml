@@ -75,7 +75,7 @@ function scr_void_click() {
         }
     }
 
-    if ((obj_controller.menu == 60) && scr_hit(xx + (27 * scale), yy + (165 * scale), xx + (651 * scale), yy + (597 * scale))) {
+    if ((obj_controller.menu == eMENU.SECRET_LAIR) && scr_hit(xx + (27 * scale), yy + (165 * scale), xx + (651 * scale), yy + (597 * scale))) {
         good = false;
     } // Build menu
 

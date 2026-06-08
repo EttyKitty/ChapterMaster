@@ -8,7 +8,7 @@ if (obj_controller.zoomed == 1) {
 if (!instance_exists(target)) {
     exit;
 }
-if (obj_controller.menu == 60) {
+if (obj_controller.menu == eMENU.SECRET_LAIR) {
     exit;
 }
 
@@ -336,7 +336,8 @@ try {
                     building.gene_vault = 1;
                 }
                 obj_controller.temp[104] = string(scr_master_loc());
-                obj_controller.menu = 60;
+                obj_controller.menu = eMENU.SECRET_LAIR;
+                lair_view = new LairView(obj_temp_build.target, obj_controller.selecting_planet);
                 with (obj_star_select) {
                     instance_destroy();
                 }
