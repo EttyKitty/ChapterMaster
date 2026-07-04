@@ -18,7 +18,7 @@ try {
         if (men > 0) {
             var miss = "", r_lost = 0;
 
-            for (var raar; raar < (men + dreads); raar++) {
+            for (var raar = 0; raar < (men + dreads); raar++) {
                 r_roll = floor(random(1000)) + 1;
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max * 0.75)) {
                     r_roll -= 8;
