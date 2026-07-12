@@ -43,6 +43,7 @@ var _array_size = 1002;
 // Weapon Data
 wep = array_create(_array_size, "");
 wep_num = array_create(_array_size, 0);
+attack_count = array_create(_array_size, 3);
 range = array_create(_array_size, 0);
 att = array_create(_array_size, 0);
 apa = array_create(_array_size, 0);

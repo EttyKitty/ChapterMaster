@@ -31,6 +31,7 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
     range[stack_index] = weapon.range;
     wep_num[stack_index]++;
     splash[stack_index] = weapon.spli;
+    attack_count[stack_index] = weapon.attack_count;
     wep[stack_index] = weapon.name;
 
     if (obj_ncombat.started == 0) {

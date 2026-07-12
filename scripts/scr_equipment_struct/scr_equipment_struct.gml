@@ -42,6 +42,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
     ammo = 0;
     range = 0;
     spli = 0;
+    attack_count = 3;
     arp = 0;
     special_description = "";
     special_properties = [];

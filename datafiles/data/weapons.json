@@ -165,17 +165,18 @@
     "Bolter": {
         "abbreviation": "Bltr",
         "ammo": 16,
-        "arp": 1,
+        "arp": 4,
         "attack": {
-            "artifact": 200,
-            "master_crafted": 175,
-            "standard": 150
+            "artifact": 20,
+            "master_crafted": 18,
+            "standard": 16
         },
         "description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
         "melee_hands": 1,
         "range": 10,
         "ranged_hands": 2,
-        "spli": 5,
+        "spli": 1,
+        "attack_count": 3,
         "tags": [
             "bolt",
             "boarding 1"
@@ -1048,11 +1049,11 @@
     "Heavy Bolter": {
         "abbreviation": "HvyBltr",
         "ammo": 10,
-        "arp": 2,
+        "arp": 5,
         "attack": {
-            "artifact": 450,
-            "master_crafted": 300,
-            "standard": 250
+            "artifact": 24,
+            "master_crafted": 22,
+            "standard": 20
         },
         "description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
         "melee_hands": 1,
@@ -1061,7 +1062,8 @@
         "requires_to_forge": [
             "heavy_1"
         ],
-        "spli": 12,
+        "spli": 1,
+        "attack_count": 6,
         "tags": [
             "heavy_ranged",
             "bolt"
@@ -1520,11 +1522,11 @@
     "Lascannon": {
         "abbreviation": "Lascnn",
         "ammo": 8,
-        "arp": 4,
+        "arp": 10,
         "attack": {
-            "artifact": 900,
-            "master_crafted": 600,
-            "standard": 450
+            "artifact": 40,
+            "master_crafted": 38,
+            "standard": 35
         },
         "description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
         "melee_hands": 1,

@@ -18,6 +18,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     arp = 1;
     amm = -1;
     faith_bonus = 0;
+    var _attack_count = 3;
     // var struct = gear_weapon_data("weapon",name);
 
     //if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
@@ -394,23 +395,26 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     if (obj_ncombat.enemy == eFACTION.ORK) {
         switch (name) {
             case "Choppa":
-                atta = 100;
-                arp = 1;
+                atta = 7;
+                arp = 2;
                 rang = 1;
-                spli = 3;
+                spli = 1;
+                _attack_count = 3;
                 break;
             case "Power Klaw":
-                atta = 160;
-                arp = 3;
+                atta = 12;
+                arp = 10;
                 rang = 1;
-                spli = 3;
+                spli = 1;
+                _attack_count = 3;
                 break;
             case "Slugga":
-                atta = 70;
-                arp = 1;
+                atta = 8;
+                arp = 0;
                 rang = 3.1;
                 amm = 4;
-                spli = 3;
+                spli = 1;
+                _attack_count = 3;
                 break;
             case "Tankbusta Bomb":
                 atta = 150;
@@ -420,49 +424,57 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 1;
                 break;
             case "Big Shoota":
-                atta = 120;
-                arp = 1;
+                atta = 10;
+                arp = 2;
                 rang = 6;
                 amm = 30;
-                spli = 5;
+                spli = 1;
+                _attack_count = 10;
                 break;
             case "Dakkagun":
-                atta = 140;
-                arp = 1;
-                rang = 8;
-                amm = 20;
-                spli = 10;
-                break;
-            case "Deffgun":
-                atta = 150;
-                arp = 4;
+                atta = 11;
+                arp = 2;
                 rang = 8;
                 amm = 20;
                 spli = 1;
+                _attack_count = 7;
+                break;
+            case "Deffgun":
+                atta = 15;
+                arp = 2;
+                rang = 8;
+                amm = 20;
+                spli = 1;
+                _attack_count = 8;
                 break;
             case "Snazzgun":
-                atta = 200;
-                arp = 2;
+                atta = 10;
+                arp = 5;
                 rang = 5;
-                spli = 0;
+                spli = 1;
+                _attack_count = 2;
                 break;
             case "Grot Blasta":
-                atta = 50;
-                arp = 1;
+                atta = 7;
+                arp = 0;
                 rang = 2;
                 amm = 6;
+                spli = 1;
+                _attack_count = 1;
                 break;
             case "Kannon":
-                atta = 200;
-                arp = 4;
+                atta = 20;
+                arp = 6;
                 rang = 10.1;
                 amm = 5;
-                spli = 3;
+                spli = 4;
                 break;
             case "Shoota":
-                atta = 80;
+                atta = 8;
                 arp = 1;
                 rang = 5;
+                spli = 1;
+                _attack_count = 10;
                 break;
             case "Burna":
                 atta = 140;
@@ -479,10 +491,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 spli = 3;
                 break;
             case "Rokkit Launcha":
-                atta = 150;
-                arp = 4;
+                atta = 20;
+                arp = 6;
                 rang = 15;
-                spli = 3;
+                spli = 2;
+                _attack_count = 1;
                 break;
             case "Krooz Missile":
                 atta = 300;
@@ -1178,6 +1191,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     if (goody == 0) {
         wep[first] = name;
         splash[first] = spli;
+        attack_count[first] = _attack_count;
         att[first] += atta * man_number;
         apa[first] = arp;
         range[first] = rang;

@@ -114,34 +114,37 @@ function combat_rank_armour(_ac, _ap, _is_vehicle) {
 /// @param {Real} rank
 /// @param {Real} dmg_per_weapon
 /// @param {Real} ap
+/// @param {Real} attack_count
 /// @param {Real} splash
 /// @param {Real} shots_fired
 /// @returns {Struct}
-function combat_apply_rank_damage(block, rank, dmg_per_weapon, ap, splash, shots_fired) {
-    var _rank_armour = combat_rank_armour(block.dudes_ac[rank], ap, block.dudes_vehicle[rank]);
+function combat_apply_rank_damage(block, rank, dmg_per_weapon, ap, attack_count, splash, shots_fired) {
+    var _rank_armour = block.dudes_ac[rank] - ap;
     var _rank_num = block.dudes_num[rank];
     var _rank_hp = block.dudes_hp[rank];
     var _rank_dr = block.dudes_dr[rank];
 
-    var _final_hit = max(0, (dmg_per_weapon - (_rank_armour)) * _rank_dr);
-    var _total_damage = shots_fired * _final_hit;
+    var _final_hit = max(0, (dmg_per_weapon - _rank_armour) * _rank_dr);
+    var _targeted_units = min(_rank_num, splash);
+    var _allocated_shots = min(shots_fired, _targeted_units * attack_count);
+    var _total_damage = _allocated_shots * _final_hit;
     var _raw_kills = floor(_total_damage / _rank_hp);
-    var _casualties = min(_raw_kills, _rank_num);
-    _casualties = min(_casualties, ceil(shots_fired * splash));
+    var _casualties = min(_raw_kills, _targeted_units);
+    var _splash_consumed = _targeted_units;
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"combat_apply_rank_damage block={obj_ncombat.combat_debugger.resolve_label(block)} rank={rank} dmg_per_weapon={dmg_per_weapon} ap={ap} splash={splash} shots_fired={shots_fired} -> armour={_rank_armour} final_hit={_final_hit} raw_kills={_raw_kills} casualties={_casualties} bounced={_final_hit <= 0} num_before={_rank_num} hp_before={_rank_hp}");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"combat_apply_rank_damage block={obj_ncombat.combat_debugger.resolve_label(block)} rank={rank} dmg_per_weapon={dmg_per_weapon} ap={ap} attack_count={attack_count} splash={splash} shots_fired={shots_fired} -> armour={_rank_armour} final_hit={_final_hit} targeted={_targeted_units} allocated_shots={_allocated_shots} raw_kills={_raw_kills} casualties={_casualties} splash_consumed={_splash_consumed} bounced={_final_hit <= 0} num_before={_rank_num} hp_before={_rank_hp}");
 
     // Apply casualties and update overall combat status
     if (_casualties > 0) {
         block.dudes_num[rank] -= _casualties;
         obj_ncombat.enemy_forces -= _casualties;
-    } else if (_rank_num == 1 && _total_damage > 0) {
-        // Handle partial damage for single unit remains
+    } else if (_targeted_units == 1 && _total_damage > 0) {
+        // Handle partial damage for single targeted unit
         block.dudes_hp[rank] -= _total_damage;
         if (block.dudes_hp[rank] <= 0) {
             block.dudes_num[rank] = 0;
             obj_ncombat.enemy_forces -= 1;
-            _casualties = 1; // Count as casualty for tracking purposes
+            _casualties = 1;
         }
     }
 
@@ -150,6 +153,8 @@ function combat_apply_rank_damage(block, rank, dmg_per_weapon, ap, splash, shots
         raw_kills: _raw_kills,
         final_hit: _final_hit,
         bounced: (_final_hit <= 0),
+        splash_consumed: _splash_consumed,
+        shots_used: _allocated_shots,
     };
 }
 
@@ -202,7 +207,8 @@ function scr_shoot_enemy(weapon_index_position, target_object, damage_data, mele
     var _damage_per_weapon = 0;
     var _damage_type = "";
     var _weapon_name = wep[weapon_index_position];
-    var _weapon_splash = max(1, splash[weapon_index_position]);
+    var _weapon_splash = max(1, splash[weapon_index_position]) * _hit_count;
+    var _weapon_attacks = max(1, attack_count[weapon_index_position]);
     var _weapon_range = range[weapon_index_position];
     var _doom_mod = 1;
 
@@ -245,17 +251,13 @@ function scr_shoot_enemy(weapon_index_position, target_object, damage_data, mele
 
     var _is_assorted = wep_owner[weapon_index_position] == "assorted";
 
-    if (_damage_type == "status") {
-        if (melee_or_ranged != "wall") {
-            _hit_count *= _weapon_splash;
+    if (_damage_type == "status" && melee_or_ranged != "wall") {
+        target_object.hostile_shooters = _is_assorted ? 999 : 1;
+        _damage = 0;
+        _hostile_type = 1;
 
-            target_object.hostile_shooters = _is_assorted ? 999 : 1;
-            _damage = 0;
-            _hostile_type = 1;
-
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_enemy -> scr_clean(status) target={obj_ncombat.combat_debugger.resolve_label(target_object)} hostile_type={_hostile_type} hits={_hit_count} dmg={_damage} weapon={_weapon_name}");
-            scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce);
-        }
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_enemy -> scr_clean(status) target={obj_ncombat.combat_debugger.resolve_label(target_object)} hostile_type={_hostile_type} hits={_hit_count} dmg={_damage} weapon={_weapon_name}");
+        scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce, _weapon_attacks);
     } else if (_damage_type == "att" && aggregate_damage > 0) {
         _damage_per_weapon = aggregate_damage;
 
@@ -271,24 +273,16 @@ function scr_shoot_enemy(weapon_index_position, target_object, damage_data, mele
             _hit_count = floor(_hit_count * _doom_mod);
         }
 
-        if (melee_or_ranged != "wall") {
-            _hit_count *= _weapon_splash;
+        if (melee_or_ranged != "wall" && _hit_count > 0) {
+            target_object.hostile_shooters = _is_assorted ? 999 : 1;
+            _damage = _damage_per_weapon / _hit_count;
+            _hostile_type = 1;
 
-            if (_hit_count > 0) {
-                target_object.hostile_shooters = _is_assorted ? 999 : 1;
-                _damage = _damage_per_weapon / _hit_count;
-                _hostile_type = 1;
-
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_enemy -> scr_clean(att) target={obj_ncombat.combat_debugger.resolve_label(target_object)} hostile_type={_hostile_type} hits={_hit_count} dmg_per_shot={_damage} weapon={_weapon_name} ap={armour_pierce}");
-                scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce);
-            }
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_enemy -> scr_clean(att) target={obj_ncombat.combat_debugger.resolve_label(target_object)} hostile_type={_hostile_type} hits={_hit_count} dmg_per_shot={_damage} weapon={_weapon_name} ap={armour_pierce}");
+            scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce, _weapon_attacks);
         }
     } else if ((_damage_type == "arp" || _damage_type == "dread") && armour_pierce > 0) {
         _damage_per_weapon = (aggregate_damage == 0) ? _hit_count : aggregate_damage;
-
-        if (melee_or_ranged != "wall") {
-            _hit_count *= _weapon_splash;
-        }
 
         if (melee_or_ranged == "melee") {
             var _veh_limit = (target_object.veh + target_object.dreads) * 5;
@@ -331,7 +325,7 @@ function scr_shoot_enemy(weapon_index_position, target_object, damage_data, mele
                 _hostile_type = 0;
 
                 obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_enemy -> scr_clean(arp) target={obj_ncombat.combat_debugger.resolve_label(target_object)} hostile_type={_hostile_type} hits={_hit_count} dmg_per_shot={_damage} weapon={_weapon_name} ap={armour_pierce}");
-                scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce);
+                scr_clean(target_object, _hostile_type, _hit_count, _damage, _weapon_name, _weapon_range, _weapon_splash, armour_pierce, _weapon_attacks);
             }
         }
     }
@@ -371,7 +365,6 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
     }
 
     var damage_per_weapon = 0;
-    var attack_count_mod = 1;
 
     if (weapon_index_position >= 0) {
         var _ammo = ammo[weapon_index_position];
@@ -387,10 +380,7 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
         }
 
         damage_per_weapon = aggregate_damage / wep_num[weapon_index_position];
-        attack_count_mod = max(1, splash[weapon_index_position]);
     } else if (weapon_index_position < -40) {
-        attack_count_mod = 3;
-
         switch (weapon_index_position) {
             case -51:
                 damage_per_weapon = 160;
@@ -407,7 +397,10 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"scr_shoot_player shots={shots_fired} dmg_per_weapon={damage_per_weapon} attack_count_mod={attack_count_mod}");
+    var _weapon_attacks = max(1, weapon_index_position >= 0 ? attack_count[weapon_index_position] : (weapon_index_position < -40 ? 3 : 1));
+    var _splash_val = max(1, weapon_index_position >= 0 ? splash[weapon_index_position] * shots_fired : 1);
+
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"scr_shoot_player shots={shots_fired} dmg_per_weapon={damage_per_weapon} attack_count={_weapon_attacks} splash={_splash_val}");
 
     // Verify current target rank status
     if (target_object.dudes_num[target_type] <= 0) {
@@ -425,26 +418,45 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
     var _target_block = target_object;
     var _target_rank = target_type;
     var _shots_left = shots_fired;
+    var _splash_left = _splash_val;
     var _touched_blocks = [_target_block];
 
     var _first_target = true;
     var _primary_flavour = undefined;
     var _spill_kills = [];
 
-    // Distribute damage spillover across units
-    while (_shots_left > 0) {
+    while (_shots_left > 0 && _splash_left > 0) {
         var _rank_num = _target_block.dudes_num[_target_rank];
         var _rank_hp = _target_block.dudes_hp[_target_rank];
 
-        var _results = combat_apply_rank_damage(_target_block, _target_rank, damage_per_weapon, armour_pierce, attack_count_mod, _shots_left);
+        var _rank_splash = min(_splash_left, _rank_num);
+        if (_rank_splash <= 0) {
+            // This rank is fully saturated, spill to next rank/formation
+            var _next_rank = find_next_alive_rank(_target_block, _target_block.dudes_vehicle[_target_rank]);
+            if (_next_rank == -1) {
+                _target_block = get_next_enemy_formation(_target_block);
+                if (_target_block == noone) {
+                    break;
+                }
+
+                array_push(_touched_blocks, _target_block);
+                _next_rank = find_next_alive_rank(_target_block, -1);
+                if (_next_rank == -1) {
+                    break;
+                }
+            }
+
+            _target_rank = _next_rank;
+            continue;
+        }
+
+        var _results = combat_apply_rank_damage(_target_block, _target_rank, damage_per_weapon, armour_pierce, _weapon_attacks, _rank_splash, _shots_left);
 
         var _casualties = _results.casualties;
         var _final_hit = _results.final_hit;
 
-        var _next_shots = 0;
-        if (_casualties >= _rank_num && _rank_num > 0 && _results.raw_kills > _rank_num) {
-            _next_shots = max(0, _shots_left - ceil((_rank_num * _rank_hp) / _final_hit));
-        }
+        _shots_left -= _results.shots_used;
+        _splash_left -= _results.splash_consumed;
 
         if (_first_target) {
             _primary_flavour = scr_flavor(weapon_index_position, _target_block, _target_rank, shots_fired, _casualties, _final_hit <= 0, true);
@@ -453,8 +465,7 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
             array_push(_spill_kills, {name: _target_block.dudes[_target_rank], count: _casualties});
         }
 
-        _shots_left = _next_shots;
-        if (_shots_left <= 0) {
+        if (_shots_left <= 0 || _splash_left <= 0) {
             break;
         }
 
@@ -477,7 +488,7 @@ function scr_shoot_player(weapon_index_position, target_object, target_type, agg
         }
 
         _target_rank = _next_rank;
-        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_player spillover: continuing at block={obj_ncombat.combat_debugger.resolve_label(_target_block)} rank={_target_rank} shots_left={_shots_left}");
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_player spillover: continuing at block={obj_ncombat.combat_debugger.resolve_label(_target_block)} rank={_target_rank} shots_left={_shots_left} splash_left={_splash_left}");
     }
 
     emit_volley_flavour(_primary_flavour, _spill_kills);
@@ -498,9 +509,10 @@ function scr_shoot_spread(weapon_index_position) {
         var _shots = wep_num[weapon_index_position];
         var _ap = apa[weapon_index_position];
         var _damage_per_weapon = att[weapon_index_position] / _shots;
-        var _splash = max(1, splash[weapon_index_position]);
+        var _weapon_attacks = max(1, attack_count[weapon_index_position]);
+        var _splash_val = max(1, splash[weapon_index_position]);
 
-        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_spread self={obj_ncombat.combat_debugger.resolve_label(id)} weapon_idx={weapon_index_position} weapon={wep[weapon_index_position]} shots={_shots} ap={_ap} dmg_per_weapon={_damage_per_weapon} splash={_splash}");
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_shoot_spread self={obj_ncombat.combat_debugger.resolve_label(id)} weapon_idx={weapon_index_position} weapon={wep[weapon_index_position]} shots={_shots} ap={_ap} dmg_per_weapon={_damage_per_weapon} attack_count={_weapon_attacks} splash={_splash_val}");
 
         if (ammo[weapon_index_position] > 0) {
             ammo[weapon_index_position] -= 1;
@@ -523,6 +535,7 @@ function scr_shoot_spread(weapon_index_position) {
 
         var _hits = [];
         var _wounded = undefined;
+        var _splash_remaining = _splash_val;
         for (var fi = 0; fi < array_length(_formations); fi++) {
             var _block = _formations[fi];
             if (!instance_exists(_block)) {
@@ -534,8 +547,15 @@ function scr_shoot_spread(weapon_index_position) {
                     continue;
                 }
 
+                if (_splash_remaining <= 0) {
+                    break;
+                }
+
+                var _rank_splash = min(_splash_remaining, _block.dudes_num[_rank]);
                 var _rank_shots = _shots * (_block.dudes_num[_rank] / _total);
-                var _results = combat_apply_rank_damage(_block, _rank, _damage_per_weapon, _ap, _splash, _rank_shots);
+                var _results = combat_apply_rank_damage(_block, _rank, _damage_per_weapon, _ap, _weapon_attacks, _rank_splash, _rank_shots);
+
+                _splash_remaining -= _results.splash_consumed;
 
                 if (_results.casualties > 0) {
                     array_push(_hits, {name: _block.dudes[_rank], kills: _results.casualties, bounced: _results.bounced, block: _block, rank: _rank});

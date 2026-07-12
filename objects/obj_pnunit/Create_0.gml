@@ -83,6 +83,7 @@ veh_ally = array_create(_veh_size, false);
 var _wep_size = 71;
 wep = array_create(_wep_size, "");
 wep_num = array_create(_wep_size, 0);
+attack_count = array_create(_wep_size, 3);
 wep_rnum = array_create(_wep_size, 0);
 range = array_create(_wep_size, 0);
 att = array_create(_wep_size, 0);

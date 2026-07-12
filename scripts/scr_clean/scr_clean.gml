@@ -133,7 +133,7 @@ function check_dead_marines(unit_struct, unit_index) {
 
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, hostile_armour_pierce) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, hostile_armour_pierce, hostile_attack_count) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -143,10 +143,12 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // hostile_damage: The amount of damage per shot. This value is reduced by armor or damage resistance before being applied.
     // hostile_weapon: The name of the weapon used in the attack. Certain weapons have special effects that modify damage behavior.
     // hostile_range: The range of the weapon. This may influence damage or other combat mechanics.
-    // hostile_splash: The splash damage modifier. Indicates if the weapon affects multiple targets or has an area-of-effect component.
+    // hostile_splash: The splash damage modifier. Indicates the maximum number of individual targets that can be damaged.
+    // hostile_armour_pierce: The armor piercing value of the attack.
+    // hostile_attack_count: The maximum number of shots that can land on a single target unit.
 
     try {
-        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_clean target={obj_ncombat.combat_debugger.resolve_label(target_object)} is_infantry={target_is_infantry} shots={hostile_shots} dmg={hostile_damage} weapon={hostile_weapon} range={hostile_range} splash={hostile_splash} ap={hostile_armour_pierce}");
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_clean target={obj_ncombat.combat_debugger.resolve_label(target_object)} is_infantry={target_is_infantry} shots={hostile_shots} dmg={hostile_damage} weapon={hostile_weapon} range={hostile_range} splash={hostile_splash} ap={hostile_armour_pierce} attack_count={hostile_attack_count}");
 
         with (target_object) {
             if (obj_ncombat.wall_destroyed == 1) {
@@ -161,23 +163,23 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
-                damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce, hostile_attack_count, hostile_splash);
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce, hostile_attack_count, hostile_splash);
             }
 
             if (damage_data.hits < hostile_shots) {
                 // ### Vehicle Damage Processing ###
                 if (target_is_infantry && veh > 0) {
-                    damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                    damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce, hostile_attack_count, hostile_splash);
                 }
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                    damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce, hostile_attack_count, hostile_splash);
                 }
             }
 
@@ -196,7 +198,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
+function damage_infantry(_damage_data, _shots, _damage, _armour_pierce, _attack_count, _splash) {
     // Find valid infantry targets
     var valid_marines = [];
     for (var m = 0, l = array_length(unit_struct); m < l; m++) {
@@ -206,25 +208,51 @@ function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry valid_marines={array_length(valid_marines)} shots={_shots} dmg={_damage} ap={_armour_pierce}");
+    if (array_length(valid_marines) == 0) {
+        return;
+    }
 
-    // Apply damage for each shot
+    // Select up to _splash marines to target for this volley
+    var _targeted = [];
+    var _hits_remaining = [];
+    var _select_count = min(_splash, array_length(valid_marines));
+    var _available = [];
+    array_copy(_available, 0, valid_marines, 0, array_length(valid_marines));
+    for (var t = 0; t < _select_count; t++) {
+        var _idx = irandom(array_length(_available) - 1);
+        array_push(_targeted, _available[_idx]);
+        array_push(_hits_remaining, _attack_count);
+        array_delete(_available, _idx, 1);
+    }
+
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry valid_marines={array_length(valid_marines)} targeted={_select_count} shots={_shots} dmg={_damage} ap={_armour_pierce} attack_count={_attack_count} splash={_splash}");
+
+    // Distribute shots among targeted marines
     for (var shot = 0; shot < _shots; shot++) {
-        if (array_length(valid_marines) == 0) {
-            break; // No valid targets left
+        var _candidates = [];
+        for (var t = 0; t < array_length(_targeted); t++) {
+            var m_idx = _targeted[t];
+            if (_hits_remaining[t] > 0 && unit_struct[m_idx].hp() > 0 && marine_dead[m_idx] == 0) {
+                array_push(_candidates, t);
+            }
+        }
+
+        if (array_length(_candidates) == 0) {
+            break;
         }
 
         _damage_data.hits++;
 
-        // Select a random marine from the valid list
-        var marine_index = array_random_element(valid_marines);
+        var _pick = _candidates[irandom(array_length(_candidates) - 1)];
+        var marine_index = _targeted[_pick];
         var marine = unit_struct[marine_index];
+        _hits_remaining[_pick]--;
         _damage_data.unit_type = marine.role();
 
         // Apply damage
         var _shot_luck = roll_dice_chapter(1, 100, "low");
         var _modified_damage = 0;
-        var _marine_armour = combat_rank_armour(marine_ac[marine_index], _armour_pierce, false);
+        var _marine_armour = max(0, marine_ac[marine_index] - _armour_pierce);
         if (_shot_luck == 1) {
             _modified_damage = _damage - (2 * _marine_armour);
         } else if (_shot_luck == 100) {
@@ -262,19 +290,12 @@ function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
         if (_modified_damage < 0 && hostile_weapon == "Fleshborer") {
             _modified_damage = 1.5;
         }
-        /* if (hostile_weapon == "Web Spinner") {
-            var webr = floor(random(100)) + 1;
-            var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
-            _modified_damage = (webr <= chunk) ? 5000 : 0;
-        } */
 
         var _hp_before = marine.hp();
         marine.add_or_sub_health(-_modified_damage);
 
         // Check if marine is dead
         if (check_dead_marines(marine, marine_index)) {
-            // Remove dead infantry from further hits
-            valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
             obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry marine[{marine_index}] ({_damage_data.unit_type}) KILLED: luck={_shot_luck} armour={_marine_armour} raw_dmg={_damage} mod_dmg={_modified_damage} dr={damage_resistance} hp_before={_hp_before}");
         }
@@ -286,7 +307,7 @@ function damage_infantry(_damage_data, _shots, _damage, _armour_pierce) {
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
+function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce, _attack_count, _splash) {
     var veh_index = -1;
 
     // Find valid vehicle targets
@@ -297,21 +318,47 @@ function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles valid_vehicles={array_length(valid_vehicles)} shots={_shots} dmg={_damage} ap={_armour_pierce}");
+    if (array_length(valid_vehicles) == 0) {
+        return;
+    }
 
-    // Apply damage for each hostile shot, until we run out of targets
+    // Select up to _splash vehicles to target for this volley
+    var _targeted = [];
+    var _hits_remaining = [];
+    var _select_count = min(_splash, array_length(valid_vehicles));
+    var _available = [];
+    array_copy(_available, 0, valid_vehicles, 0, array_length(valid_vehicles));
+    for (var t = 0; t < _select_count; t++) {
+        var _idx = irandom(array_length(_available) - 1);
+        array_push(_targeted, _available[_idx]);
+        array_push(_hits_remaining, _attack_count);
+        array_delete(_available, _idx, 1);
+    }
+
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles valid_vehicles={array_length(valid_vehicles)} targeted={_select_count} shots={_shots} dmg={_damage} ap={_armour_pierce} attack_count={_attack_count} splash={_splash}");
+
+    // Distribute shots among targeted vehicles
     for (var shot = 0; shot < _shots; shot++) {
-        if (array_length(valid_vehicles) == 0) {
+        var _candidates = [];
+        for (var t = 0; t < array_length(_targeted); t++) {
+            var v_idx = _targeted[t];
+            if (_hits_remaining[t] > 0 && veh_hp[v_idx] > 0 && veh_dead[v_idx] == 0) {
+                array_push(_candidates, t);
+            }
+        }
+
+        if (array_length(_candidates) == 0) {
             break;
         }
 
         _damage_data.hits++;
 
-        // Select a random vehicle from the valid list
-        veh_index = array_random_element(valid_vehicles);
+        var _pick = _candidates[irandom(array_length(_candidates) - 1)];
+        veh_index = _targeted[_pick];
+        _hits_remaining[_pick]--;
 
         // Apply damage
-        var _veh_armour = combat_rank_armour(veh_ac[veh_index], _armour_pierce, false);
+        var _veh_armour = max(0, veh_ac[veh_index] - _armour_pierce);
         var _modified_damage = _damage - _veh_armour;
         if (_modified_damage < 0) {
             _modified_damage = 0;
@@ -338,9 +385,6 @@ function damage_vehicles(_damage_data, _shots, _damage, _armour_pierce) {
                 array_push(lost, veh_type[veh_index]);
                 array_push(lost_num, 1);
             }
-
-            // Remove dead vehicles from further hits
-            valid_vehicles = array_delete_value(valid_vehicles, veh_index);
         }
     }
 
