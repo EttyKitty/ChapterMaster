@@ -453,3 +453,123 @@ function get_next_enemy_formation(_block) {
     }
     return _best;
 }
+
+
+/// @self Asset.GMObject.obj_pnunit
+/// @description Speed Force: sweep the whole enemy force, dividing damage proportionally to rank
+///              size, and report it as ONE consolidated volley line (see emit_volley_flavour).
+/// @param {Real} weapon_index_position The Speed Force weapon stack index.
+function scr_shoot_spread(weapon_index_position) {
+    try {
+        if (wep_num[weapon_index_position] <= 0 || ammo[weapon_index_position] == 0) {
+            exit;
+        }
+
+        var _shots = wep_num[weapon_index_position];
+        var _ap = apa[weapon_index_position];
+        var _dpw = att[weapon_index_position] / _shots; // per-bike damage
+        var _mod = max(1, splash[weapon_index_position]);
+        if (ammo[weapon_index_position] > 0) {
+            ammo[weapon_index_position] -= 1;
+        }
+
+        // Armour multiplier indexed by AP rating (1..4), matching scr_shoot's normal path.
+        var _inf_ap = [1, 3, 2, 1.5, 0];
+        var _veh_ap = [1, 6, 4, 2, 0];
+        var _ap_valid = (_ap >= 1) && (_ap <= 4);
+
+        // Total living models across every formation on the field.
+        var _formations = [];
+        var _total = 0;
+        with (obj_enunit) {
+            array_push(_formations, id);
+            for (var r = 1; r <= 30; r++) {
+                // Skip "zombie" ranks (dudes_num > 0 but dudes_hp <= 0): they would dilute _total and
+                // cause a divide-by-zero in the per-rank damage loop below.
+                if (dudes[r] != "" && dudes_num[r] > 0 && dudes_hp[r] > 0) {
+                    _total += dudes_num[r];
+                }
+            }
+        }
+        if (_total <= 0) {
+            exit;
+        }
+
+        // Apply damage proportionally to each rank's share of the field; record every rank that lost models.
+        var _hits = []; // [{ name, kills, bounced }]
+        var _wounded = undefined; // first rank that took fire but lost no models (wound/bounce fallback)
+        for (var fi = 0; fi < array_length(_formations); fi++) {
+            var _f = _formations[fi];
+            if (!instance_exists(_f)) {
+                continue;
+            }
+            for (var r = 1; r <= 30; r++) {
+                // Mirror the _total guard: skip empty/empty-ranked and "zombie" (hp <= 0) ranks so the
+                // proportional-damage division below can never divide by zero/negative HP.
+                if (_f.dudes[r] == "" || _f.dudes_num[r] <= 0 || _f.dudes_hp[r] <= 0) {
+                    continue;
+                }
+
+                var _armour = _f.dudes_ac[r];
+                if (_ap_valid) {
+                    var _ap_table = _f.dudes_vehicle[r] ? _veh_ap : _inf_ap;
+                    _armour *= _ap_table[_ap];
+                }
+
+                var _rank_shots = _shots * (_f.dudes_num[r] / _total);
+                var _final_hit = max(0, (_dpw - (_armour * _mod)) * _f.dudes_dr[r]);
+                var _kills = min(floor((_rank_shots * _final_hit) / _f.dudes_hp[r]), _f.dudes_num[r]);
+                if (_kills < 0) {
+                    _kills = 0;
+                }
+
+                if (_kills > 0) {
+                    _f.dudes_num[r] -= _kills;
+                    obj_ncombat.enemy_forces -= _kills;
+                    array_push(_hits, { name: _f.dudes[r], kills: _kills, bounced: (_final_hit <= 0), block: _f, rank: r });
+                } else if (_wounded == undefined) {
+                    // Volley spent ammo but killed no-one here; remember the first such rank so a
+                    // non-killing sweep still reports a wound/bounce instead of going silent.
+                    _wounded = { bounced: (_final_hit <= 0), block: _f, rank: r };
+                }
+            }
+        }
+
+        // Primary = the rank with the most kills (rich deferred flavour); the rest form the kill list.
+        var _primary = undefined;
+        var _spill = [];
+        if (array_length(_hits) > 0) {
+            var _best = 0;
+            for (var i = 1; i < array_length(_hits); i++) {
+                if (_hits[i].kills > _hits[_best].kills) {
+                    _best = i;
+                }
+            }
+            for (var i = 0; i < array_length(_hits); i++) {
+                if (i == _best) {
+                    continue;
+                }
+                array_push(_spill, { name: _hits[i].name, count: _hits[i].kills });
+            }
+            var _p = _hits[_best];
+            if (instance_exists(_p.block)) {
+                _primary = scr_flavor(weapon_index_position, _p.block, _p.rank, _shots, _p.kills, _p.bounced, true);
+            }
+        } else if (_wounded != undefined && instance_exists(_wounded.block)) {
+            // Nothing died but the volley still landed: report a single wounded/bounced target so the
+            // consolidated flavour log records the shot (casualties = 0 -> injured or bounced).
+            _primary = scr_flavor(weapon_index_position, _wounded.block, _wounded.rank, _shots, 0, _wounded.bounced, true);
+        }
+        emit_volley_flavour(_primary, _spill);
+
+        // Clean up spent ranks/formations (mirrors scr_shoot).
+        for (var fi = 0; fi < array_length(_formations); fi++) {
+            if (instance_exists(_formations[fi])) {
+                compress_enemy_array(_formations[fi]);
+                destroy_empty_column(_formations[fi]);
+            }
+        }
+    } catch (_exception) {
+        ERROR_HANDLER.handle_exception(_exception);
+    }
+}
