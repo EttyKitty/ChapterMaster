@@ -51,6 +51,10 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
     ];
 
     static create_texture_surface = function(texture_set, sprite_draw_args) {
+        if (!surface_exists(textures_surface)) {
+            textures_surface = surface_create(1, 1);
+        }
+
         var texture_names = struct_get_names(texture_set);
         var total_width = sprite_draw_args.frame_width * array_length(texture_names);
         if (sprite_draw_args.frame_height <= 0 || total_width <= 0) {
@@ -81,6 +85,10 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
     };
 
     static draw_textures_surface = function(selection_method) {
+        if (!surface_exists(textures_surface)) {
+            return;
+        }
+
         draw_set_alpha(1);
         var _tex_height = surface_get_height(textures_surface);
         draw_surface_part(textures_surface, _texture_offset[0], _texture_offset[1], min(max_width, surface_get_width(textures_surface)), _tex_height, x, y);
