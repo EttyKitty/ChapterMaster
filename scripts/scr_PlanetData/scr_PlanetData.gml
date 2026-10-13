@@ -507,6 +507,10 @@ function PlanetData(_planet, _system) constructor {
         var _stronghold = [];
         var _warboss = [];
         var _orks = planet_forces[eFACTION.ORK];
+        var _ork_growth_threshold = 13;
+        var _ork_growth = roll_dice_chapter(1, 100, "high");
+
+        // This part handles the increasing in numbers
 
         if (_has_stronghold) {
             _stronghold = get_features(eP_FEATURES.ORKSTRONGHOLD)[0];
@@ -515,17 +519,6 @@ function PlanetData(_planet, _system) constructor {
         if (_has_warboss) {
             _warboss = get_features(eP_FEATURES.ORKWARBOSS)[0];
             _warboss.turns_static++;
-        }
-        var _roll_num = 100;
-        if (_has_stronghold) {
-            _roll_num -= (_has_stronghold + 1) * 3;
-        }
-        var _ork_growth = roll_dice_chapter(1, 100, "high");
-        success = false; // This part handles the increasing in numbers
-
-        var _ork_growth_threshold = 13;
-
-        if (_has_warboss) {
             _ork_growth_threshold *= 2;
         }
 
@@ -1914,7 +1907,6 @@ function PlanetData(_planet, _system) constructor {
     static end_turn_heretics_and_corruption_growth = function() {
         // traitors cults
         var notixt = false;
-
         var _rando = roll_dice(1, 100);
 
         if ((current_owner == eFACTION.CHAOS) && (corruption < 80)) {
@@ -1922,7 +1914,7 @@ function PlanetData(_planet, _system) constructor {
         }
 
         if ((current_owner != eFACTION.CHAOS) && (current_owner != eFACTION.HERETICS) && (current_owner != eFACTION.ELDAR) && (planet_type != "Dead") && (planet_type != "Craftworld")) {
-            success = false;
+            var success = false;
 
             if (!current_owner == eFACTION.ORK) {
                 //made a linear function for this while here...now the minimum for the roll is a bit higher, but
