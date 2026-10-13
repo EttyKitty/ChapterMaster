@@ -585,7 +585,7 @@ function PlanetData(_planet, _system) constructor {
         }
 
         if (_has_warboss && !_has_stronghold) {
-            _rando = roll_dice_chapter(1, 100, "low");
+            _rando = roll_dice_chapter(1, 100, "high");
             if (_rando < 30) {
                 add_feature(eP_FEATURES.ORKSTRONGHOLD);
             }
@@ -603,7 +603,7 @@ function PlanetData(_planet, _system) constructor {
 
         var _ork_fleet = noone;
         if (!enemies_present) {
-            _rando = roll_dice_chapter(1, 150, "low");
+            _rando = roll_dice_chapter(1, 150, "high");
             if (_has_warboss) {
                 _rando -= 20;
             }
@@ -642,6 +642,7 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
+
         if (_build_ships) {
             var _pdata = self;
             with (_ork_fleet) {
