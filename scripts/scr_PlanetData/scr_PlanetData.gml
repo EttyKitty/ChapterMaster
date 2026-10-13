@@ -637,7 +637,7 @@ function PlanetData(_planet, _system) constructor {
             if (_ork_fleet == noone && _build_roll <= 10 && !ork_fleet_cap_reached()) {
                 _ork_fleet = new_ork_fleet(x, y);
                 add_forces(eFACTION.ORK, -2);
-            } else if (_build_roll <= 15) {
+            } else if (_ork_fleet != noone && _build_roll <= 15) {
                 with (_ork_fleet) {
                     var _ship_type = choose(1, 1, 1, 1, 1, 1, 1, 2, 2, 2);
                     var _big_stronghold = false;

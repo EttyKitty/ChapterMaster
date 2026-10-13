@@ -118,7 +118,7 @@ function ork_fleet_arrive_target() {
                 var _planet = _planets[i];
                 if ((p_guardsmen[_planet] + p_pdf[_planet] + p_player[_planet] + p_traitors[_planet] + p_tau[_planet] > 0) || ((p_owner[_planet] != eFACTION.ORK) && (p_orks[_planet] <= 0))) {
                     if ((p_type[_planet] != "Dead") && (p_orks[_planet] < 4) && (i <= planets)) {
-                        floor(standard_fleet_strength_calc(_ork_fleet) * 0.5)
+                        p_orks[_planet] += max(2, floor(standard_fleet_strength_calc(_ork_fleet) * 0.5));
 
                         if (fleet_has_cargo("ork_warboss", _ork_fleet)) {
                             array_push(p_feature[_planet], _ork_fleet.cargo_data.ork_warboss);
