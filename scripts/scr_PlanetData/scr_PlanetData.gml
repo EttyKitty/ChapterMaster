@@ -505,7 +505,7 @@ function PlanetData(_planet, _system) constructor {
         var _system_blockaded = false;
         var _system_has_enemies = false;
         var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK, system);
-
+    
         if (_has_warboss) {
             _warboss = get_features(eP_FEATURES.ORKWARBOSS)[0];
             _warboss.turns_static++;
@@ -527,9 +527,9 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
-
+    
         // Warboss embarking to fleet
-
+    
         if (_ork_fleet != noone && _has_warboss && !_system_has_enemies && !_system_blockaded) {
             var _embark_roll = roll_dice(1, 100) + 10;
             if (_embark_roll <= _warboss.turns_static) {
@@ -542,85 +542,87 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
-
+    
         if (planet_forces[eFACTION.ORK] < 1) {
             return;
         }
-
+    
         var _stronghold = pointer_null;
         var _has_stronghold = has_feature(eP_FEATURES.ORKSTRONGHOLD);
         var _planet_has_enemies = (pdf + guardsmen + planet_forces[eFACTION.TAU] + planet_forces[eFACTION.CHAOS] + planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.PLAYER] + is_garrison_force) > 0;
-
+    
         if (_has_stronghold) {
             _stronghold = get_features(eP_FEATURES.ORKSTRONGHOLD)[0];
         }
-
-        // This part handles the spreading to other planets in the system
-        var _spread_roll = roll_dice_chapter(1, 100, "low");
     
-        if (_spread_roll >= 40 && !_planet_has_enemies && !_system_blockaded && _non_dead_count > 0 && planet_forces[eFACTION.ORK] >= 4) {
-            var _source_level = planet_forces[eFACTION.ORK];
-            var _transfer_target = undefined;
-            var _zeroes = [];
-            var _reinforce = [];
-
-            for (var _t = 0; _t < _non_dead_count; _t++) {
-                var _tp = _non_deads[_t];
-                if (_tp == planet) {
-                    continue;
+        // This part handles the spreading to other planets in the system
+    
+        if (!_planet_has_enemies && !_system_blockaded && _non_dead_count > 0 && planet_forces[eFACTION.ORK] >= 4) {
+            var _spread_roll = roll_dice_chapter(1, 100, "low");
+            if (_spread_roll >= 40) {
+                var _source_level = planet_forces[eFACTION.ORK];
+                var _transfer_target = undefined;
+                var _zeroes = [];
+                var _reinforce = [];
+    
+                for (var _t = 0; _t < _non_dead_count; _t++) {
+                    var _tp = _non_deads[_t];
+                    if (_tp == planet) {
+                        continue;
+                    }
+    
+                    if (system.p_orks[_tp] == 0) {
+                        array_push(_zeroes, _tp);
+                    } else if (system.p_orks[_tp] < 5) {
+                        array_push(_reinforce, _tp);
+                    }
                 }
-
-                if (system.p_orks[_tp] == 0) {
-                    array_push(_zeroes, _tp);
-                } else if (system.p_orks[_tp] < 5) {
-                    array_push(_reinforce, _tp);
+    
+                if (array_length(_zeroes) > 0) {
+                    _transfer_target = array_random_element(_zeroes);
+                } else if (array_length(_reinforce) > 0) {
+                    _transfer_target = array_random_element(_reinforce);
                 }
-            }
-
-            if (array_length(_zeroes) > 0) {
-                _transfer_target = array_random_element(_zeroes);
-            } else if (array_length(_reinforce) > 0) {
-                _transfer_target = array_random_element(_reinforce);
-            }
-
-            if (_transfer_target != undefined) {
-                var _transfer_men = ork_force_level_to_men(_source_level) - ork_force_level_to_men(_source_level - 1);
-                var _dest_men = ork_force_level_to_men(system.p_orks[_transfer_target]);
-                var _new_dest_level = min(6, ork_men_to_force_level(_dest_men + _transfer_men));
-                add_forces(eFACTION.ORK, -1);
-                system.get_planet_data(_transfer_target).edit_forces(eFACTION.ORK, _new_dest_level);
+    
+                if (_transfer_target != undefined) {
+                    var _transfer_men = nth_power_of_two(_source_level) - nth_power_of_two(_source_level - 1);
+                    var _dest_men = nth_power_of_two(system.p_orks[_transfer_target]);
+                    var _new_dest_level = min(6, bit_length(_dest_men + _transfer_men));
+                    add_forces(eFACTION.ORK, -1);
+                    system.get_planet_data(_transfer_target).edit_forces(eFACTION.ORK, _new_dest_level);
+                }
             }
         }
-
+    
         // This part handles the fleet and ship building
     
         var _can_build = (planet_type != "Dead" && planet_type != "Lava") || _has_warboss || _has_stronghold;
     
         if (!_planet_has_enemies && _can_build && planet_forces[eFACTION.ORK] >= 4) {
             var _production_roll = roll_dice_chapter(1, 100, "low");
-            var _production_threshold = 90;
+            var _production_threshold = 80 + ((6 - planet_forces[eFACTION.ORK]) * 10);
     
             if (_has_warboss) {
                 _production_threshold -= 10;
             }
     
             if (_has_stronghold) {
-                _production_threshold -= _stronghold.tier * 3;
+                _production_threshold -= _stronghold.tier * 2;
             }
     
             if (planet_type == "Forge") {
-                _production_threshold -= 50;
-            } else if (planet_type == "Hive") {
                 _production_threshold -= 20;
-            } else if (array_contains(["Agri", "Shrine", "Temperate"], planet_type)) {
+            } else if (planet_type == "Hive") {
+                _production_threshold -= 10;
+            } else if (array_contains(["Agri", "Shrine", "Temperate", "Feudal"], planet_type)) {
                 _production_threshold -= 5;
             }
     
-            if (_production_roll >= _production_threshold) {
+            if (_production_roll >= max(10, _production_threshold)) {
                 if (_ork_fleet == noone && !ork_fleet_cap_reached()) {
                     _ork_fleet = new_ork_fleet(x, y);
                 }
-
+    
                 if (_ork_fleet != noone) {
                     with (_ork_fleet) {
                         if (other.planet_forces[eFACTION.ORK] > 5) {
@@ -630,14 +632,14 @@ function PlanetData(_planet, _system) constructor {
                         } else {
                             escort_number++;
                         }
-
+    
                         other.add_forces(eFACTION.ORK, -1);
                         var _fleet_strength = max(round(standard_fleet_strength_calc()), 1);
                         image_index = _fleet_strength;
     
-                        //if big enough flee bugger off to new star
-
-                        if (irandom(_fleet_strength) >= 5) {
+                        // If strong enough, send to a nearest star
+    
+                        if (irandom(_fleet_strength) >= 6) {
                             instance_deactivate_object(other.system);
     
                             with (obj_star) {
@@ -662,7 +664,7 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
-
+    
         // Population decline
     
         if (population > 0 && !_planet_has_enemies) {
@@ -673,7 +675,7 @@ function PlanetData(_planet, _system) constructor {
                 edit_population(-_decline_amount);
             }
         }
-
+    
         // Stronghold growth
     
         if (_has_warboss && !_has_stronghold) {
@@ -691,54 +693,61 @@ function PlanetData(_planet, _system) constructor {
                 _stronghold.tier += _growth;
             }
         }
-
-        // Free spores: only to 0-ork planets, set to 1. Bigger source seeds more planets.
-        var _spores_roll = roll_dice_chapter(1, 100, "low");
-        var _spores_theshold = 100 - (10 * planet_forces[eFACTION.ORK]);
     
-        if (_spores_roll >= _spores_theshold && _non_dead_count > 0) {
-            var _max_spore_targets = planet_forces[eFACTION.ORK];
-            var _spore_eligible = [];
-
-            for (var _s = 0; _s < _non_dead_count; _s++) {
-                var _cand = _non_deads[_s];
-                if (_cand == planet) {
-                    continue;
+        // Free spores: only to 0-ork planets, set to 1. Bigger source seeds more planets.
+    
+        if (_non_dead_count > 0) {
+            var _spores_roll = roll_dice_chapter(1, 100, "low");
+            var _spores_theshold = 100 - (10 * planet_forces[eFACTION.ORK]);
+    
+            if (_spores_roll >= _spores_theshold) {
+                var _max_spore_targets = planet_forces[eFACTION.ORK];
+                var _spore_eligible = [];
+    
+                for (var _s = 0; _s < _non_dead_count; _s++) {
+                    var _cand = _non_deads[_s];
+                    if (_cand == planet) {
+                        continue;
+                    }
+    
+                    if (system.p_orks[_cand] != 0) {
+                        continue;
+                    }
+    
+                    array_push(_spore_eligible, _cand);
                 }
-
-                if (system.p_orks[_cand] != 0) {
-                    continue;
+    
+                _spore_eligible = array_shuffle(_spore_eligible);
+                var _spore_count = min(_max_spore_targets, array_length(_spore_eligible));
+    
+                for (var _s = 0; _s < _spore_count; _s++) {
+                    system.get_planet_data(_spore_eligible[_s]).edit_forces(eFACTION.ORK, 1);
                 }
-
-                array_push(_spore_eligible, _cand);
-            }
-
-            _spore_eligible = array_shuffle(_spore_eligible);
-            var _spore_count = min(_max_spore_targets, array_length(_spore_eligible));
-
-            for (var _s = 0; _s < _spore_count; _s++) {
-                system.get_planet_data(_spore_eligible[_s]).edit_forces(eFACTION.ORK, 1);
             }
         }
     
         // This part handles the force growth
     
-        var _growth_roll = roll_dice_chapter(1, 100, "high");
-        var _grow_chance = power(2, 6 - planet_forces[eFACTION.ORK]);
+        if (planet_forces[eFACTION.ORK] < 6 && !_planet_has_enemies) {
+            static GROWTH_SPEED = 1.0;
 
-        if (_has_warboss) {
-            _grow_chance *= 2;
-        }
-
-        if (_has_stronghold) {
-            _grow_chance *= 1 + (_stronghold.tier / 6);
-        }
-
-        if (_growth_roll <= _grow_chance && planet_forces[eFACTION.ORK] < 6 && !_planet_has_enemies) {
-            if (sabatours.garrison_force && roll_dice_chapter(1, 4, "high") > 2) {
-                scr_event_log("green", localize("sabotage force on {0} disrupts ork forces", [name()]), name);
-            } else {
-                add_forces(eFACTION.ORK, 1);
+            var _growth_roll = roll_dice_chapter(1, 100, "high");
+            var _grow_chance = GROWTH_SPEED * power(2, 6 - planet_forces[eFACTION.ORK]);
+    
+            if (_has_warboss) {
+                _grow_chance *= 1.5;
+            }
+    
+            if (_has_stronghold) {
+                _grow_chance *= 1 + (_stronghold.tier / 12);
+            }
+    
+            if (_growth_roll <= _grow_chance) {
+                if (sabatours.garrison_force && roll_dice_chapter(1, 2, "high") == 2) {
+                    scr_event_log("green", localize("sabotage force on {0} disrupts ork forces", [name()]), name);
+                } else {
+                    add_forces(eFACTION.ORK, 1);
+                }
             }
         }
     };

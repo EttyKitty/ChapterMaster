@@ -1,33 +1,35 @@
-function ork_force_level_to_men(_level) {
-    _level = floor(_level);
-    if (_level <= 0) {
+/// @desc Returns the nth power of two in 1-indexed sequence 1, 2, 4, 8, ... Equal to 2^(_index - 1).
+/// @param {Real} _index
+/// @returns {Real} Returns 0 for _index <= 0. Inverse is bit_length for exact powers of two.
+function nth_power_of_two(_index) {
+    _index = floor(_index);
+    if (_index <= 0) {
         return 0;
     }
-
-    if (_level > 12) {
-        _level = 12;
+    var _result = 1;
+    for (var i = 1; i < _index; i++) {
+        _result *= 2;
     }
-
-    return 1 << (_level - 1);
+    return _result;
 }
 
-function ork_men_to_force_level(_men) {
-    _men = floor(_men);
-    if (_men <= 0) {
+/// @desc Returns the number of bits needed to represent a non-negative integer. Inverse of nth_power_of_two for exact powers of two; floors non-powers.
+/// @param {Real} _value
+/// @returns {Real} Returns 0 for _value <= 0
+function bit_length(_value) {
+    _value = floor(_value);
+    if (_value <= 0) {
         return 0;
     }
-
-    var _level = 1;
-    var _threshold = 1;
-    while (_men >= _threshold * 2 && _level < 12) {
-        _threshold *= 2;
-        _level++;
+    var _bits = 0;
+    while (_value > 0) {
+        _value = floor(_value / 2);
+        _bits++;
     }
-
-    return _level;
+    return _bits;
 }
 
-function ork_fleet_men_value(_fleet) {
+function fleet_power_value(_fleet) {
     if (_fleet == noone || !instance_exists(_fleet)) {
         return 0;
     }
@@ -148,16 +150,15 @@ function ork_fleet_arrive_target() {
         }
 
         var _allow_landing = !is_dead_star();
-        var _fleet_persists = false;
         var _alert_triggered = false;
         if (_allow_landing) {
             for (var i = 0; i < planets; i++) {
                 var _planet = _planets[i];
                 if ((p_guardsmen[_planet] + p_pdf[_planet] + p_player[_planet] + p_traitors[_planet] + p_tau[_planet] > 0) || ((p_owner[_planet] != eFACTION.ORK) && (p_orks[_planet] <= 0))) {
                     if ((p_type[_planet] != "Dead") && (p_orks[_planet] < 6) && (i <= planets)) {
-                        var _dest_men = ork_force_level_to_men(p_orks[_planet]);
-                        var _fleet_men = ork_fleet_men_value(_ork_fleet);
-                        var _capacity = max(0, ork_force_level_to_men(6) - _dest_men);
+                        var _dest_men = nth_power_of_two(p_orks[_planet]);
+                        var _fleet_men = fleet_power_value(_ork_fleet);
+                        var _capacity = max(0, nth_power_of_two(6) - _dest_men);
                         var _landed_men = min(_fleet_men, _capacity);
                         var _remaining_men = _fleet_men - _landed_men;
         
@@ -167,7 +168,7 @@ function ork_fleet_arrive_target() {
                         }
 
                         if (_landed_men > 0) {
-                            get_planet_data(_planet).edit_forces(eFACTION.ORK, min(6, ork_men_to_force_level(_dest_men + _landed_men)));
+                            get_planet_data(_planet).edit_forces(eFACTION.ORK, min(6, bit_length(_dest_men + _landed_men)));
                         }
 
                         if (fleet_has_cargo("ork_warboss", _ork_fleet)) {
@@ -189,7 +190,6 @@ function ork_fleet_arrive_target() {
                             with (_ork_fleet) {
                                 image_index = max(round(standard_fleet_strength_calc()), 1);
                             }
-                            _fleet_persists = true;
                         }
                         _alert_triggered = true;
                         break;
@@ -199,7 +199,7 @@ function ork_fleet_arrive_target() {
         }
 
         if (_alert_triggered) {
-            if (!_fleet_persists) {
+            if (!instance_exists(_ork_fleet)) {
                 scr_alert("green", "owner", $"Ork ships have crashed across the {name} system.", x, y);
             } else {
                 scr_alert("green", "owner", $"Ork ships Spill their ravenouss hordes accross {name} system and the green skin captains turn their guns towards the surface.", x, y);
